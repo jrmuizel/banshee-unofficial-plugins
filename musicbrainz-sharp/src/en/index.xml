@@ -1,0 +1,20 @@
+<Overview>
+  <Assemblies>
+    <Assembly Name="MusicBrainz" Version="0.0.0.0" />
+  </Assemblies>
+  <Remarks>To be added.</Remarks>
+  <Copyright>To be added.</Copyright>
+  <Types>
+    <Namespace Name="MusicBrainz">
+      <Type Name="Client" />
+      <Type Name="ClientVersion" />
+      <Type Name="Rdf" />
+      <Type Name="SimpleDisc" />
+      <Type Name="SimpleArtist" />
+      <Type Name="SimpleAlbum" />
+      <Type Name="SimpleTrack" />
+      <Type Name="Utilities" />
+    </Namespace>
+  </Types>
+  <Title>MusicBrainz</Title>
+</Overview>

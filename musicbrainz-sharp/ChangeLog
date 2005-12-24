@@ -1,5 +1,10 @@
 2005-12-24  Aaron Bockover  <aaron@aaronbock.net>
 
+	* sync-tree.sh: Added shell script to keep projects using this source
+	updated with the latest code
+
+2005-12-24  Aaron Bockover  <aaron@aaronbock.net>
+
 	* configure.ac: Output docs/Makefile
 
 	* Makefile.am: Added docs to SUBDIRS

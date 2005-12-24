@@ -50,5 +50,6 @@ AC_OUTPUT([
 	musicbrainz-sharp.pc
 	src/Makefile
 	src/MusicBrainz.dll.config
+	docs/Makefile
 ])
 

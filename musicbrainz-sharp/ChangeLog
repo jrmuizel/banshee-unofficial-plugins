@@ -1,5 +1,17 @@
 2005-12-24  Aaron Bockover  <aaron@aaronbock.net>
 
+	* configure.ac: Output docs/Makefile
+
+	* Makefile.am: Added docs to SUBDIRS
+	
+	* src/Makefile.am: Moved all documentation rules to ../docs/Makefile.am
+	
+	* src/en/*: Moved to ../docs/en/*
+
+	* src/musicbrainz-sharp-docs.source: Moved to ../docs
+
+2005-12-24  Aaron Bockover  <aaron@aaronbock.net>
+
 	* musicbrainz-sharp: Created a standalone project from
 	the MusicBrainz C# bindings in Banshee; imported into
 	abock.org Subversion, which is now the central development

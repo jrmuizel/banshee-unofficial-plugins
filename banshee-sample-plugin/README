@@ -1,0 +1,6 @@
+This module provides a very basic sample Banshee [1] plugin. It offers no
+genuine functionality. It is useful only to new Banshee plugin developers
+who need a reference baseline for developing their plugin.
+
+[1] http://banshee-project.org/
+

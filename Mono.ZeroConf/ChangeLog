@@ -1,0 +1,6 @@
+2006-01-16  Aaron Bockover  <aaron@aaronbock.net>
+
+	* Mono.ZeroConf: Setup to work with mono build system; initial import
+	into testing SVN for initial development (abock.org)
+
+

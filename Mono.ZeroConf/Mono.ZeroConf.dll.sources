@@ -1,0 +1,10 @@
+Assembly/AssemblyInfo.cs
+../../build/common/Consts.cs
+../../build/common/Locale.cs
+Mono.ZeroConf/ServiceClass.cs
+Mono.ZeroConf/Service.cs
+Mono.ZeroConf/ServiceError.cs
+Mono.ZeroConf/ServiceErrorException.cs
+Mono.ZeroConf/ServiceFlags.cs
+Mono.ZeroConf/ServiceRef.cs
+Mono.ZeroConf/ServiceType.cs

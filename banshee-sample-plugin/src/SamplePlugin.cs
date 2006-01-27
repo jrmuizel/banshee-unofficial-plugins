@@ -1,12 +1,15 @@
+
 using System;
 using Mono.Unix;
  
 using Banshee.Base;
+using Banshee.Sources;
  
 namespace Banshee.Plugins.Sample
 {
     public class SamplePlugin : Banshee.Plugins.Plugin
     {
+        protected override string ConfigurationName { get { return "Sample"; } }
         public override string DisplayName { get { return "Sample"; } }
         
         public override string Description {
@@ -29,11 +32,14 @@ namespace Banshee.Plugins.Sample
         // --------------------------------------------------------------- //
         
         private uint timeout_id;
- 
+        private SampleSource source;
+        
         protected override void PluginInitialize()
         {
             Console.WriteLine("Initializing Sample Plugin");
             timeout_id = GLib.Timeout.Add(5000, OnTimeout);
+            source = new SampleSource();
+            SourceManager.AddSource(source);
         }
         
         // optional, this is a virtual override, only
@@ -45,16 +51,17 @@ namespace Banshee.Plugins.Sample
             Console.WriteLine("Disposing Sample Plugin");
             GLib.Source.Remove(timeout_id);
             timeout_id = 0;
+            SourceManager.RemoveSource(source);
         }
         
         // optional, this is a virtual override, only 
         // provide an implementation if there is a 
         // configuration GUI to show
-        public override void ShowConfigurationDialog()
+        private Gtk.Button button = new Gtk.Button("Configure Me");
+        
+        public override Gtk.Widget GetConfigurationWidget()
         {
-            LogCore.Instance.PushWarning("Present a Gtk.Dialog here",
-                "Also, Banshee.Base.LogCore.Instance is available for " +
-                "debugging and showing warnings and errors");
+            return button;    
         }
         
         private bool OnTimeout()
@@ -63,6 +70,25 @@ namespace Banshee.Plugins.Sample
                 "SELECT TrackID FROM Tracks ORDER BY RANDOM() LIMIT 1"));
             Console.WriteLine(Globals.Library.GetTrack(track_id));
             return true;
+        }
+    }
+    
+    public class SampleSource : Banshee.Sources.Source
+    {
+        private Gtk.Button show_tracks = new Gtk.Button("Change View");
+    
+        public SampleSource() : base("Sample Source", 150)
+        {
+            show_tracks.Clicked += delegate(object o, EventArgs args) {
+                show_tracks = null;
+                OnViewChanged();
+            };
+        }
+        
+        public override Gtk.Widget ViewWidget {
+            get {
+                return show_tracks;
+            }
         }
     }
 }

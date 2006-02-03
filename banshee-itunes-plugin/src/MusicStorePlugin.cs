@@ -185,7 +185,7 @@ namespace Banshee.Plugins.MusicStore
                                                                                       "Purchase Song",
                                                                                       message);
 			
-                        if (response == ResponseType.Cancel)
+                        if (response != ResponseType.Ok)
                                 return;
 
 			MusicStorePurchaseTransaction trans = new MusicStorePurchaseTransaction (this, track);

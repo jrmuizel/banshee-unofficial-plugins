@@ -27,95 +27,101 @@
 //
 
 using System;
-using System.Runtime.InteropServices;
+using System.Net;
 
 namespace Mono.Zeroconf
 {
-    public class Service
+    public abstract class Service
     {
-        public const int MaxServiceName = 64;
-        public const int MaxDomainName = 1005;
-        public const int InterfaceIndexAny = 0;
-        public const int InterfaceIndexLocalOnly = -1;
+        protected ServiceFlags flags = ServiceFlags.None;
+        protected string name;
+        protected string reply_domain;
+        protected string regtype;
+        protected uint interface_index;
         
-        /* DNSServiceBrowse */
-     
-        public delegate void BrowseReplyCallback(ServiceRef sdRef, uint interfaceIndex, ServiceError errorCode, 
-            string serviceName, string regtype, string replyDomain);
-     
-        private delegate void DNSServiceBrowseReply(ServiceRef sdRef, ServiceFlags flags, uint interfaceIndex,
-            ServiceError errorCode, string serviceName, string regtype, string replyDomain, 
-            BrowseReplyCallback context);
-            
-        [DllImport("mdns")]
-        private static extern ServiceError DNSServiceBrowse(out ServiceRef sdRef, ServiceFlags flags,
-            uint interfaceIndex, string regtype, string domain, DNSServiceBrowseReply callBack, 
-            BrowseReplyCallback context);
-  
-        private static void OnDNSServiceBrowseReply(ServiceRef sdRef, ServiceFlags flags, uint interfaceIndex,
-            ServiceError errorCode, string serviceName, string regtype, string replyDomain, 
-            BrowseReplyCallback callback)
+        protected TxtRecord txt_record;
+        protected string fullname;
+        protected string hosttarget;
+        protected short port;
+        protected IPHostEntry hostentry;
+        
+        public Service()
         {
-            if(callback != null) {
-                callback(sdRef, interfaceIndex, errorCode, serviceName, regtype, replyDomain);
+        }
+        
+        public Service(string name, string replyDomain, string regtype)
+        {
+            Name = name;
+            ReplyDomain = replyDomain;
+            RegType = regtype;
+        }
+        
+        public override bool Equals(object o)
+        {
+            if(!(o is Service)) {
+                return false;
+            }
+            
+            return (o as Service).Name == Name;
+        }
+        
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
+        }
+        
+        public ServiceFlags Flags {
+            get { return flags; }
+            internal set { flags = value; }
+        }
+        
+        public uint InterfaceIndex {
+            get { return interface_index; }
+            set { interface_index = value; }
+        }
+
+        public string Name {
+            get { return name; }
+            set { name = value; }
+        }
+        
+        public string ReplyDomain {
+            get { return reply_domain; }
+            set { reply_domain = value; }
+        }
+        
+        public string RegType {
+            get { return regtype; }
+            set { regtype = value; }
+        }
+        
+        // Resolved Properties
+         
+        public TxtRecord TxtRecord {
+            get { return txt_record; }
+            set { txt_record = value; }
+        }
+               
+        public string FullName { 
+            get { return fullname; }
+            internal set { fullname = value; }
+        }
+        
+        public string HostTarget {
+            get { return hosttarget; }
+            set { 
+                hosttarget = value;
+                hostentry = Dns.GetHostByName(value);
             }
         }
-  
-        public static ServiceRef Browse(uint interfaceIndex, string regtype, string domain,
-            BrowseReplyCallback callback)
-        {
-            ServiceRef sdRef = ServiceRef.Zero;
-            ServiceError result = DNSServiceBrowse(out sdRef, ServiceFlags.Default, interfaceIndex, 
-                regtype, domain, OnDNSServiceBrowseReply, callback);
-            ServiceErrorException.ThrowIfNecessary(result, sdRef);
-            return sdRef;
-        }
-        /* DNSServiceResolve */
         
-        public delegate void ResolveReplyCallback(ServiceRef sdRef, uint interfaceIndex, ServiceError errorCode,
-            string fullname, string hosttarget, ushort port, ushort txtLen, string txtRecord);
-        
-        private delegate void DNSServiceResolveReply(ServiceRef sdRef, ServiceFlags flags, uint interfaceIndex,
-            ServiceError errorCode, string fullname, string hosttarget, ushort port, ushort txtLen, 
-            string txtRecord, ResolveReplyCallback context);
-            
-        [DllImport("mdns")]
-        private static extern ServiceError DNSServiceResolve(out ServiceRef sdRef, ServiceFlags flags,
-            uint interfaceIndex, string name, string regtype, string domain, DNSServiceResolveReply callBack,
-            ResolveReplyCallback context);
-            
-        private static void OnDNSServiceResolveReply(ServiceRef sdRef, ServiceFlags flags, uint interfaceIndex,
-            ServiceError errorCode, string fullname, string hosttarget, ushort port, ushort txtLen, 
-            string txtRecord, ResolveReplyCallback callback)
-        {
-            if(callback != null) {
-                callback(sdRef, interfaceIndex, errorCode, fullname, hosttarget, port, txtLen, txtRecord);
-            }
+        public IPHostEntry HostEntry {
+            get { return hostentry; }
         }
         
-        public static ServiceRef Resolve(uint interfaceIndex, string name, string regtype, string domain,
-            ResolveReplyCallback callback)
-        {
-            ServiceRef sdRef = ServiceRef.Zero;
-            ServiceError result = DNSServiceResolve(out sdRef, ServiceFlags.Default, interfaceIndex, 
-                name, regtype, domain, OnDNSServiceResolveReply, callback);
-            ServiceErrorException.ThrowIfNecessary(result, sdRef);
-            return sdRef;
+        public short Port {
+            get { return IPAddress.NetworkToHostOrder(port); }
+            set { port = IPAddress.HostToNetworkOrder(value); }
         }
-       
-        /* DNSServiceEnumerateDomains */
-        
-        /*public delegate void DomainEnumReplyCallback(ServiceRef sdRef, ServiceFlags flags, uint interfaceIndex,
-            ServiceError errorCode, string replyDomain, IntPtr context);
-     
-        [DllImport("mdns")]
-        private static extern ServiceError DNSServiceEnumerateDomains(out ServiceRef sdRef, ServiceFlags flags,
-            uint interfaceIndex, DomainEnumReplyCallback callBack, IntPtr context);
-            
-        public static ServiceError EnumerateDomains(out ServiceRef sdRef, ServiceFlags flags,
-            uint interfaceIndex, DomainEnumReplyCallback callBack)
-        {
-            return DNSServiceEnumerateDomains(out sdRef, flags, interfaceIndex, callBack, IntPtr.Zero);
-        }*/
     }
 }

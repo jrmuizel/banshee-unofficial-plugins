@@ -27,47 +27,65 @@
 //
 
 using System;
-using System.Runtime.InteropServices;
+using Mono.Zeroconf;
+using Gtk;
 
-namespace Mono.Zeroconf
+public class DnsTest 
 {
-    public class DnsTest
+    public static void Main()
     {
-        public static void Main()
-        {
-            ServiceRef sdRef = Service.Browse(0, "_daap._tcp", null, OnBrowse);
-         //   while(sdRef.ProcessResult());
-            sdRef.ProcessResult();
-            sdRef.ProcessResult();
-            sdRef.ProcessResult();
-         }
+        Application.Init();
+
+        // Register a sample service
+        RegisterService service = new RegisterService("Fruity Music", null, "_daap._tcp");
+        TxtRecord record = new TxtRecord();
+        record.Add("A", "Apples");
+        record.Add("B", "Bananas");
+        record.Add("C", "Carrots");
+        service.Port = 8080; 
+        service.TxtRecord = record;
+        service.RegisterAsync();
+
+        // Listen for events of some service type
+        ServiceBrowser browser = new ServiceBrowser("_daap._tcp");
+        browser.ServiceAdded += OnServiceAdded;
+        browser.ServiceRemoved += OnServiceRemoved;
+        browser.StartAsync();
         
-        private static void OnBrowse(ServiceRef sdRef, uint interfaceIndex, ServiceError errorCode, 
-            string serviceName, string regtype, string replyDomain)
-        {
-            Console.WriteLine("--Browse Result--");
-            Console.WriteLine("Error:        " + errorCode);
-            Console.WriteLine("Service Name: " + serviceName);
-            Console.WriteLine("Reg Type:     " + regtype);
-            Console.WriteLine("Reply Domain: " + replyDomain);
-            
-            Console.WriteLine("--Trying to Resolve--");
-            
-            ServiceRef resolveRef = Service.Resolve(interfaceIndex, serviceName, regtype, replyDomain,
-                OnResolve);
-            resolveRef.ProcessResult();
-        }
+        // Unregister our service in 10 seconds
+        GLib.Timeout.Add(10000, delegate {
+            service.Dispose();
+            return false;
+        });
         
-        private static void OnResolve(ServiceRef sdRef, uint interfaceIndex, ServiceError errorCode,
-            string fullname, string hosttarget, ushort port, ushort txtLen, string txtRecord)
-        {
-            Console.WriteLine("Error:       " + errorCode);
-            Console.WriteLine("Full Name:   " + fullname);
-            Console.WriteLine("Host Target: " + hosttarget);
-            Console.WriteLine("Port:        " + port);
-            Console.WriteLine("TXT Length:  " + txtLen);
-            Console.WriteLine("TXT Record:  " + txtRecord);
-            Console.WriteLine("");
-        }
+        // Stop browsing and quit in 15 seconds
+        GLib.Timeout.Add(15000, delegate {
+            browser.Dispose();
+            Application.Quit();
+            return false;
+        });
+        
+        Application.Run();
+    }
+    
+    private static void OnServiceAdded(object o, ServiceBrowseEventArgs args)
+    {
+        Console.WriteLine("ADDED {0}", args.Service.Name);
+        args.Service.Resolved += OnServiceResolved;
+        args.Service.Resolve();
+    }
+    
+    private static void OnServiceRemoved(object o, ServiceBrowseEventArgs args)
+    {
+        Console.WriteLine("REMOVED {0}", args.Service.Name);
+    }
+    
+    private static void OnServiceResolved(object o, EventArgs args)
+    {
+        Service service = o as Service;
+        Console.WriteLine("Resolved: {0} {1} {2} {3}", service.FullName, service.Port, 
+            service.HostTarget, service.HostEntry.AddressList[0]);
+        Console.WriteLine(service.TxtRecord);    
     }
 }
+

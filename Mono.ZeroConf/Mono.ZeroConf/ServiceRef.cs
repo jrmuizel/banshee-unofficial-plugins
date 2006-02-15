@@ -27,6 +27,8 @@
 //
 
 using System;
+using System.Threading;
+using System.Collections;
 using System.Runtime.InteropServices;
 
 namespace Mono.Zeroconf
@@ -34,21 +36,39 @@ namespace Mono.Zeroconf
     public struct ServiceRef
     {
         public static readonly ServiceRef Zero;
-        
+    
         private IntPtr raw;
-        
-        internal ServiceRef(IntPtr raw)
+    
+        public ServiceRef(IntPtr raw)
         {
             this.raw = raw;
         }
-        
-        [DllImport("mdns")]
-        private static extern ServiceError DNSServiceProcessResult(IntPtr sdRef);
-        
-        public bool ProcessResult()
+    
+        public void Deallocate()
         {
-            ServiceErrorException.ThrowIfNecessary(DNSServiceProcessResult(Raw), this);
-            return true;
+            Native.DNSServiceRefDeallocate(Raw);
+        }
+ 
+        public ServiceError ProcessSingle()
+        {
+            return Native.DNSServiceProcessResult(Raw);
+        }
+        
+        public void Process()
+        {
+            while(ProcessSingle() == ServiceError.NoError);
+        }
+
+        public int SocketFD {
+            get {
+                return Native.DNSServiceRefSockFD(Raw);
+            }
+        }
+        
+        public IntPtr Raw {
+            get {
+                return raw;
+            }
         }
         
         public override bool Equals(object o)
@@ -56,31 +76,25 @@ namespace Mono.Zeroconf
             if(!(o is ServiceRef)) {
                 return false;
             }
-
+            
             return ((ServiceRef)o).Raw == Raw;
         }
-
+        
         public override int GetHashCode()
         {
             return Raw.GetHashCode();
-        }
-        
-        internal IntPtr Raw {
-            get {
-                return raw;
-            }
         }
         
         public static bool operator ==(ServiceRef a, ServiceRef b)
         {
             return a.Raw == b.Raw;
         }
-
+        
         public static bool operator !=(ServiceRef a, ServiceRef b)
         {
             return a.Raw != b.Raw;
         }
-
+        
         public static explicit operator IntPtr(ServiceRef value)
         {
             return value.Raw;

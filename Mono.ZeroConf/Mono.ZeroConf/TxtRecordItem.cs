@@ -1,5 +1,5 @@
 //
-// ServiceException.cs
+// TxtRecordItem.cs
 //
 // Authors:
 //	Aaron Bockover  <abockover@novell.com>
@@ -27,17 +27,58 @@
 //
 
 using System;
+using System.Text;
 
 namespace Mono.Zeroconf
 {
-    internal class ServiceErrorException : Exception
+    public class TxtRecordItem
     {
-        internal ServiceErrorException(ServiceError error) : base(error.ToString())
+        private string key;
+        private byte [] value_raw;
+        private string value_string;
+        
+        private static readonly Encoding encoding = new UTF8Encoding();
+        
+        public TxtRecordItem(string key, byte [] valueRaw)
         {
+            this.key = key;
+            ValueRaw = valueRaw;
         }
         
-        internal ServiceErrorException(string error) : base(error)
+        public TxtRecordItem(string key, string valueString)
         {
+            this.key = key;
+            ValueString = valueString;
+        }
+        
+        public override string ToString()
+        {
+            return String.Format("{0} = {1}", Key, ValueString);
+        }
+        
+        public string Key {
+            get { return key; }
+        }
+        
+        public byte [] ValueRaw {
+            get { return value_raw; }
+            set { value_raw = value; }
+        }
+        
+        public string ValueString {
+            get { 
+                if(value_string != null) {
+                    return value_string;
+                }
+                
+                value_string = encoding.GetString(value_raw);
+                return value_string;
+            }
+            
+            set {
+                value_string = value;
+                value_raw = encoding.GetBytes(value);
+            }
         }
     }
 }

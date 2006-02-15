@@ -1,3 +1,8 @@
+2006-02-15  Aaron Bockover  <aaron@abock.org>
+
+	* Mono.Zeroconf: First pass at fully-functioning mDNSResponder wrapping;
+	it is ready for inclusion in daap-sharp
+
 2006-01-16  Aaron Bockover  <aaron@aaronbock.net>
 
 	* Mono.ZeroConf: Setup to work with mono build system; initial import

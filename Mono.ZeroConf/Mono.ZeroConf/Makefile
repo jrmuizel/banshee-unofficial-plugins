@@ -1,23 +1,18 @@
-LIB_SOURCES = *.cs
-LIB = Mono.ZeroConf.dll
-TEST_SOURCES = ../Test/ZeroConfTest.cs
-TEST = Mono.ZeroConf_test.exe
+ASM_SOURCES = *.cs ../Test/ZeroConfTest.cs
+ASM = Mono.ZeroConf.exe
 MONO = mono --debug 
 MCS = mcs -debug
 
-all: $(LIB) $(TEST)
+all: $(ASM) $(TEST)
 
-$(LIB): $(LIB_SOURCES)
-	$(MCS) -out:$@ -target:library $(LIB_SOURCES)
-
-$(TEST): $(TEST_SOURCES)
-	$(MCS) -out:$@ -r:$(LIB) $(TEST_SOURCES)
+$(ASM): $(ASM_SOURCES)
+	$(MCS) -out:$@ -pkg:gtk-sharp-2.0 $(ASM_SOURCES)
 
 clean: 
-	rm -f $(TEST) $(TEST).mdb $(LIB) $(LIB).mdb *.pidb
+	rm -f $(ASM) $(ASM).mdb *.pidb
 
 run:
-	$(MONO) $(TEST)
+	$(MONO) $(ASM)
 
 
 

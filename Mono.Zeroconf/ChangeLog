@@ -1,5 +1,10 @@
 2006-02-20  Aaron Bockover  <aaron@abock.org>
 
+	* Mono.Zeroconf/Service.cs (set_HostTarget): Was still using value
+	to look up host; use the stripped hosttarget string instead
+
+2006-02-20  Aaron Bockover  <aaron@abock.org>
+
 	* Mono.Zeroconf/Service.cs (set_HostTarget): If target ends with .local.,
 	strip it before resolving as System.Net.Dns.GetHostByName will fail to
 	resolve if there is a VPN connection

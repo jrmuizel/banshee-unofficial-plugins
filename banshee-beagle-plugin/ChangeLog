@@ -1,0 +1,12 @@
+2006-03-05  Aaron Bockover  <aaron@abock.org>
+
+	Initial import of Beagle Plugin
+
+	* src/BeagleImportSource.cs: An IImportSource implementation that
+	uses Beagle to populate the library
+
+	* src/BeaglePlugin.cs: Beagle plugin implementation that registers
+	BeagleImportSource
+
+	* src/BeagleUtil.cs: Misc. Beagle+Banshee utilities
+

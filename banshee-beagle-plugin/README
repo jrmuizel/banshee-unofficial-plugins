@@ -1,0 +1,5 @@
+This module provides an Beagle IImportSource implementation that uses
+Beagle to import songs into the Banshee Library.
+
+Based in part on the Beagle Source plugin by Adam Lofts.
+

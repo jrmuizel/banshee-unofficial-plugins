@@ -356,32 +356,12 @@ hxplayer_pump_end(HxPlayer *hxplayer)
     hxplayer->join_request = FALSE;
 }
 
-int
-hxplayer_open(HxPlayer *hxplayer, const char *uri)
+HXClientPlayerToken 
+hxplayer_get_player_token(HxPlayer *hxplayer)
 {
     if(hxplayer == NULL) {
-        return FALSE;
+        return NULL;
     }
     
-    return ClientPlayerOpenURL(hxplayer->token, uri, NULL);
-}
-
-void
-hxplayer_play(HxPlayer *hxplayer)
-{
-    if(hxplayer == NULL) {
-        return;
-    }
-    
-    ClientPlayerPlay(hxplayer->token);
-}
-
-void
-hxplayer_pause(HxPlayer *hxplayer)
-{
-    if(hxplayer == NULL) {
-        return;
-    }
-    
-    ClientPlayerPause(hxplayer->token);
+    return hxplayer->token;
 }

@@ -3,16 +3,24 @@ INCLUDES = -Wall -D_FORTIFY_SOURCE=2 -ggdb3 --permissive -I$(top_srcdir)/src/hel
 helixdbusdir = $(bindir)
 helixdbus_PROGRAMS = helix-dbus-server 
 
+helix_EXTRAS = \
+	$(top_srcdir)/src/helix/player/hxclientkit/pub/HXClientCallbacks.h \
+	$(top_srcdir)/src/helix/player/hxclientkit/pub/HXClientCFuncs.h \
+	$(top_srcdir)/src/helix/player/hxclientkit/pub/HXClientConstants.h \
+	$(top_srcdir)/src/helix/player/hxclientkit/pub/HXClientCProcPtrs.h \
+	$(top_srcdir)/src/helix/player/hxclientkit/pub/HXClientTypes.h \
+	$(top_srcdir)/src/helix/player/hxclientkit/dbg/libhxclient.a
+
 helix_dbus_server_SOURCES = \
-	hxplayer.cc \
-	hxplayer.h \
-	hxmessage.cc \
-	hxmessage.h \
-	hxmessagesegment.cc \
-	hxmessagesegment.h \
-	helix-dbus-server.cc \
-	helix-dbus-server.h \
-	helix-dbus-player.cc
+	$(srcdir)/hxplayer.cc \
+	$(srcdir)/hxplayer.h \
+	$(srcdir)/hxmessage.cc \
+	$(srcdir)/hxmessage.h \
+	$(srcdir)/hxmessagesegment.cc \
+	$(srcdir)/hxmessagesegment.h \
+	$(srcdir)/helix-dbus-server.cc \
+	$(srcdir)/helix-dbus-server.h \
+	$(srcdir)/helix-dbus-server-main.cc
 
 helix_dbus_server_LDADD = $(top_srcdir)/src/helix/player/hxclientkit/dbg/libhxclient.a
 helix_dbus_server_LDFLAGS = -L$(top_srcdir)/src/helix/player/hxclientkit/dbg -lpthread -ldl -lhxclient $(GNOME_LIBS)
@@ -20,10 +28,12 @@ helix_dbus_server_LDFLAGS = -L$(top_srcdir)/src/helix/player/hxclientkit/dbg -lp
 CLEANFILES = 
 MAINTAINERCLEANFILES = Makefile.in
 
+EXTRA_DIST = $(helix_dbus_server_SOURCES) $(helix_EXTRAS) $(srcdir)/HelixRemoteClient.cs $(srcdir)/HelixRemotePlayer.cs
+
 if HAVE_MONO
 
 ASSEMBLY = HelixDbusClient.exe
-CLIENT_SRC = HelixDbusClient.cs
+CLIENT_SRC = $(srcdir)/HelixRemoteClient.cs $(srcdir)/HelixRemotePlayer.cs
 
 all: $(ASSEMBLY)
 
@@ -33,8 +43,6 @@ $(ASSEMBLY): $(CLIENT_SRC)
 CLEANFILES += $(ASSEMBLY)
 
 endif
-
-EXTRA_DIST = HelixDbusClient.cs
 
 server-run:
 	HELIX_LIBS=/usr/lib/RealPlayer10/ ./helix-dbus-server

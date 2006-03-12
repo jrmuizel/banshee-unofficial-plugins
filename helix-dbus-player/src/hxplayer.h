@@ -43,11 +43,7 @@ gpointer hxplayer_get_user_info(HxPlayer *hxplayer);
 void hxplayer_set_message_callback(HxPlayer *hxplayer, HxPlayerMessageCallback callback);
 
 int hxplayer_get_state(HxPlayer *hxplayer);
-
-int hxplayer_open(HxPlayer *hxplayer, const char *uri);
-
-void hxplayer_play(HxPlayer *hxplayer);
-void hxplayer_pause(HxPlayer *hxplayer);
+HXClientPlayerToken hxplayer_get_player_token(HxPlayer *hxplayer);
 
 void hxplayer_pump(HxPlayer *hxplayer);
 void hxplayer_pump_begin(HxPlayer *hxplayer);

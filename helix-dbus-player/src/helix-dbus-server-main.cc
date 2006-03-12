@@ -1,5 +1,5 @@
 /***************************************************************************
- *  helix-dbus-server.h
+ *  helix-dbus-server-main.cc
  *
  *  Copyright (C) 2006 Novell, Inc
  *  Written by Aaron Bockover <aaron@abock.org>
@@ -26,20 +26,58 @@
  *  DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef _HELIX_DBUS_SERVER_H
-#define _HELIX_DBUS_SERVER_H
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
-#include <dbus/dbus.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <glib.h>
+#include <glib-object.h>
+ 
+#include <dbus/dbus-glib-lowlevel.h>
+ 
+#include "helix-dbus-server.h"
+ 
+gint main(gint argc, gchar **argv)
+{
+    GMainLoop *loop;
+    DBusConnection *connection;
+    DBusError error;
+    HelixDbusServer *server;
+    
+    g_type_init();
+    
+    dbus_error_init(&error);
+    connection = dbus_bus_get(DBUS_BUS_SESSION, &error);
 
-#define HELIX_DBUS_SERVICE "org.gnome.HelixDbusPlayer"
-#define HELIX_DBUS_INTERFACE "org.gnome.HelixDbusPlayer"
-#define HELIX_DBUS_PLAYER_PATH "/org/gnome/HelixDbusPlayer/Player"
+    if(connection == NULL || dbus_error_is_set(&error)) {
+        g_error("Unable to connect to dbus: %s", error.message);
+        dbus_error_free(&error);
+        exit(1);
+    }
+ 
+    if(dbus_bus_name_has_owner(connection, HELIX_DBUS_SERVICE, NULL)) {
+        g_warning("helix-dbus-server is already running");
+        dbus_connection_close(connection);
+        exit(1);
+    }
+    
+    setenv("HELIX_LIBS", HELIX_LIBRARY_PATH, 0);
 
-typedef struct HelixDbusServer HelixDbusServer;
+    server = helix_dbus_server_new(connection);
+    
+    if(server == NULL) {
+        g_error("Could not create Helix DBus Server. Configured with HELIX_LIBS=" 
+            HELIX_LIBRARY_PATH ". Current HELIX_LIBS=%s. Try manually setting HELIX_LIBS?",
+            getenv("HELIX_LIBS"));
+        exit(1);
+    }
+    
+    loop = g_main_loop_new(NULL, FALSE);
+    dbus_connection_setup_with_g_main(connection, g_main_loop_get_context(loop));
+    
+    g_main_loop_run(loop);
 
-HelixDbusServer *helix_dbus_server_new(DBusConnection *connection);
-void helix_dbus_server_free(HelixDbusServer *server);
-
-DBusConnection *helix_dbus_server_get_dbus_connection(HelixDbusServer *server);
-
-#endif /* _HELIX_DBUS_SERVER_H */
+    exit(0);
+}

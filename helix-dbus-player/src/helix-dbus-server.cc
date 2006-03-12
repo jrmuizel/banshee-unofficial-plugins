@@ -34,6 +34,8 @@
 #include <dbus/dbus.h>
 #include <dbus/dbus-glib.h>
 
+#include "HXClientCFuncs.h"
+
 #include "hxplayer.h"
 #include "hxmessage.h"
 #include "hxmessagesegment.h"
@@ -61,17 +63,39 @@ struct HelixDbusMethodVTable {
 #define METHOD_HANDLER_DEFINE(name) static void (name)(HelixDbusServer *server, \
     DBusMessage *message, void **return_value);
 
+#define PLAYER_TOKEN(player) hxplayer_get_player_token(player)
+
 // private static members
 
+METHOD_HANDLER_DEFINE(helix_dbus_server_handle_ping);
 METHOD_HANDLER_DEFINE(helix_dbus_server_handle_open_uri);
 METHOD_HANDLER_DEFINE(helix_dbus_server_handle_play);
 METHOD_HANDLER_DEFINE(helix_dbus_server_handle_pause);
+METHOD_HANDLER_DEFINE(helix_dbus_server_handle_stop);
+METHOD_HANDLER_DEFINE(helix_dbus_server_handle_start_seeking);
+METHOD_HANDLER_DEFINE(helix_dbus_server_handle_stop_seeking);
+METHOD_HANDLER_DEFINE(helix_dbus_server_handle_get_group_title);
+METHOD_HANDLER_DEFINE(helix_dbus_server_handle_get_volume);
+METHOD_HANDLER_DEFINE(helix_dbus_server_handle_set_volume);
+METHOD_HANDLER_DEFINE(helix_dbus_server_handle_get_length);
+METHOD_HANDLER_DEFINE(helix_dbus_server_handle_get_position);
+METHOD_HANDLER_DEFINE(helix_dbus_server_handle_set_position);
 
 static HelixDbusMethodVTable method_handler_vtable [] = {
-    { "OpenUri", DBUS_TYPE_BOOLEAN, helix_dbus_server_handle_open_uri },
-    { "Play",    DBUS_TYPE_INVALID, helix_dbus_server_handle_play },
-    { "Pause",   DBUS_TYPE_INVALID, helix_dbus_server_handle_pause },
-    { NULL,      0,              NULL }
+    { "Ping",            DBUS_TYPE_INVALID,   helix_dbus_server_handle_ping },
+    { "OpenUri",         DBUS_TYPE_BOOLEAN,   helix_dbus_server_handle_open_uri },
+    { "Play",            DBUS_TYPE_INVALID,   helix_dbus_server_handle_play },
+    { "Pause",           DBUS_TYPE_INVALID,   helix_dbus_server_handle_pause },
+    { "Stop",            DBUS_TYPE_INVALID,   helix_dbus_server_handle_stop },
+    { "StartSeeking",    DBUS_TYPE_BOOLEAN,   helix_dbus_server_handle_start_seeking },
+    { "StopSeeking",     DBUS_TYPE_INVALID,   helix_dbus_server_handle_stop_seeking },
+    { "GetGroupTitle",   DBUS_TYPE_STRING,    helix_dbus_server_handle_get_group_title },
+    { "GetVolume",       DBUS_TYPE_UINT32,    helix_dbus_server_handle_get_volume },
+    { "SetVolume",       DBUS_TYPE_UINT32,    helix_dbus_server_handle_set_volume },
+    { "GetLength",       DBUS_TYPE_UINT32,    helix_dbus_server_handle_get_length },
+    { "GetPosition",     DBUS_TYPE_UINT32,    helix_dbus_server_handle_get_position },
+    { "SetPosition",     DBUS_TYPE_BOOLEAN,   helix_dbus_server_handle_set_position },
+    { NULL,              0,                   NULL }
 };
 
 static DBusHandlerResult helix_dbus_server_path_message(DBusConnection *connection, 
@@ -114,8 +138,12 @@ helix_dbus_server_path_message(DBusConnection *connection, DBusMessage *message,
 
     method->handler(server, message, &method_return);
     
+    if(method->return_type == DBUS_TYPE_STRING && method_return == NULL) {
+        method_return = (void *)"";
+    }
+    
     reply = dbus_message_new_method_return(message);
-    if(method->return_type != DBUS_TYPE_INVALID && method_return != NULL) {
+    if(method->return_type != DBUS_TYPE_INVALID) {
         dbus_message_append_args(reply, method->return_type, &method_return, DBUS_TYPE_INVALID);
     }
     
@@ -125,65 +153,6 @@ helix_dbus_server_path_message(DBusConnection *connection, DBusMessage *message,
     return DBUS_HANDLER_RESULT_HANDLED;
 }
 
-static DBusConnection *
-helix_dbus_server_connect_to_dbus(gpointer user_data)
-{
-    DBusConnection *connection;
-    DBusError error;
-    
-    dbus_error_init(&error);
-    connection = dbus_bus_get(DBUS_BUS_SESSION, &error);
-
-    if(connection == NULL || dbus_error_is_set(&error)) {
-        g_warning("Unable to connect to dbus: %s", error.message);
-        dbus_error_free(&error);
-        return NULL;
-    }
-    
-    if(!dbus_connection_register_object_path(connection, HELIX_DBUS_PLAYER_PATH, 
-        &dbus_call_vtable, user_data)) {
-        g_warning("Unable to register object path " HELIX_DBUS_PLAYER_PATH);
-        dbus_connection_close(connection);
-        dbus_connection_unref(connection);
-        return NULL;
-    }
-
-    if(dbus_bus_request_name(connection, HELIX_DBUS_SERVICE, 0, NULL) == -1) {
-        g_warning("Unable to request service name " HELIX_DBUS_SERVICE);
-        dbus_connection_close(connection);
-        dbus_connection_unref(connection);
-        return NULL;
-    }
-    
-    return connection;
-}
-
-// private dbus methods
-
-static void 
-helix_dbus_server_handle_open_uri(HelixDbusServer *server, DBusMessage *message, 
-    void **return_value)
-{
-    const gchar *uri;
-    
-    if(dbus_message_get_args(message, NULL, DBUS_TYPE_STRING, &uri, DBUS_TYPE_INVALID)) {
-        *return_value = (gpointer)hxplayer_open(server->player, uri);
-    }
-}
-
-static void 
-helix_dbus_server_handle_play(HelixDbusServer *server, DBusMessage *message, 
-    void **return_value)
-{
-    hxplayer_play(server->player);
-}
-
-static void 
-helix_dbus_server_handle_pause(HelixDbusServer *server, DBusMessage *message, 
-    void **return_value)
-{
-    hxplayer_pause(server->player);
-}
 
 static int
 hxmessage_segment_type_to_dbus_type(HxMessageSegmentType segment_type)
@@ -250,10 +219,148 @@ helix_dbus_server_hxplayer_message_handler(HxPlayer *player, HxMessage *message)
     dbus_message_unref(signal);
 }
 
+static DBusConnection *
+helix_dbus_server_connect_to_dbus(DBusConnection *connection, gpointer user_data)
+{
+    if(!dbus_connection_register_object_path(connection, HELIX_DBUS_PLAYER_PATH, 
+        &dbus_call_vtable, user_data)) {
+        g_warning("Unable to register object path " HELIX_DBUS_PLAYER_PATH);
+        dbus_connection_close(connection);
+        dbus_connection_unref(connection);
+        return NULL;
+    }
+
+    if(dbus_bus_request_name(connection, HELIX_DBUS_SERVICE, 0, NULL) == -1) {
+        g_warning("Unable to request service name " HELIX_DBUS_SERVICE);
+        dbus_connection_close(connection);
+        dbus_connection_unref(connection);
+        return NULL;
+    }
+    
+    return connection;
+}
+
+// private dbus methods
+
+static void 
+helix_dbus_server_handle_ping(HelixDbusServer *server, DBusMessage *message, 
+    void **return_value)
+{
+    printf("Hello from helix-dbus-server!\n");
+}
+
+static void 
+helix_dbus_server_handle_open_uri(HelixDbusServer *server, DBusMessage *message, 
+    void **return_value)
+{
+    const gchar *uri;
+    
+    if(dbus_message_get_args(message, NULL, DBUS_TYPE_STRING, &uri, DBUS_TYPE_INVALID)) {
+        *return_value = (gpointer)ClientPlayerOpenURL(PLAYER_TOKEN(server->player), uri, NULL);
+    }
+}
+
+static void 
+helix_dbus_server_handle_play(HelixDbusServer *server, DBusMessage *message, 
+    void **return_value)
+{
+    ClientPlayerPlay(PLAYER_TOKEN(server->player));
+}
+
+static void 
+helix_dbus_server_handle_pause(HelixDbusServer *server, DBusMessage *message, 
+    void **return_value)
+{
+    ClientPlayerPause(PLAYER_TOKEN(server->player));
+}
+
+static void 
+helix_dbus_server_handle_stop(HelixDbusServer *server, DBusMessage *message, 
+    void **return_value)
+{
+    ClientPlayerStop(PLAYER_TOKEN(server->player));
+}
+
+static void 
+helix_dbus_server_handle_start_seeking(HelixDbusServer *server, DBusMessage *message, 
+    void **return_value)
+{
+    *return_value = (gpointer)ClientPlayerStartSeeking(PLAYER_TOKEN(server->player));
+}
+
+static void 
+helix_dbus_server_handle_stop_seeking(HelixDbusServer *server, DBusMessage *message, 
+    void **return_value)
+{
+    ClientPlayerStopSeeking(PLAYER_TOKEN(server->player));
+}
+
+static void 
+helix_dbus_server_handle_get_volume(HelixDbusServer *server, DBusMessage *message, 
+    void **return_value)
+{
+    *return_value = (gpointer)ClientPlayerGetVolume(PLAYER_TOKEN(server->player));
+}
+
+static void 
+helix_dbus_server_handle_set_volume(HelixDbusServer *server, DBusMessage *message, 
+    void **return_value)
+{
+    guint volume = 0;
+    
+    if(dbus_message_get_args(message, NULL, DBUS_TYPE_UINT32, &volume, DBUS_TYPE_INVALID)) {
+        ClientPlayerSetVolume(PLAYER_TOKEN(server->player), (gushort)volume);
+    }
+}
+
+static void 
+helix_dbus_server_handle_get_length(HelixDbusServer *server, DBusMessage *message, 
+    void **return_value)
+{
+    *return_value = (gpointer)ClientPlayerGetLength(PLAYER_TOKEN(server->player));
+}
+
+static void 
+helix_dbus_server_handle_get_position(HelixDbusServer *server, DBusMessage *message, 
+    void **return_value)
+{
+    *return_value = (gpointer)ClientPlayerGetPosition(PLAYER_TOKEN(server->player));
+}
+
+static void 
+helix_dbus_server_handle_set_position(HelixDbusServer *server, DBusMessage *message, 
+    void **return_value)
+{    
+    guint position = 0;
+    *return_value = 0;
+    
+    if(dbus_message_get_args(message, NULL, DBUS_TYPE_UINT32, &position, DBUS_TYPE_INVALID)) {
+        *return_value = (gpointer)ClientPlayerSetPosition(PLAYER_TOKEN(server->player), position);
+    }
+}
+
+static void
+helix_dbus_server_handle_get_group_title(HelixDbusServer *server, DBusMessage *message,
+    void **return_value)
+{
+    guint group_index = 0;
+    gchar buffer[256];
+    guint buffer_used_length = 0;
+    
+    *return_value = NULL;
+    
+    if(dbus_message_get_args(message, NULL, DBUS_TYPE_UINT32, &group_index, DBUS_TYPE_INVALID)) {
+        if(ClientPlayerGetGroupTitle(PLAYER_TOKEN(server->player), (gushort)group_index, 
+            buffer, sizeof(buffer), (UInt32 *)&buffer_used_length)) {
+            *return_value = g_strdup(buffer);
+        }
+    }
+}
+
 // public methods
 
 HelixDbusServer *
-helix_dbus_server_new()
+helix_dbus_server_new(DBusConnection *connection)
 {
     HelixDbusServer *server = g_new0(HelixDbusServer, 1);
  
@@ -267,7 +374,7 @@ helix_dbus_server_new()
         return NULL;
     }
     
-    server->connection = helix_dbus_server_connect_to_dbus(server);
+    server->connection = helix_dbus_server_connect_to_dbus(connection, server);
     if(server->connection == NULL) {
         g_free(server);
         return NULL;

@@ -1,5 +1,5 @@
 /***************************************************************************
- *  HelixDbusClient.cs
+ *  HelixRemotePlayer.cs
  *
  *  Copyright (C) 2006 Novell, Inc
  *  Written by Aaron Bockover <aaron@abock.org>
@@ -28,8 +28,8 @@
 
 using System;
 using System.Collections;
+
 using DBus;
-using Gtk;
 
 namespace Helix
 {
@@ -115,7 +115,25 @@ namespace Helix
         [Method] public abstract bool OpenUri(string uri);
         [Method] public abstract void Play();
         [Method] public abstract void Pause();
+        [Method] public abstract void Stop();
+        [Method] public abstract bool StartSeeking();
+        [Method] public abstract void StopSeeking();
+        [Method] public abstract bool SetPosition(uint position);
+        [Method] public abstract uint GetPosition();
+        [Method] public abstract uint GetLength();
+        [Method] public abstract uint GetVolume();
+        [Method] public abstract void SetVolume(uint volume);
+        [Method] public abstract string GetGroupTitle(uint groupIndex);
     }
+    
+    public enum ContentState {
+		NotLoaded = 0,
+		Contacting,
+		Loading,
+		Stopped,
+		Playing,
+		Paused
+	};
     
     public enum MessageType {
         None = 0,
@@ -198,26 +216,5 @@ namespace Helix
         public object this [string key] {
             get { return arguments[key]; }
         }
-    }
-}
-
-public static class HelixDbusClient
-{
-    public static void Main()
-    {
-        Application.Init();
-        Helix.RemotePlayer player = Helix.RemotePlayer.Connect();
-        player.Message += OnPlayerMessage;
-        Console.WriteLine(player.OpenUri("file:///home/aaron/test.mp3"));
-        player.Play();
-        System.Threading.Thread.Sleep(1000);
-        player.Pause();
-        player.Dispose();
-        Application.Run();
-    }
-    
-    public static void OnPlayerMessage(object o, Helix.MessageArgs args)
-    {
-        Console.WriteLine(args.Message);
     }
 }

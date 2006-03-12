@@ -3,7 +3,7 @@ AC_PREREQ(2.52)
 AC_INIT(README)
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_SRCDIR(src)
-AM_INIT_AUTOMAKE(helix-dbus-player, 0.1)
+AM_INIT_AUTOMAKE(helix-dbus-player, 0.2)
 
 AM_MAINTAINER_MODE
 AC_PROG_CC
@@ -47,8 +47,44 @@ if test ! "x$MONO" = "xno"; then
 	fi
 fi
 
+
+dnl HELIX_LIBS stuff
+
+AC_ARG_WITH(helix-libs, AC_HELP_STRING([--with-helix-libs], [Specify Helix/RealPlayer Library/Codecs Path]), helix_libs="$withval", helix_libs="no")
+
+COMMON_HELIX_SIGNATURE="common/clntcore.so"
+POSSIBLE_HELIX_LIBS="/usr/lib/RealPlayer10 /usr/lib/RealPlayer /usr/lib/realplayer /usr/local/realplayer /usr/local/RealPlayer10 /usr/local/RealPlayer /opt/realplayer /usr/lib/realplay-10.0.5 /usr/lib/realplay-10.0.4 /usr/lib/realplay-10.0.3 /usr/lib/realplay-10.0.2 /usr/lib/realplay-10.0.1 /usr/lib/realplay-10.0.0 /usr/lib/realplay-10.0 /usr/lib/helix /usr/local/Helix /usr/local/HelixPlayer /usr/lib/helix/player /usr/local/helix/player /usr/local/lib/helix/player"
+
+if test "x$helix_libs" = "xno"; then
+	if test ! -e $helix_libs/$COMMON_HELIX_SIGNATURE; then
+		helix_libs="no";
+		for possible in $POSSIBLE_HELIX_LIBS; do
+			if test -e $possible/$COMMON_HELIX_SIGNATURE ; then
+				helix_libs="$possible";
+				break;
+			fi
+		done
+	fi
+else
+	if test ! -e $helix_libs/$COMMON_HELIX_SIGNATURE; then
+		helix_libs="no";
+	fi
+fi
+
+if test "x$helix_libs" = "xno"; then
+	AC_MSG_ERROR([A RealPlayer/Helix install could not be found. Please configure with --with-helix-libs=/path/to/install])
+else
+	HELIX_LIBRARY_PATH="$helix_libs";
+	AC_SUBST(HELIX_LIBRARY_PATH)
+	AC_DEFINE_UNQUOTED(HELIX_LIBRARY_PATH, ["$HELIX_LIBRARY_PATH"], [RealPlayer/Helix Library Location])
+fi
+
 AC_OUTPUT([
 Makefile
 src/Makefile
 data/Makefile
 ])
+
+echo "
+    Helix Libraries: ${HELIX_LIBRARY_PATH}
+"

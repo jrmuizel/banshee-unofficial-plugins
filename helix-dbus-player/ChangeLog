@@ -1,5 +1,22 @@
 2006-03-12  Aaron Bockover  <aaron@abock.org>
 
+	* configure.ac: Added check for HELIX_LIBS setup
+
+	* src/hxplayer.h:
+	* src/hxplayer.cc: Removed some simple ClientPlayer* wrappers; the
+	server calls ClientPlayer* directly
+
+	* src/helix-dbus-server.cc: Finished method implementations for 
+	ClientPlayer* wrapping
+
+	* src/helix-dbus-server-main.cc: Completed entry point to the server
+
+	* src/HelixRemotePlayer.cs: Fully implemented remote object 
+
+	* src/HelixRemoteClient.cs: Added a simple client to the new remote object
+
+2006-03-12  Aaron Bockover  <aaron@abock.org>
+
 	* src/Makefile.am: Link against the libhxclient.a in the helix build
 	
 	* src/helix/README: Added configuration options to the text 

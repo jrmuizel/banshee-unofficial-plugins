@@ -1,5 +1,5 @@
 /***************************************************************************
- *  helix-dbus-player.cc
+ *  HelixRemoteClient.cs
  *
  *  Copyright (C) 2006 Novell, Inc
  *  Written by Aaron Bockover <aaron@abock.org>
@@ -26,33 +26,20 @@
  *  DEALINGS IN THE SOFTWARE.
  */
 
-#include <stdlib.h>
-#include <glib.h>
-#include <glib-object.h>
- 
-#include <dbus/dbus-glib-lowlevel.h>
- 
-#include "helix-dbus-server.h"
- 
-static GMainLoop *loop = NULL;
-static HelixDbusServer *server = NULL;
- 
-int main(int argc, char **argv)
+using System;
+using Helix;
+
+public class HelixRemoteClient
 {
-    g_type_init();
-
-    server = helix_dbus_server_new();
-    
-    if(server == NULL) {
-        g_error("Could not create Helix DBus Server");
-        exit(1);
+    public static void Main(string [] args)
+    {
+        RemotePlayer player = RemotePlayer.Connect();
+        player.Stop();
+        player.OpenUri(args[0]);
+        player.Play();
+        Console.WriteLine("Press enter to quit...");
+        Console.ReadLine();
+        player.Stop();
+        player.Dispose();
     }
-    
-    loop = g_main_loop_new(NULL, FALSE);
-    dbus_connection_setup_with_g_main(helix_dbus_server_get_dbus_connection(server), 
-        g_main_loop_get_context(loop));
-        
-    g_main_loop_run(loop);
-
-    exit(0);
 }

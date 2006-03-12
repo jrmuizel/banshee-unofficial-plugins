@@ -1,6 +1,10 @@
 Before building, a clean checkout of hxclientkit must be created in
 this directory. If your Helix build environment is properly set up,
-simply run `build' in this directory.
+simply run `build' in this directory, and configure with the following:
+
+  BIF Branch: hxclient_1_5_0_cayenne
+  Target:     player_hxclientkit
+  Profile:    helix-client-all-defines
 
 For details, read:
 

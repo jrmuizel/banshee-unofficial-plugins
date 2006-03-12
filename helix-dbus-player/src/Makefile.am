@@ -14,8 +14,8 @@ helix_dbus_server_SOURCES = \
 	helix-dbus-server.h \
 	helix-dbus-player.cc
 
-helix_dbus_server_LDADD = libhxclient.a
-helix_dbus_server_LDFLAGS = -L. -lpthread -ldl -lhxclient $(GNOME_LIBS)
+helix_dbus_server_LDADD = $(top_srcdir)/src/helix/player/hxclientkit/dbg/libhxclient.a
+helix_dbus_server_LDFLAGS = -L$(top_srcdir)/src/helix/player/hxclientkit/dbg -lpthread -ldl -lhxclient $(GNOME_LIBS)
 
 CLEANFILES = 
 MAINTAINERCLEANFILES = Makefile.in

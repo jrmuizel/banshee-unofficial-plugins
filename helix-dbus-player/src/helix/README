@@ -1,0 +1,8 @@
+Before building, a clean checkout of hxclientkit must be created in
+this directory. If your Helix build environment is properly set up,
+simply run `build' in this directory.
+
+For details, read:
+
+https://player.helixcommunity.org/2005/doc/hxclientkit/build-instructions.html
+

@@ -1,0 +1,54 @@
+AC_PREREQ(2.52)
+
+AC_INIT(README)
+AM_CONFIG_HEADER(config.h)
+AC_CONFIG_SRCDIR(src)
+AM_INIT_AUTOMAKE(helix-dbus-player, 0.1)
+
+AM_MAINTAINER_MODE
+AC_PROG_CC
+AC_PROG_CXX
+AC_ISC_POSIX
+AC_HEADER_STDC
+AM_PROG_LIBTOOL
+
+AS_AC_EXPAND(DATADIR, $datadir)
+
+DBUS_SERVICES_DIR="$DATADIR/dbus-1/services"
+AC_SUBST(DBUS_SERVICES_DIR)
+AC_DEFINE_UNQUOTED(DBUS_SERVICES_DIR, "$DBUS_SERVICES_DIR", [Where services dir for DBUS is])
+
+GNOME_DEBUG_CHECK
+GNOME_COMPILE_WARNINGS(error)
+AM_PATH_GLIB_2_0
+
+dnl Pkgconfig
+PKG_CHECK_MODULES(GNOME,
+	gobject-2.0 \
+	glib-2.0 \
+	dbus-1 \
+	dbus-glib-1)
+AC_SUBST(GNOME_CFLAGS)
+AC_SUBST(GNOME_LIBS)
+
+dnl Mono (for client sample)
+
+AC_PATH_PROG(MONO, mono, no)
+AC_PATH_PROG(MCS, mcs, no)
+AM_CONDITIONAL(HAVE_MONO, false)
+
+if test ! "x$MONO" = "xno"; then
+	if test ! "x$MCS" = "xno"; then
+		PKG_CHECK_MODULES(DBUS_SHARP, dbus-sharp >= 0.60)
+		AC_SUBST(DBUS_SHARP_LIBS)
+		AM_CONDITIONAL(HAVE_MONO, true)
+		AC_SUBST(MONO)
+		AC_SUBST(MCS)
+	fi
+fi
+
+AC_OUTPUT([
+Makefile
+src/Makefile
+data/Makefile
+])

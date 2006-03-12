@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.gnome.HelixDbusPlayer
+Exec=@bindir@/helix-dbus-server

@@ -1,0 +1,13 @@
+helix-dbus-player is made up of two main components:
+
+hxplayer and hxmessage: a simple C/GLib wrapper on top of Helix's
+hxclientkit API that consolidates hxclientkit events into a single
+message API and offers full playback functionality. It also handles
+threading and engine pumping
+
+helix-dbus-server exposes hxplayer and hxmessage over DBus, allowing
+full control of the Helix player and the propagation of hxmessages over
+the 'Message' signal
+
+Additionally, a C#/Mono client implementation is provided: Helix.RemotePlayer
+

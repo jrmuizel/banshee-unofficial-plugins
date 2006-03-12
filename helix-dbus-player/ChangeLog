@@ -1,0 +1,8 @@
+2006-03-12  Aaron Bockover  <aaron@abock.org>
+
+	* helix-dbus-player: First import; includes working hxplayer and 
+	hxmessage which bind hxclientkit and a full DBus server implementation
+	on top of hxplayer/hxmessage; a working C#/Mono DBus client is also
+	implemented
+
+

@@ -83,6 +83,7 @@ AC_OUTPUT([
 Makefile
 src/Makefile
 data/Makefile
+data/helix-dbus-server.pc
 ])
 
 echo "

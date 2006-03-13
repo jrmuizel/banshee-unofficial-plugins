@@ -39,9 +39,17 @@
  
 #include "helix-dbus-server.h"
  
-gint main(gint argc, gchar **argv)
+static GMainLoop *loop = NULL;
+ 
+static void
+on_helix_dbus_server_shutdown(HelixDbusServer *server)
 {
-    GMainLoop *loop;
+    g_main_loop_quit(loop);
+}
+ 
+gint 
+main(gint argc, gchar **argv)
+{
     DBusConnection *connection;
     DBusError error;
     HelixDbusServer *server;
@@ -65,7 +73,7 @@ gint main(gint argc, gchar **argv)
     
     setenv("HELIX_LIBS", HELIX_LIBRARY_PATH, 0);
 
-    server = helix_dbus_server_new(connection);
+    server = helix_dbus_server_new(connection, on_helix_dbus_server_shutdown);
     
     if(server == NULL) {
         g_error("Could not create Helix DBus Server. Configured with HELIX_LIBS=" 

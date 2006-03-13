@@ -37,7 +37,9 @@
 
 typedef struct HelixDbusServer HelixDbusServer;
 
-HelixDbusServer *helix_dbus_server_new(DBusConnection *connection);
+typedef void (* HelixDbusServerShutdownCallback) (HelixDbusServer *server);
+
+HelixDbusServer *helix_dbus_server_new(DBusConnection *connection, HelixDbusServerShutdownCallback shutdown_cb);
 void helix_dbus_server_free(HelixDbusServer *server);
 
 DBusConnection *helix_dbus_server_get_dbus_connection(HelixDbusServer *server);

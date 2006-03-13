@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <dbus/dbus.h>
@@ -46,6 +47,7 @@
 
 struct HelixDbusServer {
     DBusConnection *connection;
+    HelixDbusServerShutdownCallback shutdown_cb;
     HxPlayer *player;
 };
 
@@ -126,12 +128,26 @@ helix_dbus_server_path_message(DBusConnection *connection, DBusMessage *message,
     DBusMessage *reply;
     HelixDbusMethodVTable *method;
     gpointer method_return;
+    const gchar *method_name;
     
     if(dbus_message_get_type(message) != DBUS_MESSAGE_TYPE_METHOD_CALL) {
         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
     }
     
-    method = helix_dbus_server_method_find(dbus_message_get_member(message));
+    method_name = dbus_message_get_member(message);
+    if(strcmp(method_name, "Shutdown") == 0) {
+        reply = dbus_message_new_method_return(message);
+        dbus_connection_send(connection, reply, 0);
+        dbus_connection_flush(connection);
+        
+        helix_dbus_server_free(server);
+        
+        server->shutdown_cb(server);
+        
+        return DBUS_HANDLER_RESULT_HANDLED;
+    }
+        
+    method = helix_dbus_server_method_find(method_name);
     if(method == NULL) {
         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
     }
@@ -360,7 +376,7 @@ helix_dbus_server_handle_get_group_title(HelixDbusServer *server, DBusMessage *m
 // public methods
 
 HelixDbusServer *
-helix_dbus_server_new(DBusConnection *connection)
+helix_dbus_server_new(DBusConnection *connection, HelixDbusServerShutdownCallback shutdown_cb)
 {
     HelixDbusServer *server = g_new0(HelixDbusServer, 1);
  
@@ -383,6 +399,8 @@ helix_dbus_server_new(DBusConnection *connection)
     hxplayer_set_user_info(server->player, server);
     hxplayer_set_message_callback(server->player, helix_dbus_server_hxplayer_message_handler);
     hxplayer_pump_begin(server->player);
+    
+    server->shutdown_cb = shutdown_cb;
     
     return server;
 }

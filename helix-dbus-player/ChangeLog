@@ -1,3 +1,25 @@
+2006-03-13  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: Added data/helix-dbus-server.pc
+
+	* src/HelixRemotePlayer.cs: Added Shutdown method support and 
+	process activation
+
+	* src/helix-dbus-server.cc: Added Shutdown method support and callback
+	to alert of server shutdown
+
+	* src/helix-dbus-server.h: Updated constructor signature
+
+	* src/helix-dbus-server-main.cc: Quit the main loop when the server
+	sends shutdown notification
+
+	* data/Makefile.am: Added helix-dbus-server.pc.in
+
+	* data/helix-dbus-server.pc.in: pkg-config file to expose installation
+	and version
+
+	* Makefile.am: Added aclocal.m4 to MAINTAINERCLEANFILES
+
 2006-03-12  Aaron Bockover  <aaron@abock.org>
 
 	* configure.ac: Added check for HELIX_LIBS setup

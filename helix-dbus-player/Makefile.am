@@ -9,5 +9,6 @@ MAINTAINERCLEANFILES = \
 	install-sh \
 	ltmain.sh \
 	Makefile.in \
-	missing
+	missing \
+	aclocal.m4
 

@@ -1,5 +1,11 @@
 2006-03-13  Aaron Bockover  <aaron@abock.org>
 
+	Initial release of helix-dbus-server (0.2)
+
+	* configure.ac: Changed to helix-dbus-server
+
+2006-03-13  Aaron Bockover  <aaron@abock.org>
+
 	* configure.ac: Added data/helix-dbus-server.pc
 
 	* src/HelixRemotePlayer.cs: Added Shutdown method support and 

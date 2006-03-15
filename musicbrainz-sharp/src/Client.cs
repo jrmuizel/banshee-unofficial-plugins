@@ -36,6 +36,7 @@ namespace MusicBrainz
     public class Client : IDisposable
     {
         private HandleRef handle;
+        private string currentServer = "http://www.musicbrainz.org";
         
         private static readonly int MAX_STRING_LEN = 8192;
         //private static readonly int CDINDEX_ID_LEN = 28;
@@ -45,8 +46,24 @@ namespace MusicBrainz
         {
             handle = new HandleRef(this, mb_New());
             UseUtf8 = true;
+            
+            AutoSetProxy();
         }
-        
+
+        public bool AutoSetProxy()
+        {
+            try {
+                Uri proxyAddress = System.Net.GlobalProxySelection.Select.GetProxy(new System.Uri(currentServer));
+                if(proxyAddress != null) {
+                    Console.WriteLine("Setting MusicBrainz proxy to {0}:{1}", proxyAddress.Host, proxyAddress.Port);
+                    return this.SetProxy (proxyAddress.Host, (short)proxyAddress.Port);
+                }
+            } catch {
+            }
+            
+            return false;
+        }
+
         public void Dispose()
         {
             mb_Delete(handle);
@@ -54,7 +71,12 @@ namespace MusicBrainz
         
         public bool SetServer(string serverAddr, short serverPort)
         {
-            return mb_SetServer(handle, ToUtf8(serverAddr), serverPort) != 0;
+            if(mb_SetServer(handle, ToUtf8(serverAddr), serverPort) != 0) {
+                currentServer = serverAddr + serverPort.ToString ();
+                return true;
+            }
+            
+            return false;
         }
         
         public bool SetProxy(string serverAddr, short serverPort)

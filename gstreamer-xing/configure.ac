@@ -1,0 +1,36 @@
+AC_PREREQ(2.52)
+
+AC_INIT(README)
+AM_CONFIG_HEADER(config.h)
+AC_CONFIG_SRCDIR(src)
+AM_INIT_AUTOMAKE(gstreamer-xing, 0.8)
+
+AM_MAINTAINER_MODE
+AC_PROG_CC
+AC_PROG_CXX
+AC_ISC_POSIX
+AC_HEADER_STDC
+AM_PROG_LIBTOOL
+
+GNOME_DEBUG_CHECK
+GNOME_COMPILE_WARNINGS(error)
+AM_PATH_GLIB_2_0
+
+PKG_CHECK_MODULES(GSTREAMER,
+	gstreamer-0.8 >= 0.8.11
+	gstreamer-plugins-0.8 >= 0.8.11
+)
+AC_SUBST(GSTREAMER_CFLAGS)
+AC_SUBST(GSTREAMER_LIBS)
+
+GST_PLUGINS_DIR="`$PKG_CONFIG --variable=libdir gstreamer-0.8`/gstreamer-0.8"
+if test ! -d "$GST_PLUGINS_DIR"; then
+	AC_MSG_ERROR([GStreamer plugins directory could not be found])
+fi
+AC_SUBST(GST_PLUGINS_DIR)
+
+AC_OUTPUT([
+Makefile
+src/Makefile
+])
+

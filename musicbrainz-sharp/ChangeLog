@@ -1,5 +1,9 @@
 2006-03-15  Aaron Bockover  <aaron@abock.org>
 
+	* src/Makefile.am: Moved Makefile.in to MAINTAINERCLEANFILES
+
+2006-03-15  Aaron Bockover  <aaron@abock.org>
+
 	* src/Client.cs: Added proxy server support (Michael Hutchinson)
 
 2005-12-24  Aaron Bockover  <aaron@aaronbock.net>

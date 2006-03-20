@@ -1,3 +1,9 @@
+2006-03-20  Sebastian Dröge  <slomo@ubuntu.com>
+
+	* src/MusicBrainz/Client.cs: Reverted a small part of Michael
+	Hutchinson's proxy patch in GetIDFromUrl() to fix a bug in parsing
+	of Urls which resulted in returning of a invalid result type.
+
 2006-03-15  Aaron Bockover  <aaron@abock.org>
 
 	* src/Makefile.am: Moved Makefile.in to MAINTAINERCLEANFILES

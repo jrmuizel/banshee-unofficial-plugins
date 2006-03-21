@@ -93,11 +93,23 @@ namespace MP3tunes
 
         }
     }
+    
+    public class LockerCertificatePolicy : ICertificatePolicy
+    {
+        public bool CheckValidationResult(ServicePoint servicePoint, 
+            System.Security.Cryptography.X509Certificates.X509Certificate certificate, 
+            WebRequest webRequest, int certificateProblem)
+        {
+            return true;
+        }
+    }
 
     public class Locker
     {
         private string session_id;
         private string partner_token;
+
+        private LockerCertificatePolicy policy;
 
         public string PartnerToken
         {
@@ -112,6 +124,11 @@ namespace MP3tunes
 
         string Request( string strURL, string strParams )
         {
+            if(policy == null) {
+                policy = new LockerCertificatePolicy();
+                ServicePointManager.CertificatePolicy = policy;
+            }
+        
             HttpWebRequest req =
                 (HttpWebRequest)WebRequest.Create( strURL + strParams );
             req.KeepAlive = false;

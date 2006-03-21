@@ -1,3 +1,9 @@
+2006-03-21  Aaron Bockover  <aaron@abock.org>
+
+	* src/MP3tunes.cs: Implemented a LockerCertificatePolicy to explicitly
+	accept the mp3tunes.com SSL certificate as X509 certificate support 
+	is currently broken in Mono
+
 2006-03-20  Aaron Bockover  <aaron@abock.org>
 
 	* banshee-locker-plugin: Initial import

@@ -1,3 +1,6 @@
+OVERVIEW
+--------
+
 Your task, if you choose to accept, is to implement a "Mini Mode" window
 for Banshee that includes playback controls, the volume widget, the seek
 and position widgets, and a display for showing cover art and track 
@@ -25,6 +28,35 @@ The plugin should also provide a menu item that merges with the View menu
 in the main interface to toggle the Mini Mode window. When Mini Mode is
 active, the main interface should be hidden, and vise-versa.
 
-Have fun!
+BUILDING
+--------
 
+Banshee supports plugins in the system directory or a user directory. I
+recommend installing a user plugin so no root access is required:
+
+$ ./autogen.sh --enable-user-plugin
+$ make
+$ make install
+$ banshee
+
+For the first time running Banshee after installing the plugin, you will
+need to enable it. Go to Edit->Plugins and enable it. To see the boilerplate
+working, restart Banshee after you enable it for the first time.
+
+After each code change, just running "make install" and restarting Banshee
+will load up the new changes.
+
+
+"I'M ALL DONE"
+--------------
+
+When you are DONE and ready to submit your plugin:
+
+	a) ensure it works :)
+	b) run "make dist" (or distcheck, if you know the difference and care)
+	c) email the resulting tarball to abockover@novell.com with an 
+	   applicable subject; make sure I know your name, etc.
+	
+Have fun!
+--Aaron
 

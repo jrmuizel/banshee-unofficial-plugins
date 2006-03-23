@@ -1,5 +1,7 @@
 SUBDIRS = src
 
+EXTRA_DIST = banshee-minimode.png
+
 MAINTAINERCLEANFILES = \
 	compile \
 	INSTALL \

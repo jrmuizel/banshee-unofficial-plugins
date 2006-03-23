@@ -1,0 +1,30 @@
+Your task, if you choose to accept, is to implement a "Mini Mode" window
+for Banshee that includes playback controls, the volume widget, the seek
+and position widgets, and a display for showing cover art and track 
+information.
+
+It would also be nice to be able to change sources using a combo box.
+
+There are many widgets that can be re-used in Banshee. It would be best to
+reuse at least these widgets, all of which are used by the main interface,
+defined in src/PlayerInterface.cs:
+
+	* Banshee.Widgets.SeekSlider
+	* Banshee.Widgets.StreamPositionLabel
+	* Banshee.Widgets.VolumeButton
+	* Banshee.Widgets.CoverArtThumbnail
+
+A glade file is provided for the approximate layout displayed in the mockup.
+You may fill in the <suggested widget here> labels, or choose to design 
+the "Mini Mode" from scratch.
+
+Most of the implementation can be copied from src/PlayerInterface.cs. I 
+estimate that implementing the mockup can be done in around 100-200 lines.
+
+The plugin should also provide a menu item that merges with the View menu
+in the main interface to toggle the Mini Mode window. When Mini Mode is
+active, the main interface should be hidden, and vise-versa.
+
+Have fun!
+
+

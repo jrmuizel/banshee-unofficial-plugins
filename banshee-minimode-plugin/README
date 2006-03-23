@@ -1,6 +1,13 @@
 OVERVIEW
 --------
 
+Read this file to the end before continuing. Remember all submissions are due
+no later than 3PM EST on Monday, March 27, 2006. Only one submission will
+be chosen.
+
+More details can be found here:
+http://abock.org/2006/03/23/implement-this-window-win-a-prize/
+
 Your task, if you choose to accept, is to implement a "Mini Mode" window
 for Banshee that includes playback controls, the volume widget, the seek
 and position widgets, and a display for showing cover art and track 

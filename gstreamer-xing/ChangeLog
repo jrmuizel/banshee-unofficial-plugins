@@ -1,5 +1,11 @@
 2006-03-24  Aaron Bockover  <aaron@abock.org>
 
+	Version 0.10.0 Released
+
+	* src/Makefile.am: do not prefix with DESTDIR
+
+2006-03-24  Aaron Bockover  <aaron@abock.org>
+
 	* configure.ac: Support detecting both GStreamer 0.8 and 0.10
 
 	* src/gst-xing-encoder.c: 

@@ -1,4 +1,4 @@
-libgstxingencdir = $(DESTDIR)$(GST_PLUGINS_DIR)
+libgstxingencdir = $(GST_PLUGINS_DIR)
 libgstxingenc_LTLIBRARIES = libgstxingenc.la
 
 INCLUDES = -D_FORTIFY_SOURCE=2 -fPIC -DPIC $(GSTREAMER_CFLAGS)

@@ -1,9 +1,15 @@
-libgstxingencdir = $(GST_PLUGINS_DIR)
+libgstxingencdir = $(DESTDIR)$(GST_PLUGINS_DIR)
 libgstxingenc_LTLIBRARIES = libgstxingenc.la
 
 INCLUDES = -D_FORTIFY_SOURCE=2 -fPIC -DPIC $(GSTREAMER_CFLAGS)
 
-libgstxingenc_la_LDFLAGS = -avoid-version
+if HAVE_GST_10
+GST_XING_PLUGIN_SOURCE = gst-xing-encoder-0.10.c
+else
+GST_XING_PLUGIN_SOURCE = gst-xing-encoder-0.8.c
+endif
+
+libgstxingenc_la_LDFLAGS = $(GST_PLUGIN_LDFLAGS)
 libgstxingenc_la_SOURCES = \
 	amodini2.c \
 	cnt.c \
@@ -35,7 +41,7 @@ libgstxingenc_la_SOURCES = \
 	srcc.cpp \
 	srccfb.cpp \
 	srccf.cpp \
-	gst-xing-encoder.c
+	$(GST_XING_PLUGIN_SOURCE)
 
 EXTRA_DIST = \
 	balow.h \
@@ -63,7 +69,9 @@ EXTRA_DIST = \
 	pcmhpm.h \
 	srcc.h \
 	xhead.h \
-	gst-xing-encoder.h
+	gst-xing-encoder.h \
+	gst-xing-encoder-0.8.c \
+	gst-xing-encoder-0.10.c
 
 MAINTAINERCLEANFILES = Makefile.in
 

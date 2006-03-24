@@ -1,3 +1,15 @@
+2006-03-24  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: Support detecting both GStreamer 0.8 and 0.10
+
+	* src/gst-xing-encoder.c: 
+	* src/gst-xing-encoder-0.8: Renamed to gst-xing-encoder-0.8.c
+
+	* src/gst-xing-encoder-0.10: Full port of the encoder to GStreamer 0.10,
+	including various fixes in the usage of the actual Xing encoder
+
+	* src/Makefile.am: Decide whether to compile the 0.8 or 0.10 plugin
+
 2006-03-14  Aaron Bockover  <aaron@abock.org>
 
 	* gstreamer-xing: Initial import of gstreamer-xing; moved from Banshee

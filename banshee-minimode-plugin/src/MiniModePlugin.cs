@@ -9,6 +9,10 @@ namespace Banshee.Plugins.MiniMode
 {
     public class MiniModePlugin : Banshee.Plugins.Plugin
     {
+        private MiniMode mini_mode = null;
+        private Menu viewMenu;
+        private MenuItem menuItem;
+        
         protected override string ConfigurationName { 
             get { return "MiniMode"; } 
         }
@@ -27,34 +31,48 @@ namespace Banshee.Plugins.MiniMode
         }
         
         public override string [] Authors {
-            get { return new string [] {  "You!" }; }
+            get { return new string [] { "Felipe Almeida Lessa" }; }
         }
  
         // --------------------------------------------------------------- //
 
         protected override void PluginInitialize()
         {
-            // This method is called when the plugin is loaded
+            // Defer creation of window to when it's needed
+            // mini_mode = new MiniMode();
         }
         
         protected override void InterfaceInitialize()
         {
-            // if you need to hook into the main UI, start this
-            // process here. This method will be called when the
-            // main interface is done loading
-            // 
-            // For instance:
-            
-            MiniMode mini_mode = new MiniMode();
-            mini_mode.Window.Show();
+            viewMenu = (Globals.ActionManager.GetWidget("/MainMenu/ViewMenu") as MenuItem).Submenu as Menu;
+            menuItem = new MenuItem(Catalog.GetString("Mini mode"));
+            menuItem.Activated += delegate {
+                if (mini_mode == null)
+                    mini_mode =  new MiniMode();
+                mini_mode.Show();
+            };
+            viewMenu.Insert(menuItem, 2);
+            menuItem.Show();
         }
         
         protected override void PluginDispose()
         {
-            // if the plugin is holding onto any resources that
-            // need to be explicitly disposed of, take this
-            // as a hint to do so... this probably won't be 
-            // necessary with the MiniMode plugin though ;)
+            if(viewMenu != null && menuItem != null)
+                viewMenu.Remove(menuItem);
+
+        
+            if (mini_mode != null) {
+                // We'll do our visual cleaning in a timeout to avoid
+                // glitches when Banshee quits. Besides, the plugin window is
+                // accessible only on the full mode, so this won't cause any
+                // trouble.
+                GLib.Timeout.Add(1000, delegate {
+                    try {
+                        mini_mode.Hide();
+                    } catch { /* Do not do anything -- we tried! =) */ }
+                    return false;
+                });
+            }
         }
     }
 }

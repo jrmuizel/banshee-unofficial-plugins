@@ -1,3 +1,12 @@
+2006-03-27  Aaron Bockover  <aaron@abock.org>
+
+	* banshee-minimode-plugin: Committed Felipe's work
+
+2006-03-26  Felipe Almeida Lessa  <felipe.lessa@gmail.com>
+
+	* banshee-minimode-plugin: Create a working code after Aaron's
+	boilerplate and mockup. Send it to its contest
+
 2006-03-23  Aaron Bockover  <aaron@abock.org>
 
 	* banshee-minimode-plugin: Set up plugin boilerplate for minimode

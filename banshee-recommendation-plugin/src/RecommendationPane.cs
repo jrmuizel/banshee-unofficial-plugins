@@ -96,15 +96,17 @@ namespace Banshee.Plugins.Recommendation
 
 					current_artist = artist;
 					
-					// Wipe the old recommendations here, we keep them around in case 
-					// where the the artist is the same as the last song.
-					foreach (Widget child in similar_items_table.Children)
-						similar_items_table.Remove (child);
-					foreach (Widget child in tracks_items_box.Children)
-						tracks_items_box.Remove (child);
-					foreach (Widget child in albums_items_box.Children)
-						albums_items_box.Remove (child);
-					
+					ThreadAssist.ProxyToMain (delegate {
+						// Wipe the old recommendations here, we keep them around in case 
+						// where the the artist is the same as the last song.
+						foreach (Widget child in similar_items_table.Children)
+							similar_items_table.Remove (child);
+						foreach (Widget child in tracks_items_box.Children)
+							tracks_items_box.Remove (child);
+						foreach (Widget child in albums_items_box.Children)
+							albums_items_box.Remove (child);
+						});
+
 					// Fetch data for "similar" artists.
 					XmlDocument similar_data = new XmlDocument ();
 					

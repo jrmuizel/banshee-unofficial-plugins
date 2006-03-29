@@ -103,6 +103,20 @@ namespace Banshee.Plugins.Recommendation
 				tracks_xml_data.LoadXml (RequestContent (String.Format (AUDIOSCROBBLER_TOP_TRACKS_URL, artist)));
 				XmlNodeList tracks_xml_list = tracks_xml_data.SelectNodes ("/mostknowntracks/track");					
 				
+				// Try to match top tracks with the users's library
+				for (int i = 0; i < tracks_xml_list.Count && i < 5; i++) {
+					string track_name = tracks_xml_list [i].SelectSingleNode ("name").InnerText;
+				        int track_id = GetTrackId (artist, track_name);
+					
+					if (track_id == -1)
+						continue;
+					
+					XmlNode track_id_node = tracks_xml_list [i].OwnerDocument.CreateNode (XmlNodeType.Element, "track_id", null);
+					track_id_node.InnerText = track_id.ToString ();
+
+					tracks_xml_list [i].AppendChild (track_id_node);
+				}
+				
 				// Fetch data for top albums
 				XmlDocument albums_xml_data = new XmlDocument ();
 				albums_xml_data.LoadXml (RequestContent (String.Format (AUDIOSCROBBLER_TOP_ALBUMS_URL, artist)));
@@ -182,15 +196,27 @@ namespace Banshee.Plugins.Recommendation
 			Button track_button = new Button ();
 			track_button.Relief = ReliefStyle.None;
 
+			HBox box = new HBox ();
+
 			Label label = new Label ();
 			label.Ellipsize = Pango.EllipsizeMode.End;
 			label.Xalign = 0;
 			label.Markup = GLib.Markup.EscapeText (node.SelectSingleNode ("name").InnerText).Trim ();
-			track_button.Add (label);
 
-			track_button.Clicked += delegate(object o, EventArgs args) {
-				Gnome.Url.Show (node.SelectSingleNode ("url").InnerText);
-			};
+			if (node.SelectSingleNode ("track_id") != null) {
+				box.PackEnd (new Image (Gdk.Pixbuf.LoadFromResource("play.png")), false, false, 0);
+				track_button.Clicked += delegate(object o, EventArgs args) {
+					PlayerEngineCore.OpenPlay (Globals.Library.GetTrack (Convert.ToInt32 (node.SelectSingleNode ("track_id").InnerText)));
+				};
+			} else {
+				track_button.Clicked += delegate(object o, EventArgs args) {
+					Gnome.Url.Show (node.SelectSingleNode ("url").InnerText);
+				};
+			}
+
+			box.PackStart (label, true, true, 0);
+
+			track_button.Add (box);
 
 			return track_button;
 		}
@@ -272,6 +298,20 @@ namespace Banshee.Plugins.Recommendation
 
                         buffered_stream.Close ();
 			response.Close();			
+		}
+
+		private int GetTrackId (string artist, string title)
+		{
+			// FIXME: We can match better than this right?
+			string query = String.Format("SELECT TrackId FROM Tracks WHERE Artist = '{0}' AND Title = '{1}' LIMIT 1",
+						     Sql.Escape.EscapeQuotes(artist),
+						     Sql.Escape.EscapeQuotes(title));
+
+			object result = Globals.Library.Db.QuerySingle (query);
+			if (result == null)
+				return -1;
+			
+			return (int) result;
 		}
 	}
 }

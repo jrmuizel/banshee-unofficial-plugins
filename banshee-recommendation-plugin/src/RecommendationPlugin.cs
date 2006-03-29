@@ -140,6 +140,11 @@ namespace Banshee.Plugins.Recommendation
 					InterfaceElements.MainContainer.PackEnd (recommendation_pane, false, false, 0);
 				}
 				
+				// Don't do anything if we already are showing recommendations for the
+				// requested artist.
+				if (PaneVisible && recommendation_pane.CurrentArtist == artist)
+					return;
+				
 				// If we manually switch track we don't get an EndOfStream event and 
 				// must clear the recommendation pane here.
 				if (PaneVisible)

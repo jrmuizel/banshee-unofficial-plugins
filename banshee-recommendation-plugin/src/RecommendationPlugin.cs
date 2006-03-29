@@ -38,10 +38,7 @@ namespace Banshee.Plugins.Recommendation
 			
 			PlayerEngineCore.EventChanged += OnPlayerEngineEventChanged;
 			
-			if (recommendation_pane != null &&
-			    PlayerEngineCore.CurrentTrack != null &&
-			    PlayerEngineCore.CurrentTrack.Artist != null && 
-			    PlayerEngineCore.CurrentTrack.Artist != "")
+			if (recommendation_pane != null && ValidTrack)
 				ShowRecommendations (PlayerEngineCore.CurrentTrack.Artist);
 		}
 		
@@ -79,21 +76,27 @@ namespace Banshee.Plugins.Recommendation
 		{
 			Enabled = (o as ToggleAction).Active;
 		}
+
+		// --------------------------------------------------------------- //
 		
 		private bool enabled = true;
 		public bool Enabled {
 			get { return enabled; }
 			set { 
-				if (enabled && !value && PaneVisible) {
+				if (enabled && !value && PaneVisible)
 					HideRecommendations ();
-				} else if (!enabled && value && 
-					   PlayerEngineCore.CurrentTrack != null &&
-					   PlayerEngineCore.CurrentTrack.Artist != null && 
-					   PlayerEngineCore.CurrentTrack.Artist != "") {
+				else if (!enabled && value && ValidTrack)
 					ShowRecommendations (PlayerEngineCore.CurrentTrack.Artist);
-				} 
 
 				enabled = value;
+			}
+		}
+
+		public bool ValidTrack {
+			get {
+				return (PlayerEngineCore.CurrentTrack != null &&
+					PlayerEngineCore.CurrentTrack.Artist != null && 
+					PlayerEngineCore.CurrentTrack.Artist != "");
 			}
 		}
 
@@ -108,9 +111,7 @@ namespace Banshee.Plugins.Recommendation
 
 			switch (args.Event) {
 			case PlayerEngineEvent.StartOfStream:
-				if (PlayerEngineCore.CurrentTrack != null && 
-				    PlayerEngineCore.CurrentTrack.Artist != null && 
-				    PlayerEngineCore.CurrentTrack.Artist != "")
+				if (ValidTrack)
 					ShowRecommendations (PlayerEngineCore.CurrentTrack.Artist);
 				break;
 				

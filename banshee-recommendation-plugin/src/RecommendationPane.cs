@@ -28,7 +28,7 @@ namespace Banshee.Plugins.Recommendation
 		private const uint DEFAULT_SIMILAR_TABLE_ROWS = 2;
 		private const uint DEFAULT_SIMILAR_TABLE_COLS = 5;
 
-		private const int NUM_MAX_ARTISTS = 12;
+		private const int NUM_MAX_ARTISTS = 16;
 		private const int NUM_TRACKS = 5;
 		private const int NUM_ALBUMS = 5;
 

@@ -184,6 +184,9 @@ namespace Banshee
 			get {
 				if(spinButton1 == null) {
 					spinButton1 = new SpinButton(Int32.MinValue, Int32.MaxValue, 1.0);
+                    spinButton1.Value = 1.0;
+                    spinButton1.Digits = 0;
+                    spinButton1.WidthChars = 2;
 					spinButton1.Show();
 				}
 				
@@ -203,6 +206,9 @@ namespace Banshee
 				
 				if(spinButton2 == null) {
 					spinButton2 = new SpinButton(Int32.MinValue, Int32.MaxValue, 1.0);
+                    spinButton2.Value = 1.0;
+                    spinButton2.Digits = 0;
+                    spinButton2.WidthChars = 2;
 					spinButton2.Show();
 				}
 				
@@ -327,11 +333,14 @@ namespace Banshee
 		{
 			AddField("Title", "Title", typeof(QueryMatchString));
 			AddField("Artist", "Artist", typeof(QueryMatchString));
+			AddField("Album", "Album", typeof(QueryMatchString));
+			AddField("Song Name", "Title", typeof(QueryMatchString));
+			AddField("Genre", "Genre", typeof(QueryMatchString));
 			AddField("Date Added", "DateAddedStamp", typeof(QueryMatchDate));
 			AddField("Last Played", "LastPlayedStamp", typeof(QueryMatchDate));
 			AddField("Number of Plays", "NumberOfPlays", typeof(QueryMatchInteger));
 			AddField("Rating", "Rating", typeof(QueryMatchInteger));
-			AddField("Year", "Year", typeof(QueryMatchInteger));
+			//AddField("Year", "Year", typeof(QueryMatchInteger));
 			
 			AddOrder(QuerySelectedByCriteria.Random, "RAND()");
 			AddOrder(QuerySelectedByCriteria.Album, "Album");

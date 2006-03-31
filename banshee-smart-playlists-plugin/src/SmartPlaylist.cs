@@ -49,8 +49,6 @@ namespace Banshee.Plugins.SmartPlaylists
                 Sql.Statement.EscapeQuotes(Condition),
                 Sql.Statement.EscapeQuotes(OrderAndLimit)
             ));
-
-            RefreshMembers();
         }
 
         public void RefreshMembers()
@@ -69,7 +67,7 @@ namespace Banshee.Plugins.SmartPlaylists
             Globals.Library.Db.Execute(String.Format(
                 @"INSERT INTO PlaylistEntries 
                     SELECT NULL as EntryId, {0} as PlaylistId, TrackId FROM Tracks {1} {2}",
-                    Source.Id, Condition, OrderAndLimit
+                    Source.Id, PrependCondition("WHERE"), OrderAndLimit
             ));
 
             Source.ClearTracks();
@@ -88,12 +86,17 @@ namespace Banshee.Plugins.SmartPlaylists
             reader.Dispose();
         }
 
+        private string PrependCondition (string with)
+        {
+            return (Condition == "") ? " " : with + " " + Condition;
+        }
+
         public void Check (TrackInfo track)
         {
             Console.WriteLine ("Checking track {0} ({1}) against condition {2}", track.Uri.LocalPath, track.TrackId, Condition);
             object id = Globals.Library.Db.QuerySingle(String.Format(
-                "SELECT TrackId FROM Tracks WHERE TrackId = {0} AND {1}",
-                track.TrackId, Condition
+                "SELECT TrackId FROM Tracks WHERE TrackId = {0} {1}",
+                track.TrackId, PrependCondition("AND")
             ));
 
             if (id == null || (int) id != track.TrackId) {

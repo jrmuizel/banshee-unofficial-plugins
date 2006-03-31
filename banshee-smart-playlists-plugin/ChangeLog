@@ -1,3 +1,13 @@
 2006-03-31  Gabriel Burt  <gabriel.burt@gmail.com>
 
+	* src/SmartPlaylist.cs: Prepend the Condition with WHERE and AND where
+	appropriate.
+
+	* src/SmartPlaylistEditor.cs: Fix bug in destroying the dialog widgets
+	before getting information out of them in a thread.
+
+	* src/QueryBuilderModel.cs: Add some more fields.
+
+2006-03-31  Gabriel Burt  <gabriel.burt@gmail.com>
+
 	Initial import. Requires patch to core, still many bugs.

@@ -57,21 +57,26 @@ namespace Banshee.Plugins.SmartPlaylists
 			ResponseType response = (ResponseType) dialog.Run ();
 
 			if (response == ResponseType.Ok) {
+                string name = Name;
+                string condition = Condition;
+                string order_and_limit = OrderAndLimit;
+
                 ThreadAssist.Spawn (delegate {
+                    Console.WriteLine ("Name = {0}, Cond = {1}, OrderAndLimit = {2}", name, condition, order_and_limit);
                     if (playlist == null) {
-                        playlist = new SmartPlaylist(Name, Condition, OrderAndLimit);
+                        playlist = new SmartPlaylist(name, condition, order_and_limit);
                         playlist.Source.Commit();
                         SourceManager.AddSource(playlist.Source);
                     } else {
-                        playlist.Name = Name;
-                        playlist.Condition = Condition;
-                        playlist.OrderAndLimit = OrderAndLimit;
+                        playlist.Name = name;
+                        playlist.Condition = condition;
+                        playlist.OrderAndLimit = order_and_limit;
                         playlist.Commit();
                     }
                 });
             }
 
-			dialog.Destroy();
+            dialog.Destroy();
         }
 
         private void HandleNameChanged(object sender, EventArgs args)
@@ -110,7 +115,7 @@ namespace Banshee.Plugins.SmartPlaylists
             get {
                 return builder.MatchesEnabled
                     ? builder.MatchQuery
-                    : null;
+                    : "";
             }
         }
 
@@ -118,7 +123,7 @@ namespace Banshee.Plugins.SmartPlaylists
             get {
                 return (builder.Limit && builder.LimitNumber > 0)
                     ? "ORDER BY " + builder.OrderBy + " LIMIT " + builder.LimitNumber
-                    : null;
+                    : "";
             }
         }
     }

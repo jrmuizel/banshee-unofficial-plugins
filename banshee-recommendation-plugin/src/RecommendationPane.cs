@@ -4,6 +4,7 @@ using System.Xml;
 using System.Net;
 using System.Web;
 using System.Threading;
+using System.Collections;
 
 using Gtk;
 using Mono.Unix;
@@ -18,16 +19,20 @@ namespace Banshee.Plugins.Recommendation
 		private Box tracks_items_box, albums_items_box;
 		private Table similar_items_table;
 		private Label tracks_header, albums_header;
+		private ArrayList artists_widgets_list = new ArrayList ();
 		
 		private const string AUDIOSCROBBLER_SIMILAR_URL = "http://ws.audioscrobbler.com/1.0/artist/{0}/similar.xml";
 		private const string AUDIOSCROBBLER_TOP_TRACKS_URL = "http://ws.audioscrobbler.com/1.0/artist/{0}/toptracks.xml";
 		private const string AUDIOSCROBBLER_TOP_ALBUMS_URL = "http://ws.audioscrobbler.com/1.0/artist/{0}/topalbums.xml";
 
-		private string LOCAL_IMAGE_CACHE = System.IO.Path.Combine (Paths.UserPluginDirectory, "recommendation-images");
+		private const uint DEFAULT_SIMILAR_TABLE_ROWS = 2;
+		private const uint DEFAULT_SIMILAR_TABLE_COLS = 5;
 
-		// FIXME: Dynamically extend the table depending on the width of the window
-		private const int SIMILAR_TABLE_COLS = 5;
-		private const int SIMILAR_TABLE_ROWS = 2;
+		private const int NUM_MAX_ARTISTS = 12;
+		private const int NUM_TRACKS = 5;
+		private const int NUM_ALBUMS = 5;
+
+		private string LOCAL_IMAGE_CACHE = System.IO.Path.Combine (Paths.UserPluginDirectory, "recommendation-images");
 
 		private string current_artist;
 		public string CurrentArtist {
@@ -49,6 +54,7 @@ namespace Banshee.Plugins.Recommendation
 
 			Label similar_header = new Label ();
 			similar_header.Xalign = 0;
+			similar_header.Ellipsize = Pango.EllipsizeMode.End;
 			similar_header.Markup = String.Format ("<b>{0}</b>", Catalog.GetString ("Recommended Artists"));
 			similar_box.PackStart (similar_header, false, false, 0);
 
@@ -64,7 +70,8 @@ namespace Banshee.Plugins.Recommendation
 			albums_header.Ellipsize = Pango.EllipsizeMode.End;
 			albums_box.PackStart (albums_header, false, false, 0);
 
-			similar_items_table = new Table (3, 3, false);
+			similar_items_table = new Table (DEFAULT_SIMILAR_TABLE_ROWS, DEFAULT_SIMILAR_TABLE_COLS, false);
+			similar_items_table.SizeAllocated += OnSizeAllocated;
 			similar_box.PackEnd (similar_items_table, true, true, 0);
 
 			tracks_items_box = new VBox ();
@@ -74,11 +81,34 @@ namespace Banshee.Plugins.Recommendation
 			albums_box.PackEnd (albums_items_box, true, true, 0);
 
 			main_box.PackStart (similar_box, true, true, 5);
+			main_box.PackStart (new VSeparator (), false, false, 0);
 			main_box.PackStart (tracks_box, false, false, 5);
+			main_box.PackStart (new VSeparator (), false, false, 0);
 			main_box.PackStart (albums_box, false, false, 5);
 
 			event_box.Add (main_box);
 			Add (event_box);
+
+			if (!Directory.Exists (LOCAL_IMAGE_CACHE))
+				Directory.CreateDirectory (LOCAL_IMAGE_CACHE);
+		}
+		
+		private void OnSizeAllocated (object o, SizeAllocatedArgs args)
+		{
+			// FIXME: Do we really need to do resizing this way? It blows.
+			Gdk.Rectangle rect = args.Allocation;
+
+			uint requested_columns = (uint) rect.Width/150;
+			if (requested_columns == 0) requested_columns = 1;
+
+			if (similar_items_table.NColumns != requested_columns) {
+				// Need to clear the table before we resize it, apparently.
+				foreach (Widget child in similar_items_table.Children)
+					similar_items_table.Remove (child);
+			
+				similar_items_table.Resize (DEFAULT_SIMILAR_TABLE_ROWS, requested_columns);
+				RenderSimilarArtists ();
+			}
 		}
 
 		// --------------------------------------------------------------- //
@@ -91,20 +121,25 @@ namespace Banshee.Plugins.Recommendation
 		public void ShowRecommendations (string artist)
 		{
 			// FIXME: Error handling	
-					
 			ThreadAssist.Spawn(delegate {
 				// Fetch data for "similar" artists.
 				XmlDocument artists_xml_data = new XmlDocument ();
 				artists_xml_data.LoadXml (RequestContent (String.Format (AUDIOSCROBBLER_SIMILAR_URL, artist)));
 				XmlNodeList artists_xml_list = artists_xml_data.SelectNodes ("/similarartists/artist");
 
+				// Cache artists images (here in the spawned thread)
+				for (int i = 0; i < artists_xml_list.Count && i < NUM_MAX_ARTISTS; i++) {
+					string url = artists_xml_list [i].SelectSingleNode ("image_small").InnerText;					
+					RequestContent (url, GetImagePathFromUrl (url));
+				}
+					
 				// Fetch data for top tracks
 				XmlDocument tracks_xml_data = new XmlDocument ();
 				tracks_xml_data.LoadXml (RequestContent (String.Format (AUDIOSCROBBLER_TOP_TRACKS_URL, artist)));
 				XmlNodeList tracks_xml_list = tracks_xml_data.SelectNodes ("/mostknowntracks/track");					
 				
 				// Try to match top tracks with the users's library
-				for (int i = 0; i < tracks_xml_list.Count && i < 5; i++) {
+				for (int i = 0; i < tracks_xml_list.Count && i < NUM_TRACKS; i++) {
 					string track_name = tracks_xml_list [i].SelectSingleNode ("name").InnerText;
 				        int track_id = GetTrackId (artist, track_name);
 					
@@ -137,20 +172,21 @@ namespace Banshee.Plugins.Recommendation
 					tracks_header.Markup = String.Format ("<b>{0} {1}</b>", Catalog.GetString ("Top Tracks by"), artist);
 					albums_header.Markup = String.Format ("<b>{0} {1}</b>", Catalog.GetString ("Top Albums by"), artist);
 					
+					artists_widgets_list.Clear ();
 					if (artists_xml_list != null) {	
-						for (int i = 0; i < artists_xml_list.Count && i < (SIMILAR_TABLE_COLS * SIMILAR_TABLE_ROWS); i++)
-							similar_items_table.Attach (RenderSimilarArtist (artists_xml_list [i]),
-										    (uint) i % SIMILAR_TABLE_COLS, (uint) (i % SIMILAR_TABLE_COLS) + 1, 
-										    (uint) i / SIMILAR_TABLE_COLS, (uint) (i / SIMILAR_TABLE_COLS) + 1);
+						for (int i = 0; i < artists_xml_list.Count && i < NUM_MAX_ARTISTS; i++)
+							artists_widgets_list.Add (RenderSimilarArtist (artists_xml_list [i]));
+
+						RenderSimilarArtists ();
 					}
-					
+
 					if (tracks_xml_list != null) {
-						for (int i = 0; i < tracks_xml_list.Count && i < 5; i++)
+						for (int i = 0; i < tracks_xml_list.Count && i < NUM_TRACKS; i++)
 							tracks_items_box.Add (RenderTrack (tracks_xml_list [i]));
 					}
 					
 					if (albums_xml_list != null) {
-						for (int i = 0; i < albums_xml_list.Count && i < 5; i++)
+						for (int i = 0; i < albums_xml_list.Count && i < NUM_ALBUMS; i++)
 							albums_items_box.Add (RenderAlbum (albums_xml_list [i]));
 					}
 					
@@ -161,7 +197,20 @@ namespace Banshee.Plugins.Recommendation
 		}
 		
 		// --------------------------------------------------------------- //
-		
+
+		private void RenderSimilarArtists ()
+		{
+			for (int i = 0; i < artists_widgets_list.Count && i < (similar_items_table.NColumns * similar_items_table.NRows); i++) {
+				similar_items_table.Attach ((Widget) artists_widgets_list [i],
+							    (uint) i / similar_items_table.NRows, 
+							    (uint) (i / similar_items_table.NRows) + 1,
+							    (uint) i % similar_items_table.NRows,
+							    (uint) (i % similar_items_table.NRows) + 1);
+			}
+
+			similar_items_table.ShowAll ();
+		}
+				
 		private Widget RenderSimilarArtist (XmlNode node)
 		{
 			Button artist_button = new Button ();
@@ -244,12 +293,8 @@ namespace Banshee.Plugins.Recommendation
 
 		private Image RenderImage (string url)
 		{
-			// FIXME: Hash and path
-			string path = System.IO.Path.Combine (LOCAL_IMAGE_CACHE, Math.Abs (url.GetHashCode ()).ToString ());
-			
-			if (! File.Exists (path))
-				RequestContent (url, path);
-
+			string path = GetImagePathFromUrl (url);
+			RequestContent (url, path);
 			return new Image (path);
 		}
 
@@ -257,7 +302,6 @@ namespace Banshee.Plugins.Recommendation
 		{
 			// FIXME: Cache the xml documents on disk, I can't imagine
 			// that they change that often.
-
 			HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
 			request.KeepAlive = false;
 			
@@ -274,9 +318,9 @@ namespace Banshee.Plugins.Recommendation
 
 		private void RequestContent (string url, string path)
 		{
-			if (!Directory.Exists (LOCAL_IMAGE_CACHE))
-				Directory.CreateDirectory (LOCAL_IMAGE_CACHE);
-				
+			if (File.Exists (path))
+				return;
+
 			HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
 			request.KeepAlive = false;
 			
@@ -312,6 +356,11 @@ namespace Banshee.Plugins.Recommendation
 				return -1;
 			
 			return (int) result;
+		}
+
+		private string GetImagePathFromUrl (string url)
+		{			
+			return System.IO.Path.Combine (LOCAL_IMAGE_CACHE, Math.Abs (url.GetHashCode ()).ToString ());
 		}
 	}
 }

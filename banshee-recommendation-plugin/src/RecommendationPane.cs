@@ -120,6 +120,11 @@ namespace Banshee.Plugins.Recommendation
 
 		public void ShowRecommendations (string artist)
 		{
+			if (current_artist == artist) {
+				Visible = true;
+				return;
+			}
+
 			// FIXME: Error handling	
 			ThreadAssist.Spawn(delegate {
 				// Fetch data for "similar" artists.

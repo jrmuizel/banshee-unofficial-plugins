@@ -347,7 +347,7 @@ namespace Banshee.Plugins.Recommendation
 		private int GetTrackId (string artist, string title)
 		{
 			// FIXME: We can match better than this right?
-			string query = String.Format("SELECT TrackId FROM Tracks WHERE Artist = '{0}' AND Title = '{1}' LIMIT 1",
+			string query = String.Format("SELECT TrackId FROM Tracks WHERE Artist LIKE '{0}' AND Title LIKE '{1}' LIMIT 1",
 						     Sql.Escape.EscapeQuotes(artist),
 						     Sql.Escape.EscapeQuotes(title));
 

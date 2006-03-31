@@ -32,7 +32,8 @@ namespace Banshee.Plugins.Recommendation
 		private const int NUM_TRACKS = 5;
 		private const int NUM_ALBUMS = 5;
 
-		private string LOCAL_IMAGE_CACHE = System.IO.Path.Combine (Paths.UserPluginDirectory, "recommendation-images");
+		private static string CACHE_PATH = System.IO.Path.Combine (Paths.UserPluginDirectory, "recommendation");
+		private static TimeSpan CACHE_TIME = TimeSpan.FromHours (2);
 
 		private string current_artist;
 		public string CurrentArtist {
@@ -89,8 +90,8 @@ namespace Banshee.Plugins.Recommendation
 			event_box.Add (main_box);
 			Add (event_box);
 
-			if (!Directory.Exists (LOCAL_IMAGE_CACHE))
-				Directory.CreateDirectory (LOCAL_IMAGE_CACHE);
+			if (!Directory.Exists (CACHE_PATH))
+				Directory.CreateDirectory (CACHE_PATH);
 		}
 		
 		private void OnSizeAllocated (object o, SizeAllocatedArgs args)
@@ -135,7 +136,7 @@ namespace Banshee.Plugins.Recommendation
 				// Cache artists images (here in the spawned thread)
 				for (int i = 0; i < artists_xml_list.Count && i < NUM_MAX_ARTISTS; i++) {
 					string url = artists_xml_list [i].SelectSingleNode ("image_small").InnerText;					
-					RequestContent (url, GetImagePathFromUrl (url));
+					DownloadContent (url, GetCachedPathFromUrl (url), true);
 				}
 					
 				// Fetch data for top tracks
@@ -298,34 +299,30 @@ namespace Banshee.Plugins.Recommendation
 
 		private Image RenderImage (string url)
 		{
-			string path = GetImagePathFromUrl (url);
-			RequestContent (url, path);
+			string path = GetCachedPathFromUrl (url);
+			DownloadContent (url, path, true);
 			return new Image (path);
 		}
 
 		private string RequestContent (string url)
 		{
-			// FIXME: Cache the xml documents on disk, I can't imagine
-			// that they change that often.
-			HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
-			request.KeepAlive = false;
-			
-			HttpWebResponse response = (HttpWebResponse) request.GetResponse();
-			
-			Stream stream = response.GetResponseStream ();
-			StreamReader reader = new StreamReader (stream);
+			string path = GetCachedPathFromUrl (url);
+			DownloadContent (url, path, false);
+
+			StreamReader reader = new StreamReader (path);
 			string content = reader.ReadToEnd();
-			
-			response.Close();
 			
 			return content;
 		}
 
-		private void RequestContent (string url, string path)
+		private void DownloadContent (string url, string path, bool static_content)
 		{
-			if (File.Exists (path))
-				return;
-
+			if (File.Exists (path)) {
+				DateTime last_updated_time = File.GetLastWriteTime (path);
+				if (static_content || DateTime.Now - last_updated_time < CACHE_TIME)
+					return;
+			}
+			
 			HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
 			request.KeepAlive = false;
 			
@@ -351,7 +348,6 @@ namespace Banshee.Plugins.Recommendation
 
 		private int GetTrackId (string artist, string title)
 		{
-			// FIXME: We can match better than this right?
 			string query = String.Format("SELECT TrackId FROM Tracks WHERE Artist LIKE '{0}' AND Title LIKE '{1}' LIMIT 1",
 						     Sql.Escape.EscapeQuotes(artist),
 						     Sql.Escape.EscapeQuotes(title));
@@ -363,9 +359,9 @@ namespace Banshee.Plugins.Recommendation
 			return (int) result;
 		}
 
-		private string GetImagePathFromUrl (string url)
+		private string GetCachedPathFromUrl (string url)
 		{			
-			return System.IO.Path.Combine (LOCAL_IMAGE_CACHE, Math.Abs (url.GetHashCode ()).ToString ());
+			return System.IO.Path.Combine (CACHE_PATH, Math.Abs (url.GetHashCode ()).ToString ());
 		}
 	}
 }

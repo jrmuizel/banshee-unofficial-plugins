@@ -1,0 +1,70 @@
+Index: Banshee.Base/LibraryTrackInfo.cs
+===================================================================
+RCS file: /cvs/gnome/banshee/src/Banshee.Base/LibraryTrackInfo.cs,v
+retrieving revision 1.8
+diff -u -r1.8 LibraryTrackInfo.cs
+--- Banshee.Base/LibraryTrackInfo.cs	17 Mar 2006 04:44:42 -0000	1.8
++++ Banshee.Base/LibraryTrackInfo.cs	31 Mar 2006 09:21:44 -0000
+@@ -40,6 +40,8 @@
+ {
+     public class LibraryTrackInfo : TrackInfo
+     {
++        public event EventHandler Changed;
++
+         public static int GetId(Uri lookup)
+         {
+             string query = String.Format(@"
+@@ -457,6 +459,10 @@
+             } catch {}
+             
+             SaveToDatabase(true);
++
++            Console.WriteLine ("Track {0} changed...signalling!", Uri.LocalPath);
++            if (Changed != null)
++                Changed (this, new EventArgs());
+         }
+         
+         public override void IncrementPlayCount()
+Index: Banshee.Base/Sources/PlaylistSource.cs
+===================================================================
+RCS file: /cvs/gnome/banshee/src/Banshee.Base/Sources/PlaylistSource.cs,v
+retrieving revision 1.5
+diff -u -r1.5 PlaylistSource.cs
+--- Banshee.Base/Sources/PlaylistSource.cs	13 Feb 2006 22:18:10 -0000	1.5
++++ Banshee.Base/Sources/PlaylistSource.cs	31 Mar 2006 09:21:45 -0000
+@@ -51,8 +51,12 @@
+             }
+         }
+         
+-        private ArrayList tracks = new ArrayList();
+-        private int id;
++        protected ArrayList tracks = new ArrayList();
++        protected int id;
++
++        public int Id {
++            get { return id; }
++        }
+     
+         public PlaylistSource() : this(0)
+         {
+@@ -143,10 +147,20 @@
+                 OnUpdated();
+             }
+         }
++
++        public void ClearTracks()
++        {
++            tracks.Clear();
++        }
+         
+         public override void RemoveTrack(TrackInfo track)
+         {
+             tracks.Remove(track);
++        }
++
++        public bool ContainsTrack(TrackInfo track)
++        {
++            return tracks.Contains(track);
+         }
+         
+         public void Delete()

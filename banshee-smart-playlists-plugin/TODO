@@ -1,5 +1,12 @@
 Things left to do:
 
 - Only display the 'Edit Smart Playlist' context-menu item for Smart Playlists
+
 - Re-populate the Smart Playlist dialog widgets when editing
+
 - Fix minor UI glitch with "already in use" label making things resize
+
+- Allow relative dates for date matching to allow for playlists like 
+  "Songs with Rating = 5 that I haven't listened to for 3 weeks"
+
+- Add pretty-stars widget for entering matches based on rating

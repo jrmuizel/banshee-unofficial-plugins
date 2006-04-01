@@ -468,6 +468,7 @@ namespace Banshee
 		{
 			limitEntry.Sensitive = limitCheckBox.Active;
 			limitComboBox.Sensitive = limitCheckBox.Active;
+            orderComboBox.Sensitive = limitCheckBox.Active;
 		}
 		
 		public bool MatchesEnabled 

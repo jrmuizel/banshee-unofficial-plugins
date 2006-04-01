@@ -86,29 +86,88 @@ namespace Banshee.Plugins.SmartPlaylists
             reader.Dispose();
         }
 
-        private string PrependCondition (string with)
-        {
-            return (Condition == "") ? " " : with + " " + Condition;
-        }
-
         public void Check (TrackInfo track)
         {
-            Console.WriteLine ("Checking track {0} ({1}) against condition {2}", track.Uri.LocalPath, track.TrackId, Condition);
-            object id = Globals.Library.Db.QuerySingle(String.Format(
-                "SELECT TrackId FROM Tracks WHERE TrackId = {0} {1}",
-                track.TrackId, PrependCondition("AND")
-            ));
+            if (OrderAndLimit == null) {
+                // If this SmartPlaylist doesn't have an OrderAndLimit clause, then it's quite simple
+                // to check this track - if it matches the Condition we make sure it's in, and vice-versa
+                Console.WriteLine ("Limitless condition");
 
-            if (id == null || (int) id != track.TrackId) {
-                // If it didn't match and isn't in the playlist, remove it
+                object id = Globals.Library.Db.QuerySingle(String.Format(
+                    "SELECT TrackId FROM Tracks WHERE TrackId = {0} {1}",
+                    track.TrackId, PrependCondition("AND")
+                ));
+
+                if (id == null || (int) id != track.TrackId) {
+                    // If it didn't match and isn't in the playlist, remove it
+                    if (Source.ContainsTrack (track)) {
+                        Console.WriteLine ("Removing track");
+                        Source.RemoveTrack(track);
+                    }
+                    return;
+                }
+
+                // If it matched and isn't already in the playlist
+                if (! Source.ContainsTrack (track)) {
+                    Console.WriteLine ("Adding track");
+                    Source.AddTrack (track);
+                }
+            } else {
+                // If this SmartPlaylist has an OrderAndLimit clause things are more complicated as there are a limited
+                // number of tracks -- so if we remove a track, we probably need to add a different one and vice-versa.
+                Console.WriteLine ("Checking track {0} ({1}) against condition & order/limit {2} {3}", track.Uri.LocalPath, track.TrackId, Condition, OrderAndLimit);
+
+                // See if there is a track that was in the SmartPlaylist that now shouldn't be because
+                // this track we are checking displaced it.
+                IDataReader reader = Globals.Library.Db.Query(String.Format(
+                    "SELECT TrackId FROM PlaylistEntries WHERE PlaylistID = {0} " +
+                    "AND TrackId NOT IN (SELECT TrackID FROM Tracks {1} {2})",
+                    Source.Id, PrependCondition("WHERE"), OrderAndLimit
+                ));
+
+                while (reader.Read())
+                    Source.RemoveTrack (Globals.Library.Tracks[Convert.ToInt32(reader[0])] as TrackInfo);
+
+                reader.Dispose();
+
+                // Remove those tracks from the database
+                Globals.Library.Db.Execute(String.Format(
+                    "DELETE FROM PlaylistEntries WHERE PlaylistID = {0} " +
+                    "AND TrackId NOT IN (SELECT TrackID FROM Tracks {1} {2})",
+                    Source.Id, PrependCondition("WHERE"), OrderAndLimit
+                ));
+
+                // If we are already a member of this smart playlist
                 if (Source.ContainsTrack (track))
-                    Source.RemoveTrack(track);
-                return;
-            }
+                    return;
 
-            // If it matched and isn't already in the playlist
-            if (! Source.ContainsTrack (track))
-                Source.AddTrack (track);
+                // We have removed tracks no longer in this smart playlist, now need to add
+                // tracks that replace those that were removed (if any)
+                IDataReader new_tracks = Globals.Library.Db.Query(String.Format(
+                    @"SELECT TrackId FROM Tracks 
+                        WHERE TrackID NOT IN (SELECT TrackID FROM PlaylistEntries WHERE PlaylistID = {0})
+                        AND TrackID IN (SELECT TrackID FROM Tracks {1} {2})",
+                    Source.Id, PrependCondition("WHERE"), OrderAndLimit
+                ));
+
+                bool have_new_tracks = false;
+                while (new_tracks.Read()) {
+                    Source.AddTrack (Globals.Library.Tracks[Convert.ToInt32(new_tracks[0])] as TrackInfo);
+                    have_new_tracks = true;
+                }
+
+                new_tracks.Dispose();
+
+                if (have_new_tracks) {
+                    Globals.Library.Db.Execute(String.Format(
+                        @"INSERT INTO PlaylistEntries 
+                            SELECT NULL as EntryId, {0} as PlaylistId, TrackId FROM Tracks 
+                            WHERE TrackID NOT IN (SELECT TrackID FROM PlaylistEntries WHERE PlaylistID = {0})
+                            AND TrackID IN (SELECT TrackID FROM Tracks {1} {2})",
+                        Source.Id, PrependCondition("WHERE"), OrderAndLimit
+                    ));
+                }
+            }
         }
 
         public void Commit ()
@@ -120,6 +179,11 @@ namespace Banshee.Plugins.SmartPlaylists
             );
 
             Globals.Library.Db.Execute(query);
+        }
+
+        private string PrependCondition (string with)
+        {
+            return (Condition == null) ? " " : with + " " + Condition;
         }
     }
 }

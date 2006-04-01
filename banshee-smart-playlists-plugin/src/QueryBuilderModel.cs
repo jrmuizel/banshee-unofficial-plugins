@@ -84,21 +84,22 @@ namespace Banshee
 		{
 			UpdateValues();
 			
-			string pv = Statement.EscapeQuotes(Value1);
+			string pv = Statement.EscapeQuotes(Value1.ToLower());
+            string col = String.Format("lower({0})", Column);
 			
 			switch(Filter) {
 				case QueryFilterOperation.Is:
-					return Column + " = '" + pv + "'";
+					return col + " = '" + pv + "'";
 				case QueryFilterOperation.IsNot:
-					return Column + " != '" + pv + "'";
+					return col + " != '" + pv + "'";
 				case QueryFilterOperation.Contains:
-					return Column + " LIKE '%" + pv + "%'";
+					return col + " LIKE '%" + pv + "%'";
 				case QueryFilterOperation.DoesNotContain:
-					return Column + " NOT LIKE '%" + pv + "%'";
+					return col + " NOT LIKE '%" + pv + "%'";
 				case QueryFilterOperation.StartsWith:
-					return Column + " LIKE '" + pv + "%'";
+					return col + " LIKE '" + pv + "%'";
 				case QueryFilterOperation.EndsWith:
-					return Column + " LIKE '%" + pv + "'";
+					return col + " LIKE '%" + pv + "'";
 			}
 			
 			return null;
@@ -223,8 +224,8 @@ namespace Banshee
 				string [] validOperations = {
 					QueryFilterOperation.Is,
 					QueryFilterOperation.IsNot,
-					QueryFilterOperation.IsBefore,
-					QueryFilterOperation.IsAfter,
+					QueryFilterOperation.IsLessThan,
+					QueryFilterOperation.IsGreaterThan,
 					QueryFilterOperation.IsInTheRange
 				};
 

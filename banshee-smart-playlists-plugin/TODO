@@ -1,0 +1,5 @@
+Things left to do:
+
+- Only display the 'Edit Smart Playlist' context-menu item for Smart Playlists
+- Re-populate the Smart Playlist dialog widgets when editing
+- Fix minor UI glitch with "already in use" label making things resize

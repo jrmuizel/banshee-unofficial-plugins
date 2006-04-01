@@ -56,6 +56,10 @@ namespace Banshee.Plugins.SmartPlaylists
         {
 			ResponseType response = (ResponseType) dialog.Run ();
 
+            //int w = -1, h = -1;
+		    //dialog.GetSize (out w, out h);
+            //Console.WriteLine ("w = {0}, h = {1}", w, h);
+
 			if (response == ResponseType.Ok) {
                 string name = Name;
                 string condition = Condition;
@@ -115,7 +119,7 @@ namespace Banshee.Plugins.SmartPlaylists
             get {
                 return builder.MatchesEnabled
                     ? builder.MatchQuery
-                    : "";
+                    : null;
             }
         }
 
@@ -123,7 +127,7 @@ namespace Banshee.Plugins.SmartPlaylists
             get {
                 return (builder.Limit && builder.LimitNumber > 0)
                     ? "ORDER BY " + builder.OrderBy + " LIMIT " + builder.LimitNumber
-                    : "";
+                    : null;
             }
         }
     }

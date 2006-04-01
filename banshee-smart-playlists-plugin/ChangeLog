@@ -1,3 +1,24 @@
+2006-04-01  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* TODO: New file listing things that are still incomplete.
+
+	* src/smart-playlist.glade: Set the width/height so the dialog actually
+	shows up centered on the parent. Move the already_in_use_label to below
+	the query builder widgets.  Left-align the name_entry.
+
+	* src/QueryBuilder.cs: Make the orderComboBox insensitive when the
+	limitCheckBox isn't selected, as specifying an order only makes sense if
+	you are limiting the playlist.
+
+	* src/QueryBuilderModel.cs: Make string matches case insensitive, fix bug
+	with what filter operations were displayed for integer matches.
+
+	* src/SmartPlaylistEditor.cs: Return null instead of "" when no condition
+	and/or limit_and_order was specified.
+
+	* src/SmartPlaylists.cs: When checking a track, if the playlist has a
+	limit/order to it, take that into account.
+
 2006-03-31  Gabriel Burt  <gabriel.burt@gmail.com>
 
 	* src/SmartPlaylist.cs: Prepend the Condition with WHERE and AND where

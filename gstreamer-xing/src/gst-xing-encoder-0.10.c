@@ -713,9 +713,9 @@ xing_mp3_encoder_set_property(GObject *object, guint prop_id, const GValue *valu
         case ARG_BITRATE:
             encoder->cbr_bitrate = g_value_get_int (value);
       
-            if(encoder->cbr_bitrate != -1 && encoder->cbr_bitrate < 2) {
-                g_warning("Encoding bitrate cannot be set lower than 2.");
-                encoder->cbr_bitrate = 2;
+            if(encoder->cbr_bitrate != -1 && encoder->cbr_bitrate < 96) {
+                g_warning("Encoding bitrate cannot be set lower than 96. Defaulting to 96.");
+                encoder->cbr_bitrate = 96;
             }
             
             encoder->use_cbr = TRUE;

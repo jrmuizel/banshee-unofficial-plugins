@@ -1,3 +1,9 @@
+2006-04-04  Aaron Bockover  <aaron@abock.org>
+
+	* src/gst-xing-encoder-0.10.c: 
+	* src/gst-xing-encoder-0.8.c: Lowest bitrate is apparently 96 instead of
+	2; Xing will segfault on a CBR bitrate lower than 96.
+
 2006-03-24  Aaron Bockover  <aaron@abock.org>
 
 	Version 0.10.0 Released

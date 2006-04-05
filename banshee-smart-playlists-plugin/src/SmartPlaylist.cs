@@ -21,33 +21,37 @@ namespace Banshee.Plugins.SmartPlaylists
         }
 
         public string Condition;
-        public string OrderAndLimit;
+        public string OrderBy;
+        public string LimitNumber;
 
         public PlaylistSource Source;
 
-        public SmartPlaylist(PlaylistSource source, string condition, string order_and_limit)
+        public SmartPlaylist(PlaylistSource source, string condition, string order_by, string limit_number)
         {
             Source = source;
             Condition = condition;
-            OrderAndLimit = order_and_limit;
+            OrderBy = order_by;
+            LimitNumber = limit_number;
 
             RefreshMembers();
         }
 
-        public SmartPlaylist(string name, string condition, string order_and_limit)
+        public SmartPlaylist(string name, string condition, string order_by, string limit_number)
         {
             Source = new PlaylistSource ();
 
             Name = name;
             Condition = condition;
-            OrderAndLimit = order_and_limit;
+            OrderBy = order_by;
+            LimitNumber = limit_number;
 
             Globals.Library.Db.Execute(String.Format(
-                @"INSERT INTO SmartPlaylists (PlaylistID, Condition, OrderAndLimit)
-                VALUES ({0}, '{1}', '{2}')",
+                @"INSERT INTO SmartPlaylists (PlaylistID, Condition, OrderBy, LimitNumber)
+                VALUES ({0}, '{1}', '{2}', '{3}')",
                 Source.Id,
                 Sql.Statement.EscapeQuotes(Condition),
-                Sql.Statement.EscapeQuotes(OrderAndLimit)
+                Sql.Statement.EscapeQuotes(OrderBy),
+                LimitNumber
             ));
         }
 
@@ -174,7 +178,8 @@ namespace Banshee.Plugins.SmartPlaylists
         {
             Statement query = new Update("SmartPlaylists",
                 "Condition", Condition,
-                "OrderAndLimit", OrderAndLimit +
+                "OrderBy", OrderBy,
+                "LimitNumber", LimitNumber +
                 new Where(new Compare("PlaylistID", Op.EqualTo, Source.Id))
             );
 
@@ -184,6 +189,15 @@ namespace Banshee.Plugins.SmartPlaylists
         private string PrependCondition (string with)
         {
             return (Condition == null) ? " " : with + " " + Condition;
+        }
+
+        private string OrderAndLimit {
+            get {
+                if (OrderBy == null || OrderBy == "")
+                    return null;
+
+                return String.Format ("ORDER BY {0} LIMIT {1}", OrderBy, LimitNumber);
+            }
         }
     }
 }

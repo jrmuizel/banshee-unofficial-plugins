@@ -32,6 +32,7 @@ using GLib;
 using Gtk;
 using Sql;
 using System.Collections;
+using Mono.Unix;
 
 using Banshee.Widgets;
 
@@ -39,41 +40,117 @@ namespace Banshee
 {
 	public sealed class QueryFilterOperation
 	{
-		public const string Is = "is";
-		public const string IsNot = "is not";
-		public const string IsLessThan = "is less than";
-		public const string IsGreaterThan = "is greater than";
-		public const string Contains = "contains";
-		public const string DoesNotContain = "does not contain";
-		public const string StartsWith = "starts with";
-		public const string EndsWith = "ends with";
-		public const string IsBefore = "is before";
-		public const string IsAfter = "is after";
-		public const string IsInTheRange = "is in the range";
+        private string name, format;
+        public string Name {
+            get { return name; }
+        }
+
+        private static Hashtable filters = new Hashtable();
+        public static QueryFilterOperation GetByName (string name)
+        {
+            return filters[name] as QueryFilterOperation;
+        }
+
+        private static QueryFilterOperation NewOperation (string name, string format)
+        {
+            QueryFilterOperation op = new QueryFilterOperation(name, format);
+            filters[name] = op;
+            return op;
+        }
+
+        private QueryFilterOperation (string name, string format)
+        {
+            this.name = name;
+            this.format = format;
+        }
+
+        public string FilterSql (bool text, string column, string value1, string value2)
+        {
+            if (text)
+                return String.Format (format, "'", column, value1, value2);
+            else
+                return String.Format (format, "", column, value1, value2);
+        }
+
+
+		public static QueryFilterOperation Is = NewOperation (
+            Catalog.GetString ("is"),
+            "{1} = {0}{2}{0}"
+        );
+
+		public static QueryFilterOperation IsNot = NewOperation (
+            Catalog.GetString ("is not"),
+            "{1} != {0}{2}{0}"
+        );
+
+		public static QueryFilterOperation IsLessThan = NewOperation (
+            Catalog.GetString ("is less than"),
+            "{1} < {0}{2}{0}"
+        );
+
+		public static QueryFilterOperation IsGreaterThan = NewOperation (
+            Catalog.GetString ("is greater than"),
+            "{1} > {0}{2}{0}"
+        );
+
+		public static QueryFilterOperation Contains = NewOperation (
+            Catalog.GetString ("contains"),
+            "{1} LIKE '%{2}%'"
+        );
+
+		public static QueryFilterOperation DoesNotContain = NewOperation (
+            Catalog.GetString ("does not contain"),
+            "{1} NOT LIKE '%{2}%'"
+        );
+
+		public static QueryFilterOperation StartsWith = NewOperation (
+            Catalog.GetString ("starts with"),
+            "{1} LIKE '{2}%'"
+        );
+
+		public static QueryFilterOperation EndsWith = NewOperation (
+            Catalog.GetString ("ends with"),
+            "{1} LIKE '%{2}'"
+        );
+
+		public static QueryFilterOperation IsBefore = NewOperation (
+            Catalog.GetString ("is before"),
+            "{1} < {0}{2}{0}"
+        );
+
+		public static QueryFilterOperation IsAfter = NewOperation (
+            Catalog.GetString ("is after"),
+            "{1} > {0}{2}{0}"
+        );
+
+		public static QueryFilterOperation IsInTheRange = NewOperation (
+            Catalog.GetString ("is in the range"),
+            "({1} >= {0}{2}{0} AND {1} <= {0}{3}{0})"
+        );
 	}
 	
 	public sealed class QuerySelectedByCriteria
 	{
-		public const string Random = "Random";
-		public const string Album = "Album";
-		public const string Artist = "Artist";
-		public const string Genre = "Genre";
-		public const string SongName = "Song Name";
-		public const string HighestRating = "Highest Rating";
-		public const string LowestRating = "Lowest Rating";
-		public const string LeastOftenPlayed = "Least Often Played";
-		public const string MostOftenPlayed = "Most Often Played";
-		public const string MostRecentlyAdded = "Most Recently Added";
-		public const string LeastRecentlyAdded = "Least Recently Added";
+		public static string Random = Catalog.GetString("Random");
+		public static string Album = Catalog.GetString("Album");
+		public static string Artist = Catalog.GetString("Artist");
+		public static string Genre = Catalog.GetString("Genre");
+		public static string SongName = Catalog.GetString("Song Name");
+		public static string HighestRating = Catalog.GetString("Highest Rating");
+		public static string LowestRating = Catalog.GetString("Lowest Rating");
+		public static string LeastOftenPlayed = Catalog.GetString("Least Often Played");
+		public static string MostOftenPlayed = Catalog.GetString("Most Often Played");
+		public static string MostRecentlyAdded = Catalog.GetString("Most Recently Added");
+		public static string LeastRecentlyAdded = Catalog.GetString("Least Recently Added");
 	}
 	
 	public sealed class QueryLimitCriteria
 	{
-		public const string Songs = "songs";
-		public const string Minutes = "minutes";
-		public const string Hours = "hours";
+		public static string Songs = Catalog.GetString("songs");
+		public static string Minutes = Catalog.GetString("minutes");
+		public static string Hours = Catalog.GetString("hours");
 	}
-	
+
 	// --- Query Match String --- 
 	
 	public class QueryMatchString : QueryMatch
@@ -84,25 +161,14 @@ namespace Banshee
 		{
 			UpdateValues();
 			
-			string pv = Statement.EscapeQuotes(Value1.ToLower());
+			string val1 = Statement.EscapeQuotes(Value1.ToLower());
             string col = String.Format("lower({0})", Column);
 			
-			switch(Filter) {
-				case QueryFilterOperation.Is:
-					return col + " = '" + pv + "'";
-				case QueryFilterOperation.IsNot:
-					return col + " != '" + pv + "'";
-				case QueryFilterOperation.Contains:
-					return col + " LIKE '%" + pv + "%'";
-				case QueryFilterOperation.DoesNotContain:
-					return col + " NOT LIKE '%" + pv + "%'";
-				case QueryFilterOperation.StartsWith:
-					return col + " LIKE '" + pv + "%'";
-				case QueryFilterOperation.EndsWith:
-					return col + " LIKE '%" + pv + "'";
-			}
-			
-			return null;
+            QueryFilterOperation op = QueryFilterOperation.GetByName (Filter);
+            if (op == null)
+                return null;
+            else
+                return op.FilterSql (true, col, val1, null);
 		}
 		
 		public override void UpdateValues()
@@ -125,10 +191,10 @@ namespace Banshee
 			}
 		}
 		
-		public override string [] ValidOperations
+		public override QueryFilterOperation [] ValidOperations
 		{
 			get {	
-				string [] validOperations = {
+				QueryFilterOperation [] validOperations = {
 					QueryFilterOperation.Is,
 					QueryFilterOperation.IsNot,
 					QueryFilterOperation.Contains,
@@ -152,21 +218,12 @@ namespace Banshee
 		public override string FilterValues()
 		{
 			UpdateValues();
-		
-			switch(Filter) {
-				case QueryFilterOperation.Is:
-					return Column + " = '" + Value1 + "'";
-				case QueryFilterOperation.IsNot:
-					return Column + " != '" + Value1 + "'";
-				case QueryFilterOperation.IsLessThan:
-					return Column + " > '" + Value1 + "'";
-				case QueryFilterOperation.IsGreaterThan:
-					return Column + " < '" + Value1 + "'";
-				case QueryFilterOperation.IsInTheRange:
-					return String.Format ("({0} >= {1} AND {0} <= {2})", Column, Value1, Value2);
-			}
-			
-			return null;
+
+            QueryFilterOperation op = QueryFilterOperation.GetByName (Filter);
+            if (op == null)
+                return null;
+            else
+                return op.FilterSql (false, Column, Value1, Value2);
 		}
 		
 		public override void UpdateValues()
@@ -191,7 +248,7 @@ namespace Banshee
 					spinButton1.Show();
 				}
 				
-				if(Filter != QueryFilterOperation.IsInTheRange) {
+				if(QueryFilterOperation.GetByName(Filter) != QueryFilterOperation.IsInTheRange) {
 					if(rangeBox != null && spinButton2 != null) {
 						rangeBox.Remove(spinButton1);
 						rangeBox.Remove(spinButton2);
@@ -218,10 +275,10 @@ namespace Banshee
 			}
 		}
 		
-		public override string [] ValidOperations
+		public override QueryFilterOperation [] ValidOperations
 		{
 			get {	
-				string [] validOperations = {
+				QueryFilterOperation [] validOperations = {
 					QueryFilterOperation.Is,
 					QueryFilterOperation.IsNot,
 					QueryFilterOperation.IsLessThan,
@@ -246,25 +303,15 @@ namespace Banshee
 		{
 			UpdateValues();
 		
-			string pv = Statement.EscapeQuotes(Value1), pv2 = Value2;
-			if(pv2 != null)
-				pv2 = Statement.EscapeQuotes(Value1);
-			
-			switch(Filter) {
-				case QueryFilterOperation.Is:
-					return Column + " = '" + pv + "'";
-				case QueryFilterOperation.IsNot:
-					return Column + " != '" + pv + "'";
-				case QueryFilterOperation.IsBefore:
-					return Column + " < '" + pv + "'";
-				case QueryFilterOperation.IsAfter:
-					return Column + " > '" + pv + "'";
-				case QueryFilterOperation.IsInTheRange:
-					return "(" + Column + " >= '" + pv + "' AND " 
-						+ Column + " <= '" + pv2 + "')";
-			}
-			
-			return null;
+			string pv = Statement.EscapeQuotes(Value1), pv2 = null;
+			if(Value2 != null)
+				pv2 = Statement.EscapeQuotes(Value2);
+
+            QueryFilterOperation op = QueryFilterOperation.GetByName (Filter);
+            if (op == null)
+                return null;
+            else
+                return op.FilterSql (true, Column, pv, pv2);
 		}
 		
 		public override void UpdateValues()
@@ -286,7 +333,7 @@ namespace Banshee
 					dateButton1.Show();
 				}
 				
-				if(Filter != QueryFilterOperation.IsInTheRange) {
+				if(QueryFilterOperation.GetByName(Filter) != QueryFilterOperation.IsInTheRange) {
 					if(rangeBox != null && dateButton2 != null) {
 						rangeBox.Remove(dateButton1);
 						rangeBox.Remove(dateButton2);
@@ -310,10 +357,10 @@ namespace Banshee
 			}
 		}
 		
-		public override string [] ValidOperations
+		public override QueryFilterOperation [] ValidOperations
 		{
 			get {	
-				string [] validOperations = {
+				QueryFilterOperation [] validOperations = {
 					QueryFilterOperation.Is,
 					QueryFilterOperation.IsNot,
 					QueryFilterOperation.IsBefore,
@@ -360,9 +407,9 @@ namespace Banshee
 		{
 			get {
 				string [] criteria = {
-					QueryLimitCriteria.Songs,
-					QueryLimitCriteria.Minutes,
-					QueryLimitCriteria.Hours
+					QueryLimitCriteria.Songs
+					//QueryLimitCriteria.Minutes,
+					//QueryLimitCriteria.Hours
 				};
 				
 				return criteria;
@@ -409,7 +456,7 @@ namespace Banshee
 			
 			query += "ORDER BY " + builder.OrderBy;
 			
-			if(builder.Limit && builder.LimitNumber > 0)
+			if(builder.Limit && builder.LimitNumber != "0")
 				query += " LIMIT " + builder.LimitNumber;
 			
 			Console.WriteLine(query);

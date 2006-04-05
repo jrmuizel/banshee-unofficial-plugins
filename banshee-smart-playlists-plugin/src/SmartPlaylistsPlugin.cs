@@ -49,7 +49,8 @@ namespace Banshee.Plugins.SmartPlaylists
                     CREATE TABLE SmartPlaylists (
                         PlaylistID INTEGER PRIMARY KEY,
                         Condition TEXT,
-                        OrderAndLimit TEXT)
+                        OrderBy TEXT,
+                        LimitNumber TEXT)
                 ");
             }
 
@@ -126,7 +127,7 @@ namespace Banshee.Plugins.SmartPlaylists
                 return;
 
             IDataReader reader = Globals.Library.Db.Query(String.Format(
-                "SELECT Condition, OrderAndLimit FROM SmartPlaylists WHERE PlaylistID = {0}",
+                "SELECT Condition, OrderBy, LimitNumber FROM SmartPlaylists WHERE PlaylistID = {0}",
                 playlist.Id
             ));
 
@@ -134,12 +135,13 @@ namespace Banshee.Plugins.SmartPlaylists
                 return;
 
             string condition = reader[0] as string;
-            string order_and_limit = reader[1] as string;
+            string order_by = reader[1] as string;
+            string limit_number = reader[2] as string;
 
             reader.Dispose();
 
             Console.WriteLine ("Adding smart playlist {0}, id {1}", playlist.Name, playlist.Id);
-            playlists.Add(playlist, new SmartPlaylist(playlist, condition, order_and_limit));
+            playlists.Add(playlist, new SmartPlaylist(playlist, condition, order_by, limit_number));
         }
 
         private void HandleSourceRemoved (SourceEventArgs args)

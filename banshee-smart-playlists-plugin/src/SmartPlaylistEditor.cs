@@ -29,6 +29,9 @@ namespace Banshee.Plugins.SmartPlaylists
             this.playlist = playlist;
 
             name_entry.Text = playlist.Name;
+            Condition = playlist.Condition;
+            OrderBy = playlist.OrderBy;
+            LimitNumber = playlist.LimitNumber;
         }
 	
         public SmartPlaylistEditor ()
@@ -63,18 +66,20 @@ namespace Banshee.Plugins.SmartPlaylists
 			if (response == ResponseType.Ok) {
                 string name = Name;
                 string condition = Condition;
-                string order_and_limit = OrderAndLimit;
+                string order_by = OrderBy;
+                string limit_number = LimitNumber;
 
                 ThreadAssist.Spawn (delegate {
-                    Console.WriteLine ("Name = {0}, Cond = {1}, OrderAndLimit = {2}", name, condition, order_and_limit);
+                    Console.WriteLine ("Name = {0}, Cond = {1}, OrderAndLimit = {2}", name, condition, order_by, limit_number);
                     if (playlist == null) {
-                        playlist = new SmartPlaylist(name, condition, order_and_limit);
+                        playlist = new SmartPlaylist(name, condition, order_by, limit_number);
                         playlist.Source.Commit();
                         SourceManager.AddSource(playlist.Source);
                     } else {
                         playlist.Name = name;
                         playlist.Condition = condition;
-                        playlist.OrderAndLimit = order_and_limit;
+                        playlist.OrderBy = order_by;
+                        playlist.LimitNumber = limit_number;
                         playlist.Commit();
                     }
                 });
@@ -121,13 +126,35 @@ namespace Banshee.Plugins.SmartPlaylists
                     ? builder.MatchQuery
                     : null;
             }
+
+            set {
+                builder.MatchesEnabled = (value != null);
+                builder.MatchQuery = value;
+            }
         }
 
-        private string OrderAndLimit {
+        private string OrderBy {
             get {
-                return (builder.Limit && builder.LimitNumber > 0)
-                    ? "ORDER BY " + builder.OrderBy + " LIMIT " + builder.LimitNumber
+                return (builder.Limit && builder.LimitNumber != "0")
+                    ? builder.OrderBy
                     : null;
+            }
+
+            set {
+                builder.Limit = (value != null);
+                builder.OrderBy = value;
+            }
+        }
+
+        private string LimitNumber {
+            get {
+                return (builder.Limit && builder.LimitNumber != "0")
+                    ? builder.LimitNumber
+                    : "0";
+            }
+            
+            set {
+                builder.LimitNumber = value;
             }
         }
     }

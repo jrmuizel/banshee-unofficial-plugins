@@ -47,8 +47,12 @@ namespace Banshee
 				
 			return (string)box.Model.GetValue(iter, 0);
 		}
+
+		public static void SetActiveString(ComboBox box, string name)
+		{
+		}
 	}
-	
+
 	// --- Base QueryMatch Class --- 
 
 	public abstract class QueryMatch
@@ -63,7 +67,7 @@ namespace Banshee
 			get;
 		}
 		
-		public abstract string [] ValidOperations
+		public abstract QueryFilterOperation [] ValidOperations
 		{
 			get;
 		}
@@ -88,19 +92,24 @@ namespace Banshee
 		}
 	}
 	
+	
 	// --- Base QueryBuilderModel Class --- 
 	
 	public abstract class QueryBuilderModel : IEnumerable
 	{
 		private Hashtable fields;
 		private Hashtable columnLookup;
+		private Hashtable nameLookup;
 		private Hashtable orderMap;
+		private Hashtable mapOrder;
 		
 		public QueryBuilderModel()
 		{
 			fields = new Hashtable();
 			columnLookup = new Hashtable();
+			nameLookup = new Hashtable();
 			orderMap = new Hashtable();
+			mapOrder = new Hashtable();
 		}
 		
 		public Type this [string index] 
@@ -119,11 +128,13 @@ namespace Banshee
 		{
 			fields[name] = matchType;
 			columnLookup[name] = column;
+			nameLookup[column] = name;
 		}
 		
 		public void AddOrder(string name, string map)
 		{
 			orderMap[name] = map;
+			mapOrder[map] = name;
 		}
 		
 		public string GetOrder(string name)
@@ -229,8 +240,8 @@ namespace Banshee
 			while(opBox.Model.IterNChildren() > 0)
 				opBox.RemoveText(0);
 
-			foreach(string op in match.ValidOperations)
-				opBox.AppendText(op);
+			foreach(QueryFilterOperation op in match.ValidOperations)
+				opBox.AppendText(op.Name);
 			
 			TreeIter opIterFirst;
 			if(!opBox.Model.IterNthChild(out opIterFirst, 0))
@@ -476,6 +487,10 @@ namespace Banshee
 			get {
 				return matchCheckBox.Active;
 			}
+
+            set {
+				matchCheckBox.Active = value;
+            }
 		}
 		
 		public string MatchQuery
@@ -487,17 +502,26 @@ namespace Banshee
 					"AND"
 				);
 			}
+
+            set {
+                Console.WriteLine ("Reconstructing MatchQuery from {0}", value);
+            }
 		}
 		
-		public int LimitNumber
+		public string LimitNumber
 		{
 			get {
 				try {
-					return Convert.ToInt32(limitEntry.Text);
+					Convert.ToInt32(limitEntry.Text);
+                    return limitEntry.Text;
 				} catch(Exception) {
-					return 0;
+					return "0";
 				}
 			}
+
+            set {
+                limitEntry.Text = value;
+            }
 		}
 		
 		public string LimitCriteria
@@ -505,12 +529,21 @@ namespace Banshee
 			get {
 				return ComboBoxUtil.GetActiveString(limitComboBox);
 			}
+
+			set {
+                Console.WriteLine ("Reconstructing limitCriteria from {0}", value);
+				//ComboBoxUtil.SetActiveString(limitComboBox, value);
+			}
 		}
 		
 		public bool Limit
 		{
 			get {
 				return limitCheckBox.Active;
+			}
+
+			set {
+				limitCheckBox.Active = value;
 			}
 		}
 		
@@ -520,6 +553,10 @@ namespace Banshee
 				return 
 				model.GetOrder(ComboBoxUtil.GetActiveString(orderComboBox));
 			}
+
+            set {
+                Console.WriteLine ("Setting orderComboBox from {0}", value);
+            }
 		}
 	}
 }

@@ -1,3 +1,26 @@
+2006-04-03  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* TODO: add some things, update some things.
+
+	* QueryBuilder.cs: add unimplemented SetActiveString method to ComboUtil. Add
+	more hashtables that allow for translating ComboBox options. Make most
+	properties settable so the dialog can be reconstructed from a saved query.
+
+	* QueryBuilderModel.cs: Translate everything, embedded the SQL generating
+	capability into the QueryFilterOperation class to avoid repetition and
+	avoid switches (use hash lookup to find the class then call a method on
+	it). Don't give Minutes/Hours as options for the Limit as support for play
+	time limiting is not implemented.
+
+	* SmartPlaylistEditor.cs:
+	* SmartPlaylist.cs:
+	* SmartPlaylistPlugin.cs: Store the OrderBy and LimitNumber separately,
+	making it easier to pass the values back when reconstructing the dialog.
+
+2006-04-02  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* src/QueryBuilderModel.cs: GT and LT swapped in IntegerMatcher.
+
 2006-04-01  Gabriel Burt  <gabriel.burt@gmail.com>
 
 	* TODO: New file listing things that are still incomplete.

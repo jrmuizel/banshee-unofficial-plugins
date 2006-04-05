@@ -3,7 +3,7 @@ AC_PREREQ(2.52)
 AC_INIT(README)
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_SRCDIR(src)
-AM_INIT_AUTOMAKE(helix-dbus-server, 0.2)
+AM_INIT_AUTOMAKE(helix-dbus-server, 0.2.1)
 
 AM_MAINTAINER_MODE
 AC_PROG_CC
@@ -79,9 +79,15 @@ else
 	AC_DEFINE_UNQUOTED(HELIX_LIBRARY_PATH, ["$HELIX_LIBRARY_PATH"], [RealPlayer/Helix Library Location])
 fi
 
+expanded_bindir=`( case $prefix in NONE) prefix=$ac_default_prefix ;; *) ;; esac
+		case $exec_prefix in NONE) exec_prefix=$prefix ;; *) ;; esac
+		eval echo $bindir )`
+AC_SUBST(expanded_bindir)
+
 AC_OUTPUT([
 Makefile
 src/Makefile
+src/helix-dbus-server
 data/Makefile
 data/helix-dbus-server.pc
 ])

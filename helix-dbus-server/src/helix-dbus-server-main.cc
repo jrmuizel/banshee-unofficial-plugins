@@ -44,6 +44,9 @@ static GMainLoop *loop = NULL;
 static void
 on_helix_dbus_server_shutdown(HelixDbusServer *server)
 {
+    helix_dbus_server_free(server);
+    server = NULL;
+    
     g_main_loop_quit(loop);
 }
  

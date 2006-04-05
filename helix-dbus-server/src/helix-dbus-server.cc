@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <time.h>
 #include <glib.h>
 #include <glib/gstdio.h>
 #include <dbus/dbus.h>
@@ -49,6 +50,8 @@ struct HelixDbusServer {
     DBusConnection *connection;
     HelixDbusServerShutdownCallback shutdown_cb;
     HxPlayer *player;
+    time_t last_ping;
+    guint ping_timeout;
 };
 
 typedef void (* HelixDbusMethodHandler) (HelixDbusServer *server, 
@@ -139,8 +142,6 @@ helix_dbus_server_path_message(DBusConnection *connection, DBusMessage *message,
         reply = dbus_message_new_method_return(message);
         dbus_connection_send(connection, reply, 0);
         dbus_connection_flush(connection);
-        
-        helix_dbus_server_free(server);
         
         server->shutdown_cb(server);
         
@@ -256,13 +257,29 @@ helix_dbus_server_connect_to_dbus(DBusConnection *connection, gpointer user_data
     return connection;
 }
 
+static gboolean
+helix_dbus_server_check_last_ping(gpointer user_data)
+{
+    HelixDbusServer *server = (HelixDbusServer *)user_data;
+
+    if(server == NULL) {
+        return FALSE;
+    } else if(server->last_ping == 0 || (time(NULL) - server->last_ping) <= 10) {
+        return TRUE;
+    }
+    
+    server->ping_timeout = 0;
+    server->shutdown_cb(server);
+    return FALSE;
+}
+
 // private dbus methods
 
 static void 
 helix_dbus_server_handle_ping(HelixDbusServer *server, DBusMessage *message, 
     void **return_value)
 {
-    printf("Hello from helix-dbus-server!\n");
+    server->last_ping = time(NULL);
 }
 
 static void 
@@ -401,6 +418,9 @@ helix_dbus_server_new(DBusConnection *connection, HelixDbusServerShutdownCallbac
     hxplayer_pump_begin(server->player);
     
     server->shutdown_cb = shutdown_cb;
+    server->last_ping = 0;
+    
+    server->ping_timeout = g_timeout_add(5000, helix_dbus_server_check_last_ping, server);
     
     return server;
 }
@@ -428,6 +448,10 @@ helix_dbus_server_free(HelixDbusServer *server)
     if(server->player != NULL) {
         hxplayer_free(server->player);
         server->player = NULL;
+    }
+    
+    if(server->ping_timeout != 0) {
+        g_source_remove(server->ping_timeout);
     }
     
     g_free(server);

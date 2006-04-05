@@ -1,5 +1,12 @@
 2006-04-04  Aaron Bockover  <aaron@abock.org>
 
+	* configure.ac: Bump to 0.10.1
+
+	* src/gst-xing-encoder-0.10.c: do not unref the output buffer and return
+	the flow return error from the chain
+
+2006-04-04  Aaron Bockover  <aaron@abock.org>
+
 	* src/gst-xing-encoder-0.10.c: 
 	* src/gst-xing-encoder-0.8.c: Lowest bitrate is apparently 96 instead of
 	2; Xing will segfault on a CBR bitrate lower than 96.

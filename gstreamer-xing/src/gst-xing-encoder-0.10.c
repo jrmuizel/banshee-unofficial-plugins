@@ -606,6 +606,8 @@ xing_mp3_encoder_chain(GstPad *pad, GstBuffer *buf)
             gint buf_len;
 
             if(!encoder->use_cbr) {
+                GstFlowReturn push_ret;
+                
                 hx_mp3enc_l3_info_ec(encoder->xing_encoder, &control);
                 hx_mp3enc_l3_info_head(encoder->xing_encoder, &head);
 
@@ -614,10 +616,10 @@ xing_mp3_encoder_chain(GstPad *pad, GstBuffer *buf)
                     control.vbr_flag ? control.vbr_mnr : -1, NULL,
                     output_buffer, 0, 0, 0);
             
-                if(xing_mp3_encoder_push_buffer(encoder, output_buffer, buf_len) != GST_FLOW_OK) {
-                    if(GST_IS_OBJECT(output_buffer)) {
-                        gst_object_unref(output_buffer);
-                    }
+                if((push_ret = xing_mp3_encoder_push_buffer(encoder, output_buffer,
+                    buf_len)) != GST_FLOW_OK) {
+                    gst_buffer_unref(buf);
+                    return push_ret;
                 }
             }
             
@@ -659,8 +661,12 @@ xing_mp3_encoder_chain(GstPad *pad, GstBuffer *buf)
                 /* Accept output from encoder and pass it on.
                  * TODO: Do this less often and save CPU */
                 if(x.out_bytes > 0) {
-                    if(xing_mp3_encoder_push_buffer(encoder, output_buffer, x.out_bytes) != GST_FLOW_OK) {
-                        gst_object_unref(output_buffer);
+                    GstFlowReturn push_ret;
+                    
+                    if((push_ret = xing_mp3_encoder_push_buffer(encoder, output_buffer,
+                        x.out_bytes)) != GST_FLOW_OK) {
+                        gst_buffer_unref(buf);
+                        return push_ret;
                     }
                 }
             }

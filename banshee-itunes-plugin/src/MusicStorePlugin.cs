@@ -46,7 +46,12 @@ namespace Banshee.Plugins.MusicStore
 		private MusicStoreView view;
 		
 		public Gtk.Widget View {
-			get { return this.view; }
+			get { 
+				if (view == null)
+					view = new MusicStoreView (this);
+
+				return this.view; 
+			}
 		}
 		
 		protected override void PluginInitialize()
@@ -57,7 +62,6 @@ namespace Banshee.Plugins.MusicStore
 			config = Globals.Configuration;
 
 			source = new MusicStoreSource(this);
-			view = new MusicStoreView (this);
 			
 			SourceManager.AddSource(source);
 		}
@@ -83,13 +87,6 @@ namespace Banshee.Plugins.MusicStore
 					fstore = new FairStore ();
 					
 					System.Net.ServicePointManager.CertificatePolicy = new TrustAllCertificatesPolicy();
-					
-					try {
-						string strURL = "https://phobos.apple.com";
-						WebRequest.Create (strURL).GetResponse();
-					} catch (Exception ex) {
-						Console.WriteLine (ex);
-					}
 				}
 				fstore.Country = Country;
 				return fstore;

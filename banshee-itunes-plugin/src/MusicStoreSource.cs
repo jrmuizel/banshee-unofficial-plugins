@@ -22,8 +22,11 @@ namespace Banshee.Plugins.MusicStore
 		
 		public override Widget ViewWidget {
 			get {
-				if (widget == null)
+				if (widget == null) {
 					widget = BuildWidget ();	
+					widget.ShowAll ();
+				}
+
 				return widget;
 			}
 		}

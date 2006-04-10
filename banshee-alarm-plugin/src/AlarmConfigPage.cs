@@ -38,6 +38,7 @@ namespace Banshee.Plugins.Alarm
             HBox time_box = new HBox();
             time_box.PackStart(new Label("Time: "));
             time_box.PackStart(this.spbHour);
+            time_box.PackStart(new Label(" : "));
             time_box.PackStart(this.spbMinute);
             
             SpinButton spbFadeStartVolume = new SpinButton(0, 100, 1);

@@ -342,6 +342,7 @@ namespace Banshee.Plugins.Recommendation
                                         buffered_stream.Write (buffer, 0, read);
                         } while (read > 0);
 
+			file_stream.Close ();
                         buffered_stream.Close ();
 			response.Close();			
 		}

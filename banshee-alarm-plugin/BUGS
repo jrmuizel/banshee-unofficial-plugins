@@ -1,0 +1,10 @@
+Bugs can always be reported on the Banshee Bugzilla at http://bugzilla.gnome.org/enter_bug.cgi?product=banshee
+...be sure to check that the bug has not already been filed.
+
+Known bugs:
+	* If the alarm timer goes off and you are not paused in a song, gstreamer pops up an error about being unable to play (null).  What should we do about this?
+	* If the alarm is going off, you can't pause within the same minute because the alarm thread runs play each run for the entire minute :/
+	* UI niceness.  We know.
+	* Volume fade out on alarm does not work
+	* --enable-user-plugin does not work right since we're installing a gconf schema for alarm keys.  anyone know a workaround?
+	* Sleep Timer - window width doesn't allow title on my box

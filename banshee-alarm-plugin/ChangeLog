@@ -1,0 +1,11 @@
+2006-04-10  Patrick van Staveren  <trick@vanstaveren.us>
+
+	* First hack at mixing Bertrand's code with my sleep timer
+	* Lots 'o changes :)
+	* Still lots to do :)
+	* Alarm works, sleep timer works.  It's got the basics down!
+
+2006-02-19  Bertrand Lorentz  <bertrand.lorentz@free.fr>
+
+	* banshee-alarm: Initial revision of banshee-alarm plugin project
+

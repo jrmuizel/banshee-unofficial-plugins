@@ -175,9 +175,13 @@ namespace Banshee.Plugins.Alarm
 
 		public bool onSleepTimerActivate()
 		{
-			LogCore.Instance.PushDebug("Sleep Timer has gone off - pausing", "");
-			PlayerEngineCore.Pause();
-			PlayerEngineCore.Position = 0;
+			if(PlayerEngineCore.CurrentState == PlayerEngineState.Playing){
+				LogCore.Instance.PushDebug("Sleep Timer has gone off - pausing", "");
+				PlayerEngineCore.Position = 0;
+				PlayerEngineCore.Pause();
+			}else{
+				LogCore.Instance.PushDebug("Sleep Timer has gone off, but we're not playing.  Refusing to pause.", "");
+			}
 
 			return(false);
 		}

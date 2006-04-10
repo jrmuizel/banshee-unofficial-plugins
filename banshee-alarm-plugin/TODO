@@ -3,12 +3,14 @@ Global:
 		* volumes - sliders!  live volume check.
 		* Menu items - check box next to when enabled.
 		* OK buttons - stock icons...don't know how to do this in gtk (yet!)
+	* i believe newer versions of banshee have a possible override in banshee.plugins for after the UI is done drawing - use for menus
 
 Sleep Timer:
 	* Volume fade out / fade out till end of track? just stop at end of track? hmm...
 	* Uses glib timer - is this smart?
 	* Write sleep time to gconf and resume on startup?  would this defeat the purpose as the time will not be preserved?
 	* Split some stuff into other files - make AlarmPlugin.cs shorter
+	* right now it seeks to the beginning of the track before pausing - so when your alarm goes off in the morning, you are at the beginning of a song.  why doesn't the banshee UI update to show this seek?
 
 Alarm:
 	* Volume fade in (WIP)

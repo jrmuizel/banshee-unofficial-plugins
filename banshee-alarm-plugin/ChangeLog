@@ -1,4 +1,8 @@
 2006-04-10  Patrick van Staveren  <trick@vanstaveren.us>
+	* Volume fade in simplified, scaled to the volume slider's resolution, and yeah, it works :)
+	* removed some unnecessary this.xxx occurances
+
+2006-04-10  Patrick van Staveren  <trick@vanstaveren.us>
 
 	* Quick fix on dialog
 	* Don't try to pause with sleep timer unless we're playing

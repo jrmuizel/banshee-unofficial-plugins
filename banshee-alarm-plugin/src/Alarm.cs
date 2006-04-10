@@ -8,6 +8,7 @@ namespace Banshee.Plugins.Alarm
 {
     public class AlarmThread
     {
+    	private bool isInAlarmMinute = false; // what a dirty hack :(
     	private AlarmPlugin plugin;
         
         public AlarmThread(AlarmPlugin plugin)
@@ -28,6 +29,9 @@ namespace Banshee.Plugins.Alarm
         			if (now.Hour == this.plugin.AlarmHour && now.Minute == this.plugin.AlarmMinute)
         			{
         				this.StartPlaying();
+        				isInAlarmMinute = true;
+        			}else{
+        				isInAlarmMinute = false;
         			}
         			
         		}
@@ -40,7 +44,7 @@ namespace Banshee.Plugins.Alarm
         
         private void StartPlaying()
         {
-        	if (PlayerEngineCore.CurrentState == PlayerEngineState.Playing)
+        	if (PlayerEngineCore.CurrentState == PlayerEngineState.Playing || isInAlarmMinute)
         	{
         		return;
         	}
@@ -49,27 +53,18 @@ namespace Banshee.Plugins.Alarm
         	
         	if (this.plugin.FadeDuration > 0)
         	{
-        		ushort increment = (ushort)Math.Ceiling( (this.plugin.FadeEndVolume - this.plugin.FadeStartVolume) / this.plugin.FadeDuration);
-        		
-        		LogCore.Instance.PushDebug("Start fade-in", String.Format("Start fade-in from {0} to {1} in {2}s, increment is {3}", 
-        			this.plugin.FadeStartVolume, this.plugin.FadeEndVolume, this.plugin.FadeDuration, increment));
-        			
-        		PlayerEngineCore.Volume = this.plugin.FadeStartVolume;
+        		PlayerEngineCore.Volume = plugin.FadeStartVolume;
         		PlayerEngineCore.Play();
         		
-        		for (int i = 0; i < this.plugin.FadeDuration; i++)
+        		int ticks = plugin.FadeEndVolume - plugin.FadeStartVolume;
+        		float sleep = ((float) plugin.FadeDuration / (float) ticks) * 1000;
+        		for(PlayerEngineCore.Volume = plugin.FadeStartVolume;
+        				PlayerEngineCore.Volume <= plugin.FadeEndVolume;
+        				PlayerEngineCore.Volume++)
         		{
-        			Thread.Sleep(1000);
-        			if (PlayerEngineCore.Volume < this.plugin.FadeEndVolume)
-        			{
-        				LogCore.Instance.PushDebug("Alarm fade-in", String.Format("volume is {0} before increment", PlayerEngineCore.Volume));
-        				PlayerEngineCore.Volume += increment;
-        				LogCore.Instance.PushDebug("Alarm fade-in", String.Format("volume is {0} after increment", PlayerEngineCore.Volume));
-        			}
+        			Thread.Sleep((int) sleep);
         		}
-        	}
-        	else
-        	{
+        	}else{
         		// No fade
         		PlayerEngineCore.Play();
         	}

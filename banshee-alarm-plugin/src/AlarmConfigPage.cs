@@ -60,7 +60,7 @@ namespace Banshee.Plugins.Alarm
             fade_box.PackStart(new Label("Duration: "));
             fade_box.PackStart(spbFadeDuration);
             
-            Frame fade_box_frame = new Frame("Fade-in Adjustment (BETA)");
+            Frame fade_box_frame = new Frame("Fade-in Adjustment");
             fade_box_frame.Add(fade_box);
             
             Frame time_box_frame = new Frame("Set Alarm Time");

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+MIXER=/dev/nullmixer LD_PRELOAD="/usr/lib/libaoss.so" exec @expanded_bindir@/helix-dbus-server.bin
+

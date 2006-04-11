@@ -1,3 +1,9 @@
+2006-04-11  Patrick van Staveren  <trick@vanstaveren.us>
+	* Code structure changes - SleepTimerConfigDialog branched out of Plugin.cs
+	* lots of RANDOM cleanups
+	* Stock OK buttons
+	* Load menu inserts after UI initializes (take advantage of newer override)
+
 2006-04-10  Patrick van Staveren  <trick@vanstaveren.us>
 	* Volume fade is it's own class, and works in either direction.  Much cleaner looking.
 	* Got rid of annoying popup when disabling plugin

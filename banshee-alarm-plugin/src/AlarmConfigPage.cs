@@ -1,6 +1,3 @@
-// created on 03/23/2006 at 16:32
-
-
 using System;
 using Gtk;
 using GConf;
@@ -67,7 +64,7 @@ namespace Banshee.Plugins.Alarm
             time_box_frame.Add(time_box);
             
             HButtonBox button_box = new HButtonBox();
-				Button OK = new Button("OK");
+				Button OK = new Button(Gtk.Stock.Ok);
 				OK.Clicked += new EventHandler(OnOKClicked);
 				button_box.PackStart(OK);
 				

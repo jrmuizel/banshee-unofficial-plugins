@@ -36,10 +36,10 @@ namespace Banshee.Plugins.Alarm
 
 		private Thread alarmThread;
 		private static AlarmPlugin thePlugin;
-		private SpinButton sleepHour = new SpinButton(0,23,1);
-		private SpinButton sleepMin  = new SpinButton(0,59,1);
+		public SpinButton sleepHour = new SpinButton(0,23,1);
+		public SpinButton sleepMin  = new SpinButton(0,59,1);
 		public Window alarmDialog;
-		private int timervalue;
+		public int timervalue;
 		private Menu editMenu;
 		private MenuItem menuItemSleep;
 		private MenuItem menuItemAlarm;
@@ -57,9 +57,12 @@ namespace Banshee.Plugins.Alarm
 
 			AlarmPlugin.thePlugin = this;
 			ThreadStart alarmThreadStart = new ThreadStart(AlarmPlugin.DoWait);
-			this.alarmThread = new Thread(alarmThreadStart);
+			alarmThread = new Thread(alarmThreadStart);
 			alarmThread.Start();
+		}
 
+		protected override void InterfaceInitialize()
+		{
 			editMenu = (Globals.ActionManager.GetWidget("/MainMenu/EditMenu") as MenuItem).Submenu as Menu;
 
 			SeparatorMenuItem separator = new SeparatorMenuItem();
@@ -74,9 +77,9 @@ namespace Banshee.Plugins.Alarm
 			menuItemAlarm = new MenuItem(Catalog.GetString("Alarm..."));
 			menuItemAlarm.Activated += new EventHandler(DoAlarmConfigDialog);
 			editMenu.Insert(menuItemAlarm, 12);
-			menuItemAlarm.Show();
+			menuItemAlarm.Show();		
 		}
-        
+
 		protected override void PluginDispose()
 		{
 			LogCore.Instance.PushDebug("Disposing Alarm Plugin", "");
@@ -90,13 +93,11 @@ namespace Banshee.Plugins.Alarm
 		public override Gtk.Widget GetConfigurationWidget()
 		{
 			return new Label("put volume config stuff here.\nalarm and sleep set will be in Edit menu now.");
-			//return new AlarmConfigPage(this);    
 		}
         
 		public static void DoWait()
 		{
 			LogCore.Instance.PushDebug("Alarm thread started", "");
-
 			AlarmThread theAlarm = new AlarmThread(AlarmPlugin.thePlugin);
 			theAlarm.MainLoop();
 		}
@@ -104,7 +105,6 @@ namespace Banshee.Plugins.Alarm
 		protected void DoAlarmConfigDialog(object o, EventArgs a)
 		{
 			alarmDialog = new Window("Set Alarm");
-			alarmDialog.DeleteEvent += new DeleteEventHandler(OnSleepTimerDialogDestroy);
 			alarmDialog.Add(new AlarmConfigPage(this));
 			alarmDialog.ShowAll();
 		}
@@ -115,62 +115,16 @@ namespace Banshee.Plugins.Alarm
 				GLib.Source.Remove(sleep_timer_id);
 				LogCore.Instance.PushDebug("Disabling old sleep timer", "");
 			}
-
-			sleepHour.Value = (int) timervalue / 60 ;
-			sleepMin.Value = timervalue - (sleepHour.Value * 60);
-
-			alarmDialog = new Window("Set Sleep Timer");
-			alarmDialog.DeleteEvent += new DeleteEventHandler(OnSleepTimerDialogDestroy);
-			sleepHour.WidthChars = 3;
-			sleepMin.WidthChars  = 3;
-
-			Label prefix    = new Label("Sleep Timer :");
-			Label separator = new Label(":");
-			Label comment   = new Label("<i>(set to 0:00 to disable)</i>");
-			comment.UseMarkup = true;
-
-			Button OK       = new Button("OK");
-			VButtonBox OKbox = new VButtonBox();
-			OKbox.PackStart(OK, false, false, 0);
-			OK.Clicked += new EventHandler(OnSleepTimerOK);
-
-			HBox topbox     = new HBox();
-			VBox mainbox    = new VBox();
-
-			topbox.PackStart(prefix, false, false, 3);
-			topbox.PackStart(sleepHour, false, false, 3);
-			topbox.PackStart(separator, false, false, 0);
-			topbox.PackStart(sleepMin, false, false, 3);
-
-			mainbox.PackStart(topbox, false, false, 3);
-			mainbox.PackStart(comment, false, false, 3);
-			mainbox.PackStart(new HSeparator(), false, false, 3);
-			mainbox.PackStart(OKbox, false, false, 3);
-
-			alarmDialog.Add(mainbox);
-
-			alarmDialog.ShowAll();
+			new SleepTimerConfigDialog(this);
 		}
        	
-		void OnSleepTimerOK(object o, EventArgs a)
-		{
-			alarmDialog.Destroy();
-			SetSleepTimer();
-		}
-
-		void SetSleepTimer()
+		public void SetSleepTimer()
 		{
 			timervalue = sleepHour.ValueAsInt * 60 + sleepMin.ValueAsInt;
 			if(timervalue != 0) {
 				Console.WriteLine("Sleep Timer set to {0}", timervalue);
 				sleep_timer_id = GLib.Timeout.Add((uint) timervalue * 60 * 1000, onSleepTimerActivate);
 			}
-		
-		}
-
-		void OnSleepTimerDialogDestroy(object o, DeleteEventArgs a)
-		{
-			SetSleepTimer();
 		}
 
 		public bool onSleepTimerActivate()
@@ -182,10 +136,8 @@ namespace Banshee.Plugins.Alarm
 			}else{
 				LogCore.Instance.PushDebug("Sleep Timer has gone off, but we're not playing.  Refusing to pause.", "");
 			}
-
 			return(false);
 		}
-
 
 		#region Configuration properties
 		internal ushort AlarmHour

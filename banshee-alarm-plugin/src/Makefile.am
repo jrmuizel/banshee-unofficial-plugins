@@ -4,7 +4,8 @@ SOURCES = \
 	$(srcdir)/Plugin.cs \
 	$(srcdir)/VolumeFade.cs \
 	$(srcdir)/Alarm.cs \
-	$(srcdir)/AlarmConfigPage.cs
+	$(srcdir)/AlarmConfigPage.cs \
+	$(srcdir)/SleepTimerConfigDialog.cs
 
 plugindir = $(PLUGINDIR)
 plugin_SCRIPTS = $(ASSEMBLY)

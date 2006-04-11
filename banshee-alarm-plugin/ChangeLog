@@ -1,4 +1,8 @@
 2006-04-10  Patrick van Staveren  <trick@vanstaveren.us>
+	* Volume fade is it's own class, and works in either direction.  Much cleaner looking.
+	* Got rid of annoying popup when disabling plugin
+
+2006-04-10  Patrick van Staveren  <trick@vanstaveren.us>
 	* Volume fade in simplified, scaled to the volume slider's resolution, and yeah, it works :)
 	* removed some unnecessary this.xxx occurances
 

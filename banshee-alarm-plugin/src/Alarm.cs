@@ -38,7 +38,7 @@ namespace Banshee.Plugins.Alarm
         	}
         	catch (ThreadAbortException tex)
         	{
-        		LogCore.Instance.PushInformation("Alarm main loop aborted", "");
+        		LogCore.Instance.PushDebug("Alarm main loop aborted", "");
         	}
         }
         
@@ -56,14 +56,7 @@ namespace Banshee.Plugins.Alarm
         		PlayerEngineCore.Volume = plugin.FadeStartVolume;
         		PlayerEngineCore.Play();
         		
-        		int ticks = plugin.FadeEndVolume - plugin.FadeStartVolume;
-        		float sleep = ((float) plugin.FadeDuration / (float) ticks) * 1000;
-        		for(PlayerEngineCore.Volume = plugin.FadeStartVolume;
-        				PlayerEngineCore.Volume <= plugin.FadeEndVolume;
-        				PlayerEngineCore.Volume++)
-        		{
-        			Thread.Sleep((int) sleep);
-        		}
+        		new VolumeFade(plugin.FadeStartVolume, plugin.FadeEndVolume, plugin.FadeDuration);
         	}else{
         		// No fade
         		PlayerEngineCore.Play();

@@ -2,6 +2,7 @@ MCS_FLAGS = -debug
 ASSEMBLY = Alarm.dll
 SOURCES = \
 	$(srcdir)/Plugin.cs \
+	$(srcdir)/VolumeFade.cs \
 	$(srcdir)/Alarm.cs \
 	$(srcdir)/AlarmConfigPage.cs
 

@@ -1,3 +1,10 @@
+2006-04-12  Patrick van Staveren  <trick@vanstaveren.us>
+	* VolumeFade now uses GLib timer, so it is a non-blocking call.
+	* Sleep Timer now calls volume fade and fades out current song first.
+	* UI: Alarm now has Volume sliders, and is cleaner.  Getting ready to move volume adjust to plugin config page.
+	* Updated TODO and BUGS files with some changes.
+	* Wrote a simple README.
+
 2006-04-11  Patrick van Staveren  <trick@vanstaveren.us>
 	* Code structure changes - SleepTimerConfigDialog branched out of Plugin.cs
 	* lots of RANDOM cleanups

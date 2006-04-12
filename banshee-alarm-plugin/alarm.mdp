@@ -36,8 +36,10 @@
     <File name="./src/VolumeFade.cs" subtype="Code" buildaction="Compile" />
     <File name="./data/alarm.schemas" subtype="Code" buildaction="Nothing" />
     <File name="./src/SleepTimerConfigDialog.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/VolumeButton.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="gtk-sharp, Version=2.8.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <ProjectReference type="Assembly" localcopy="True" refto="../../../../../usr/local/lib/banshee/Banshee.Base.dll" />
   </References>
 </Project>

@@ -130,15 +130,22 @@ namespace Banshee.Plugins.Alarm
 		public bool onSleepTimerActivate()
 		{
 			if(PlayerEngineCore.CurrentState == PlayerEngineState.Playing){
-				LogCore.Instance.PushDebug("Sleep Timer has gone off - pausing", "");
-				PlayerEngineCore.Position = 0;
-				PlayerEngineCore.Pause();
+				LogCore.Instance.PushDebug("Sleep Timer has gone off.  Fading out till end of song.", "");
+				new VolumeFade(PlayerEngineCore.Volume, 0,
+						(ushort) (PlayerEngineCore.Length - PlayerEngineCore.Position));
+				GLib.Timeout.Add((PlayerEngineCore.Length - PlayerEngineCore.Position) * 1000, delegate{
+					LogCore.Instance.PushDebug("Sleep Timer: Pausing.", "");
+					PlayerEngineCore.Pause();
+					return false;
+					}
+				);
+				
 			}else{
 				LogCore.Instance.PushDebug("Sleep Timer has gone off, but we're not playing.  Refusing to pause.", "");
 			}
 			return(false);
 		}
-
+		
 		#region Configuration properties
 		internal ushort AlarmHour
 		{

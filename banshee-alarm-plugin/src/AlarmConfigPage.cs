@@ -14,6 +14,7 @@ namespace Banshee.Plugins.Alarm
         private SpinButton spbHour;
         private SpinButton spbMinute;
         
+        
         public AlarmConfigPage(AlarmPlugin plugin) : base()
         {
             this.plugin = plugin;
@@ -23,7 +24,7 @@ namespace Banshee.Plugins.Alarm
         private void BuildWidget()
         {
             this.Spacing = 10;
-            
+            int volumeSliderHeight = 120;
             this.spbHour = new SpinButton(0, 23, 1);
             this.spbHour.WidthChars = 2;
             this.spbMinute = new SpinButton(0, 59, 1);
@@ -38,48 +39,65 @@ namespace Banshee.Plugins.Alarm
             time_box.PackStart(new Label(" : "));
             time_box.PackStart(this.spbMinute);
             
-            SpinButton spbFadeStartVolume = new SpinButton(0, 100, 1);
-            spbFadeStartVolume.WidthChars = 3;
-            SpinButton spbFadeEndVolume = new SpinButton(0, 100, 1);
-            spbFadeEndVolume.WidthChars = 3;
-            SpinButton spbFadeDuration = new SpinButton(0, 100, 1);
-            spbFadeDuration.WidthChars = 3;
+            VScale FadeStartScale = new VScale(0, 100, 1);
+            FadeStartScale.Inverted = true;
+            FadeStartScale.HeightRequest = volumeSliderHeight;
+				VScale FadeEndScale = new VScale(0, 100, 1);
+				FadeEndScale.Inverted = true;
+				FadeEndScale.HeightRequest = volumeSliderHeight;
+            SpinButton FadeDuration = new SpinButton(0, 65535, 1);
+            FadeDuration.WidthChars = 3;
             
-            spbFadeStartVolume.ValueChanged += new EventHandler(FadeStartVolume_Changed);
-            spbFadeEndVolume.ValueChanged += new EventHandler(FadeEndVolume_Changed);
-            spbFadeDuration.ValueChanged += new EventHandler(FadeDuration_Changed);
+				FadeStartScale.ValueChanged += new EventHandler(FadeStartVolume_Changed);
+            FadeEndScale.ValueChanged += new EventHandler(FadeEndVolume_Changed);
+            FadeDuration.ValueChanged += new EventHandler(FadeDuration_Changed);
             
-            HBox fade_box = new HBox();
-            fade_box.PackStart(new Label("Start Volume: "));
-            fade_box.PackStart(spbFadeStartVolume);
-            fade_box.PackStart(new Label("End Volume: "));
-            fade_box.PackStart(spbFadeEndVolume);
-            fade_box.PackStart(new Label("Duration: "));
-            fade_box.PackStart(spbFadeDuration);
+            VBox FaderBigBox = new VBox();
             
-            Frame fade_box_frame = new Frame("Fade-in Adjustment");
-            fade_box_frame.Add(fade_box);
+            VBox StartBox = new VBox();
+            StartBox.PackEnd(new Label("Start"));
+            StartBox.PackStart(FadeStartScale);
+
+            VBox EndBox = new VBox();
+            EndBox.PackEnd(new Label("End"));
+            EndBox.PackStart(FadeEndScale);
+
+				HBox FaderBoxes = new HBox();
+				FaderBoxes.PackStart(StartBox);
+				FaderBoxes.PackStart(EndBox);
             
-            Frame time_box_frame = new Frame("Set Alarm Time");
-            time_box_frame.Add(time_box);
+            Label labelVolume = new Label("<b>Volume</b>");
+            labelVolume.UseMarkup = true;
+            FaderBigBox.PackStart(labelVolume);
+            FaderBigBox.PackStart(FaderBoxes);
+            Label labelDuration = new Label("<b>Duration</b> <i>(seconds)</i>");
+            labelDuration.UseMarkup = true;
+            FaderBigBox.PackStart(labelDuration);
+            FaderBigBox.PackStart(FadeDuration);
             
-            HButtonBox button_box = new HButtonBox();
+            Frame FadeBoxFrame = new Frame("Fade-in Adjustment");
+            FadeBoxFrame.Add(FaderBigBox);
+            
+            Frame TimeBoxFrame = new Frame("Set Alarm Time");
+            TimeBoxFrame.Add(time_box);
+            
+            HButtonBox OKButtonBox = new HButtonBox();
 				Button OK = new Button(Gtk.Stock.Ok);
 				OK.Clicked += new EventHandler(OnOKClicked);
-				button_box.PackStart(OK);
+				OKButtonBox.PackStart(OK);
 				
-				this.PackStart(time_box_frame, false, false, 2);
-            this.PackStart(fade_box_frame, false, false, 2);
-				this.PackStart(button_box, false, false, 2);
+				PackStart(TimeBoxFrame, false, false, 2);
+            PackStart(FadeBoxFrame, false, false, 2);
+				PackStart(OKButtonBox, false, false, 2);
 				
             ShowAll();
             
             #region Initialize with current values
             this.spbHour.Value = this.plugin.AlarmHour;
             this.spbMinute.Value = this.plugin.AlarmMinute;
-            spbFadeStartVolume.Value = this.plugin.FadeStartVolume;
-            spbFadeEndVolume.Value = this.plugin.FadeEndVolume;
-            spbFadeDuration.Value = this.plugin.FadeDuration;
+            FadeStartScale.Value = plugin.FadeStartVolume;
+            FadeEndScale.Value = plugin.FadeEndVolume;
+            FadeDuration.Value = plugin.FadeDuration;
             #endregion
         }
         
@@ -103,23 +121,23 @@ namespace Banshee.Plugins.Alarm
 
         private void FadeStartVolume_Changed(object source, System.EventArgs args)
 		{
-		    SpinButton spinner = source as SpinButton;
-		    LogCore.Instance.PushDebug("Current FadeStartVolume is: " + spinner.ValueAsInt, "");
-		    this.plugin.FadeStartVolume = (ushort)spinner.ValueAsInt;
+		    VScale scale = source as VScale;
+		    LogCore.Instance.PushDebug("Current FadeStartVolume is: " + (int) scale.Value, "");
+		    plugin.FadeStartVolume = (ushort)scale.Value;
 		}
 
         private void FadeEndVolume_Changed(object source, System.EventArgs args)
 		{
-		    SpinButton spinner = source as SpinButton;
-		    LogCore.Instance.PushDebug("Current FadeEndVolume is: " + spinner.ValueAsInt, "");
-		    this.plugin.FadeEndVolume = (ushort)spinner.ValueAsInt;
+		    VScale scale = source as VScale;
+		    LogCore.Instance.PushDebug("Current FadeEndVolume is: " + (int) scale.Value, "");
+		    plugin.FadeEndVolume = (ushort)scale.Value;
 		}
 
         private void FadeDuration_Changed(object source, System.EventArgs args)
 		{
 		    SpinButton spinner = source as SpinButton;
 		    LogCore.Instance.PushDebug("Current FadeDuration is: " + spinner.ValueAsInt, "");
-		    this.plugin.FadeDuration = (ushort)spinner.ValueAsInt;
+		    plugin.FadeDuration = (ushort)spinner.Value;
 		}
     }
 }

@@ -2,16 +2,16 @@ Global:
 	* UI love
 		* volumes - sliders!  live volume check.
 		* Menu items - check box next to when enabled.
+	* Consider putting alarm/sleep set windows into dialogs, so the wm will center them in the app?
 
 Sleep Timer:
-	* Volume fade out / fade out till end of track? just stop at end of track? hmm...
-	* Uses glib timer - is this smart?
+	* Evaluate sleep timer fade out - is this what we want?  It fades out till the end of track, and then pauses.
+	* Uses GLib timer - is this smart?
 	* Write sleep time to gconf and resume on startup?  would this defeat the purpose as the time will not be preserved?
 	* Split some stuff into other files - make Plugin.cs shorter
-	* right now it seeks to the beginning of the track before pausing - so when your alarm goes off in the morning, you are at the beginning of a song.  why doesn't the banshee UI update to show this seek?
 
 Alarm:
-	* Alarm thread executes once per second, 24/7.  Is this smart?  Better way to do this?
+	* Alarm thread executes once per second, 24/7.  Is this smart?  Better way to do this?  GLib timer?
 	* ConfigPage rename to ConfigDialog
 	* ConfigPage & Alarm thread - how they access plugin - keep them in same namespace and no plugin referencing - just make classes public.
 	* enable/disable checkbox 

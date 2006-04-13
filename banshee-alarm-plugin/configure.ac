@@ -15,7 +15,7 @@ if test "x$MCS" = "xno"; then
 	AC_MSG_ERROR([Cannot find "mcs" compiler in your PATH])
 fi
 
-PKG_CHECK_MODULES(BANSHEE, banshee >= 0.10.2)
+PKG_CHECK_MODULES(BANSHEE, banshee >= 0.10.8)
 AC_SUBST(BANSHEE_LIBS)
 
 AC_ARG_ENABLE(user-plugin, AC_HELP_STRING([--enable-user-plugin], [Install plugin into user-level Banshee plugins directory instead of the Banshee system plugins directory]), , enable_user_plugin="no")

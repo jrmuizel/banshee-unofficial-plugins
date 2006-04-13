@@ -1,3 +1,6 @@
+2006-04-13  Patrick van Staveren  <trick@vanstaveren.us>
+	* Quick bugfix - require banshee 0.10.8 in configure.ac - due to PlayerEngineCore changes that were introduced in 0.10.8.
+
 2006-04-12  Patrick van Staveren  <trick@vanstaveren.us>
 	* VolumeFade now uses GLib timer, so it is a non-blocking call.
 	* Sleep Timer now calls volume fade and fades out current song first.

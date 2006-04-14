@@ -49,9 +49,9 @@ namespace Banshee.Plugins.Recommendation
 			main_box = new HBox ();
 			main_box.BorderWidth = 5;
 
-			similar_box = new VBox ();
-			tracks_box = new VBox ();
-			albums_box = new VBox ();
+			similar_box = new VBox (false, 3);
+			tracks_box = new VBox (false, 3);
+			albums_box = new VBox (false, 3);
 
 			Label similar_header = new Label ();
 			similar_header.Xalign = 0;
@@ -75,10 +75,10 @@ namespace Banshee.Plugins.Recommendation
 			similar_items_table.SizeAllocated += OnSizeAllocated;
 			similar_box.PackEnd (similar_items_table, true, true, 0);
 
-			tracks_items_box = new VBox ();
+			tracks_items_box = new VBox (false, 0);
 			tracks_box.PackEnd (tracks_items_box, true, true, 0);
 
-			albums_items_box = new VBox ();
+			albums_items_box = new VBox (false, 0);
 			albums_box.PackEnd (albums_items_box, true, true, 0);
 
 			main_box.PackStart (similar_box, true, true, 5);
@@ -163,6 +163,9 @@ namespace Banshee.Plugins.Recommendation
 				albums_xml_data.LoadXml (RequestContent (String.Format (AUDIOSCROBBLER_TOP_ALBUMS_URL, artist)));
 				XmlNodeList albums_xml_list = albums_xml_data.SelectNodes ("/topalbums/album");
 				
+				if (artists_xml_list.Count < 1 && tracks_xml_list.Count < 1 && albums_xml_list.Count < 1)
+					return;
+				
 				ThreadAssist.ProxyToMain (delegate {
 					// Wipe the old recommendations here, we keep them around in case 
 					// where the the artist is the same as the last song.
@@ -188,12 +191,12 @@ namespace Banshee.Plugins.Recommendation
 
 					if (tracks_xml_list != null) {
 						for (int i = 0; i < tracks_xml_list.Count && i < NUM_TRACKS; i++)
-							tracks_items_box.Add (RenderTrack (tracks_xml_list [i]));
+							tracks_items_box.PackStart (RenderTrack (tracks_xml_list [i]), false, true, 0);
 					}
 					
 					if (albums_xml_list != null) {
 						for (int i = 0; i < albums_xml_list.Count && i < NUM_ALBUMS; i++)
-							albums_items_box.Add (RenderAlbum (albums_xml_list [i]));
+							albums_items_box.PackStart (RenderAlbum (albums_xml_list [i]), false, true, 0);
 					}
 					
 					Visible = true;
@@ -365,3 +368,4 @@ namespace Banshee.Plugins.Recommendation
 		}
 	}
 }
+

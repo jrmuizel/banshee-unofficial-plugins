@@ -1,3 +1,7 @@
+2006-04-14  Sebastian Dröge  <slomo@ubuntu.com>
+
+	* src/MusicBrainz/Client.cs (GetID): Check for null/handle any exception
+	
 2006-03-20  Sebastian Dröge  <slomo@ubuntu.com>
 
 	* src/MusicBrainz/Client.cs: Reverted a small part of Michael

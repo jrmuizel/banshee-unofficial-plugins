@@ -1,3 +1,11 @@
+2006-04-15  Aaron Bockover  <aaron@abock.org>
+
+	Patch from Lukas Lipka (BGO #338584)
+
+	* src/BeagleImportSource.cs: Add HitType=File part to query
+	
+	* src/BeagleUtil.cs: use SafeUri
+
 2006-03-05  Aaron Bockover  <aaron@abock.org>
 
 	Initial import of Beagle Plugin

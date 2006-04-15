@@ -75,7 +75,13 @@ namespace Banshee.Plugins.BeaglePlugin
             query = new Query();
             query.AddDomain(QueryDomain.Neighborhood);
             query.MaxHits = 10000; // ugh?
-        
+
+            QueryPart_Property file_part = new QueryPart_Property();
+            file_part.Type = PropertyType.Keyword;
+            file_part.Key = "beagle:HitType";
+            file_part.Value = "File";
+            query.AddPart(file_part);
+
             QueryPart_Or query_part_union = new QueryPart_Or();
 
             foreach(string mimetype in supported_mime_types) {
@@ -128,17 +134,10 @@ namespace Banshee.Plugins.BeaglePlugin
             thread = null;
         }
         
-        private static bool AcceptHit(Hit hit)
-        {
-            return hit.IsFile;
-        }
-        
         private void OnHitsAdded(HitsAddedResponse response)
         {
             foreach(Hit hit in response.Hits) {
-                if(AcceptHit(hit)) {
-                    BeagleUtil.HitToTrack(hit);
-                }
+                BeagleUtil.HitToTrack(hit);
             }
         }
 

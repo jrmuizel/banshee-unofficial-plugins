@@ -54,7 +54,7 @@ namespace Banshee.Plugins.BeaglePlugin
            
             try {
                 LibraryTrackInfo track = new LibraryTrackInfo(
-                    hit.Uri,
+                    new SafeUri(hit.Uri),
                     hit.GetFirstProperty("fixme:artist"),
                     hit.GetFirstProperty("fixme:album"),
                     hit.GetFirstProperty("fixme:title"),

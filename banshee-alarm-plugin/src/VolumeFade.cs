@@ -10,23 +10,36 @@ namespace Banshee.Plugins.Alarm
 	{
 		float sleep;
 		ushort endVolume;
-		ushort increment;
-		
+		int increment;
+		ushort curVolume;
+
 		public VolumeFade(ushort start, ushort end, ushort duration)
 		{
 			sleep = ((float) duration / (float) Math.Abs(end - start)) * 1000;
 			increment = (ushort) (start < end ? 1 : -1);
 			endVolume = end;
+			curVolume = start;
 			GLib.Timeout.Add((uint) sleep, VolumeFadeTick);
 		}
 		
 		private bool VolumeFadeTick(){
 			if(PlayerEngineCore.Volume == endVolume){
-				LogCore.Instance.PushDebug("Sleep Timer: Done fading.  Should pause soon.", "");
+				LogCore.Instance.PushDebug("Volume Fade: Done.","");
 				return false;
 			}
-			LogCore.Instance.PushDebug("Sleep Timer: Fading down a notch.", "");
-			PlayerEngineCore.Volume += increment;
+			LogCore.Instance.PushDebug("Volume Fade: Fading a notch...",
+					String.Format("Vol={0}, End={1}, inc={2}",
+						PlayerEngineCore.Volume,
+						endVolume,
+						increment
+					));
+			
+			if(increment == 1)
+				curVolume++;
+			else
+				curVolume--;
+			
+			PlayerEngineCore.Volume = curVolume;
 			return true;
 		}
 		

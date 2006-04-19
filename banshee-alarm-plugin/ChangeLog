@@ -1,3 +1,6 @@
+2006-04-19  Patrick van Staveren  <trick@vanstaveren.us>
+	* Quick fix - VolumeFade was not working due to PlayerEngineCore.Volume not updating itself fast enough.  Fixed!
+
 2006-04-13  Patrick van Staveren  <trick@vanstaveren.us>
 	* Quick bugfix - require banshee 0.10.8 in configure.ac - due to PlayerEngineCore changes that were introduced in 0.10.8.
 

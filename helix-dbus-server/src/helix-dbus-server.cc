@@ -85,6 +85,7 @@ METHOD_HANDLER_DEFINE(helix_dbus_server_handle_set_volume);
 METHOD_HANDLER_DEFINE(helix_dbus_server_handle_get_length);
 METHOD_HANDLER_DEFINE(helix_dbus_server_handle_get_position);
 METHOD_HANDLER_DEFINE(helix_dbus_server_handle_set_position);
+METHOD_HANDLER_DEFINE(helix_dbus_server_handle_get_is_live);
 
 static HelixDbusMethodVTable method_handler_vtable [] = {
     { "Ping",            DBUS_TYPE_INVALID,   helix_dbus_server_handle_ping },
@@ -100,6 +101,7 @@ static HelixDbusMethodVTable method_handler_vtable [] = {
     { "GetLength",       DBUS_TYPE_UINT32,    helix_dbus_server_handle_get_length },
     { "GetPosition",     DBUS_TYPE_UINT32,    helix_dbus_server_handle_get_position },
     { "SetPosition",     DBUS_TYPE_BOOLEAN,   helix_dbus_server_handle_set_position },
+    { "GetIsLive",       DBUS_TYPE_BOOLEAN,   helix_dbus_server_handle_get_is_live },
     { NULL,              0,                   NULL }
 };
 
@@ -221,6 +223,10 @@ helix_dbus_server_hxplayer_message_handler(HxPlayer *player, HxMessage *message)
             segment_type = hxmessage_segment_get_type(message_segment);
             segment_name = hxmessage_segment_get_name(message_segment);
             segment_value = hxmessage_segment_get_value(message_segment);
+            
+            if(segment_type == HX_MESSAGE_SEGMENT_STRING && segment_value == NULL) {
+                continue;
+            }
             
             dbus_message_append_args(signal, 
                 DBUS_TYPE_STRING, &segment_name,
@@ -389,6 +395,14 @@ helix_dbus_server_handle_get_group_title(HelixDbusServer *server, DBusMessage *m
         }
     }
 }
+
+static void 
+helix_dbus_server_handle_get_is_live(HelixDbusServer *server, DBusMessage *message, 
+    void **return_value)
+{
+    *return_value = (gpointer)ClientPlayerIsLive(PLAYER_TOKEN(server->player));
+}
+
 
 // public methods
 

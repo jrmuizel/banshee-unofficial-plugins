@@ -123,6 +123,8 @@ OnBuffering(void * user_data, UInt32 bufferingReason, UInt16 bufferPercent)
         hxmessage_segment_new_uint32("Percent", (UInt32)bufferPercent),
         NULL
     ));
+    
+    printf("Buffering: %d %d\n", bufferingReason, bufferPercent);
 }
 
 static void
@@ -215,6 +217,42 @@ static const HXClientCallbacks HXCLIENT_CALLBACKS = {
     NULL
 };
 
+// Fake Preferences Methods; Required to work around a bug that
+// causes segfaults in httpfsys
+
+static bool
+HasFeature(const char *feature_name)
+{
+	return FALSE;
+}
+
+bool 
+ReadPreference(const char *key, unsigned char *value_buffer, 
+    UInt32 buffer_length, UInt32 *buffer_used_length)
+{
+	return FALSE;
+}
+
+bool
+WritePreference(const char *key, const unsigned char *value_buffer, 
+    UInt32 buffer_length)
+{
+	return FALSE;
+}
+
+bool
+DeletePreference(const char *key)
+{
+	return FALSE;
+}
+
+static const HXClientEngineCallbacks CLIENT_ENGINE_CALLBACKS = {
+    ReadPreference,
+    WritePreference,
+    DeletePreference,
+    HasFeature
+};
+
 // private hxplayer methods
 
 static void *
@@ -258,6 +296,8 @@ hxplayer_new()
     hxplayer->join_request = FALSE;
     hxplayer->message_cb = NULL;
     hxplayer->user_info = NULL;
+    
+    ClientEngineSetCallbacks(&CLIENT_ENGINE_CALLBACKS);
     
     if(!ClientPlayerCreate(&hxplayer->token, NULL, hxplayer, &HXCLIENT_CALLBACKS)) {
         free(hxplayer);

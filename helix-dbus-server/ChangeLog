@@ -1,3 +1,17 @@
+2006-04-20  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: Bump to 0.2.2
+
+	* src/hxplayer.cc: Added placeholder preference callbacks and
+	call ClientEngineSetCallbacks with structure containing these
+	function pointers to get around the preferences crasher in 
+	httpfsys.so (https://bugs.helixcommunity.org/show_bug.cgi?id=4856)
+
+	* src/helix-dbus-server.cc: Fixed a potential crash if a string
+	message segment value was NULL (exposed by fixing HTTP); added
+	a GetIsLive remote method to tell if the stream is seekable (calls
+	ClientPlayerIsLive)
+
 2006-04-10  Aaron Bockover  <aaron@abock.org>
 
 	* src/helix-dbus-server.in: Set MIXER=/dev/nullmixer to force helix to

@@ -49,6 +49,7 @@ namespace Banshee.Plugins.Alarm
 		{
 			LogCore.Instance.PushDebug("Initializing Alarm Plugin", "");
 
+			RegisterConfigurationKey("AlarmEnabled");
 			RegisterConfigurationKey("AlarmHour");
 			RegisterConfigurationKey("AlarmMinute");
 			RegisterConfigurationKey("FadeStartVolume");
@@ -147,6 +148,21 @@ namespace Banshee.Plugins.Alarm
 		}
 		
 		#region Configuration properties
+		internal bool AlarmEnabled
+		{
+			get {
+				try {
+					return bool.Parse(Globals.Configuration.Get(ConfigurationKeys["AlarmEnabled"]).ToString());
+				} catch {
+					return false;
+				}
+			}
+
+			set {
+				Globals.Configuration.Set(ConfigurationKeys["AlarmEnabled"], value);
+			}
+		}
+
 		internal ushort AlarmHour
 		{
 			get {

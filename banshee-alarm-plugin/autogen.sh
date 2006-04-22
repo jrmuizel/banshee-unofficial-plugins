@@ -14,7 +14,7 @@ test -z "$srcdir" && srcdir=.
 
 ORIGDIR=`pwd`
 cd $srcdir
-PROJECT=banshee-sample-plugin
+PROJECT=banshee-alarm-plugin
 TEST_TYPE=-f
 FILE=README
 CONFIGURE=configure.ac

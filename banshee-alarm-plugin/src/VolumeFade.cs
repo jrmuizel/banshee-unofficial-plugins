@@ -16,20 +16,21 @@ namespace Banshee.Plugins.Alarm
 		public VolumeFade(ushort start, ushort end, ushort duration)
 		{
 			sleep = ((float) duration / (float) Math.Abs(end - start)) * 1000;
-			increment = (ushort) (start < end ? 1 : -1);
+			increment = start < end ? 1 : -1;
 			endVolume = end;
 			curVolume = start;
 			GLib.Timeout.Add((uint) sleep, VolumeFadeTick);
 		}
 		
 		private bool VolumeFadeTick(){
-			if(PlayerEngineCore.Volume == endVolume){
+			if(curVolume == endVolume){
 				LogCore.Instance.PushDebug("Volume Fade: Done.","");
 				return false;
 			}
 			LogCore.Instance.PushDebug("Volume Fade: Fading a notch...",
-					String.Format("Vol={0}, End={1}, inc={2}",
+					String.Format("Vol={0}, curVol={1}, End={2}, inc={3}",
 						PlayerEngineCore.Volume,
+						curVolume,
 						endVolume,
 						increment
 					));

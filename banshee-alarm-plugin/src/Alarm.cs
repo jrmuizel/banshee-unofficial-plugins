@@ -26,7 +26,7 @@ namespace Banshee.Plugins.Alarm
         			
         			DateTime now = DateTime.Now;
         			
-        			if (now.Hour == this.plugin.AlarmHour && now.Minute == this.plugin.AlarmMinute)
+        			if (now.Hour == plugin.AlarmHour && now.Minute == plugin.AlarmMinute && plugin.AlarmEnabled)
         			{
         				this.StartPlaying();
         				isInAlarmMinute = true;

@@ -1,3 +1,10 @@
+2006-04-21  Patrick van Staveren  <trick@vanstaveren.us>
+	* Quick autogen.sh fix of project name
+	* Added Enabled checkbox to alarm config - enables/disables the alarm
+	* Clean up AlarmConfigPage text formatting
+	* AlarmConfigPage - don't do debug outputs (open GNOME Config Editor if you need this)
+	* VolumeFade - debug a bit more, compare final volume to internal variable and not buggy PlayerEngineCore.Volume
+	
 2006-04-19  Patrick van Staveren  <trick@vanstaveren.us>
 	* Quick fix - VolumeFade was not working due to PlayerEngineCore.Volume not updating itself fast enough.  Fixed!
 

@@ -1,10 +1,10 @@
 <Combine name="alarm" fileversion="2.0">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
-      <Entry configuration="Debug" build="True" name="alarm" />
+      <Entry build="True" name="alarm" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
-      <Entry configuration="Debug" build="True" name="alarm" />
+      <Entry build="True" name="alarm" configuration="Debug" />
     </Configuration>
   </Configurations>
   <StartMode startupentry="alarm" single="True">

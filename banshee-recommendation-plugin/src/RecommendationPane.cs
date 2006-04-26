@@ -191,12 +191,12 @@ namespace Banshee.Plugins.Recommendation
 
 					if (tracks_xml_list != null) {
 						for (int i = 0; i < tracks_xml_list.Count && i < NUM_TRACKS; i++)
-							tracks_items_box.PackStart (RenderTrack (tracks_xml_list [i]), false, true, 0);
+							tracks_items_box.PackStart (RenderTrack (tracks_xml_list [i], i + 1), false, true, 0);
 					}
 					
 					if (albums_xml_list != null) {
 						for (int i = 0; i < albums_xml_list.Count && i < NUM_ALBUMS; i++)
-							albums_items_box.PackStart (RenderAlbum (albums_xml_list [i]), false, true, 0);
+							albums_items_box.PackStart (RenderAlbum (albums_xml_list [i], i + 1), false, true, 0);
 					}
 					
 					Visible = true;
@@ -249,7 +249,7 @@ namespace Banshee.Plugins.Recommendation
 			return artist_button;
 		}
 
-		private Widget RenderTrack (XmlNode node)
+		private Widget RenderTrack (XmlNode node, int rank)
 		{
 			Button track_button = new Button ();
 			track_button.Relief = ReliefStyle.None;
@@ -259,7 +259,7 @@ namespace Banshee.Plugins.Recommendation
 			Label label = new Label ();
 			label.Ellipsize = Pango.EllipsizeMode.End;
 			label.Xalign = 0;
-			label.Markup = GLib.Markup.EscapeText (node.SelectSingleNode ("name").InnerText).Trim ();
+			label.Markup = String.Format ("{0}. {1}", rank, GLib.Markup.EscapeText (node.SelectSingleNode ("name").InnerText).Trim ());
 
 			if (node.SelectSingleNode ("track_id") != null) {
 				box.PackEnd (new Image (Gdk.Pixbuf.LoadFromResource("play.png")), false, false, 0);
@@ -280,7 +280,7 @@ namespace Banshee.Plugins.Recommendation
 		}
 
 		// FIXME: Image?
-		private Widget RenderAlbum (XmlNode node)
+		private Widget RenderAlbum (XmlNode node, int rank)
 		{
 			Button album_button = new Button ();
 			album_button.Relief = ReliefStyle.None;
@@ -288,7 +288,7 @@ namespace Banshee.Plugins.Recommendation
 			Label label = new Label ();
 			label.Ellipsize = Pango.EllipsizeMode.End;
 			label.Xalign = 0;
-			label.Markup = GLib.Markup.EscapeText (node.SelectSingleNode ("name").InnerText).Trim ();
+			label.Markup = String.Format ("{0}. {1}", rank, GLib.Markup.EscapeText (node.SelectSingleNode ("name").InnerText).Trim ());
 			album_button.Add (label);
 
 			album_button.Clicked += delegate(object o, EventArgs args) {

@@ -73,8 +73,18 @@ else
 	AC_DEFINE_UNQUOTED(HELIX_CODECS_PATH, ["$HELIX_CODECS_PATH"], [RealPlayer/Helix Codecs Location])
 fi
 
+if ! test -e helix/hxfftrans/dbg/libhxfftrans.a; then
+	AC_MSG_ERROR([libhxfftrans.a has not been built. Either use a tarball release or read helix/README for instructions on building hxfftrans/dtdriver])
+fi
+
 AC_OUTPUT([
 Makefile
 src/Makefile
 ])
+
+echo "
+  Helix Library Root: ${HELIX_LIBRARY_PATH}
+  Helix Plugins Path: ${HELIX_PLUGINS_PATH}
+  Helix Codecs Path:  ${HELIX_CODECS_PATH}  
+";
 

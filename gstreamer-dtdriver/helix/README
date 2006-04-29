@@ -13,10 +13,15 @@ $ build
 
 Run "Build" (3)
 
-The complete build will probably fail in places. This is fine. If using
-gcc4+, apply the patch:
+The complete build will probably fail in places. This is fine. Also, for
+some reason this process may hang and take around 45 minutes to complete. 
+If it appears frozen, just let it be. Come back in an hour.
+
+If using gcc4+, apply the patch:
 
 $ patch -p0 < patches/helix-gcc4.diff
+$ make (build still may fail on datatype/rm/video/payload/depacker),
+        but it's okay)
 
 Now focus on building dtdriver:
 
@@ -55,6 +60,7 @@ From $(top_srcdir)/src or another directory outside of
 $(top_srcdir)/src/helix:
 
 $ mkdir proxyfsys
+$ cd proxyfsys
 $ build
 
 	BIF branch: helix (HEAD)

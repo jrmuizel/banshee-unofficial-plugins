@@ -1,4 +1,14 @@
 2006-04-29  Aaron Bockover  <aaron@abock.org>
 
+	* helix/README: Updated hxfftrans/dtdriver build instructions
+
+	* configure.ac: Detect helix/hxfftrans/dbg/libhxfftrans.a to error
+	out if it has not yet been built; report what RP paths were found 
+	to be used as the default codecs/plugins directories (can be overwritten
+	at runtime using the standard HELIX_CODECS and HELIX_PLUGINS 
+	environment variables)
+
+2006-04-29  Aaron Bockover  <aaron@abock.org>
+
 	* gstreamer-dtdriver: Initial import of gstreamer-dtdriver
 

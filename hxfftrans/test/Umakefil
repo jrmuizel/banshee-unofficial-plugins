@@ -1,0 +1,10 @@
+# Umakefil for hxfftrans test app
+
+project.AddSources("main.c")
+
+project.AddModuleIncludes("hxfftrans/pub")
+project.AddDynamicLibraries("-L../dbg")
+project.AddSystemLibraries("dl", "m", "pthread", "hxfftrans")
+
+ProgramTarget("hxfftranstest")
+

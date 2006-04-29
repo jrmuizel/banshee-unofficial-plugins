@@ -1,0 +1,14 @@
+Index: datatype/tools/dtdriver/apps/Umakefil
+===================================================================
+RCS file: /cvsroot/datatype/tools/dtdriver/apps/Umakefil,v
+retrieving revision 1.2
+diff -u -r1.2 Umakefil
+--- datatype/tools/dtdriver/apps/Umakefil	9 Nov 2004 06:57:45 -0000	1.2
++++ datatype/tools/dtdriver/apps/Umakefil	29 Apr 2006 16:26:51 -0000
+@@ -38,5 +38,5 @@
+ UmakefileVersion(2,0)
+ 
+ MultiTargetMake("dtdrive/Umakefil")
+-MultiTargetMake("dtdrtest/Umakefil")
++#MultiTargetMake("dtdrtest/Umakefil")
+ 

@@ -1,0 +1,99 @@
+Index: pub/platform/unix/pthreadthreads.h
+===================================================================
+RCS file: /cvsroot/common/system/pub/platform/unix/pthreadthreads.h,v
+retrieving revision 1.8
+diff -u -w -r1.8 pthreadthreads.h
+--- common/system/pub/platform/unix/pthreadthreads.h	27 Oct 2004 23:41:10 -0000	1.8
++++ common/system/pub/platform/unix/pthreadthreads.h	2 Feb 2006 20:58:33 -0000
+@@ -102,10 +102,7 @@
+ 
+ #ifndef _MAC_UNIX
+ 
+-struct HXsem_t : public sem_t
+-{
+-    char padding[64]; /* Flawfinder: ignore */ // different linux versions have different binary reps blechhhh!
+-};
++typedef sem_t HXsem_t;
+ 
+ //=======================================================================
+ //
+Index: pub/math64.h
+===================================================================
+RCS file: /cvsroot/audio/fixptutil/pub/math64.h,v
+retrieving revision 1.30
+diff -w -u -r1.30 math64.h
+--- audio/fixptutil/pub/math64.h	7 Feb 2006 20:58:58 -0000	1.30
++++ audio/fixptutil/pub/math64.h	7 Mar 2006 17:54:27 -0000
+@@ -130,56 +130,30 @@
+ /* Compute a * b / c, using 64-bit intermediate result */
+ static __inline__ int MulDiv64(register int x, register int y, register int z)
+ {
+-    /* we specify four alternatives here, one for each permutation of memory or
+-       register operand in the multiplier and the divisor. All are commutative in
+-       the multiplication arguments, one of which needs to be in eax when we
+-       start. */
+-
+-    __asm__ volatile ("imull %2\n\t"
+-                      "idivl %3\n"
+-                      : "+a,a,a,a" (x)
+-                      : "%0,%0,%0,%0" (x), "m,r,m,r" (y), "m,m,r,r" (z)
+-                      : "edx") ;    
+-    return x ;
++    return (INT64)x*(INT64)y/(INT64)z;
+ }
+ 
+ /* Compute (a * b) >> 32, using 64-bit intermediate result */
+ static __inline__ int MulShift32(int x, int y)
+ {
+-    int z ;
+-    /* we specify two alternatives here. The first one can read the multiplier from
+-       memory, the second from from a register. Both return the result in eax,edx
+-       and are commutative in the arguments, one of which needs to be in eax when we
+-       start. */
+-    __asm__ volatile ("imull %3" : "=d,d" (z), "+a,a" (x): "%1,1" (x), "m,r" (y)) ;
+-    return z ;
++    return ((INT64)x*(INT64)y)>>32;
+ }
+ 
+-/* Compute (a * b) >> 31, using 64-bit intermediate result */
++//Compute (a * b) >> 31, using 64-bit intermediate result*/
+ static __inline__ int MulShift31(int x, int y)
+ {
+-    int zhi ;
+-    __asm__ volatile ("imull %3\n\t"
+-                      "shrdl $31,%1,%0": "+a,a" (x), "=d,d" (zhi) : "%0,%0" (x), "m,r" (y)) ;
+-    return x ;
++    return ((INT64)x*(INT64)y)>>31;
+ }
+ 
+-/* Compute (a * b) >> 30, using 64-bit intermediate result */
+ static __inline__ int MulShift30(int x, int y)
+ {
+-    int zhi ;
+-    __asm__ volatile ("imull %3\n\t"
+-                      "shrdl $30,%1,%0" : "+a,a" (x), "=d,d" (zhi) : "%0,%0" (x), "m,r" (y)) ;
+-    return x ;
++    return ((INT64)x*(INT64)y)>>30;
+ }
+ 
+ /* Compute (a * b) >> n, using 64-bit intermediate result */
+ static __inline__ int MulShiftN(register int x, register int y, register int n)
+ {
+-    int zhi ;
+-    __asm__ volatile ("imull %3\n\t"
+-                      "shrdl %%cl,%1,%0" : "+a,a" (x), "=d,d" (zhi) : "%0,%0" (x), "m,r" (y), "c,c" (n)) ;
+-    return x ;
++    return ((INT64)x*(INT64)y)>>n;
+ }
+ 
+ #ifdef TIMING
+@@ -196,6 +170,9 @@
+ #endif
+ 
+ #ifdef DEBUG
++#  ifdef ASSERT
++#    undef ASSERT
++#  endif
+ #define ASSERT(x) if (!(x)) __asm__ __volatile ("int $3" :: )
+ #endif
+ 

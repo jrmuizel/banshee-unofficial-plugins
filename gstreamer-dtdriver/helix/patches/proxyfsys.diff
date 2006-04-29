@@ -1,0 +1,36 @@
+Index: filesystem/local/Umakefil
+===================================================================
+RCS file: /cvsroot/filesystem/local/Umakefil,v
+retrieving revision 1.10
+diff -u -r1.10 Umakefil
+--- filesystem/local/Umakefil	13 Jan 2006 19:18:45 -0000	1.10
++++ filesystem/local/Umakefil	29 Apr 2006 17:13:33 -0000
+@@ -78,6 +78,6 @@
+                        "common/include",
+                        "hxcom.h")
+ 
+-DLLTarget("smplfsys")
++DLLTarget("proxyfsys")
+ 
+ DependTarget()
+Index: filesystem/local/full/smplfsys.cpp
+===================================================================
+RCS file: /cvsroot/filesystem/local/full/smplfsys.cpp,v
+retrieving revision 1.34
+diff -u -r1.34 smplfsys.cpp
+--- filesystem/local/full/smplfsys.cpp	31 Mar 2006 23:35:37 -0000	1.34
++++ filesystem/local/full/smplfsys.cpp	29 Apr 2006 17:13:37 -0000
+@@ -173,11 +173,11 @@
+ 
+ HX_ENABLE_CHECKPOINTS_FOR_MODULE( "SmplFsys", "SmplFsysPerf.log" )
+ 
+-const char* const CSimpleFileSystem::zm_pDescription	= "RealNetworks Local File System";
++const char* const CSimpleFileSystem::zm_pDescription	= "RealNetworks Proxy File System";
+ const char* const CSimpleFileSystem::zm_pCopyright	= HXVER_COPYRIGHT;
+ const char* const CSimpleFileSystem::zm_pMoreInfoURL	= HXVER_MOREINFO;
+ const char* const CSimpleFileSystem::zm_pShortName	= "pn-local";
+-const char* const CSimpleFileSystem::zm_pProtocol	= "file|fileproxy";
++const char* const CSimpleFileSystem::zm_pProtocol	= "fileproxy";
+ 
+ /****************************************************************************
+  *

@@ -13,6 +13,12 @@ BUGS:
 
 - Fix UI bug where adding more match rows doesn't expand the dialog window
 
+- Don't show smart playlists in songs' context menu (Add to Playlist) 
+
+- Ignore songs dnd'd onto smart playlists
+
+- Remove "Remove Song" option from songs' context menu for smart playlists
+
 ENHANCEMENTS:
 - Allow relative dates for date matching to allow for playlists like 
   "Songs with Rating = 5 that I haven't listened to for 3 weeks"

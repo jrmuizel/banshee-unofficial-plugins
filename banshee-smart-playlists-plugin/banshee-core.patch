@@ -1,45 +1,59 @@
-Index: Banshee.Base/LibraryTrackInfo.cs
+Index: ChangeLog
+===================================================================
+RCS file: /cvs/gnome/banshee/ChangeLog,v
+retrieving revision 1.453
+diff -u -r1.453 ChangeLog
+--- ChangeLog	20 Apr 2006 18:05:14 -0000	1.453
++++ ChangeLog	28 Apr 2006 19:12:34 -0000
+@@ -1,3 +1,11 @@
++2006-04-29  Gabriel Burt  <gabriel.burt@gmail.com>
++
++	* src/Banshee.Base/LibraryTrackInfo.cs: Add event for when a track is
++	Changed.
++
++	* src/Banshee.Base/Sources/PlaylistSource.cs: Add Id property, and add
++	public ClearTracks and ContainsTrack methods.
++
+ 2006-04-20  Aaron Bockover  <aaron@abock.org>
+ 
+ 	* src/Banshee.MediaEngine/Helix/HelixRemotePlayer.cs: Added GetIsLive
+Index: src/Banshee.Base/LibraryTrackInfo.cs
 ===================================================================
 RCS file: /cvs/gnome/banshee/src/Banshee.Base/LibraryTrackInfo.cs,v
-retrieving revision 1.8
-diff -u -r1.8 LibraryTrackInfo.cs
---- Banshee.Base/LibraryTrackInfo.cs	17 Mar 2006 04:44:42 -0000	1.8
-+++ Banshee.Base/LibraryTrackInfo.cs	31 Mar 2006 09:21:44 -0000
+retrieving revision 1.9
+diff -u -r1.9 LibraryTrackInfo.cs
+--- src/Banshee.Base/LibraryTrackInfo.cs	9 Apr 2006 21:30:23 -0000	1.9
++++ src/Banshee.Base/LibraryTrackInfo.cs	28 Apr 2006 19:12:34 -0000
 @@ -40,6 +40,8 @@
  {
      public class LibraryTrackInfo : TrackInfo
      {
 +        public event EventHandler Changed;
 +
-         public static int GetId(Uri lookup)
+         public static int GetId(SafeUri lookup)
          {
              string query = String.Format(@"
-@@ -457,6 +459,10 @@
+@@ -461,6 +463,9 @@
              } catch {}
              
              SaveToDatabase(true);
 +
-+            Console.WriteLine ("Track {0} changed...signalling!", Uri.LocalPath);
 +            if (Changed != null)
 +                Changed (this, new EventArgs());
          }
          
          public override void IncrementPlayCount()
-Index: Banshee.Base/Sources/PlaylistSource.cs
+Index: src/Banshee.Base/Sources/PlaylistSource.cs
 ===================================================================
 RCS file: /cvs/gnome/banshee/src/Banshee.Base/Sources/PlaylistSource.cs,v
 retrieving revision 1.5
 diff -u -r1.5 PlaylistSource.cs
---- Banshee.Base/Sources/PlaylistSource.cs	13 Feb 2006 22:18:10 -0000	1.5
-+++ Banshee.Base/Sources/PlaylistSource.cs	31 Mar 2006 09:21:45 -0000
-@@ -51,8 +51,12 @@
-             }
-         }
+--- src/Banshee.Base/Sources/PlaylistSource.cs	13 Feb 2006 22:18:10 -0000	1.5
++++ src/Banshee.Base/Sources/PlaylistSource.cs	28 Apr 2006 19:12:35 -0000
+@@ -53,6 +53,10 @@
          
--        private ArrayList tracks = new ArrayList();
--        private int id;
-+        protected ArrayList tracks = new ArrayList();
-+        protected int id;
+         private ArrayList tracks = new ArrayList();
+         private int id;
 +
 +        public int Id {
 +            get { return id; }

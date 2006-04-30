@@ -1,3 +1,7 @@
+2006-04-30  Aaron Bockover  <aaron@abock.org>
+
+	* src/gstdtdriver.c: Added more source pad caps for AAC/MPEG4
+
 2006-04-29  Aaron Bockover  <aaron@abock.org>
 
 	* helix/README: Updated hxfftrans/dtdriver build instructions

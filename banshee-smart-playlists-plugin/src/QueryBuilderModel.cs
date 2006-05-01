@@ -292,67 +292,126 @@ namespace Banshee
 	}
 	
 	// --- Query Match Date --- 
+    // Used to match things like [Added|Last Played] [less|greater] than [2] [weeks] ago
 		
 	public class QueryMatchDate : QueryMatch
 	{
-		private DateButton dateButton1;
-		private DateButton dateButton2;
+        // Multiplied by the spinButton inputs to determine the equivalent number of seconds the user
+        // has entered.
+        private static int [] date_multipliers = {24*3600, 7*24*3600, 30*24*3600, 365*24*3600};
+		private SpinButton spinButton1, spinButton2;
+		private ComboBox comboBox1, comboBox2;
+		private HBox hBox1, hBox2;
+        private Label ago1;
 		private HBox rangeBox;
+
+        private static ComboBox GetComboBox ()
+        {
+			ComboBox box = ComboBox.NewText();
+
+            box.AppendText(Catalog.GetString("Days"));
+            box.AppendText(Catalog.GetString("Weeks"));
+            box.AppendText(Catalog.GetString("Months"));
+            box.AppendText(Catalog.GetString("Years"));
+
+            box.Active = 0;
+
+            return box;
+        }
 
 		public override string FilterValues()
 		{
 			UpdateValues();
 		
-			string pv = Statement.EscapeQuotes(Value1), pv2 = null;
-			if(Value2 != null)
-				pv2 = Statement.EscapeQuotes(Value2);
+			string pv = Statement.EscapeQuotes(Value1);
+            string pv2 = (spinButton2 == null) ? null : Statement.EscapeQuotes(Value2);
 
             QueryFilterOperation op = QueryFilterOperation.GetByName (Filter);
             if (op == null)
                 return null;
             else
-                return op.FilterSql (true, Column, pv, pv2);
+                return op.FilterSql (false, String.Format("(strftime(\"%s\", current_date) - {0})", Column), pv, pv2);
 		}
 		
 		public override void UpdateValues()
 		{
-			if(dateButton1 == null)
+			if(spinButton1 == null)
 				throw new Exception("Display Widget was never Set");
 				
-			Value1 = dateButton1.Date.ToString("yyyy-MM-dd");
-			
-			if(dateButton2 != null)
-				Value2 = dateButton2.Date.ToString("yyyy-MM-dd");
+			Value1 = (date_multipliers [comboBox1.Active] * spinButton1.ValueAsInt).ToString();
+
+			if(spinButton2 != null)
+                Value2 = (date_multipliers [comboBox2.Active] * spinButton2.ValueAsInt).ToString();
 		}
 		
 		public override Widget DisplayWidget
 		{
 			get {
-				if(dateButton1 == null) {
-					dateButton1 = new DateButton("<Select Date>");
-					dateButton1.Show();
+				if(spinButton1 == null) {
+					spinButton1 = new SpinButton(Int32.MinValue, Int32.MaxValue, 1.0);
+                    spinButton1.Value = 2.0;
+                    spinButton1.Digits = 0;
+                    spinButton1.WidthChars = 2;
+					spinButton1.Show();
+
+                    comboBox1 = GetComboBox();
+
+                    hBox1 = new HBox();
+                    hBox1.PackStart(spinButton1, false, false, 0);
+                    hBox1.PackStart(comboBox1, false, false, 0);
+
+                    hBox1.ShowAll();
 				}
 				
 				if(QueryFilterOperation.GetByName(Filter) != QueryFilterOperation.IsInTheRange) {
-					if(rangeBox != null && dateButton2 != null) {
-						rangeBox.Remove(dateButton1);
-						rangeBox.Remove(dateButton2);
+					if(rangeBox != null && spinButton2 != null) {
+						rangeBox.Remove(hBox1);
+						rangeBox.Remove(hBox2);
 						
-						dateButton2.Destroy();
-						dateButton2 = null;
+						spinButton2.Destroy();
+						spinButton2 = null;
+
+						comboBox2.Destroy();
+						comboBox2 = null;
+
+						hBox2.Destroy();
+						hBox2 = null;
+
 						rangeBox.Destroy();
 						rangeBox = null;
+
 					}
+
+                    if (ago1 == null) {
+                        ago1 = new Label(Catalog.GetString("ago"));
+                        hBox1.PackStart(ago1, false, false, 0);
+                        ago1.Show();
+                    }
 				
-					return dateButton1;
+					return hBox1;
 				}
 				
-				if(dateButton2 == null) {
-					dateButton2 = new DateButton("<Select Date>");
-					dateButton2.Show();
+				if(spinButton2 == null) {
+					spinButton2 = new SpinButton(Int32.MinValue, Int32.MaxValue, 1.0);
+                    spinButton2.Value = 4.0;
+                    spinButton2.Digits = 0;
+                    spinButton2.WidthChars = 2;
+					spinButton2.Show();
+                    hBox1.Remove(ago1);
+                    ago1.Destroy();
+                    ago1 = null;
+
+                    comboBox2 = GetComboBox();
+                    comboBox2.Active = comboBox1.Active;
+
+                    hBox2 = new HBox();
+                    hBox2.PackStart(spinButton2, false, false, 0);
+                    hBox2.PackStart(comboBox2, false, false, 0);
+                    hBox2.PackStart(new Label(Catalog.GetString ("ago")), false, false, 0);
+                    hBox2.ShowAll();
 				}
 				
-				rangeBox = BuildRangeBox(dateButton1, dateButton2);
+				rangeBox = BuildRangeBox(hBox1, hBox2);
 				return rangeBox;
 			}
 		}
@@ -361,10 +420,11 @@ namespace Banshee
 		{
 			get {	
 				QueryFilterOperation [] validOperations = {
-					QueryFilterOperation.Is,
-					QueryFilterOperation.IsNot,
-					QueryFilterOperation.IsBefore,
-					QueryFilterOperation.IsAfter,
+                    // To get these two working need to not check against the exact second but rather round to a full day
+					//QueryFilterOperation.Is,
+					//QueryFilterOperation.IsNot,
+					QueryFilterOperation.IsGreaterThan,
+					QueryFilterOperation.IsLessThan,
 					QueryFilterOperation.IsInTheRange
 				};
 
@@ -379,10 +439,9 @@ namespace Banshee
 		
 		public TracksQueryModel() : base()
 		{
-			AddField("Title", "Title", typeof(QueryMatchString));
 			AddField("Artist", "Artist", typeof(QueryMatchString));
-			AddField("Album", "Album", typeof(QueryMatchString));
 			AddField("Song Name", "Title", typeof(QueryMatchString));
+			AddField("Album", "Album", typeof(QueryMatchString));
 			AddField("Genre", "Genre", typeof(QueryMatchString));
 			AddField("Date Added", "DateAddedStamp", typeof(QueryMatchDate));
 			AddField("Last Played", "LastPlayedStamp", typeof(QueryMatchDate));

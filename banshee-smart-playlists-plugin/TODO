@@ -20,7 +20,4 @@ BUGS:
 - Remove "Remove Song" option from songs' context menu for smart playlists
 
 ENHANCEMENTS:
-- Allow relative dates for date matching to allow for playlists like 
-  "Songs with Rating = 5 that I haven't listened to for 3 weeks"
-
 - Add pretty-stars widget for entering matches based on rating

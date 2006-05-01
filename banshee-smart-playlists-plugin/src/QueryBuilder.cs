@@ -451,7 +451,7 @@ namespace Banshee
 			limitComboBox.Active = 0;
 			limitFooter.PackStart(limitComboBox, false, false, 0);
 				
-			Label orderLabel = new Label("selected by");
+			Label orderLabel = new Label("sorted by");
 			orderLabel.Show();
 			limitFooter.PackStart(orderLabel, false, false, 0);
 			

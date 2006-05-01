@@ -9,6 +9,11 @@ using Sql;
  
 namespace Banshee.Plugins.SmartPlaylists
 {
+    /*public class SmartPlaylistSource : PlaylistSource
+    {
+        public override bool IsUserEditable
+    }*/
+
     public class SmartPlaylist
     {
         public string Name {
@@ -60,7 +65,7 @@ namespace Banshee.Plugins.SmartPlaylists
             if (Condition == null)
                 return;
 
-            Console.WriteLine ("Refreshing smart playlist {0} with condition {1}", Source.Name, Condition);
+            //Console.WriteLine ("Refreshing smart playlist {0} with condition {1}", Source.Name, Condition);
 
             // Delete existing tracks
             Globals.Library.Db.Execute(String.Format(
@@ -95,7 +100,7 @@ namespace Banshee.Plugins.SmartPlaylists
             if (OrderAndLimit == null) {
                 // If this SmartPlaylist doesn't have an OrderAndLimit clause, then it's quite simple
                 // to check this track - if it matches the Condition we make sure it's in, and vice-versa
-                Console.WriteLine ("Limitless condition");
+                //Console.WriteLine ("Limitless condition");
 
                 object id = Globals.Library.Db.QuerySingle(String.Format(
                     "SELECT TrackId FROM Tracks WHERE TrackId = {0} {1}",
@@ -105,7 +110,7 @@ namespace Banshee.Plugins.SmartPlaylists
                 if (id == null || (int) id != track.TrackId) {
                     // If it didn't match and isn't in the playlist, remove it
                     if (Source.ContainsTrack (track)) {
-                        Console.WriteLine ("Removing track");
+                        //Console.WriteLine ("Removing track");
                         Source.RemoveTrack(track);
                     }
                     return;
@@ -113,13 +118,13 @@ namespace Banshee.Plugins.SmartPlaylists
 
                 // If it matched and isn't already in the playlist
                 if (! Source.ContainsTrack (track)) {
-                    Console.WriteLine ("Adding track");
+                    //Console.WriteLine ("Adding track");
                     Source.AddTrack (track);
                 }
             } else {
                 // If this SmartPlaylist has an OrderAndLimit clause things are more complicated as there are a limited
                 // number of tracks -- so if we remove a track, we probably need to add a different one and vice-versa.
-                Console.WriteLine ("Checking track {0} ({1}) against condition & order/limit {2} {3}", track.Uri.LocalPath, track.TrackId, Condition, OrderAndLimit);
+                //Console.WriteLine ("Checking track {0} ({1}) against condition & order/limit {2} {3}", track.Uri.LocalPath, track.TrackId, Condition, OrderAndLimit);
 
                 // See if there is a track that was in the SmartPlaylist that now shouldn't be because
                 // this track we are checking displaced it.

@@ -13,7 +13,7 @@ namespace Banshee.Plugins.SmartPlaylists
     public class SmartPlaylistsPlugin : Banshee.Plugins.Plugin
     {
         protected override string ConfigurationName { get { return "SmartPlaylists"; } }
-        public override string DisplayName { get { return "Smart Playlists"; } }
+        public override string DisplayName { get { return Catalog.GetString("Smart Playlists"); } }
 
         private Hashtable playlists = new Hashtable ();
 
@@ -44,7 +44,6 @@ namespace Banshee.Plugins.SmartPlaylists
         {
             // Check that our SmartPlaylists table exists in the database, otherwise make it
             if(!Globals.Library.Db.TableExists("SmartPlaylists")) {
-                Console.WriteLine("Creating smart playlists table");
                 Globals.Library.Db.Execute(@"
                     CREATE TABLE SmartPlaylists (
                         PlaylistID INTEGER PRIMARY KEY,
@@ -62,7 +61,6 @@ namespace Banshee.Plugins.SmartPlaylists
             Globals.Library.TrackRemoved += HandleTrackRemoved;
 
 
-            Console.WriteLine ("Adding menu stuff");
             // Add a menu option to create a new smart playlist
             musicMenu = (Globals.ActionManager.GetWidget ("/MainMenu/MusicMenu") as MenuItem).Submenu as Menu;
             addItem = new MenuItem (Catalog.GetString("New Smart Playlist..."));
@@ -96,14 +94,13 @@ namespace Banshee.Plugins.SmartPlaylists
 
         protected override void PluginDispose()
         {
-            Console.WriteLine("Disposing Smart Playlists Plugin");
-
             musicMenu.Remove(addItem);
             sourceMenu.Remove(editItem);
         }
 
         private void HandleLibraryReloaded (object sender, EventArgs args)
         {
+            // Listen for changes to any track to keep our playlists up to date
             IDataReader reader = Globals.Library.Db.Query(String.Format(
                 "SELECT TrackID FROM Tracks"
             ));
@@ -140,7 +137,7 @@ namespace Banshee.Plugins.SmartPlaylists
 
             reader.Dispose();
 
-            Console.WriteLine ("Adding smart playlist {0}, id {1}", playlist.Name, playlist.Id);
+            //Console.WriteLine ("Adding smart playlist {0}, id {1}", playlist.Name, playlist.Id);
             playlists.Add(playlist, new SmartPlaylist(playlist, condition, order_by, limit_number));
         }
 
@@ -150,7 +147,6 @@ namespace Banshee.Plugins.SmartPlaylists
             if (source == null)
                 return;
 
-            Console.WriteLine ("received notice that {0} was removed", args.Source.Name);
             playlists.Remove (source);
 
             // Delete it from the database
@@ -162,7 +158,6 @@ namespace Banshee.Plugins.SmartPlaylists
 
         private void HandleTrackAdded (object sender, LibraryTrackAddedArgs args)
         {
-            Console.WriteLine ("Handling track added {0}", args.Track.Uri.LocalPath);
             args.Track.Changed += HandleTrackChanged;
             CheckTrack (args.Track);
         }
@@ -171,28 +166,18 @@ namespace Banshee.Plugins.SmartPlaylists
         {
             TrackInfo track = sender as TrackInfo;
 
-            Console.WriteLine ("Handling track changed");
-            if (track != null) {
-                Console.WriteLine ("...track= {0}", track.Uri.LocalPath);
+            if (track != null)
                 CheckTrack (track);
-            }
-            else {
-                Console.WriteLine ("track == null");
-            }
         }
 
         private void HandleTrackRemoved (object sender, LibraryTrackRemovedArgs args)
         {
-            if (args.Track == null)
-                return;
-
-            Console.WriteLine ("Handling track removed {0}", args.Track.Uri.LocalPath);
-            args.Track.Changed -= HandleTrackChanged;
+            if (args.Track != null)
+                args.Track.Changed -= HandleTrackChanged;
         }
 
         private void CheckTrack (TrackInfo track)
         {
-            Console.WriteLine ("Checking track {0} agaisnt smart playlists", track.Uri.LocalPath);
             foreach (SmartPlaylist playlist in playlists.Values)
                 playlist.Check (track);
         }

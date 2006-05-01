@@ -70,7 +70,7 @@ namespace Banshee.Plugins.SmartPlaylists
                 string limit_number = LimitNumber;
 
                 ThreadAssist.Spawn (delegate {
-                    Console.WriteLine ("Name = {0}, Cond = {1}, OrderAndLimit = {2}", name, condition, order_by, limit_number);
+                    //Console.WriteLine ("Name = {0}, Cond = {1}, OrderAndLimit = {2}", name, condition, order_by, limit_number);
                     if (playlist == null) {
                         playlist = new SmartPlaylist(name, condition, order_by, limit_number);
                         playlist.Source.Commit();

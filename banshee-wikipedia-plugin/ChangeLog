@@ -1,0 +1,14 @@
+2006-04-30  Patrick van Staveren  <trick@vanstaveren.us>
+	* Google search mode - uses the "i'm feeling lucky" feature of Google to direct to the closes match using Google, adding the keyword "band".  I know, this isn't the best way, but it is much much more accurate than just searching for the artist keyword.
+	* Experimenting with stuff like a status bar and progress bar for loading.
+		* Progress bar is way too buggy and causes segfaults - commented out :)
+	* Opens to about:blank, not google on init.  Faster.
+	* Made default size a bit bigger.  Maybe this should be a percentage someday.  Someone patch this for me!
+	* Bunch of attempts to create a HPaned between the track listing and this, but I can't find a widget.  Big chunk of commented code for now.
+	* Added Wikipedia.dll.config, a DLL mapper copied from gecko-sharp.  Should fix issues with not finding gtkmozembed.so on some platforms. (Send bug reports!)
+	* Debug info is copied in, so you can easily trace
+
+2006-04-28  Patrick van Staveren  <trick@vanstaveren.us>
+	* initial hack
+	* most of code borrowed from Fredrik Hedberg - Thanks Fredrik!  just do a `diff RecommendationPlugin.cs Plugin.cs` and you'll see how little I did over there...
+	* and of course, thanks to Aaron Bockover for the banshee-sample-plugin framework, as it rocks :)

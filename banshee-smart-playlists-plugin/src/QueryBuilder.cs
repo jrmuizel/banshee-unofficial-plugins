@@ -439,7 +439,7 @@ namespace Banshee
 			limitCheckBox.Toggled += OnLimitCheckBoxToggled;
 			limitFooter.PackStart(limitCheckBox, false, false, 0);
 			
-			limitEntry = new Entry();
+			limitEntry = new Entry("25");
 			limitEntry.Show();
 			limitEntry.SetSizeRequest(50, -1);
 			limitFooter.PackStart(limitEntry, false, false, 0);
@@ -451,7 +451,7 @@ namespace Banshee
 			limitComboBox.Active = 0;
 			limitFooter.PackStart(limitComboBox, false, false, 0);
 				
-			Label orderLabel = new Label("sorted by");
+			Label orderLabel = new Label("selected by");
 			orderLabel.Show();
 			limitFooter.PackStart(orderLabel, false, false, 0);
 			

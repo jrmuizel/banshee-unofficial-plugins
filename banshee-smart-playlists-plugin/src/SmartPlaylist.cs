@@ -108,17 +108,12 @@ namespace Banshee.Plugins.SmartPlaylists
                 ));
 
                 if (id == null || (int) id != track.TrackId) {
-                    // If it didn't match and isn't in the playlist, remove it
                     if (Source.ContainsTrack (track)) {
-                        //Console.WriteLine ("Removing track");
+                        // If it didn't match and is in the playlist, remove it
                         Source.RemoveTrack(track);
                     }
-                    return;
-                }
-
-                // If it matched and isn't already in the playlist
-                if (! Source.ContainsTrack (track)) {
-                    //Console.WriteLine ("Adding track");
+                } else if(! Source.ContainsTrack (track)) {
+                    // If it matched and isn't already in the playlist
                     Source.AddTrack (track);
                 }
             } else {

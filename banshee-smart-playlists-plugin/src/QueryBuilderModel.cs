@@ -93,6 +93,11 @@ namespace Banshee
             "{1} > {0}{2}{0}"
         );
 
+		public static QueryFilterOperation IsAtLeast = NewOperation (
+            Catalog.GetString ("is at least"),
+            "{1} >= {0}{2}{0}"
+        );
+
 		public static QueryFilterOperation Contains = NewOperation (
             Catalog.GetString ("contains"),
             "{1} LIKE '%{2}%'"
@@ -124,8 +129,8 @@ namespace Banshee
         );
 
 		public static QueryFilterOperation IsInTheRange = NewOperation (
-            Catalog.GetString ("is in the range"),
-            "({1} >= {0}{2}{0} AND {1} <= {0}{3}{0})"
+            Catalog.GetString ("is between"),
+            "({1} BETWEEN {0}{2}{0} AND {0}{3}{0})"
         );
 	}
 	
@@ -298,7 +303,7 @@ namespace Banshee
 	{
         // Multiplied by the spinButton inputs to determine the equivalent number of seconds the user
         // has entered.
-        private static int [] date_multipliers = {24*3600, 7*24*3600, 30*24*3600, 365*24*3600};
+        private static int [] date_multipliers = {3600, 24*3600, 7*24*3600, 30*24*3600, 365*24*3600};
 		private SpinButton spinButton1, spinButton2;
 		private ComboBox comboBox1, comboBox2;
 		private HBox hBox1, hBox2;
@@ -309,12 +314,13 @@ namespace Banshee
         {
 			ComboBox box = ComboBox.NewText();
 
+            box.AppendText(Catalog.GetString("Hours"));
             box.AppendText(Catalog.GetString("Days"));
             box.AppendText(Catalog.GetString("Weeks"));
             box.AppendText(Catalog.GetString("Months"));
             box.AppendText(Catalog.GetString("Years"));
 
-            box.Active = 0;
+            box.Active = 1;
 
             return box;
         }
@@ -330,7 +336,7 @@ namespace Banshee
             if (op == null)
                 return null;
             else
-                return op.FilterSql (false, String.Format("(strftime(\"%s\", current_date) - {0})", Column), pv, pv2);
+                return op.FilterSql (false, String.Format("(strftime(\"%s\", current_timestamp) - {0})", Column), pv, pv2);
 		}
 		
 		public override void UpdateValues()
@@ -357,6 +363,7 @@ namespace Banshee
                     comboBox1 = GetComboBox();
 
                     hBox1 = new HBox();
+                    hBox1.Spacing = 5;
                     hBox1.PackStart(spinButton1, false, false, 0);
                     hBox1.PackStart(comboBox1, false, false, 0);
 
@@ -405,6 +412,7 @@ namespace Banshee
                     comboBox2.Active = comboBox1.Active;
 
                     hBox2 = new HBox();
+                    hBox2.Spacing = 5;
                     hBox2.PackStart(spinButton2, false, false, 0);
                     hBox2.PackStart(comboBox2, false, false, 0);
                     hBox2.PackStart(new Label(Catalog.GetString ("ago")), false, false, 0);
@@ -440,11 +448,12 @@ namespace Banshee
 		public TracksQueryModel() : base()
 		{
 			AddField("Artist", "Artist", typeof(QueryMatchString));
-			AddField("Song Name", "Title", typeof(QueryMatchString));
-			AddField("Album", "Album", typeof(QueryMatchString));
+			AddField("Title", "Title", typeof(QueryMatchString));
+			AddField("Album", "AlbumTitle", typeof(QueryMatchString));
 			AddField("Genre", "Genre", typeof(QueryMatchString));
 			AddField("Date Added", "DateAddedStamp", typeof(QueryMatchDate));
 			AddField("Last Played", "LastPlayedStamp", typeof(QueryMatchDate));
+			AddField("Duration", "Duration", typeof(QueryMatchInteger));
 			AddField("Number of Plays", "NumberOfPlays", typeof(QueryMatchInteger));
 			AddField("Rating", "Rating", typeof(QueryMatchInteger));
 			//AddField("Year", "Year", typeof(QueryMatchInteger));

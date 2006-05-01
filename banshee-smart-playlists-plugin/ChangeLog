@@ -1,5 +1,27 @@
 2006-05-01  Gabriel Burt  <gabriel.burt@gmail.com>
 
+	* TODO: remove translatable strings bug, add bug for triggering periodic
+	rechecks of playlists dependent on relative times, enhancement task for
+	having the presence in another playlist be a condition.
+
+	* src/smart-playlist.glade: remove height/width requests which makes the
+	window resize nicely when more conditions are added, but makes the window
+	pop up not centered.
+
+	* src/QueryBuilder.cs: Change "sorted by" back to "selected by", put 25 as
+	the default (though unused) value for the number of songs limit.
+
+	* src/QueryBuilderModel.cs: New IsAtLeast operation for future use with
+	ratings widgets.  Add hours as an options for relative date/time
+	conditions.  Add spacing = 5 to the hbox's used for date conditions. Add
+	duration as a condition field (though needs a better UI, as it currently
+	just has an entry where you can type the duration(s) in seconds to match
+	against).
+
+	* src/SmartPlaylist.cs: Make some logic a little more clear.
+
+2006-05-01  Gabriel Burt  <gabriel.burt@gmail.com>
+
 	* TODO: remove relative date enhancement, it's working.
 
 	* src/QueryBuilder.cs: Change "selected by" to "sorted by" in the UI.

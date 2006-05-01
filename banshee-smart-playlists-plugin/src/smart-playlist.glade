@@ -4,8 +4,8 @@
 <glade-interface>
 
 <widget class="GtkDialog" id="SmartPlaylistDialog">
-  <property name="width_request">560</property>
-  <property name="height_request">214</property>
+<!--  <property name="width_request">560</property>
+  <property name="height_request">214</property> -->
   <property name="visible">True</property>
   <property name="title" translatable="yes">Edit Smart Playlist</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>

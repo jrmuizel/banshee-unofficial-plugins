@@ -1,5 +1,9 @@
 2006-05-01  Gabriel Burt  <gabriel.burt@gmail.com>
 
+	* banshee-core.patch: empty now that patch is in CVS HEAD.
+
+2006-05-01  Gabriel Burt  <gabriel.burt@gmail.com>
+
 	* src/Makefile.am: install the dll.config and dll..mdb files as well.
 
 	* src/SmartPlaylists.dll.config: new file.

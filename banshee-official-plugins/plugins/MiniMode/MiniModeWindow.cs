@@ -34,21 +34,21 @@ namespace Banshee.Plugins.MiniMode
         private Glade.XML glade;
 
         private bool setup = false;
+        private bool miniMode = false;
+
         private bool Shown {
             get { return MiniModeWindow.Visible; }
-            set { if (value) { MiniModeWindow.Show(); } else { MiniModeWindow.Hide(); } }
+            set { MiniModeWindow.Visible = value; }
         }
-        private bool miniMode = false;
 
         public MiniMode()
         {
             glade = new Glade.XML(null, "minimode.glade", "MiniModeWindow", "banshee");
             glade.Autoconnect(this);
-            if(MiniModeWindow == null)
-                throw new Exception(); // This propagate Glade errors to Banshee's plugin framework
+
             IconThemeUtils.SetWindowIcon(MiniModeWindow);
             MiniModeWindow.DeleteEvent += delegate {
-                PlayerCore.UserInterface.Quit();
+                Globals.ActionManager["QuitAction"].Activate();
             };
             
             // Playback Buttons
@@ -95,7 +95,8 @@ namespace Banshee.Plugins.MiniMode
             coverArtThumbnail = new CoverArtThumbnail(90);
             Gdk.Pixbuf default_pixbuf = Banshee.Base.IconThemeUtils.LoadIcon("audio-x-generic", 128);
             if(default_pixbuf == null) {
-                default_pixbuf = new Gdk.Pixbuf(System.Reflection.Assembly.GetEntryAssembly(), "banshee-logo.png");   
+                default_pixbuf = new Gdk.Pixbuf(System.Reflection.Assembly.GetEntryAssembly(), 
+                    "banshee-logo.png");   
             }
             coverArtThumbnail.NoArtworkPixbuf = default_pixbuf;
             CoverBox.PackStart(coverArtThumbnail, false, false, 0);
@@ -125,7 +126,6 @@ namespace Banshee.Plugins.MiniMode
             repeat_toggle_button.Relief = ReliefStyle.None;
             repeat_toggle_button.ShowLabel = false;
             repeat_toggle_button.ShowAll();
-
             
             LowerButtonsBox.PackEnd(repeat_toggle_button, false, false, 0);
             LowerButtonsBox.PackEnd(shuffle_toggle_button, false, false, 0);
@@ -142,15 +142,12 @@ namespace Banshee.Plugins.MiniMode
             if (Shown)
                 return;
             if (!setup) {
-                // This is delayed to this method because we can't be sure that
-                // PlayerCore.UserInterface.Window != null on plugin init.
-                // Besides, this is useful only after the window is shown anyway.
-                PlayerCore.UserInterface.Window.Shown += TrayIconWorkaround;
+                InterfaceElements.MainWindow.Shown += TrayIconWorkaround;
                 setup = true;
             }
             sourceComboBox.UpdateSelectedSource();
             UpdateMetaDisplay();
-            PlayerCore.UserInterface.Window.Hide();
+            InterfaceElements.MainWindow.Hide();
             Shown = true;
             volumeButton.Volume = PlayerEngineCore.Volume;
         }
@@ -161,7 +158,7 @@ namespace Banshee.Plugins.MiniMode
             if (!Shown)
                 return;
             Shown = false;
-            PlayerCore.UserInterface.Window.Show();
+            InterfaceElements.MainWindow.Show();
         }
         
         public void Hide(object o, EventArgs a)
@@ -177,7 +174,7 @@ namespace Banshee.Plugins.MiniMode
                 // If we're not, then this is a show event from the tray
                 Shown = !Shown;
                 // In all cases, hide the main window
-                PlayerCore.UserInterface.Window.Hide();
+                InterfaceElements.MainWindow.Hide();
             }
         }
         
@@ -205,8 +202,7 @@ namespace Banshee.Plugins.MiniMode
                     OnPlayerEngineTick();
                     break;
                 case PlayerEngineEvent.StartOfStream:
-                    //seek_slider.CanSeek = PlayerEngineCore.CanSeek;
-                    seek_slider.CanSeek = true;
+                    seek_slider.CanSeek = PlayerEngineCore.CanSeek;
                     break;
                 case PlayerEngineEvent.Volume:
                     volumeButton.Volume = PlayerEngineCore.Volume;
@@ -268,5 +264,60 @@ namespace Banshee.Plugins.MiniMode
             }
         }
         
+    }
+
+    // TODO: Move to Banshee.Base in Core
+    public class RepeatNoneToggleState : ToggleState
+    {
+        public RepeatNoneToggleState()
+        {
+            Icon = new Gdk.Pixbuf(System.Reflection.Assembly.GetEntryAssembly(), 
+                "media-repeat-none.png");
+            Label = Catalog.GetString("Repeat None");
+        }
+    }
+
+    public class RepeatSingleToggleState : ToggleState
+    {
+        public RepeatSingleToggleState()
+        {
+            Icon = new Gdk.Pixbuf(System.Reflection.Assembly.GetEntryAssembly(), 
+                "media-repeat-single.png");
+            Label = Catalog.GetString("Repeat Single");
+        }
+    }
+
+    public class RepeatAllToggleState : ToggleState
+    {
+        public RepeatAllToggleState()
+        {
+            Icon = new Gdk.Pixbuf(System.Reflection.Assembly.GetEntryAssembly(), 
+                "media-repeat-all.png");
+            Label = Catalog.GetString("Repeat All");
+        }
+    }
+    
+    public class ShuffleEnabledToggleState : ToggleState
+    {
+        public ShuffleEnabledToggleState()
+        {
+            Icon = new Gdk.Pixbuf(System.Reflection.Assembly.GetEntryAssembly(), 
+                "media-playlist-shuffle.png");
+            Label = Catalog.GetString("Shuffle");
+            MatchActive = true;
+            MatchValue = true;
+        }
+    }
+    
+    public class ShuffleDisabledToggleState : ToggleState
+    {
+        public ShuffleDisabledToggleState()
+        {
+            Icon = new Gdk.Pixbuf(System.Reflection.Assembly.GetEntryAssembly(), 
+                "media-playlist-continuous.png");
+            Label = Catalog.GetString("Continuous");
+            MatchActive = true;
+            MatchValue = false;
+        }
     }
 }

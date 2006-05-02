@@ -1,5 +1,6 @@
-SUBDIRS =  \
-	po
+SUBDIRS = \
+	po    \
+	plugins
 
 EXTRA_DIST =            \
 	intltool-extract.in \

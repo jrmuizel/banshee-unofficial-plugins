@@ -139,6 +139,11 @@ dnl generated files
 AC_OUTPUT([
 Makefile
 po/Makefile.in
+plugins/Makefile
+plugins/MiniMode/Makefile
+plugins/Radio/Makefile
+plugins/Recommendation/Makefile
+plugins/SmartPlaylists/Makefile
 ])
 
 echo "  

@@ -9,7 +9,7 @@ SOURCES = \
 	$(srcdir)/StationStore.cs \
 	$(srcdir)/totem-plparser/*.cs
 
-plugindir = $(PLUGINDIR)
+plugindir = $(pluginsdir)
 plugin_SCRIPTS = $(ASSEMBLY)
 
 all: $(ASSEMBLY)

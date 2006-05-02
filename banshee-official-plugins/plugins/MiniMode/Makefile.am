@@ -1,13 +1,11 @@
-MCS_FLAGS = -debug -resource:minimode.glade,minimode.glade -r:/usr/lib/banshee/banshee.exe
-# This hack on depending on banshee's EXE should be changed to something more sane... but what?
-
+MCS_FLAGS = -debug -resource:minimode.glade,minimode.glade
 ASSEMBLY = MiniMode.dll
 SOURCES = \
 	$(srcdir)/MiniModePlugin.cs \
 	$(srcdir)/MiniModeWindow.cs \
 	$(srcdir)/SourceComboBox.cs
 
-plugindir = $(PLUGINDIR)
+plugindir = $(pluginsdir)
 plugin_SCRIPTS = $(ASSEMBLY)
 
 all: $(ASSEMBLY)

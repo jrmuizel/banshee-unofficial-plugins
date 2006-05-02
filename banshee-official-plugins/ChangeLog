@@ -1,4 +1,21 @@
 2006-05-02  Aaron Bockover  <aaron@abock.org>
 
+	* configure.ac: Added plugin Makefile outputs
+
+	* Makefile.am: Added plugins to SUBDIRS
+
+	* plugins/Makefile.am: Added with conditional SUBDIRS for plugins
+
+	* plugins/MiniMode/Makefile.am:
+	* plugins/Radio/Makefile.am:
+	* plugins/Recommendation/Makefile.am:
+	* plugins/SmartPlaylists/Makefile.am: Updated to work with new build
+	system (pluginsdir)
+
+	* plugins/MiniMode/MiniModeWindow.cs: Fixed to not rely on core Banshee
+	assembly, small code cleanup
+
+2006-05-02  Aaron Bockover  <aaron@abock.org>
+
 	* banshee-official-plugins: Initial import of skeleton build system
 

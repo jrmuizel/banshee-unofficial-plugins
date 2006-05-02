@@ -6,7 +6,7 @@ SOURCES = \
 MENU_RESOURCE = RecommendationMenu.xml
 ICON_RESOURCE = play.png
 
-plugindir = $(PLUGINDIR)
+plugindir = $(pluginsdir)
 plugin_SCRIPTS = $(ASSEMBLY)
 
 all: $(ASSEMBLY)

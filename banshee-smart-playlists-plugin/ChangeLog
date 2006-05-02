@@ -1,5 +1,11 @@
 2006-05-01  Gabriel Burt  <gabriel.burt@gmail.com>
 
+	* src/Makefile.am: install the dll.config and dll..mdb files as well.
+
+	* src/SmartPlaylists.dll.config: new file.
+
+2006-05-01  Gabriel Burt  <gabriel.burt@gmail.com>
+
 	* TODO: remove translatable strings bug, add bug for triggering periodic
 	rechecks of playlists dependent on relative times, enhancement task for
 	having the presence in another playlist be a condition.

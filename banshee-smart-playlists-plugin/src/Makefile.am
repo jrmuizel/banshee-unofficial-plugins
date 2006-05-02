@@ -13,7 +13,7 @@ SYSTEM_REFERENCES = \
 SYSTEM_REFERENCES_BUILD = $(addprefix -r:, $(SYSTEM_REFERENCES))
 
 plugindir = $(PLUGINDIR)
-plugin_SCRIPTS = $(ASSEMBLY)
+plugin_SCRIPTS = $(ASSEMBLY) $(ASSEMBLY).mdb $(ASSEMBLY).config
 
 all: $(ASSEMBLY)
 

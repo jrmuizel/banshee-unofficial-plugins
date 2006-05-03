@@ -1,3 +1,34 @@
+2006-05-03  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/SmartPlaylistPlugin.cs: Moved to Plugin.cs
+	* plugins/SmartPlaylists/SmartPlaylistEditor.cs: Moved to Editor.cs
+
+	* plugins/SmartPlaylists/QueryBuilder.cs: Start the query builder with the
+	matchCheckBox checked by default.  Add some widget shortcuts.
+
+	* plugins/SmartPlaylists/smart-playlist.glade: Add widget shortcut for
+	name entry, make editor window not resizable.
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Add Most/Least Recently
+	Played as a "selected by" option, make number spin entries width = 4 so
+	year and other number fit.  Add minutes as option for relative date
+	conditions.  Use Catalog.GetString for condition field names and add Path,
+	Year, and rename Number of Plays to Play Count.
+
+	* plugins/SmartPlaylists/Plugin.cs:
+	* plugins/SmartPlaylists/Editor.cs:
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Instead of wrapping a
+	PlaylistSource, subclass Banshee.Sources.Source, which allows for editing
+	via the "Source Properties" menu option, a custom icon, disallowing 
+	adding/removing tracks.  Also, use our own SmartPlaylistEntries table
+	instead of the PlaylistEntries table. Actually showing the tracks in a smart
+	playlist is currently broken/flakey.
+
+	* plugins/SmartPlaylists/Makefile.am: Update with renamed source files,
+	add icon to resources list.
+
+	* plugins/SmartPlaylists/source-smart-playlist.png: New file.
+
 2006-05-02  Gabriel Burt  <gabriel.burt@gmail.com>
 
 	* plugins/SmartPlaylists/QueryBuilder.cs: Move standard operators and

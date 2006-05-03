@@ -10,18 +10,20 @@ using Banshee.Database;
  
 namespace Banshee.Plugins.SmartPlaylists
 {
-    public class SmartPlaylistsPlugin : Banshee.Plugins.Plugin
+    public class Plugin : Banshee.Plugins.Plugin
     {
-        protected override string ConfigurationName { get { return "SmartPlaylists"; } }
-        public override string DisplayName { get { return Catalog.GetString("Smart Playlists"); } }
-
-        private Hashtable playlists = new Hashtable ();
+        private ArrayList playlists = new ArrayList ();
 
         private Menu musicMenu;
         private MenuItem addItem;
 
-        private Menu sourceMenu;
-        private MenuItem editItem;
+        protected override string ConfigurationName {
+            get { return "SmartPlaylists"; }
+        }
+
+        public override string DisplayName {
+            get { return Catalog.GetString("Smart Playlists"); }
+        }
         
         public override string Description {
             get {
@@ -46,29 +48,50 @@ namespace Banshee.Plugins.SmartPlaylists
             if(!Globals.Library.Db.TableExists("SmartPlaylists")) {
                 Globals.Library.Db.Execute(@"
                     CREATE TABLE SmartPlaylists (
-                        PlaylistID INTEGER PRIMARY KEY,
-                        Condition TEXT,
-                        OrderBy TEXT,
+                        PlaylistID  INTEGER PRIMARY KEY,
+                        Name        TEXT NOT NULL,
+                        Condition   TEXT,
+                        OrderBy     TEXT,
                         LimitNumber TEXT)
                 ");
             }
 
-            // Listen for deleted playlists and new/changed songs
+            if(!Globals.Library.Db.TableExists("SmartPlaylistEntries")) {
+                Globals.Library.Db.Execute(@"
+                    CREATE TABLE SmartPlaylistEntries (
+                        EntryID     INTEGER PRIMARY KEY,
+                        PlaylistID  INTEGER NOT NULL,
+                        TrackID     INTEGER NOT NULL)
+                ");
+            }
+
+            // Load existing smart playlists
+            IDataReader reader = Globals.Library.Db.Query(String.Format(
+                "SELECT PlaylistID, Name, Condition, OrderBy, LimitNumber FROM SmartPlaylists"
+            ));
+
+            while (reader.Read()) {
+                SmartPlaylist.LoadFromReader (reader);
+            }
+
+            reader.Dispose();
+
+            // Listen for added/removed source and added/changed songs
             SourceManager.SourceAdded += HandleSourceAdded;
             SourceManager.SourceRemoved += HandleSourceRemoved;
             Globals.Library.Reloaded += HandleLibraryReloaded;
             Globals.Library.TrackAdded += HandleTrackAdded;
             Globals.Library.TrackRemoved += HandleTrackRemoved;
 
-
             // Add a menu option to create a new smart playlist
             musicMenu = (Globals.ActionManager.GetWidget ("/MainMenu/MusicMenu") as MenuItem).Submenu as Menu;
             addItem = new MenuItem (Catalog.GetString("New Smart Playlist..."));
             addItem.Activated += delegate {
-                SmartPlaylistEditor ed = new SmartPlaylistEditor ();
+                SmartPlaylists.Editor ed = new SmartPlaylists.Editor ();
                 ed.RunDialog ();
             };
-            // Insert right after the New Playlist item
+
+            // Insert it right after the New Playlist item
             musicMenu.Insert (addItem, 2);
             addItem.Show ();
 
@@ -81,21 +104,11 @@ namespace Banshee.Plugins.SmartPlaylists
 
             Globals.ActionManager.PlaylistActions.GetAction ("EditSmartPlaylistAction").Visible = true;
             Globals.ActionManager.PlaylistActions.GetAction ("EditSmartPlaylistAction").Sensitive = true;*/
-
-            sourceMenu = Globals.ActionManager.GetWidget ("/SourceMenu") as Menu;
-            editItem = new MenuItem (Catalog.GetString("Edit Smart Playlist..."));
-            editItem.Activated += delegate {
-                SmartPlaylistEditor ed = new SmartPlaylistEditor (playlists[SourceManager.ActiveSource] as SmartPlaylist);
-                ed.RunDialog ();
-            };
-            sourceMenu.Insert (editItem, 2);
-            editItem.Show ();
         }
 
         protected override void PluginDispose()
         {
             musicMenu.Remove(addItem);
-            sourceMenu.Remove(editItem);
         }
 
         private void HandleLibraryReloaded (object sender, EventArgs args)
@@ -118,42 +131,20 @@ namespace Banshee.Plugins.SmartPlaylists
 
         private void HandleSourceAdded (SourceEventArgs args)
         {
-            PlaylistSource playlist = args.Source as PlaylistSource;
-
+            SmartPlaylist playlist = args.Source as SmartPlaylist;
             if (playlist == null)
                 return;
 
-            IDataReader reader = Globals.Library.Db.Query(String.Format(
-                "SELECT Condition, OrderBy, LimitNumber FROM SmartPlaylists WHERE PlaylistID = {0}",
-                playlist.Id
-            ));
-
-            if (!reader.Read())
-                return;
-
-            string condition = reader[0] as string;
-            string order_by = reader[1] as string;
-            string limit_number = reader[2] as string;
-
-            reader.Dispose();
-
-            //Console.WriteLine ("Adding smart playlist {0}, id {1}", playlist.Name, playlist.Id);
-            playlists.Add(playlist, new SmartPlaylist(playlist, condition, order_by, limit_number));
+            playlists.Add(playlist);
         }
 
         private void HandleSourceRemoved (SourceEventArgs args)
         {
-            PlaylistSource source = args.Source as PlaylistSource;
-            if (source == null)
+            SmartPlaylist playlist = args.Source as SmartPlaylist;
+            if (playlist == null)
                 return;
 
-            playlists.Remove (source);
-
-            // Delete it from the database
-            Globals.Library.Db.Execute(String.Format(
-                "DELETE FROM SmartPlaylists WHERE PlaylistId = {0}",
-                source.Id
-            ));
+            playlists.Remove (playlist);
         }
 
         private void HandleTrackAdded (object sender, LibraryTrackAddedArgs args)
@@ -178,7 +169,7 @@ namespace Banshee.Plugins.SmartPlaylists
 
         private void CheckTrack (TrackInfo track)
         {
-            foreach (SmartPlaylist playlist in playlists.Values)
+            foreach (SmartPlaylist playlist in playlists)
                 playlist.Check (track);
         }
     }

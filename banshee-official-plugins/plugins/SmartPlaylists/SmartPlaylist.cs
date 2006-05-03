@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Collections;
 using Mono.Unix;
  
 using Banshee.Base;
@@ -9,31 +10,55 @@ using Sql;
  
 namespace Banshee.Plugins.SmartPlaylists
 {
-    /*public class SmartPlaylistSource : PlaylistSource
+    public class SmartPlaylist : Banshee.Sources.Source
     {
-        public override bool IsUserEditable
-    }*/
-
-    public class SmartPlaylist
-    {
-        public string Name {
-            get {
-                return Source.Name;
-            }
-            set {
-                Source.Rename (value);
-            }
-        }
+        private ArrayList tracks = new ArrayList();
 
         public string Condition;
         public string OrderBy;
         public string LimitNumber;
 
-        public PlaylistSource Source;
+        private string OrderAndLimit {
+            get {
+                if (OrderBy == null || OrderBy == "")
+                    return null;
 
-        public SmartPlaylist(PlaylistSource source, string condition, string order_by, string limit_number)
+                return String.Format ("ORDER BY {0} LIMIT {1}", OrderBy, LimitNumber);
+            }
+        }
+
+        private int id;
+        public int Id {
+            get { return id; }
+            set { id = value; }
+        }
+
+        public override int Count {
+            get {
+                return tracks.Count;
+            }
+        }
+        
+        public override IEnumerable Tracks {
+            get {
+                return tracks;
+            }
+        }
+
+        public override Gdk.Pixbuf Icon {
+            get {
+                return Gdk.Pixbuf.LoadFromResource("source-smart-playlist.png");
+            }
+        }
+
+        public override object TracksMutex {
+            get { return tracks.SyncRoot; }
+        }
+
+        public SmartPlaylist(int id, string name, string condition, string order_by, string limit_number) : base(name, 100)
         {
-            Source = source;
+            Id = id;
+            Name = name;
             Condition = condition;
             OrderBy = order_by;
             LimitNumber = limit_number;
@@ -41,56 +66,51 @@ namespace Banshee.Plugins.SmartPlaylists
             RefreshMembers();
         }
 
-        public SmartPlaylist(string name, string condition, string order_by, string limit_number)
+        public SmartPlaylist(string name, string condition, string order_by, string limit_number) : base(name, 100)
         {
-            Source = new PlaylistSource ();
-
             Name = name;
             Condition = condition;
             OrderBy = order_by;
             LimitNumber = limit_number;
 
             Statement query = new Insert("SmartPlaylists", true,
-                "PlaylistID", Source.Id,
+                "Name", Name,
                 "Condition", Condition,
                 "OrderBy", OrderBy,
                 "LimitNumber", LimitNumber
             );
 
-            Globals.Library.Db.Execute(query);
+            Id = Globals.Library.Db.Execute(query);
         }
 
         public void RefreshMembers()
         {
-            if (Condition == null)
-                return;
-
             //Console.WriteLine ("Refreshing smart playlist {0} with condition {1}", Source.Name, Condition);
 
             // Delete existing tracks
             Globals.Library.Db.Execute(String.Format(
-                "DELETE FROM PlaylistEntries WHERE PlaylistId = {0}", Source.Id
+                "DELETE FROM SmartPlaylistEntries WHERE PlaylistId = {0}", Id
             ));
 
             // Add matching tracks
             Globals.Library.Db.Execute(String.Format(
-                @"INSERT INTO PlaylistEntries 
+                @"INSERT INTO SmartPlaylistEntries 
                     SELECT NULL as EntryId, {0} as PlaylistId, TrackId FROM Tracks {1} {2}",
-                    Source.Id, PrependCondition("WHERE"), OrderAndLimit
+                    Id, PrependCondition("WHERE"), OrderAndLimit
             ));
 
-            Source.ClearTracks();
+            tracks.Clear();
 
             // Load the new tracks in
             IDataReader reader = Globals.Library.Db.Query(String.Format(
                 @"SELECT TrackID 
-                    FROM PlaylistEntries
+                    FROM SmartPlaylistEntries
                     WHERE PlaylistID = '{0}'",
-                    Source.Id
+                    Id
             ));
             
             while(reader.Read())
-                Source.AddTrack (Globals.Library.Tracks[Convert.ToInt32(reader[0])] as TrackInfo);
+                AddTrack (Globals.Library.Tracks[Convert.ToInt32(reader[0])] as TrackInfo);
             
             reader.Dispose();
         }
@@ -108,13 +128,13 @@ namespace Banshee.Plugins.SmartPlaylists
                 ));
 
                 if (id == null || (int) id != track.TrackId) {
-                    if (Source.ContainsTrack (track)) {
+                    if (tracks.Contains (track)) {
                         // If it didn't match and is in the playlist, remove it
-                        Source.RemoveTrack(track);
+                        RemoveTrack (track);
                     }
-                } else if(! Source.ContainsTrack (track)) {
+                } else if(! tracks.Contains (track)) {
                     // If it matched and isn't already in the playlist
-                    Source.AddTrack (track);
+                    AddTrack (track);
                 }
             } else {
                 // If this SmartPlaylist has an OrderAndLimit clause things are more complicated as there are a limited
@@ -124,39 +144,39 @@ namespace Banshee.Plugins.SmartPlaylists
                 // See if there is a track that was in the SmartPlaylist that now shouldn't be because
                 // this track we are checking displaced it.
                 IDataReader reader = Globals.Library.Db.Query(String.Format(
-                    "SELECT TrackId FROM PlaylistEntries WHERE PlaylistID = {0} " +
+                    "SELECT TrackId FROM SmartPlaylistEntries WHERE PlaylistID = {0} " +
                     "AND TrackId NOT IN (SELECT TrackID FROM Tracks {1} {2})",
-                    Source.Id, PrependCondition("WHERE"), OrderAndLimit
+                    Id, PrependCondition("WHERE"), OrderAndLimit
                 ));
 
                 while (reader.Read())
-                    Source.RemoveTrack (Globals.Library.Tracks[Convert.ToInt32(reader[0])] as TrackInfo);
+                    RemoveTrack  (Globals.Library.Tracks[Convert.ToInt32(reader[0])] as TrackInfo);
 
                 reader.Dispose();
 
                 // Remove those tracks from the database
                 Globals.Library.Db.Execute(String.Format(
-                    "DELETE FROM PlaylistEntries WHERE PlaylistID = {0} " +
+                    "DELETE FROM SmartPlaylistEntries WHERE PlaylistID = {0} " +
                     "AND TrackId NOT IN (SELECT TrackID FROM Tracks {1} {2})",
-                    Source.Id, PrependCondition("WHERE"), OrderAndLimit
+                    Id, PrependCondition("WHERE"), OrderAndLimit
                 ));
 
                 // If we are already a member of this smart playlist
-                if (Source.ContainsTrack (track))
+                if (tracks.Contains (track))
                     return;
 
                 // We have removed tracks no longer in this smart playlist, now need to add
                 // tracks that replace those that were removed (if any)
                 IDataReader new_tracks = Globals.Library.Db.Query(String.Format(
                     @"SELECT TrackId FROM Tracks 
-                        WHERE TrackID NOT IN (SELECT TrackID FROM PlaylistEntries WHERE PlaylistID = {0})
+                        WHERE TrackID NOT IN (SELECT TrackID FROM SmartPlaylistEntries WHERE PlaylistID = {0})
                         AND TrackID IN (SELECT TrackID FROM Tracks {1} {2})",
-                    Source.Id, PrependCondition("WHERE"), OrderAndLimit
+                    Id, PrependCondition("WHERE"), OrderAndLimit
                 ));
 
                 bool have_new_tracks = false;
                 while (new_tracks.Read()) {
-                    Source.AddTrack (Globals.Library.Tracks[Convert.ToInt32(new_tracks[0])] as TrackInfo);
+                    AddTrack (Globals.Library.Tracks[Convert.ToInt32(new_tracks[0])] as TrackInfo);
                     have_new_tracks = true;
                 }
 
@@ -164,25 +184,49 @@ namespace Banshee.Plugins.SmartPlaylists
 
                 if (have_new_tracks) {
                     Globals.Library.Db.Execute(String.Format(
-                        @"INSERT INTO PlaylistEntries 
+                        @"INSERT INTO SmartPlaylistEntries 
                             SELECT NULL as EntryId, {0} as PlaylistId, TrackId FROM Tracks 
-                            WHERE TrackID NOT IN (SELECT TrackID FROM PlaylistEntries WHERE PlaylistID = {0})
+                            WHERE TrackID NOT IN (SELECT TrackID FROM SmartPlaylistEntries WHERE PlaylistID = {0})
                             AND TrackID IN (SELECT TrackID FROM Tracks {1} {2})",
-                        Source.Id, PrependCondition("WHERE"), OrderAndLimit
+                        Id, PrependCondition("WHERE"), OrderAndLimit
                     ));
                 }
             }
+
+            OnUpdated();
         }
 
-        public void Commit ()
+        public override void Commit ()
         {
             Statement query = new Update("SmartPlaylists",
+                "Name", Name,
                 "Condition", Condition,
                 "OrderBy", OrderBy,
-                "LimitNumber", LimitNumber) +
-                new Where(new Compare("PlaylistID", Op.EqualTo, Source.Id));
+                "LimitNumber", LimitNumber) + 
+                new Where(new Compare("PlaylistID", Op.EqualTo, Id));
 
             Globals.Library.Db.Execute(query);
+
+            // Make sure the tracks are up to date
+            Globals.Library.Db.Execute(String.Format(
+                @"DELETE FROM SmartPlaylistEntries
+                    WHERE PlaylistID = '{0}'",
+                    id
+            ));
+
+            
+            lock(TracksMutex) {
+                foreach(TrackInfo track in Tracks) {
+                    if(track == null || track.TrackId <= 0)
+                        continue;
+                        
+                    Globals.Library.Db.Execute(String.Format(
+                        @"INSERT INTO SmartPlaylistEntries 
+                            VALUES (NULL, '{0}', '{1}')",
+                            id, track.TrackId
+                    ));
+                }
+            }
         }
 
         private string PrependCondition (string with)
@@ -190,13 +234,111 @@ namespace Banshee.Plugins.SmartPlaylists
             return (Condition == null) ? " " : with + " " + Condition;
         }
 
-        private string OrderAndLimit {
-            get {
-                if (OrderBy == null || OrderBy == "")
-                    return null;
+        public override void ShowPropertiesDialog()
+        {
+            SmartPlaylists.Editor ed = new SmartPlaylists.Editor (this);
+            ed.RunDialog ();
+        }
 
-                return String.Format ("ORDER BY {0} LIMIT {1}", OrderBy, LimitNumber);
+        public override void Reorder(TrackInfo track, int position)
+        {
+            RemoveTrack(track);
+            lock(TracksMutex) {
+                tracks.Insert(position, track);
             }
+        }
+
+        private void OnLibraryTrackRemoved(object o, LibraryTrackRemovedArgs args)
+        {
+            if(args.Track != null) {
+                if(tracks.Contains(args.Track)) {
+                    RemoveTrack(args.Track);
+                    
+                    if(Count == 0) {
+                        Delete();
+                    } else {
+                        Commit();
+                    }
+                }
+                
+                return;
+            } else if(args.Tracks == null) {
+                return;
+            }
+            
+            int removed_count = 0;
+            
+            foreach(TrackInfo track in args.Tracks) {
+                if(tracks.Contains(track)) {
+                    RemoveTrack (track);
+                    removed_count++;
+                }
+            }
+            
+            if(removed_count > 0) {
+                if(Count == 0) {
+                    Delete();
+                } else {
+                    Commit();
+                }
+            }
+        }
+
+        public override void AddTrack(TrackInfo track)
+        {
+            if(track is LibraryTrackInfo) {
+                lock(TracksMutex) {
+                    tracks.Add(track);
+                }
+                OnUpdated();
+            }
+        }
+        
+        public override void RemoveTrack(TrackInfo track)
+        {
+            lock(TracksMutex) {
+                RemoveTrack (track);
+            }
+        }
+
+        protected override bool UpdateName(string oldName, string newName)
+        {
+            if (oldName == newName)
+                return false;
+
+            Name = newName;
+            Commit();
+            return true;
+        }
+
+        public override void Delete()
+        {
+            Globals.Library.Db.Execute(String.Format(
+                @"DELETE FROM SmartPlaylistEntries
+                    WHERE PlaylistID = '{0}'",
+                    id
+            ));
+            
+            Globals.Library.Db.Execute(String.Format(
+                @"DELETE FROM SmartPlaylists
+                    WHERE PlaylistID = '{0}'",
+                    id
+            ));
+            
+            SourceManager.RemoveSource(this);
+        }
+
+        public static void LoadFromReader (IDataReader reader)
+        {
+            int id = (int) reader[0];
+            string name = reader[1] as string;
+            string condition = reader[2] as string;
+            string order_by = reader[3] as string;
+            string limit_number = reader[4] as string;
+
+            SmartPlaylist playlist = new SmartPlaylist (id, name, condition, order_by, limit_number);
+            SourceManager.AddSource(playlist);
+            playlist.RefreshMembers();
         }
     }
 }

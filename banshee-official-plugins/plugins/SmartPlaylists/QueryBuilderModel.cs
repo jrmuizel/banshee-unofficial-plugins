@@ -45,13 +45,15 @@ namespace Banshee
 		public static string Album = Catalog.GetString("Album");
 		public static string Artist = Catalog.GetString("Artist");
 		public static string Genre = Catalog.GetString("Genre");
-		public static string SongName = Catalog.GetString("Song Name");
+		public static string SongName = Catalog.GetString("Title");
 		public static string HighestRating = Catalog.GetString("Highest Rating");
 		public static string LowestRating = Catalog.GetString("Lowest Rating");
 		public static string LeastOftenPlayed = Catalog.GetString("Least Often Played");
 		public static string MostOftenPlayed = Catalog.GetString("Most Often Played");
 		public static string MostRecentlyAdded = Catalog.GetString("Most Recently Added");
 		public static string LeastRecentlyAdded = Catalog.GetString("Least Recently Added");
+		public static string MostRecentlyPlayed = Catalog.GetString("Most Recently Played");
+		public static string LeastRecentlyPlayed = Catalog.GetString("Least Recently Played");
 	}
 	
 	public sealed class QueryLimitCriteria
@@ -151,7 +153,7 @@ namespace Banshee
 					spinButton1 = new SpinButton(Int32.MinValue, Int32.MaxValue, 1.0);
                     spinButton1.Value = 1.0;
                     spinButton1.Digits = 0;
-                    spinButton1.WidthChars = 2;
+                    spinButton1.WidthChars = 4;
 					spinButton1.Show();
 				}
 				
@@ -173,7 +175,7 @@ namespace Banshee
 					spinButton2 = new SpinButton(Int32.MinValue, Int32.MaxValue, 1.0);
                     spinButton2.Value = 1.0;
                     spinButton2.Digits = 0;
-                    spinButton2.WidthChars = 2;
+                    spinButton2.WidthChars = 4;
 					spinButton2.Show();
 				}
 				
@@ -202,7 +204,7 @@ namespace Banshee
 	{
         // Multiplied by the spinButton inputs to determine the equivalent number of seconds the user
         // has entered.
-        private static int [] date_multipliers = {3600, 24*3600, 7*24*3600, 30*24*3600, 365*24*3600};
+        private static int [] date_multipliers = {60, 3600, 24*3600, 7*24*3600, 30*24*3600, 365*24*3600};
 		private SpinButton spinButton1, spinButton2;
 		private ComboBox comboBox1, comboBox2;
 		private HBox hBox1, hBox2;
@@ -213,6 +215,7 @@ namespace Banshee
         {
 			ComboBox box = ComboBox.NewText();
 
+            box.AppendText(Catalog.GetString("Minutes"));
             box.AppendText(Catalog.GetString("Hours"));
             box.AppendText(Catalog.GetString("Days"));
             box.AppendText(Catalog.GetString("Weeks"));
@@ -384,16 +387,17 @@ namespace Banshee
 		
 		public TracksQueryModel() : base()
 		{
-			AddField("Artist", "Artist", typeof(QueryMatchString));
-			AddField("Title", "Title", typeof(QueryMatchString));
-			AddField("Album", "AlbumTitle", typeof(QueryMatchString));
-			AddField("Genre", "Genre", typeof(QueryMatchString));
-			AddField("Date Added", "DateAddedStamp", typeof(QueryMatchDate));
-			AddField("Last Played", "LastPlayedStamp", typeof(QueryMatchDate));
-			AddField("Duration", "Duration", typeof(QueryMatchInteger));
-			AddField("Number of Plays", "NumberOfPlays", typeof(QueryMatchInteger));
-			AddField("Rating", "Rating", typeof(QueryMatchInteger));
-			//AddField("Year", "Year", typeof(QueryMatchInteger));
+			AddField(Catalog.GetString("Artist"), "Artist", typeof(QueryMatchString));
+			AddField(Catalog.GetString("Title"), "Title", typeof(QueryMatchString));
+			AddField(Catalog.GetString("Album"), "AlbumTitle", typeof(QueryMatchString));
+			AddField(Catalog.GetString("Genre"), "Genre", typeof(QueryMatchString));
+			AddField(Catalog.GetString("Date Added"), "DateAddedStamp", typeof(QueryMatchDate));
+			AddField(Catalog.GetString("Last Played"), "LastPlayedStamp", typeof(QueryMatchDate));
+			AddField(Catalog.GetString("Duration"), "Duration", typeof(QueryMatchInteger));
+			AddField(Catalog.GetString("Play Count"), "NumberOfPlays", typeof(QueryMatchInteger));
+			AddField(Catalog.GetString("Rating"), "Rating", typeof(QueryMatchInteger));
+			AddField(Catalog.GetString("Path"), "Uri", typeof(QueryMatchString));
+			AddField(Catalog.GetString("Year"), "Year", typeof(QueryMatchInteger));
 			
 			AddOrder(QuerySelectedByCriteria.Random, "RAND()");
 			AddOrder(QuerySelectedByCriteria.Album, "Album");
@@ -402,10 +406,12 @@ namespace Banshee
 			AddOrder(QuerySelectedByCriteria.SongName, "Title");
 			AddOrder(QuerySelectedByCriteria.HighestRating, "Rating DESC");
 			AddOrder(QuerySelectedByCriteria.LowestRating, "Rating ASC");
-			AddOrder(QuerySelectedByCriteria.LeastOftenPlayed, "NumberOfPlays ASC");
 			AddOrder(QuerySelectedByCriteria.MostOftenPlayed, "NumberOfPlays DESC");
+			AddOrder(QuerySelectedByCriteria.LeastOftenPlayed, "NumberOfPlays ASC");
 			AddOrder(QuerySelectedByCriteria.MostRecentlyAdded, "DateAddedStamp DESC");
 			AddOrder(QuerySelectedByCriteria.LeastRecentlyAdded, "DateAddedStamp ASC");
+			AddOrder(QuerySelectedByCriteria.MostRecentlyPlayed, "LastPlayedStamp DESC");
+			AddOrder(QuerySelectedByCriteria.LeastRecentlyPlayed, "LastPlayedStamp ASC");
 		}
 
 		public override string [] LimitCriteria 

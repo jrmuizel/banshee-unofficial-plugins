@@ -8,7 +8,7 @@ using Banshee.Sources;
  
 namespace Banshee.Plugins.SmartPlaylists
 {
-    public class SmartPlaylistEditor
+    public class Editor
     {
         private const string dialog_name = "SmartPlaylistDialog";
         private Glade.XML glade;
@@ -24,9 +24,11 @@ namespace Banshee.Plugins.SmartPlaylists
         [Widget] private Gtk.Button ok_button;
         [Widget] private Gtk.Label already_in_use_label;
 
-        public SmartPlaylistEditor (SmartPlaylist playlist) : this ()
+        public Editor (SmartPlaylist playlist) : this ()
         {
             this.playlist = playlist;
+
+            dialog.Title = Catalog.GetString ("Edit Smart Playlist");
 
             name_entry.Text = playlist.Name;
             Condition = playlist.Condition;
@@ -34,13 +36,15 @@ namespace Banshee.Plugins.SmartPlaylists
             LimitNumber = playlist.LimitNumber;
         }
 	
-        public SmartPlaylistEditor ()
+        public Editor ()
         {
             glade = new Glade.XML(null, "smart-playlist.glade", dialog_name, "banshee");
             glade.Autoconnect(this);
 
-            dialog = (Dialog)glade.GetWidget(dialog_name);
+            dialog = (Dialog) glade.GetWidget(dialog_name);
             Banshee.Base.IconThemeUtils.SetWindowIcon(dialog);
+
+            dialog.Title = Catalog.GetString ("New Smart Playlist");
 
             // Add the QueryBuilder widget
 			model = new TracksQueryModel();
@@ -57,6 +61,7 @@ namespace Banshee.Plugins.SmartPlaylists
 
         public void RunDialog()
         {
+            dialog.ShowAll();
 			ResponseType response = (ResponseType) dialog.Run ();
 
             //int w = -1, h = -1;
@@ -73,14 +78,16 @@ namespace Banshee.Plugins.SmartPlaylists
                     //Console.WriteLine ("Name = {0}, Cond = {1}, OrderAndLimit = {2}", name, condition, order_by, limit_number);
                     if (playlist == null) {
                         playlist = new SmartPlaylist(name, condition, order_by, limit_number);
-                        playlist.Source.Commit();
-                        SourceManager.AddSource(playlist.Source);
+                        playlist.Commit();
+                        SourceManager.AddSource(playlist);
+                        playlist.RefreshMembers();
                     } else {
-                        playlist.Name = name;
+                        //playlist.Rename(name);
                         playlist.Condition = condition;
                         playlist.OrderBy = order_by;
                         playlist.LimitNumber = limit_number;
                         playlist.Commit();
+                        playlist.RefreshMembers();
                     }
                 });
             }
@@ -154,7 +161,7 @@ namespace Banshee.Plugins.SmartPlaylists
             }
             
             set {
-                if (value != "0")
+                if (value != null && value != "" && value != "0")
                     builder.LimitNumber = value;
             }
         }

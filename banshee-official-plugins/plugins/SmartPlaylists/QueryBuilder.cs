@@ -70,10 +70,10 @@ namespace Banshee
             MatchCollection mc = System.Text.RegularExpressions.Regex.Matches (condition, regex);
             if (mc != null && mc.Count > 0 && mc[0].Groups.Count > 0) {
                 column = mc[0].Groups[1].Captures[0].Value;
-                value1 = mc[0].Groups[2].Captures[0].Value;
+                value1 = mc[0].Groups[2].Captures[0].Value.Trim(new char[] {'\''});
 
                 if (mc[0].Groups.Count == 4)
-                    value2 = mc[0].Groups[3].Captures[0].Value;
+                    value2 = mc[0].Groups[3].Captures[0].Value.Trim(new char[] {'\''});
                 else
                     value2 = null;
 
@@ -214,7 +214,7 @@ namespace Banshee
         );
 	}
 	
-	public class ComboBoxUtil
+	public static class ComboBoxUtil
 	{
 		public static string GetActiveString(ComboBox box)
 		{
@@ -279,7 +279,7 @@ namespace Banshee
 			a.Show();
 			box.PackStart(a, false, false, 0);
 			
-			Label label = new Label(" to ");
+			Label label = new Label(Catalog.GetString("to"));
 			label.Show();
 			box.PackStart(label, false, false, 0);
 			
@@ -630,8 +630,9 @@ namespace Banshee
 			HBox matchHeader = new HBox();
 			matchHeader.Show();
 			
-			matchCheckBox = new CheckButton(Catalog.GetString("Match"));
+			matchCheckBox = new CheckButton(Catalog.GetString("_Match"));
 			matchCheckBox.Show();
+            matchCheckBox.Active = true;
 			matchCheckBox.Toggled += OnMatchCheckBoxToggled;
 			matchHeader.PackStart(matchCheckBox, false, false, 0);
 			
@@ -649,8 +650,8 @@ namespace Banshee
 			
 			matchHeader.Spacing = 5;
 			
-			matchCheckBox.Active = false;
-			OnMatchCheckBoxToggled(matchCheckBox, null);
+			//matchCheckBox.Active = false;
+			//OnMatchCheckBoxToggled(matchCheckBox, null);
 			
 			return matchHeader;
 		}
@@ -661,7 +662,7 @@ namespace Banshee
 			limitFooter.Show();
 			limitFooter.Spacing = 5;
 			
-			limitCheckBox = new CheckButton(Catalog.GetString("Limit to"));
+			limitCheckBox = new CheckButton(Catalog.GetString("_Limit to"));
 			limitCheckBox.Show();
 			limitCheckBox.Toggled += OnLimitCheckBoxToggled;
 			limitFooter.PackStart(limitCheckBox, false, false, 0);
@@ -764,7 +765,7 @@ namespace Banshee
                     bool found_filter = false;
                     foreach (QueryFilter filter in QueryFilter.Filters) {
                         if (filter.Operator.MatchesCondition (condition, out col, out v1, out v2)) {
-                            Console.WriteLine ("{0} is col: {1} with v1: {2} v2: {3}", condition, col, v1, v2);
+                            //Console.WriteLine ("{0} is col: {1} with v1: {2} v2: {3}", condition, col, v1, v2);
 
                             // The first row is already created
                             if (count > 0)

@@ -1,8 +1,8 @@
-MCS_FLAGS = -debug -resource:smart-playlist.glade,smart-playlist.glade
+MCS_FLAGS = -debug -resource:smart-playlist.glade,smart-playlist.glade -resource:source-smart-playlist.png,source-smart-playlist.png
 ASSEMBLY = SmartPlaylists.dll
 SOURCES = \
-	$(srcdir)/SmartPlaylistsPlugin.cs \
-	$(srcdir)/SmartPlaylistEditor.cs \
+	$(srcdir)/Plugin.cs \
+	$(srcdir)/Editor.cs \
 	$(srcdir)/SmartPlaylist.cs \
 	$(srcdir)/QueryBuilder.cs \
 	$(srcdir)/QueryBuilderModel.cs

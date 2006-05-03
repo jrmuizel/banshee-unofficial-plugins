@@ -106,7 +106,7 @@ namespace Banshee.Plugins.SmartPlaylists
 
                 if (res != null && (playlist == null || String.Compare (playlist.Name, name_entry.Text, true) != 0)) {
                     ok_button.Sensitive = false;
-                    already_in_use_label.Markup = "<small>" + Mono.Unix.Catalog.GetString ("This name is already in use") + "</small>";
+                    already_in_use_label.Markup = "<small>" + Catalog.GetString ("This name is already in use") + "</small>";
                 } else {
                     ok_button.Sensitive = true;
                     already_in_use_label.Markup = "";
@@ -148,13 +148,14 @@ namespace Banshee.Plugins.SmartPlaylists
 
         private string LimitNumber {
             get {
-                return (builder.Limit && builder.LimitNumber != "0")
+                return (builder.Limit)
                     ? builder.LimitNumber
                     : "0";
             }
             
             set {
-                builder.LimitNumber = value;
+                if (value != "0")
+                    builder.LimitNumber = value;
             }
         }
     }

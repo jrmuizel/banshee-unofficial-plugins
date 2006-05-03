@@ -1,3 +1,19 @@
+2006-05-02  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/QueryBuilder.cs: Move standard operators and
+	filters here from QueryBuilderModel.cs.  Modify QueryFilter (was
+	QueryFilterOperation) to work with multiple-widget inputs (like an entry
+	with a dropdown).  Make the input widgets not expand to fill, and pack the
+	+/- buttons at the end so they stay right-aligned.  Use Catalog.GetString
+	for all GUI strings.  And finally, added necessary logic to reconstruct
+	edit dialog from saved Smart Playlists.
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Changes to make QueryMatch
+	objects work with multiple-widget inputs.
+
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Modify Insert statement so that
+	null values get inserted as nulls, not empty strings.
+
 2006-05-02  Aaron Bockover  <aaron@abock.org>
 
 	* configure.ac: Added plugin Makefile outputs

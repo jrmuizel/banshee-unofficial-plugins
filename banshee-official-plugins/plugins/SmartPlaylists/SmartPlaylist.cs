@@ -50,14 +50,14 @@ namespace Banshee.Plugins.SmartPlaylists
             OrderBy = order_by;
             LimitNumber = limit_number;
 
-            Globals.Library.Db.Execute(String.Format(
-                @"INSERT INTO SmartPlaylists (PlaylistID, Condition, OrderBy, LimitNumber)
-                VALUES ({0}, '{1}', '{2}', '{3}')",
-                Source.Id,
-                Sql.Statement.EscapeQuotes(Condition),
-                Sql.Statement.EscapeQuotes(OrderBy),
-                LimitNumber
-            ));
+            Statement query = new Insert("SmartPlaylists", true,
+                "PlaylistID", Source.Id,
+                "Condition", Condition,
+                "OrderBy", OrderBy,
+                "LimitNumber", LimitNumber
+            );
+
+            Globals.Library.Db.Execute(query);
         }
 
         public void RefreshMembers()
@@ -179,9 +179,8 @@ namespace Banshee.Plugins.SmartPlaylists
             Statement query = new Update("SmartPlaylists",
                 "Condition", Condition,
                 "OrderBy", OrderBy,
-                "LimitNumber", LimitNumber +
-                new Where(new Compare("PlaylistID", Op.EqualTo, Source.Id))
-            );
+                "LimitNumber", LimitNumber) +
+                new Where(new Compare("PlaylistID", Op.EqualTo, Source.Id));
 
             Globals.Library.Db.Execute(query);
         }

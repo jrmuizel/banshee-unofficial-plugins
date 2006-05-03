@@ -32,10 +32,187 @@ using GLib;
 using Gtk;
 using Sql;
 using System.Collections;
+using Mono.Unix;
+
+using System.Text.RegularExpressions;
 
 namespace Banshee
 {
-	// --- Query Filter Operations --- 
+    public sealed class QueryOperator
+    {
+        private string format;
+
+        public string Format {
+            get { return format; }
+        }
+
+        private QueryOperator (string format)
+        {
+            this.format = format;
+        }
+
+        public string FormatValues (bool text, string column, string value1, string value2)
+        {
+            if (text)
+                return String.Format (format, "'", column, value1, value2);
+            else
+                return String.Format (format, "", column, value1, value2);
+        }
+
+        public bool MatchesCondition (string condition, out string column, out string value1, out string value2) {
+            string regex = String.Format(format.Replace("(", "\\(").Replace(")", "\\)"),
+                    "'?",   // ignore the single quotes if they exist
+                    "(.*)", // match the column
+                    "(.*)", // match the first value
+                    "(.*)"  // match the second value
+            );
+
+            MatchCollection mc = System.Text.RegularExpressions.Regex.Matches (condition, regex);
+            if (mc != null && mc.Count > 0 && mc[0].Groups.Count > 0) {
+                column = mc[0].Groups[1].Captures[0].Value;
+                value1 = mc[0].Groups[2].Captures[0].Value;
+
+                if (mc[0].Groups.Count == 4)
+                    value2 = mc[0].Groups[3].Captures[0].Value;
+                else
+                    value2 = null;
+
+                return true;
+            } else {
+                column = value1 = value2 = null;
+                return false;
+            }
+        }
+
+        public static QueryOperator EQ         = new QueryOperator("{1} = {0}{2}{0}");
+        public static QueryOperator NotEQ      = new QueryOperator("{1} != {0}{2}{0}");
+        public static QueryOperator Between    = new QueryOperator("{1} BETWEEN {0}{2}{0} AND {0}{3}{0}");
+        public static QueryOperator LT         = new QueryOperator("{1} < {0}{2}{0}");
+        public static QueryOperator GT         = new QueryOperator("{1} > {0}{2}{0}");
+        public static QueryOperator GTE        = new QueryOperator("{1} >= {0}{2}{0}");
+
+        // Note, the following lower() calls are necessary b/c of a sqlite bug which makes the LIKE
+        // command case sensitive with certain characters.
+        public static QueryOperator Like       = new QueryOperator("lower({1}) LIKE '%{2}%'");
+        public static QueryOperator NotLike    = new QueryOperator("lower({1}) NOT LIKE '%{2}%'");
+        public static QueryOperator StartsWith = new QueryOperator("lower({1}) LIKE '{2}%'");
+        public static QueryOperator EndsWith   = new QueryOperator("lower({1}) LIKE '%{2}'");
+    }
+
+	public sealed class QueryFilter
+	{
+        private string name;
+        private QueryOperator op;
+
+        public string Name {
+            get { return name; }
+        }
+
+        public QueryOperator Operator {
+            get { return op; }
+        }
+
+        private static Hashtable filters = new Hashtable();
+        private static ArrayList filters_array = new ArrayList();
+        public static QueryFilter GetByName (string name)
+        {
+            return filters[name] as QueryFilter;
+        }
+
+        public static ArrayList Filters {
+            get { return filters_array; }
+        }
+
+        private static QueryFilter NewOperation (string name, QueryOperator op)
+        {
+            QueryFilter filter = new QueryFilter(name, op);
+            filters[name] = filter;
+            filters_array.Add (filter);
+            return filter;
+        }
+
+        private QueryFilter (string name, QueryOperator op)
+        {
+            this.name = name;
+            this.op = op;
+        }
+
+
+		public static QueryFilter Is = NewOperation (
+            Catalog.GetString ("is"),
+            QueryOperator.EQ
+        );
+
+		public static QueryFilter IsNot = NewOperation (
+            Catalog.GetString ("is not"),
+            QueryOperator.NotEQ
+        );
+
+		public static QueryFilter IsLessThan = NewOperation (
+            Catalog.GetString ("is less than"),
+            QueryOperator.LT
+        );
+
+		public static QueryFilter IsGreaterThan = NewOperation (
+            Catalog.GetString ("is greater than"),
+            QueryOperator.GT
+        );
+
+		public static QueryFilter MoreThan = NewOperation (
+            Catalog.GetString ("more than"),
+            QueryOperator.GT
+        );
+
+		public static QueryFilter LessThan = NewOperation (
+            Catalog.GetString ("less than"),
+            QueryOperator.LT
+        );
+
+		public static QueryFilter IsAtLeast = NewOperation (
+            Catalog.GetString ("is at least"),
+            QueryOperator.GTE
+        );
+
+		public static QueryFilter Contains = NewOperation (
+            Catalog.GetString ("contains"),
+            QueryOperator.Like
+        );
+
+		public static QueryFilter DoesNotContain = NewOperation (
+            Catalog.GetString ("does not contain"),
+            QueryOperator.NotLike
+        );
+
+		public static QueryFilter StartsWith = NewOperation (
+            Catalog.GetString ("starts with"),
+            QueryOperator.StartsWith
+        );
+
+		public static QueryFilter EndsWith = NewOperation (
+            Catalog.GetString ("ends with"),
+            QueryOperator.EndsWith
+        );
+
+		public static QueryFilter IsBefore = NewOperation (
+            Catalog.GetString ("is before"),
+            QueryOperator.LT
+        );
+
+		public static QueryFilter IsAfter = NewOperation (
+            Catalog.GetString ("is after"),
+            QueryOperator.GT
+        );
+
+		public static QueryFilter IsInTheRange = NewOperation (
+            Catalog.GetString ("is between"),
+            QueryOperator.Between
+        );
+
+		public static QueryFilter Between = NewOperation (
+            Catalog.GetString ("between"),
+            QueryOperator.Between
+        );
+	}
 	
 	public class ComboBoxUtil
 	{
@@ -44,12 +221,25 @@ namespace Banshee
 			TreeIter iter;
 			if(!box.GetActiveIter(out iter))
 				return null;
+
 				
 			return (string)box.Model.GetValue(iter, 0);
 		}
 
-		public static void SetActiveString(ComboBox box, string name)
+		public static bool SetActiveString(ComboBox box, string val)
 		{
+			TreeIter iter;
+            if (!box.Model.GetIterFirst(out iter))
+                return false;
+
+            do {
+                if (box.Model.GetValue (iter, 0) as string == val) {
+                    box.SetActiveIter(iter);
+                    return true;
+                }
+            } while (box.Model.IterNext (ref iter));
+
+            return false;
 		}
 	}
 
@@ -57,34 +247,44 @@ namespace Banshee
 
 	public abstract class QueryMatch
 	{
-		public string Column, Filter, Value1, Value2;
+		public string Column, Filter;
+
+        public abstract string Value1 {
+            get; set;
+        }
+
+        public abstract string Value2 {
+            get; set;
+        }
 		
 		public abstract string FilterValues();
-		public abstract void UpdateValues();
 		
 		public abstract Widget DisplayWidget 
 		{
 			get;
 		}
 		
-		public abstract QueryFilterOperation [] ValidOperations
-		{
+		public abstract QueryFilter [] ValidFilters {
 			get;
 		}
+
+		public virtual string SqlColumn {
+			get { return Column; }
+        }
 		
 		protected static HBox BuildRangeBox(Widget a, Widget b)
 		{
 			HBox box = new HBox();
 			box.Spacing = 5;
 			a.Show();
-			box.PackStart(a, true, true, 0);
+			box.PackStart(a, false, false, 0);
 			
 			Label label = new Label(" to ");
 			label.Show();
 			box.PackStart(label, false, false, 0);
 			
 			b.Show();
-			box.PackStart(b, true, true, 0);
+			box.PackStart(b, false, false, 0);
 			
 			box.Show();
 			
@@ -141,10 +341,20 @@ namespace Banshee
 		{
 			return (string)orderMap[name];
 		}
+
+		public string GetOrderName(string map)
+		{
+			return (string)mapOrder[map];
+		}
 		
 		public string GetColumn(string name)
 		{
 			return (string)columnLookup[name];
+		}
+
+		public string GetName(string col)
+		{
+			return (string)nameLookup[col];
 		}
 		
 		public abstract string [] LimitCriteria 
@@ -195,7 +405,7 @@ namespace Banshee
 			
 			widgetBox = new VBox();
 			widgetBox.Show();
-			PackStart(widgetBox, true, true, 0);
+			PackStart(widgetBox, false, false, 0);
 			
 			foreach(string fieldName in model) {
 				fieldBox.AppendText(fieldName);
@@ -208,14 +418,14 @@ namespace Banshee
 			buttonRemove.Show();
 			buttonRemove.Clicked += OnButtonRemoveClicked;
 			imageRemove.Show();
-			PackStart(buttonRemove, false, false, 0);
+			PackEnd(buttonRemove, false, false, 0);
 			
 			Image imageAdd = new Image("gtk-add", IconSize.Button);
 			buttonAdd = new Button(imageAdd);
 			buttonAdd.Show();
 			buttonAdd.Clicked += OnButtonAddClicked;
 			imageAdd.Show();
-			PackStart(buttonAdd, false, false, 0);
+			PackEnd(buttonAdd, false, false, 0);
 			
 			canDelete = true;
 		}
@@ -240,8 +450,8 @@ namespace Banshee
 			while(opBox.Model.IterNChildren() > 0)
 				opBox.RemoveText(0);
 
-			foreach(QueryFilterOperation op in match.ValidOperations)
-				opBox.AppendText(op.Name);
+			foreach(QueryFilter filter in match.ValidFilters)
+				opBox.AppendText(filter.Name);
 			
 			TreeIter opIterFirst;
 			if(!opBox.Model.IterNthChild(out opIterFirst, 0))
@@ -298,8 +508,7 @@ namespace Banshee
 			}
 		}
 		
-		public string Query
-		{
+		public string Query {
 			get {
 				match.Column = 
 					model.GetColumn(ComboBoxUtil.GetActiveString(fieldBox));
@@ -307,6 +516,24 @@ namespace Banshee
 				return match.FilterValues();
 			}
 		}
+
+		public ComboBox FieldBox {
+            get {
+                return fieldBox;
+            }
+        }
+
+		public ComboBox FilterBox {
+            get {
+                return opBox;
+            }
+        }
+
+		public QueryMatch Match {
+            get {
+                return match;
+            }
+        }
 	}
 
 
@@ -352,7 +579,7 @@ namespace Banshee
 			string query = null;
 			for(int i = 0, n = Children.Length; i < n; i++) {
 				QueryBuilderMatchRow match = Children[i] as QueryBuilderMatchRow;
-				query += " " + match.Query + " ";
+				query += " (" + match.Query + ") ";
 				if(i < n - 1)
 					query += join;
 			}
@@ -403,19 +630,19 @@ namespace Banshee
 			HBox matchHeader = new HBox();
 			matchHeader.Show();
 			
-			matchCheckBox = new CheckButton("Match");
+			matchCheckBox = new CheckButton(Catalog.GetString("Match"));
 			matchCheckBox.Show();
 			matchCheckBox.Toggled += OnMatchCheckBoxToggled;
 			matchHeader.PackStart(matchCheckBox, false, false, 0);
 			
 			matchLogicCombo = ComboBox.NewText();
-			matchLogicCombo.AppendText("all");
-			matchLogicCombo.AppendText("any");
+			matchLogicCombo.AppendText(Catalog.GetString("all"));
+			matchLogicCombo.AppendText(Catalog.GetString("any"));
 			matchLogicCombo.Show();
 			matchLogicCombo.Active = 0;
 			matchHeader.PackStart(matchLogicCombo, false, false, 0);
 			
-			matchLabelFollowing = new Label("of the following:");
+			matchLabelFollowing = new Label(Catalog.GetString("of the following:"));
 			matchLabelFollowing.Show();
 			matchLabelFollowing.Xalign = 0.0f;
 			matchHeader.PackStart(matchLabelFollowing, true, true, 0);
@@ -434,7 +661,7 @@ namespace Banshee
 			limitFooter.Show();
 			limitFooter.Spacing = 5;
 			
-			limitCheckBox = new CheckButton("Limit to");
+			limitCheckBox = new CheckButton(Catalog.GetString("Limit to"));
 			limitCheckBox.Show();
 			limitCheckBox.Toggled += OnLimitCheckBoxToggled;
 			limitFooter.PackStart(limitCheckBox, false, false, 0);
@@ -451,7 +678,7 @@ namespace Banshee
 			limitComboBox.Active = 0;
 			limitFooter.PackStart(limitComboBox, false, false, 0);
 				
-			Label orderLabel = new Label("selected by");
+			Label orderLabel = new Label(Catalog.GetString("selected by"));
 			orderLabel.Show();
 			limitFooter.PackStart(orderLabel, false, false, 0);
 			
@@ -497,14 +724,108 @@ namespace Banshee
 		{
 			get {
 				return matchesBox.BuildQuery(
-					ComboBoxUtil.GetActiveString(matchLogicCombo) == "any" ?
-					"OR" :
-					"AND"
+                    matchLogicCombo.Active == 0 ?
+					"AND" :
+					"OR"
 				);
 			}
 
             set {
-                Console.WriteLine ("Reconstructing MatchQuery from {0}", value);
+                if (value == null || value == String.Empty) {
+                    matchCheckBox.Active = false;
+                    return;
+                }
+
+                // Check for ANDs or ORs and split into conditions as needed
+                string [] conditions;
+                if (value.IndexOf(") AND (") != -1) {
+                    matchLogicCombo.Active = 0;
+                    conditions = System.Text.RegularExpressions.Regex.Split (value, "\\) AND \\(");
+                    
+                } else if (value.IndexOf(") OR (") != -1) {
+                    matchLogicCombo.Active = 1;
+                    conditions = System.Text.RegularExpressions.Regex.Split (value, "\\) OR \\(");
+                } else {
+                    conditions = new string [] {value};
+                }
+
+                // Remove the first space and paren from the first condition
+                conditions[0] = conditions[0].Remove(0, 2);
+
+                // Remove the last paren and space from the last condition
+                conditions[conditions.Length-1] = conditions[conditions.Length-1].TrimEnd(new char[] {')', ' '});
+
+                matchCheckBox.Active = true;
+
+                int count = 0;
+                foreach (string condition in conditions) {
+                    // Add a new row for this condition
+                    string col, v1, v2;
+                    bool found_filter = false;
+                    foreach (QueryFilter filter in QueryFilter.Filters) {
+                        if (filter.Operator.MatchesCondition (condition, out col, out v1, out v2)) {
+                            Console.WriteLine ("{0} is col: {1} with v1: {2} v2: {3}", condition, col, v1, v2);
+
+                            // The first row is already created
+                            if (count > 0)
+                                matchesBox.CreateRow(true);
+
+                            // Set the column
+                            QueryBuilderMatchRow row = matchesBox.Children[count] as QueryBuilderMatchRow;
+                            if (!ComboBoxUtil.SetActiveString (row.FieldBox, model.GetName(col))) {
+                                if (col.IndexOf ("current_timestamp") == -1) {
+                                    Console.WriteLine ("Found col that can't place");
+                                    break;
+                                } else {
+                                    bool found = false;
+                                    foreach (string field in model) {
+                                        if (col.IndexOf (model.GetColumn (field)) != -1) {
+                                            ComboBoxUtil.SetActiveString (row.FieldBox, field);
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (!found) {
+                                        Console.WriteLine ("Found col that can't place");
+                                        break;
+                                    }
+                                }
+                            }
+
+                            // Make sure we're on the right filter (as multiple filters can have the same operator)
+                            QueryFilter real_filter = filter;
+                            if (System.Array.IndexOf (row.Match.ValidFilters, filter) == -1) {
+                                foreach (QueryFilter f in row.Match.ValidFilters) {
+                                    if (f.Operator == filter.Operator) {
+                                        real_filter = f;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            // Set the operator
+                            if (!ComboBoxUtil.SetActiveString (row.FilterBox, real_filter.Name)) {
+                                Console.WriteLine ("Found filter that can't place");
+                                break;
+                            }
+
+                            // Set the values
+                            row.Match.Value1 = v1;
+                            row.Match.Value2 = v2;
+
+                            found_filter = true;
+                            break;
+                        }
+                    }
+
+                    // TODO should push error here instead
+                    if (!found_filter)
+                        Console.WriteLine ("Couldn't find appropriate filter for condition: {0}", condition);
+                    count++;
+
+                    matchesBox.UpdateCanDelete();
+                }
             }
 		}
 		
@@ -531,7 +852,8 @@ namespace Banshee
 			}
 
 			set {
-                Console.WriteLine ("Reconstructing limitCriteria from {0}", value);
+                // We only support limited by the number of songs rightnow
+                //Console.WriteLine ("Reconstructing limitCriteria from {0}", value);
 				//ComboBoxUtil.SetActiveString(limitComboBox, value);
 			}
 		}
@@ -550,12 +872,15 @@ namespace Banshee
 		public string OrderBy
 		{
 			get {
-				return 
-				model.GetOrder(ComboBoxUtil.GetActiveString(orderComboBox));
+				return model.GetOrder(ComboBoxUtil.GetActiveString(orderComboBox));
 			}
 
             set {
-                Console.WriteLine ("Setting orderComboBox from {0}", value);
+                if (value == null)
+                    return;
+
+                Console.WriteLine ("Setting orderComboBox to {0}", model.GetOrderName(value));
+                ComboBoxUtil.SetActiveString(orderComboBox, model.GetOrderName(value));
             }
 		}
 	}

@@ -38,101 +38,6 @@ using Banshee.Widgets;
 
 namespace Banshee
 {
-	public sealed class QueryFilterOperation
-	{
-        private string name, format;
-        public string Name {
-            get { return name; }
-        }
-
-        private static Hashtable filters = new Hashtable();
-        public static QueryFilterOperation GetByName (string name)
-        {
-            return filters[name] as QueryFilterOperation;
-        }
-
-        private static QueryFilterOperation NewOperation (string name, string format)
-        {
-            QueryFilterOperation op = new QueryFilterOperation(name, format);
-            filters[name] = op;
-            return op;
-        }
-
-        private QueryFilterOperation (string name, string format)
-        {
-            this.name = name;
-            this.format = format;
-        }
-
-        public string FilterSql (bool text, string column, string value1, string value2)
-        {
-            if (text)
-                return String.Format (format, "'", column, value1, value2);
-            else
-                return String.Format (format, "", column, value1, value2);
-        }
-
-
-		public static QueryFilterOperation Is = NewOperation (
-            Catalog.GetString ("is"),
-            "{1} = {0}{2}{0}"
-        );
-
-		public static QueryFilterOperation IsNot = NewOperation (
-            Catalog.GetString ("is not"),
-            "{1} != {0}{2}{0}"
-        );
-
-		public static QueryFilterOperation IsLessThan = NewOperation (
-            Catalog.GetString ("is less than"),
-            "{1} < {0}{2}{0}"
-        );
-
-		public static QueryFilterOperation IsGreaterThan = NewOperation (
-            Catalog.GetString ("is greater than"),
-            "{1} > {0}{2}{0}"
-        );
-
-		public static QueryFilterOperation IsAtLeast = NewOperation (
-            Catalog.GetString ("is at least"),
-            "{1} >= {0}{2}{0}"
-        );
-
-		public static QueryFilterOperation Contains = NewOperation (
-            Catalog.GetString ("contains"),
-            "{1} LIKE '%{2}%'"
-        );
-
-		public static QueryFilterOperation DoesNotContain = NewOperation (
-            Catalog.GetString ("does not contain"),
-            "{1} NOT LIKE '%{2}%'"
-        );
-
-		public static QueryFilterOperation StartsWith = NewOperation (
-            Catalog.GetString ("starts with"),
-            "{1} LIKE '{2}%'"
-        );
-
-		public static QueryFilterOperation EndsWith = NewOperation (
-            Catalog.GetString ("ends with"),
-            "{1} LIKE '%{2}'"
-        );
-
-		public static QueryFilterOperation IsBefore = NewOperation (
-            Catalog.GetString ("is before"),
-            "{1} < {0}{2}{0}"
-        );
-
-		public static QueryFilterOperation IsAfter = NewOperation (
-            Catalog.GetString ("is after"),
-            "{1} > {0}{2}{0}"
-        );
-
-		public static QueryFilterOperation IsInTheRange = NewOperation (
-            Catalog.GetString ("is between"),
-            "({1} BETWEEN {0}{2}{0} AND {0}{3}{0})"
-        );
-	}
 	
 	public sealed class QuerySelectedByCriteria
 	{
@@ -164,25 +69,22 @@ namespace Banshee
 
 		public override string FilterValues()
 		{
-			UpdateValues();
-			
-			string val1 = Statement.EscapeQuotes(Value1.ToLower());
-            string col = String.Format("lower({0})", Column);
-			
-            QueryFilterOperation op = QueryFilterOperation.GetByName (Filter);
-            if (op == null)
+            QueryFilter filter = QueryFilter.GetByName (Filter);
+            if (filter == null)
                 return null;
             else
-                return op.FilterSql (true, col, val1, null);
+                return filter.Operator.FormatValues (true, Column, Statement.EscapeQuotes(Value1.ToLower()), null);
 		}
 		
-		public override void UpdateValues()
-		{
-			if(dispEntry == null)
-				throw new Exception("Display Widget was never Set");
-				
-			Value1 = dispEntry.Text;
-		}
+        public override string Value1 {
+            get { return dispEntry.Text; }
+            set { dispEntry.Text = value; }
+        }
+
+        public override string Value2 {
+            get { return null; }
+            set {}
+        }
 		
 		public override Widget DisplayWidget
 		{
@@ -196,19 +98,16 @@ namespace Banshee
 			}
 		}
 		
-		public override QueryFilterOperation [] ValidOperations
-		{
-			get {	
-				QueryFilterOperation [] validOperations = {
-					QueryFilterOperation.Is,
-					QueryFilterOperation.IsNot,
-					QueryFilterOperation.Contains,
-					QueryFilterOperation.DoesNotContain,
-					QueryFilterOperation.StartsWith,
-					QueryFilterOperation.EndsWith
+		public override QueryFilter [] ValidFilters {
+			get {
+				return new QueryFilter [] {
+					QueryFilter.Is,
+					QueryFilter.IsNot,
+					QueryFilter.Contains,
+					QueryFilter.DoesNotContain,
+					QueryFilter.StartsWith,
+					QueryFilter.EndsWith
 				};
-
-				return validOperations;
 			}
 		}
 	}
@@ -222,25 +121,28 @@ namespace Banshee
 
 		public override string FilterValues()
 		{
-			UpdateValues();
-
-            QueryFilterOperation op = QueryFilterOperation.GetByName (Filter);
-            if (op == null)
+            QueryFilter filter = QueryFilter.GetByName (Filter);
+            if (filter == null)
                 return null;
             else
-                return op.FilterSql (false, Column, Value1, Value2);
+                return filter.Operator.FormatValues (false, Column, Value1, Value2);
 		}
 		
-		public override void UpdateValues()
-		{
-			if(spinButton1 == null)
-				throw new Exception("Display Widget was never Set");
-				
-			Value1 = spinButton1.ValueAsInt.ToString ();
-			
-			if(spinButton2 != null)
-			    Value2 = spinButton2.ValueAsInt.ToString ();
-		}
+        public override string Value1 {
+            get { return spinButton1.ValueAsInt.ToString (); }
+            set { spinButton1.Value = Double.Parse(value); }
+        }
+
+        public override string Value2 {
+            get { return (spinButton2 == null) ? null : spinButton2.ValueAsInt.ToString (); }
+            set {
+                if (value == null)
+                    return;
+
+                spinButton2.Value = Double.Parse(value);
+            }
+
+        }
 		
 		public override Widget DisplayWidget
 		{
@@ -253,7 +155,7 @@ namespace Banshee
 					spinButton1.Show();
 				}
 				
-				if(QueryFilterOperation.GetByName(Filter) != QueryFilterOperation.IsInTheRange) {
+				if(QueryFilter.GetByName(Filter).Operator != QueryOperator.Between) {
 					if(rangeBox != null && spinButton2 != null) {
 						rangeBox.Remove(spinButton1);
 						rangeBox.Remove(spinButton2);
@@ -280,18 +182,15 @@ namespace Banshee
 			}
 		}
 		
-		public override QueryFilterOperation [] ValidOperations
-		{
+		public override QueryFilter [] ValidFilters {
 			get {	
-				QueryFilterOperation [] validOperations = {
-					QueryFilterOperation.Is,
-					QueryFilterOperation.IsNot,
-					QueryFilterOperation.IsLessThan,
-					QueryFilterOperation.IsGreaterThan,
-					QueryFilterOperation.IsInTheRange
+				return new QueryFilter [] {
+					QueryFilter.Is,
+					QueryFilter.IsNot,
+					QueryFilter.IsLessThan,
+					QueryFilter.IsGreaterThan,
+					QueryFilter.IsInTheRange
 				};
-
-				return validOperations;
 			}
 		}
 	}
@@ -327,28 +226,69 @@ namespace Banshee
 
 		public override string FilterValues()
 		{
-			UpdateValues();
-		
 			string pv = Statement.EscapeQuotes(Value1);
             string pv2 = (spinButton2 == null) ? null : Statement.EscapeQuotes(Value2);
 
-            QueryFilterOperation op = QueryFilterOperation.GetByName (Filter);
-            if (op == null)
+            QueryFilter filter = QueryFilter.GetByName (Filter);
+            if (filter == null)
                 return null;
             else
-                return op.FilterSql (false, String.Format("(strftime(\"%s\", current_timestamp) - {0})", Column), pv, pv2);
+                return filter.Operator.FormatValues (false, SqlColumn, pv, pv2);
 		}
-		
-		public override void UpdateValues()
-		{
-			if(spinButton1 == null)
-				throw new Exception("Display Widget was never Set");
-				
-			Value1 = (date_multipliers [comboBox1.Active] * spinButton1.ValueAsInt).ToString();
 
-			if(spinButton2 != null)
-                Value2 = (date_multipliers [comboBox2.Active] * spinButton2.ValueAsInt).ToString();
-		}
+        public override string SqlColumn {
+            get { return String.Format("(strftime(\"%s\", current_timestamp) - {0})", Column); }
+        }
+		
+        public override string Value1 {
+            get { return (comboBox1 == null) ? null : (date_multipliers [comboBox1.Active] * spinButton1.ValueAsInt).ToString(); }
+            set {
+                if (value == null)
+                    return;
+
+                int val = Int32.Parse (value);
+
+                int i = 1;
+                for (i = 1; i < date_multipliers.Length - 1; i++) {
+                    if (val < date_multipliers[i]) {
+                        comboBox1.Active = i - 1;
+                        break;
+                    }
+
+                }
+
+                if (i == date_multipliers.Length - 1) {
+                    comboBox1.Active = i;
+                }
+
+                spinButton1.Value = (double) (val / date_multipliers[comboBox1.Active]);
+            }
+        }
+
+        public override string Value2 {
+            get { return (comboBox2 == null) ? null : (date_multipliers [comboBox2.Active] * spinButton2.ValueAsInt).ToString(); }
+            set {
+                if (value == null)
+                    return;
+
+                int val = Int32.Parse (value);
+
+                int i = 1;
+                for (i = 1; i < date_multipliers.Length - 1; i++) {
+                    if (val < date_multipliers[i]) {
+                        comboBox2.Active = i - 1;
+                        break;
+                    }
+
+                }
+
+                if (i == date_multipliers.Length - 1) {
+                    comboBox2.Active = i;
+                }
+
+                spinButton2.Value = (double) (val / date_multipliers[comboBox2.Active]);
+            }
+        }
 		
 		public override Widget DisplayWidget
 		{
@@ -370,7 +310,7 @@ namespace Banshee
                     hBox1.ShowAll();
 				}
 				
-				if(QueryFilterOperation.GetByName(Filter) != QueryFilterOperation.IsInTheRange) {
+				if(QueryFilter.GetByName(Filter).Operator != QueryOperator.Between) {
 					if(rangeBox != null && spinButton2 != null) {
 						rangeBox.Remove(hBox1);
 						rangeBox.Remove(hBox2);
@@ -424,19 +364,16 @@ namespace Banshee
 			}
 		}
 		
-		public override QueryFilterOperation [] ValidOperations
-		{
+		public override QueryFilter [] ValidFilters {
 			get {	
-				QueryFilterOperation [] validOperations = {
-                    // To get these two working need to not check against the exact second but rather round to a full day
-					//QueryFilterOperation.Is,
-					//QueryFilterOperation.IsNot,
-					QueryFilterOperation.IsGreaterThan,
-					QueryFilterOperation.IsLessThan,
-					QueryFilterOperation.IsInTheRange
+				return new QueryFilter [] {
+                    // To get these two working need to not check against the exact second but +/- 12*3600 seconds
+					//QueryFilter.Is,
+					//QueryFilter.IsNot,
+					QueryFilter.MoreThan,
+					QueryFilter.LessThan,
+					QueryFilter.Between
 				};
-
-				return validOperations;
 			}
 		}
 	}

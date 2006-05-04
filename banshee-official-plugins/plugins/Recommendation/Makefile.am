@@ -12,7 +12,7 @@ plugin_SCRIPTS = $(ASSEMBLY)
 all: $(ASSEMBLY)
 
 $(ASSEMBLY): $(SOURCES)
-	$(MCS) $(MCS_FLAGS) -out:$(ASSEMBLY) -target:library -resource:$(srcdir)/$(ICON_RESOURCE),$(ICON_RESOURCE) -resource:$(srcdir)/$(MENU_RESOURCE),$(MENU_RESOURCE) $(BANSHEE_LIBS) $(SOURCES)
+	$(MCS) $(MCS_FLAGS) -out:$(ASSEMBLY) -target:library -resource:$(srcdir)/$(ICON_RESOURCE),$(ICON_RESOURCE) -resource:$(srcdir)/$(MENU_RESOURCE),$(MENU_RESOURCE) $(BANSHEE_LIBS) $(SOURCES) -r:System.Web
 
 EXTRA_DIST = $(SOURCES) $(MENU_RESOURCE)
 CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb 

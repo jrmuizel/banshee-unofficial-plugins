@@ -1,5 +1,12 @@
 2006-05-03  Gabriel Burt  <gabriel.burt@gmail.com>
 
+	* plugins/Recommendation/Makefile.am: Added reference to System.Web
+
+	* plugins/Recommendation/RecommendationPane.cs: Encode the artist before
+	using in URLs. (BGO #340511)
+
+2006-05-03  Gabriel Burt  <gabriel.burt@gmail.com>
+
 	* plugins/SmartPlaylists/SmartPlaylistPlugin.cs: Moved to Plugin.cs
 	* plugins/SmartPlaylists/SmartPlaylistEditor.cs: Moved to Editor.cs
 

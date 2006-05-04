@@ -128,9 +128,11 @@ namespace Banshee.Plugins.Recommendation
 
 			// FIXME: Error handling	
 			ThreadAssist.Spawn(delegate {
+                string encoded_artist = System.Web.HttpUtility.UrlEncode(artist);
+
 				// Fetch data for "similar" artists.
 				XmlDocument artists_xml_data = new XmlDocument ();
-				artists_xml_data.LoadXml (RequestContent (String.Format (AUDIOSCROBBLER_SIMILAR_URL, artist)));
+				artists_xml_data.LoadXml (RequestContent (String.Format (AUDIOSCROBBLER_SIMILAR_URL, encoded_artist)));
 				XmlNodeList artists_xml_list = artists_xml_data.SelectNodes ("/similarartists/artist");
 
 				// Cache artists images (here in the spawned thread)
@@ -141,7 +143,7 @@ namespace Banshee.Plugins.Recommendation
 					
 				// Fetch data for top tracks
 				XmlDocument tracks_xml_data = new XmlDocument ();
-				tracks_xml_data.LoadXml (RequestContent (String.Format (AUDIOSCROBBLER_TOP_TRACKS_URL, artist)));
+				tracks_xml_data.LoadXml (RequestContent (String.Format (AUDIOSCROBBLER_TOP_TRACKS_URL, encoded_artist)));
 				XmlNodeList tracks_xml_list = tracks_xml_data.SelectNodes ("/mostknowntracks/track");					
 				
 				// Try to match top tracks with the users's library
@@ -160,7 +162,7 @@ namespace Banshee.Plugins.Recommendation
 				
 				// Fetch data for top albums
 				XmlDocument albums_xml_data = new XmlDocument ();
-				albums_xml_data.LoadXml (RequestContent (String.Format (AUDIOSCROBBLER_TOP_ALBUMS_URL, artist)));
+				albums_xml_data.LoadXml (RequestContent (String.Format (AUDIOSCROBBLER_TOP_ALBUMS_URL, encoded_artist)));
 				XmlNodeList albums_xml_list = albums_xml_data.SelectNodes ("/topalbums/album");
 				
 				if (artists_xml_list.Count < 1 && tracks_xml_list.Count < 1 && albums_xml_list.Count < 1)

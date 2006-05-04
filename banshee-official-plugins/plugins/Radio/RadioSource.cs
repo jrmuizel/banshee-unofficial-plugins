@@ -42,7 +42,11 @@ namespace Banshee.Plugins.Radio
         public RadioTrackInfo(Station station, string uri) : base()
         {
             Title = station.Title;
+#if BANSHEE_0_10
+            Uri = new Uri(uri);
+#else
             Uri = new SafeUri(uri);
+#endif
         }
     }
 

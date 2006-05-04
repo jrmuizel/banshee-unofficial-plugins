@@ -3,7 +3,7 @@ AC_INIT(README)
 AC_CANONICAL_SYSTEM
 AC_PREREQ(2.13)
 
-VERSION=0.10.10
+VERSION=0.11.0
 ASM_VERSION="$VERSION.*"
 
 AM_INIT_AUTOMAKE(banshee-official-plugins, $VERSION)
@@ -61,6 +61,8 @@ AC_SUBST(MCS)
 AC_SUBST(GMCS)
 AC_SUBST(MONO)
 
+MCS_FLAGS="-debug"
+
 dnl gtk-sharp, other CLR deps
 GTKSHARP_REQUIRED=2.8
 PKG_CHECK_MODULES(GTKSHARP,
@@ -72,8 +74,19 @@ PKG_CHECK_MODULES(GTKSHARP,
 AC_SUBST(GTKSHARP_LIBS)
 
 dnl Banshee deps
-PKG_CHECK_MODULES(BANSHEE, banshee >= 0.10.9)
+PKG_CHECK_MODULES(BANSHEE, banshee >= 0.10.10)
 AC_SUBST(BANSHEE_LIBS)
+
+if test "x`$PKG_CONFIG --variable=pluginapi banshee`" = "x2"; then
+	banshee_0_10="no"
+	AM_CONDITIONAL(BANSHEE_0_10, false)
+else
+	banshee_0_10="yes"
+	MCS_FLAGS="$MCS_FLAGS -define:BANSHEE_0_10"
+	AM_CONDITIONAL(BANSHEE_0_10, true)
+fi
+
+AC_SUBST(MCS_FLAGS)
 
 dnl Banshee Plugins Path
 
@@ -120,9 +133,17 @@ if test "x$enable_recommendation" = "xyes"; then
 fi
 
 AC_ARG_ENABLE(smart-playlists, AC_HELP_STRING(--disable-smart-playlists, [Do not build smart playlists plugin]), enable_smart_playlists=no, enable_smart_playlists=yes)
-AM_CONDITIONAL(ENABLE_SMART_PLAYLISTS, test "x$enable_smart_playlists" = "xyes")
+
 if test "x$enable_smart_playlists" = "xyes"; then 
-	ENABLED_PLUGINS="$ENABLED_PLUGINS SmartPlaylists"
+	if test "x$banshee_0_10" = "xno"; then	
+		ENABLED_PLUGINS="$ENABLED_PLUGINS SmartPlaylists"
+	else
+		AC_MSG_ERROR([The Smart Playlists plugin requires Banshee 0.11.0-cvs or better. Please pass --disable-smart-playlists to configure.])
+	fi
+	
+	AM_CONDITIONAL(ENABLE_SMART_PLAYLISTS, test "x$enable_smart_playlists" = "xyes")
+else
+	AM_CONDITIONAL(ENABLE_SMART_PLAYLISTS, false)
 fi
 
 dnl Intl
@@ -141,13 +162,18 @@ Makefile
 po/Makefile.in
 plugins/Makefile
 plugins/MiniMode/Makefile
+plugins/MiniMode/AssemblyInfo.cs
 plugins/Radio/Makefile
+plugins/Radio/AssemblyInfo.cs
 plugins/Recommendation/Makefile
+plugins/Recommendation/AssemblyInfo.cs
 plugins/SmartPlaylists/Makefile
+plugins/SmartPlaylists/AssemblyInfo.cs
 ])
 
 echo "  
     Banshee Plugins Directory: ${expanded_pluginsdir}
+    mcs flags: ${MCS_FLAGS}
     Enabled Plugins:
 "
 

@@ -13,7 +13,9 @@ SUBDIRS += Recommendation
 endif
 
 if ENABLE_SMART_PLAYLISTS
+if !BANSHEE_0_10
 SUBDIRS += SmartPlaylists
+endif
 endif
 
 MAINTAINERCLEANFILES = Makefile.in

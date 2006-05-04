@@ -1,5 +1,28 @@
 2006-05-04  Aaron Bockover  <aaron@abock.org>
 
+	* configure.ac: Bump version to 0.11.0 to be on par with Banshee HEAD;
+	added necessary output files for AssemblyInfo.cs; define BANSHEE_0_10
+	if pluginapi < 2
+
+	* plugins/MiniMode/AssemblyInfo.cs.in:
+	* plugins/Recommendation/AssemblyInfo.cs.in:
+	* plugins/SmartPlaylists/AssemblyInfo.cs.in:
+	* plugins/Radio/AssemblyInfo.cs.in: Added assembly version metadata
+
+	* plugins/MiniMode/Makefile.am: 
+	* plugins/Recommendation/Makefile.am:
+	* plugins/SmartPlaylists/Makefile.am:
+	* plugins/Radio/Makefile.am: Do not define MCS_FLAGS; define 
+	CUSTOM_MCS_FLAGS if more are needed; compile AssemblyInfo.cs
+
+	* plugins/Makefile.am: Do not build SmartPlaylists plugin if building
+	against Banshee 0.10.x (first plugin API revision)
+
+	* plugins/Radio/RadioSource.cs: conditionally decide whether to use
+	System.Uri or Banshee.Base.SafeUri depending on Banshee version
+
+2006-05-04  Aaron Bockover  <aaron@abock.org>
+
 	* plugins/SmartPlaylists/SmartPlaylist.cs: Do not try to override Delete;
 	fixes broken build, but may not be intended behavior
 

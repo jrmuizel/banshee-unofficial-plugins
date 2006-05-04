@@ -1,4 +1,3 @@
-MCS_FLAGS = -debug
 ASSEMBLY = Radio.dll
 SOURCES = \
 	$(srcdir)/RadioPlugin.cs \
@@ -7,7 +6,8 @@ SOURCES = \
 	$(srcdir)/StationDialog.cs \
 	$(srcdir)/StationView.cs \
 	$(srcdir)/StationStore.cs \
-	$(srcdir)/totem-plparser/*.cs
+	$(srcdir)/totem-plparser/*.cs \
+	$(srcdir)/AssemblyInfo.cs
 
 plugindir = $(pluginsdir)
 plugin_SCRIPTS = $(ASSEMBLY)
@@ -17,7 +17,7 @@ all: $(ASSEMBLY)
 $(ASSEMBLY): $(SOURCES) radioactions.xml radio.glade
 	$(MCS) $(MCS_FLAGS) -out:$(ASSEMBLY) -nowarn:0169 -unsafe -target:library $(GTKSHARP_LIBS) $(BANSHEE_LIBS) -resource:$(srcdir)/radio.glade,radio.glade -resource:$(srcdir)/radioactions.xml,radioactions.xml -resource:$(srcdir)/stations.xml,stations.xml $(SOURCES)
 
-EXTRA_DIST = $(SOURCES) $(srcdir)/radioactions.xml $(srcdir)/stations.xml $(srcdir)/radio.glade
+EXTRA_DIST = $(SOURCES) $(srcdir)/radioactions.xml $(srcdir)/stations.xml $(srcdir)/radio.glade $(srcdir)/AssemblyInfo.cs.in
 CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb *.gladep *.bak
 DISTCLEANFILES = Makefile.in 
 

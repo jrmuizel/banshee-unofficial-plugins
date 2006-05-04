@@ -1,3 +1,8 @@
+2006-05-04  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/Recommendation/RecommendationPane.cs: Double-encode '/'
+	characters in the artist name b/c Last.fm requires it.
+
 2006-05-03  Gabriel Burt  <gabriel.burt@gmail.com>
 
 	* plugins/Recommendation/Makefile.am: Added reference to System.Web

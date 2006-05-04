@@ -5,6 +5,10 @@
 	* plugins/Recommendation/RecommendationPane.cs: Encode the artist before
 	using in URLs. (BGO #340511)
 
+	* plugins/MiniMode/MiniModeWindow.cs: Put shuffle/repeat buttons in same
+	state as the main UI has them.  Based on buggy patch from Lukas Lipka.
+	:) (BGO #338503)
+
 2006-05-03  Gabriel Burt  <gabriel.burt@gmail.com>
 
 	* plugins/SmartPlaylists/SmartPlaylistPlugin.cs: Moved to Plugin.cs

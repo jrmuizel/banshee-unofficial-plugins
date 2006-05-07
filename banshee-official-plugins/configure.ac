@@ -146,6 +146,22 @@ else
 	AM_CONDITIONAL(ENABLE_SMART_PLAYLISTS, false)
 fi
 
+AC_ARG_ENABLE(podcast, AC_HELP_STRING(--disable-podcast, [Do not build podcast plugin]), enable_podcast=no, enable_podcast=yes)
+
+if test "x$enable_podcast" = "xyes"; then 
+	if test "x$banshee_0_10" = "xno"; then	
+		ENABLED_PLUGINS="$ENABLED_PLUGINS Podcast"
+	else
+		AC_MSG_ERROR([The Podcast plugin requires Banshee 0.11.0-cvs or better. Please pass --disable-podcast to configure.])
+	fi
+	
+	AM_CONDITIONAL(ENABLE_PODCAST, test "x$enable_podcast" = "xyes")
+else
+	AM_CONDITIONAL(ENABLE_PODCAST, false)
+fi
+
+
+
 dnl Intl
 
 ALL_LINGUAS="`cat "$srcdir/po/LINGUAS" | grep -v '^#'`"
@@ -163,6 +179,8 @@ po/Makefile.in
 plugins/Makefile
 plugins/MiniMode/Makefile
 plugins/MiniMode/AssemblyInfo.cs
+plugins/Podcast/Makefile
+plugins/Podcast/AssemblyInfo.cs
 plugins/Radio/Makefile
 plugins/Radio/AssemblyInfo.cs
 plugins/Recommendation/Makefile

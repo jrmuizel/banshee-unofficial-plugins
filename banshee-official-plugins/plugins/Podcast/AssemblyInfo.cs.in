@@ -1,0 +1,9 @@
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
+[assembly: AssemblyVersion("@VERSION@")]
+[assembly: AssemblyTitle("Banshee Podcast Plugin")]
+[assembly: AssemblyDescription("Provides Podcasting support for the Banshee Music Player")]
+[assembly: AssemblyCopyright("Copyright (C) Novell, Inc.")]
+[assembly: AssemblyCompany("Novell, Inc")]
+

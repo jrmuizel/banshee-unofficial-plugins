@@ -18,5 +18,11 @@ SUBDIRS += SmartPlaylists
 endif
 endif
 
+if ENABLE_PODCAST
+if !BANSHEE_0_10
+SUBDIRS += Podcast
+endif
+endif
+
 MAINTAINERCLEANFILES = Makefile.in
 

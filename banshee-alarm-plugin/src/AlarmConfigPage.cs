@@ -14,9 +14,6 @@ namespace Banshee.Plugins.Alarm
 		private SpinButton spbHour;
 		private SpinButton spbMinute;
 		private CheckButton isEnabled;
-		private VScale FadeStartScale;
-		private VScale FadeEndScale;
-		private SpinButton FadeDuration;
 
 		public AlarmConfigPage(AlarmPlugin plugin) : base()
 		{
@@ -27,7 +24,7 @@ namespace Banshee.Plugins.Alarm
 		private void BuildWidget()
 		{
 			Spacing = 10;
-			int volumeSliderHeight = 120;
+
 			spbHour = new SpinButton(0, 23, 1);
 			spbHour.WidthChars = 2;
 			spbMinute = new SpinButton(0, 59, 1);
@@ -45,41 +42,6 @@ namespace Banshee.Plugins.Alarm
 			time_box_outer.PackStart(isEnabled);
 			time_box_outer.PackStart(time_box);
 
-			FadeStartScale = new VScale(0, 100, 1);
-			FadeStartScale.Inverted = true;
-			FadeStartScale.HeightRequest = volumeSliderHeight;
-			FadeEndScale = new VScale(0, 100, 1);
-			FadeEndScale.Inverted = true;
-			FadeEndScale.HeightRequest = volumeSliderHeight;
-			FadeDuration = new SpinButton(0, 65535, 1);
-			FadeDuration.WidthChars = 3;
-
-			VBox FaderBigBox = new VBox();
-
-			VBox StartBox = new VBox();
-			StartBox.PackEnd(new Label("Start"));
-			StartBox.PackStart(FadeStartScale);
-
-			VBox EndBox = new VBox();
-			EndBox.PackEnd(new Label("End"));
-			EndBox.PackStart(FadeEndScale);
-
-			HBox FaderBoxes = new HBox();
-			FaderBoxes.PackStart(StartBox);
-			FaderBoxes.PackStart(EndBox);
-
-			Label labelVolume = new Label("<b>Volume</b>");
-			labelVolume.UseMarkup = true;
-			FaderBigBox.PackStart(labelVolume);
-			FaderBigBox.PackStart(FaderBoxes);
-			Label labelDuration = new Label("<b>Duration</b> <i>(seconds)</i>");
-			labelDuration.UseMarkup = true;
-			FaderBigBox.PackStart(labelDuration);
-			FaderBigBox.PackStart(FadeDuration);
-
-			Frame FadeBoxFrame = new Frame("Fade-in Adjustment");
-			FadeBoxFrame.Add(FaderBigBox);
-
 			Frame TimeBoxFrame = new Frame("Set Alarm Time");
 			TimeBoxFrame.Add(time_box_outer);
 
@@ -89,24 +51,17 @@ namespace Banshee.Plugins.Alarm
 			OKButtonBox.PackStart(OK);
 
 			PackStart(TimeBoxFrame, false, false, 2);
-			PackStart(FadeBoxFrame, false, false, 2);
 			PackStart(OKButtonBox, false, false, 2);
 
 			#region Initialize with current values
 			spbHour.Value = plugin.AlarmHour;
 			spbMinute.Value = plugin.AlarmMinute;
-			FadeStartScale.Value = plugin.FadeStartVolume;
-			FadeEndScale.Value = plugin.FadeEndVolume;
-			FadeDuration.Value = plugin.FadeDuration;
 			isEnabled.Active = plugin.AlarmEnabled;
 			#endregion
 
 			isEnabled.Toggled += new EventHandler(AlarmEnabled_Changed);
 			spbHour.ValueChanged += new EventHandler(AlarmHour_Changed);
 			spbMinute.ValueChanged += new EventHandler(AlarmMinute_Changed);
-			FadeStartScale.ValueChanged += new EventHandler(FadeStartVolume_Changed);
-			FadeEndScale.ValueChanged += new EventHandler(FadeEndVolume_Changed);
-			FadeDuration.ValueChanged += new EventHandler(FadeDuration_Changed);
 
 			ShowAll();
 		}
@@ -128,21 +83,6 @@ namespace Banshee.Plugins.Alarm
 		private void AlarmMinute_Changed(object source, System.EventArgs args) {
 			SpinButton spinner = source as SpinButton;
 			plugin.AlarmMinute = (ushort) spinner.Value;
-		}
-
-		private void FadeStartVolume_Changed(object source, System.EventArgs args) {
-			VScale scale = source as VScale;
-			plugin.FadeStartVolume = (ushort)scale.Value;
-		}
-
-		private void FadeEndVolume_Changed(object source, System.EventArgs args) {
-			VScale scale = source as VScale;
-			plugin.FadeEndVolume = (ushort)scale.Value;
-		}
-
-		private void FadeDuration_Changed(object source, System.EventArgs args) {
-			SpinButton spinner = source as SpinButton;
-			plugin.FadeDuration = (ushort)spinner.Value;
 		}
 	}
 }

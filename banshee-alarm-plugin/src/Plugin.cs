@@ -43,6 +43,7 @@ namespace Banshee.Plugins.Alarm
 		private Menu editMenu;
 		private MenuItem menuItemSleep;
 		private MenuItem menuItemAlarm;
+		private SeparatorMenuItem menuItemSeparator;
 		uint sleep_timer_id;
 
 		protected override void PluginInitialize()
@@ -52,6 +53,7 @@ namespace Banshee.Plugins.Alarm
 			RegisterConfigurationKey("AlarmEnabled");
 			RegisterConfigurationKey("AlarmHour");
 			RegisterConfigurationKey("AlarmMinute");
+			RegisterConfigurationKey("AlarmCommand");
 			RegisterConfigurationKey("FadeStartVolume");
 			RegisterConfigurationKey("FadeEndVolume");
 			RegisterConfigurationKey("FadeDuration");
@@ -66,9 +68,9 @@ namespace Banshee.Plugins.Alarm
 		{
 			editMenu = (Globals.ActionManager.GetWidget("/MainMenu/EditMenu") as MenuItem).Submenu as Menu;
 
-			SeparatorMenuItem separator = new SeparatorMenuItem();
-			editMenu.Insert(separator, 10);
-			separator.Show();
+			menuItemSeparator = new SeparatorMenuItem();
+			editMenu.Insert(menuItemSeparator, 10);
+			menuItemSeparator.Show();
 
 			menuItemSleep = new MenuItem(Catalog.GetString("Sleep Timer..."));
 			menuItemSleep.Activated += new EventHandler(DoSleepTimerConfigDialog);
@@ -83,6 +85,9 @@ namespace Banshee.Plugins.Alarm
 
 		protected override void PluginDispose()
 		{
+            editMenu.Remove(menuItemSleep);
+            editMenu.Remove(menuItemAlarm);
+            editMenu.Remove(menuItemSeparator);
 			LogCore.Instance.PushDebug("Disposing Alarm Plugin", "");
 			if(sleep_timer_id > 0){
 				GLib.Source.Remove(sleep_timer_id);
@@ -93,7 +98,7 @@ namespace Banshee.Plugins.Alarm
 
 		public override Gtk.Widget GetConfigurationWidget()
 		{
-			return new Label("put volume config stuff here.\nalarm and sleep set will be in Edit menu now.");
+			return new ConfigurationWidget(this);
 		}
         
 		public static void DoWait()
@@ -190,6 +195,21 @@ namespace Banshee.Plugins.Alarm
 
 			set {
 				Globals.Configuration.Set(ConfigurationKeys["AlarmMinute"], (int)value);
+			}
+		}
+
+		internal string AlarmCommand
+		{
+			get {
+				try {
+					return Globals.Configuration.Get(ConfigurationKeys["AlarmCommand"]).ToString();
+				} catch {
+					return null;
+				}
+			}
+
+			set {
+				Globals.Configuration.Set(ConfigurationKeys["AlarmCommand"], value);
 			}
 		}
 

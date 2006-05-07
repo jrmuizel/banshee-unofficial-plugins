@@ -27,13 +27,6 @@ namespace Banshee.Plugins.Alarm
 				LogCore.Instance.PushDebug("Volume Fade: Done.","");
 				return false;
 			}
-			LogCore.Instance.PushDebug("Volume Fade: Fading a notch...",
-					String.Format("Vol={0}, curVol={1}, End={2}, inc={3}",
-						PlayerEngineCore.Volume,
-						curVolume,
-						endVolume,
-						increment
-					));
 			
 			if(increment == 1)
 				curVolume++;
@@ -41,6 +34,15 @@ namespace Banshee.Plugins.Alarm
 				curVolume--;
 			
 			PlayerEngineCore.Volume = curVolume;
+			LogCore.Instance.PushDebug("Volume Fade: Fading a notch...",
+					String.Format("Vol={0}, curVol={1}, End={2}, inc={3}, TickTime={4}ms",
+						PlayerEngineCore.Volume,
+						curVolume,
+						endVolume,
+						increment,
+						sleep
+					));
+
 			return true;
 		}
 		

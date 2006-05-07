@@ -1,3 +1,8 @@
+2006-05-07  Patrick van Staveren  <trick@vanstaveren.us>
+    * Added alarm external command execution
+    * Moved alarm configuration options (volume fade, command exec) to plugin's config page
+    * Fixed dispose bug with not removing menu entries when unloading plugin
+
 2006-04-21  Patrick van Staveren  <trick@vanstaveren.us>
 	* Quick autogen.sh fix of project name
 	* Added Enabled checkbox to alarm config - enables/disables the alarm

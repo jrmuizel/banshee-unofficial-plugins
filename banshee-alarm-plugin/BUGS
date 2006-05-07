@@ -6,8 +6,9 @@ Known bugs:
 	* If the alarm timer goes off and you are not paused in a song, gstreamer pops up an error about being unable to play (null).  What should we do about this?
 	* UI niceness.  We know.
 	* --enable-user-plugin does not work right since we're installing a gconf schema for alarm keys.  anyone know a workaround?
-	* Sleep Timer dialog:
+	* Sleep & Alarm dialogs:
 		* Window width does not allow title to fit (on my box - trick)
+    * Sleep dialog:
 		* when opening after it was set before, does not read values from old variable properly.
 			* Should read the difference between set time and dialog open time, and subtract that from the old sleep timer value.
 

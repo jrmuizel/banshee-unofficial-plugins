@@ -12,6 +12,7 @@ Alarm:
 * Start and End volumes, with a variable duration.
 	* Example:  Set start to 10, and end to 85.  Duration to 600 seconds
 	  Will increase the volume by one unit every 8 seconds (600/(85-10)) until it reaches 85.
+* Can execute an arbitrary command on alarm trigger (eg. to set system volume)
 
 Sleep Timer:
 * Set Sleep Time (hours, minutes):

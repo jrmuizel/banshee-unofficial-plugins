@@ -5,10 +5,11 @@ SOURCES = \
 	$(srcdir)/VolumeFade.cs \
 	$(srcdir)/Alarm.cs \
 	$(srcdir)/AlarmConfigPage.cs \
-	$(srcdir)/SleepTimerConfigDialog.cs
+	$(srcdir)/SleepTimerConfigDialog.cs \
+	$(srcdir)/ConfigurationWidget.cs
 
 plugindir = $(PLUGINDIR)
-plugin_SCRIPTS = $(ASSEMBLY)
+plugin_SCRIPTS = $(ASSEMBLY) $(ASSEMBLY).mdb
 
 all: $(ASSEMBLY)
 

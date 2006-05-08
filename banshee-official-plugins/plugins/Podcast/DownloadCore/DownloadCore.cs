@@ -493,7 +493,7 @@ public enum DownloadState :
                                            userEvent = new ActiveUserEvent(Catalog.GetString("Download"))
                                                            ;
 
-                                               userEvent.Icon = IconThemeUtils.LoadIcon(22, "system-search", Stock.Network);
+                                               userEvent.Icon = IconThemeUtils.LoadIcon ("gtk-network", 22);
                                                userEvent.Header = Catalog.GetString ("Downloading Files");
                                                userEvent.Message = Catalog.GetString ("Initializing downloads");
                                                userEvent.CancelRequested += OnUserEventCancelRequestedHandler;

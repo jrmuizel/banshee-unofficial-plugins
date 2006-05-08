@@ -29,6 +29,8 @@ using System;
 using System.IO;
 using System.Threading;
 
+using Banshee.Base;
+
 namespace Banshee.Plugins.Podcast.Download
 {
     public delegate void DownloadLengthChangedEventHandler (object sender,
@@ -110,8 +112,8 @@ namespace Banshee.Plugins.Podcast.Download
         protected long webContentLength = 0;
 
     protected class TaskStoppedException : Exception
-        {
-            public TaskStoppedException (string message) : base (message) {}}
+    {
+        public TaskStoppedException (string message) : base (message) {}}
 
         private readonly object file_path_sync = new Object ();
 
@@ -121,14 +123,34 @@ namespace Banshee.Plugins.Podcast.Download
                 return filePath;
             }
 
+            // bit of a misgnomer, only appends the file name 
+            // to the directory path.  Should be updated for clarity.
             protected set
             {
                 lock (file_path_sync)
                 {
                     filePath = dif.DirectoryPath + value;
                     dif.LocalPath = filePath;
-                    tempFilePath = FilePath+Util.Defines.TMP_EXT;
+                    
+                    tempFilePath = TempFileDir +
+                        Path.DirectorySeparatorChar +
+                        dif.RemoteUri.Host +
+                        Path.DirectorySeparatorChar +
+			            value + Util.Defines.TMP_EXT;
+
+                    CreateTempDirectory ();
                 }
+            }
+        }
+
+        protected static string TempFileDir {
+            get 
+            {
+                string tempPath = Paths.TempDir + 
+                    System.IO.Path.DirectorySeparatorChar + 
+                    "downloads";
+ 
+                return tempPath;
             }
         }
 
@@ -246,6 +268,7 @@ namespace Banshee.Plugins.Podcast.Download
                     try
                     {
                         File.Delete (FilePath);
+                        DeleteDirectory ();
                     }
                     catch {}
                 }
@@ -264,15 +287,15 @@ namespace Banshee.Plugins.Podcast.Download
                     try
                     {
                         File.Delete (TempFilePath);
+                        DeleteTempDirectory ();
                     }
                     catch {}
 
                     return;
             }
 
-            bytesRead = length;
-            OnProgressChanged (length)
-                ;
+                bytesRead = length;
+                OnProgressChanged (length);
 
                 if (length == totalLength)
                 {
@@ -282,27 +305,56 @@ namespace Banshee.Plugins.Podcast.Download
             }
         }
 
-        protected virtual void CreateDirectoryPath ()
+        protected static bool CreateDirectory (string path)
         {
-            string directory = Path.GetDirectoryName (FilePath);
-
-            if (!Directory.Exists (directory))
-            {
-                try
-                {
-                    Directory.CreateDirectory (directory);
-                }
-                catch {
-                    throw new TaskStoppedException (
-                        String.Format ("Unable to create directory:  {0}", directory)
-                    )
-                    ;
-                }
+            if (File.Exists (path)) {
+                return false;
             }
-    }
 
-    protected virtual void CheckLength ()
+            try
+            {
+                Directory.CreateDirectory (path);
+            }
+            catch {
+                throw new TaskStoppedException (
+                    String.Format ("Unable to create directory:  {0}", path)
+                );
+            }
+                
+            return true;
+        }
+
+	    protected static bool DeleteDirectory (string path)
         {
+            try {
+                Directory.Delete (path);
+            } catch { return false; }
+            
+            return true;
+        }
+
+        protected virtual bool CreateDirectory ()
+        {
+            return CreateDirectory (Path.GetDirectoryName (FilePath));
+        }
+
+        protected virtual bool CreateTempDirectory ()
+        {
+            return CreateDirectory (Path.GetDirectoryName (TempFilePath));
+        }
+
+        protected virtual bool DeleteDirectory ()
+        {
+            return DeleteDirectory (Path.GetDirectoryName (FilePath));
+        }
+
+        protected virtual bool DeleteTempDirectory ()
+        {
+            return DeleteDirectory (Path.GetDirectoryName (TempFilePath));
+        }
+
+        protected virtual void CheckLength ()
+        {        	
             if (totalLength != webContentLength)
             {
 
@@ -318,8 +370,8 @@ namespace Banshee.Plugins.Podcast.Download
         protected virtual void DetermineTerminalState ()
         {
             if (dif.State == DownloadState.Queued ||
-                    dif.State == DownloadState.CancelRequested ||
-                    !dif.Active)
+                dif.State == DownloadState.CancelRequested ||
+                !dif.Active)
             {
                 return;
             }
@@ -366,7 +418,7 @@ namespace Banshee.Plugins.Podcast.Download
             if (uri != null)
             {
                 string[] segments = uri.Segments;
-                FilePath = segments [segments.Length-1];
+		        FilePath = segments [segments.Length-1];
             }
         }
 
@@ -391,24 +443,25 @@ namespace Banshee.Plugins.Podcast.Download
                     if (File.Exists (TempFilePath))
                     {
                         File.Delete (TempFilePath);
-                        Directory.Delete (Path.GetDirectoryName (TempFilePath));
+                        DeleteTempDirectory ();
+                        DeleteDirectory ();
                     }
                 }
                 catch {}
             }
-        else if (dif.State == DownloadState.Completed)
+    
+            else if (dif.State == DownloadState.Completed)
             {
                 try
                 {
                     if (File.Exists (TempFilePath))
                     {
+                        CreateDirectory ();
                         File.Move (TempFilePath, FilePath);
+                        DeleteTempDirectory ();
                     }
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine (e.Message);
-                }
+                catch {}
 
             }
             else if (dif.State == DownloadState.Queued)

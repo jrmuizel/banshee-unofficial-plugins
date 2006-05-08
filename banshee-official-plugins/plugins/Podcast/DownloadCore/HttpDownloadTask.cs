@@ -96,7 +96,6 @@ namespace Banshee.Plugins.Podcast.Download
             {
                 if (localFile == null)
                 {
-                    CreateDirectoryPath ();
                     localFile = new FileStream (TempFilePath, FileMode.Create);
 
                 }
@@ -200,7 +199,9 @@ namespace Banshee.Plugins.Podcast.Download
             request.KeepAlive = false;
             request.AllowAutoRedirect = true;
 
-            request.AddRange (range);
+            if (range > 0) {
+                request.AddRange (range);
+            }
         }
 
         protected virtual void Connect ()
@@ -213,7 +214,7 @@ namespace Banshee.Plugins.Podcast.Download
 
                 response = request.GetResponse () as HttpWebResponse;
                 CheckState ();
-
+                
                 if (IsError (response.StatusCode))
                 {
                     Stop (DownloadState.Failed);

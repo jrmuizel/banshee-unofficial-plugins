@@ -1,3 +1,9 @@
+2006-05-07  Aaron Bockover  <aaron@abock.org>
+
+	Version 0.10.1 Released
+
+	* Makefile.am: Install proxyfsys.so into HELIX_PLUGINS_PATH
+
 2006-04-30  Aaron Bockover  <aaron@abock.org>
 
 	* src/gstdtdriver.c: Added more source pad caps for AAC/MPEG4

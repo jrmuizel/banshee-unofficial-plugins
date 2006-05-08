@@ -124,7 +124,7 @@ namespace Banshee.Plugins.Podcast.Download
             Stream st;
 
             int nRead = -1;
-            long length = (totalLength <= -1 || totalLength > 8192) ? 8192 : totalLength;
+            long length = (totalLength <= -1 || totalLength > 8192) ? 8192 : totalLength; 
             byte [] buffer = new byte [length];
 
             try

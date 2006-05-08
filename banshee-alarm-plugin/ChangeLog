@@ -1,3 +1,7 @@
+2006-05-08  Bertrand Lorentz  <bertrand.lorentz@free.fr>
+    * Fix crash when AlarmCommand is not set.
+    * Renamed AlarmConfigPage to AlarmConfigDialog, it's a Window now.
+
 2006-05-07  Patrick van Staveren  <trick@vanstaveren.us>
     * Added alarm external command execution
     * Moved alarm configuration options (volume fade, command exec) to plugin's config page

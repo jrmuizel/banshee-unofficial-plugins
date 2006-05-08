@@ -26,7 +26,6 @@
     <File name="./autogen.sh" subtype="Code" buildaction="Nothing" />
     <File name="./configure.ac" subtype="Code" buildaction="Nothing" />
     <File name="./src/Alarm.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/AlarmConfigPage.cs" subtype="Code" buildaction="Compile" />
     <File name="./src/Plugin.cs" subtype="Code" buildaction="Compile" />
     <File name="./src/Makefile.am" subtype="Code" buildaction="Nothing" />
     <File name="./BUGS" subtype="Code" buildaction="Nothing" />
@@ -35,6 +34,7 @@
     <File name="./data/alarm.schemas" subtype="Code" buildaction="Nothing" />
     <File name="./src/SleepTimerConfigDialog.cs" subtype="Code" buildaction="Compile" />
     <File name="./src/ConfigurationWidget.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/AlarmConfigDialog.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="gtk-sharp, Version=2.8.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />

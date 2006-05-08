@@ -10,6 +10,4 @@ Sleep Timer:
 
 Alarm:
 	* Alarm thread executes once per second, 24/7.  Is this smart?  Better way to do this?  GLib timer?
-	* ConfigPage rename to ConfigDialog
 	* ConfigPage & Alarm thread - how they access plugin - keep them in same namespace and no plugin referencing - just make classes public.
-	* enable/disable checkbox 

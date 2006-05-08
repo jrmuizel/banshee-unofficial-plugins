@@ -46,6 +46,7 @@ namespace Banshee.Plugins.Podcast
                 case "x-audio/mp3":
                 case "audio/ogg":
                 case "audio/m4a":
+                case "audio/x-m4a":
                 case "application/ogg":
                 case "audio/x-wav":
 

@@ -110,9 +110,7 @@ namespace Banshee.Plugins.Alarm
 
 		protected void DoAlarmConfigDialog(object o, EventArgs a)
 		{
-			alarmDialog = new Window("Set Alarm");
-			alarmDialog.Add(new AlarmConfigPage(this));
-			alarmDialog.ShowAll();
+			new AlarmConfigDialog(this);
 		}
 
 		protected void DoSleepTimerConfigDialog(object o, EventArgs a)

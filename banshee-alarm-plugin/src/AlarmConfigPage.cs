@@ -8,14 +8,11 @@ using Banshee.Widgets;
 
 namespace Banshee.Plugins.Alarm 
 {
-	public class AlarmConfigPage : VBox
+	public class AlarmConfigDialog : Window  
 	{
 		private AlarmPlugin plugin;
-		private SpinButton spbHour;
-		private SpinButton spbMinute;
-		private CheckButton isEnabled;
-
-		public AlarmConfigPage(AlarmPlugin plugin) : base()
+		
+		public AlarmConfigDialog(AlarmPlugin plugin) : base("Alarm")
 		{
 			this.plugin = plugin;
 			BuildWidget();
@@ -23,20 +20,21 @@ namespace Banshee.Plugins.Alarm
 
 		private void BuildWidget()
 		{
-			Spacing = 10;
-
-			spbHour = new SpinButton(0, 23, 1);
+			SetPosition(WindowPosition.Center);
+            IconThemeUtils.SetWindowIcon(this);
+            
+            SpinButton spbHour = new SpinButton(0, 23, 1);
 			spbHour.WidthChars = 2;
-			spbMinute = new SpinButton(0, 59, 1);
+			SpinButton spbMinute = new SpinButton(0, 59, 1);
 			spbMinute.WidthChars = 2;
 
-			isEnabled = new CheckButton("Enabled");
+			CheckButton isEnabled = new CheckButton("Enabled");
 
 			HBox time_box = new HBox();
 			time_box.PackStart(new Label("Time: "));
-			time_box.PackStart(this.spbHour);
+			time_box.PackStart(spbHour);
 			time_box.PackStart(new Label(" : "));
-			time_box.PackStart(this.spbMinute);
+			time_box.PackStart(spbMinute);
 
 			VBox time_box_outer = new VBox();
 			time_box_outer.PackStart(isEnabled);
@@ -50,8 +48,13 @@ namespace Banshee.Plugins.Alarm
 			OK.Clicked += new EventHandler(OnOKClicked);
 			OKButtonBox.PackStart(OK);
 
-			PackStart(TimeBoxFrame, false, false, 2);
-			PackStart(OKButtonBox, false, false, 2);
+            VBox mainbox = new VBox();
+            mainbox.Spacing = 10;
+			
+			mainbox.PackStart(TimeBoxFrame, false, false, 2);
+			mainbox.PackStart(OKButtonBox, false, false, 2);
+			
+			this.Add(mainbox);
 
 			#region Initialize with current values
 			spbHour.Value = plugin.AlarmHour;
@@ -67,7 +70,7 @@ namespace Banshee.Plugins.Alarm
 		}
 
 		private void OnOKClicked(object o, EventArgs e) {
-			plugin.alarmDialog.Destroy();
+			this.Destroy();
 		}
 
 		private void AlarmEnabled_Changed(object source, System.EventArgs args) {

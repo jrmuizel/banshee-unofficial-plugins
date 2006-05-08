@@ -17,7 +17,10 @@ namespace Banshee.Plugins.Alarm
 		
 		private void BuildWidget()
 		{
-			plugin.sleepHour.Value = (int) plugin.timervalue / 60 ;
+			SetPosition(WindowPosition.Center);
+            IconThemeUtils.SetWindowIcon(this);
+            
+            plugin.sleepHour.Value = (int) plugin.timervalue / 60 ;
 			plugin.sleepMin.Value = plugin.timervalue - (plugin.sleepHour.Value * 60);
 
 			this.DeleteEvent += new DeleteEventHandler(OnSleepTimerDialogDestroy);

@@ -55,15 +55,9 @@ namespace Banshee.Plugins.Alarm
 				new VolumeFade(plugin.FadeStartVolume, plugin.FadeEndVolume, plugin.FadeDuration);
 			}
 			PlayerEngineCore.Play();
-			//string command = "/bin/ls /tmp";
 			
-            //Process myproc = new Process();
-            /*myproc = */
-            
-            
-            if(plugin.AlarmCommand.Trim() != "")
+            if(plugin.AlarmCommand != null && plugin.AlarmCommand.Trim() != "")
                 Process.Start(plugin.AlarmCommand);
-
 		}
 	}
 }

@@ -399,7 +399,7 @@ namespace Banshee
 			AddField(Catalog.GetString("Path"), "Uri", typeof(QueryMatchString));
 			AddField(Catalog.GetString("Year"), "Year", typeof(QueryMatchInteger));
 			
-			AddOrder(QuerySelectedByCriteria.Random, "RAND()");
+			AddOrder(QuerySelectedByCriteria.Random, "RANDOM()");
 			AddOrder(QuerySelectedByCriteria.Album, "Album");
 			AddOrder(QuerySelectedByCriteria.Artist, "Artist");
 			AddOrder(QuerySelectedByCriteria.Genre, "Genre");

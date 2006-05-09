@@ -37,7 +37,7 @@ namespace Banshee.Plugins.Podcast.UI
         private static readonly string [] combo_text_entries = {
                     Catalog.GetString ("Download all episodes"),
                     Catalog.GetString ("Download the most recent episode"),
-                    Catalog.GetString ("Let me to decide which episodes to download")
+                    Catalog.GetString ("Let me decide which episodes to download")
                 };
 
         public SyncPreference ActiveSyncPreference {

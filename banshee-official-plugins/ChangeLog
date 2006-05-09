@@ -1,5 +1,10 @@
 2006-05-08  Gabriel Burt  <gabriel.burt@gmail.com>
 
+	* plugins/Podcast/UI/SyncPreferenceComboBox.cs.cs: Moved to
+	SyncPreferenceComboBox.cs, and minor string fix.
+
+2006-05-08  Gabriel Burt  <gabriel.burt@gmail.com>
+
 	* plugins/SmartPlaylists/Plugin.cs: Listen for SourceManager and Library
 	events prior to loading the smart playlists so that we add them to our
 	internal list.  Remove smart playlists from the source list when the

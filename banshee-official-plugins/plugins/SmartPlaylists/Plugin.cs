@@ -65,6 +65,13 @@ namespace Banshee.Plugins.SmartPlaylists
                 ");
             }
 
+            // Listen for added/removed source and added/changed songs
+            SourceManager.SourceAdded += HandleSourceAdded;
+            SourceManager.SourceRemoved += HandleSourceRemoved;
+            Globals.Library.Reloaded += HandleLibraryReloaded;
+            Globals.Library.TrackAdded += HandleTrackAdded;
+            Globals.Library.TrackRemoved += HandleTrackRemoved;
+
             // Load existing smart playlists
             IDataReader reader = Globals.Library.Db.Query(String.Format(
                 "SELECT PlaylistID, Name, Condition, OrderBy, LimitNumber FROM SmartPlaylists"
@@ -75,13 +82,6 @@ namespace Banshee.Plugins.SmartPlaylists
             }
 
             reader.Dispose();
-
-            // Listen for added/removed source and added/changed songs
-            SourceManager.SourceAdded += HandleSourceAdded;
-            SourceManager.SourceRemoved += HandleSourceRemoved;
-            Globals.Library.Reloaded += HandleLibraryReloaded;
-            Globals.Library.TrackAdded += HandleTrackAdded;
-            Globals.Library.TrackRemoved += HandleTrackRemoved;
 
             // Add a menu option to create a new smart playlist
             musicMenu = (Globals.ActionManager.GetWidget ("/MainMenu/MusicMenu") as MenuItem).Submenu as Menu;
@@ -109,6 +109,14 @@ namespace Banshee.Plugins.SmartPlaylists
         protected override void PluginDispose()
         {
             musicMenu.Remove(addItem);
+
+            SourceManager.SourceAdded -= HandleSourceAdded;
+            SourceManager.SourceRemoved -= HandleSourceRemoved;
+
+            foreach (SmartPlaylist playlist in playlists)
+                SourceManager.RemoveSource(playlist);
+
+            playlists.Clear();
         }
 
         private void HandleLibraryReloaded (object sender, EventArgs args)

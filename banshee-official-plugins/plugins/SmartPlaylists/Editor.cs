@@ -78,11 +78,9 @@ namespace Banshee.Plugins.SmartPlaylists
                     //Console.WriteLine ("Name = {0}, Cond = {1}, OrderAndLimit = {2}", name, condition, order_by, limit_number);
                     if (playlist == null) {
                         playlist = new SmartPlaylist(name, condition, order_by, limit_number);
-                        playlist.Commit();
                         SourceManager.AddSource(playlist);
-                        playlist.RefreshMembers();
                     } else {
-                        //playlist.Rename(name);
+                        playlist.Rename(name);
                         playlist.Condition = condition;
                         playlist.OrderBy = order_by;
                         playlist.LimitNumber = limit_number;

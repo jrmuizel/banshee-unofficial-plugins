@@ -1,3 +1,16 @@
+2006-05-08  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/Plugin.cs: Listen for SourceManager and Library
+	events prior to loading the smart playlists so that we add them to our
+	internal list.  Remove smart playlists from the source list when the
+	plugin is disabled.
+
+	* plugins/Editor.cs: Allow smart playlists to be renamed, again.
+
+	* plugins/SmartPlaylist.cs: Delay refreshing the current members unless the
+	Library is loaded.  Fix some event triggers so that the track view is
+	actually updated.
+
 2006-05-08  Mike Urbanski  <michael.c.urbanski@gmail.com>
 
         * plugins/Podcast/DownloadCore/DownloadCore.cs:  Fixed user event 

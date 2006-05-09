@@ -55,6 +55,7 @@ namespace Banshee.Plugins.SmartPlaylists
             get { return tracks.SyncRoot; }
         }
 
+        // For existing smart playlists that we're loading from the database
         public SmartPlaylist(int id, string name, string condition, string order_by, string limit_number) : base(name, 100)
         {
             Id = id;
@@ -63,9 +64,15 @@ namespace Banshee.Plugins.SmartPlaylists
             OrderBy = order_by;
             LimitNumber = limit_number;
 
-            RefreshMembers();
+            Globals.Library.TrackRemoved += OnLibraryTrackRemoved;
+
+            if (Globals.Library.IsLoaded)
+                OnLibraryReloaded(Globals.Library, new EventArgs());
+            else
+                Globals.Library.Reloaded += OnLibraryReloaded;
         }
 
+        // For new smart playlists
         public SmartPlaylist(string name, string condition, string order_by, string limit_number) : base(name, 100)
         {
             Name = name;
@@ -81,6 +88,13 @@ namespace Banshee.Plugins.SmartPlaylists
             );
 
             Id = Globals.Library.Db.Execute(query);
+
+            Globals.Library.TrackRemoved += OnLibraryTrackRemoved;
+
+            if (Globals.Library.IsLoaded)
+                OnLibraryReloaded(Globals.Library, new EventArgs());
+            else
+                Globals.Library.Reloaded += OnLibraryReloaded;
         }
 
         public void RefreshMembers()
@@ -92,14 +106,17 @@ namespace Banshee.Plugins.SmartPlaylists
                 "DELETE FROM SmartPlaylistEntries WHERE PlaylistId = {0}", Id
             ));
 
+            foreach (TrackInfo track in tracks)
+                OnTrackRemoved (track);
+
+            tracks.Clear();
+
             // Add matching tracks
             Globals.Library.Db.Execute(String.Format(
                 @"INSERT INTO SmartPlaylistEntries 
                     SELECT NULL as EntryId, {0} as PlaylistId, TrackId FROM Tracks {1} {2}",
                     Id, PrependCondition("WHERE"), OrderAndLimit
             ));
-
-            tracks.Clear();
 
             // Load the new tracks in
             IDataReader reader = Globals.Library.Db.Query(String.Format(
@@ -111,7 +128,7 @@ namespace Banshee.Plugins.SmartPlaylists
             
             while(reader.Read())
                 AddTrack (Globals.Library.Tracks[Convert.ToInt32(reader[0])] as TrackInfo);
-            
+
             reader.Dispose();
         }
 
@@ -192,8 +209,6 @@ namespace Banshee.Plugins.SmartPlaylists
                     ));
                 }
             }
-
-            OnUpdated();
         }
 
         public override void Commit ()
@@ -248,6 +263,11 @@ namespace Banshee.Plugins.SmartPlaylists
             }
         }
 
+        private void OnLibraryReloaded (object o, EventArgs args)
+        {
+            RefreshMembers();
+        }
+
         private void OnLibraryTrackRemoved(object o, LibraryTrackRemovedArgs args)
         {
             if(args.Track != null) {
@@ -286,19 +306,24 @@ namespace Banshee.Plugins.SmartPlaylists
 
         public override void AddTrack(TrackInfo track)
         {
+            //Console.WriteLine ("Adding track ... == null ? {0}", track == null);
             if(track is LibraryTrackInfo) {
+                //Console.WriteLine ("its a LibraryTrackInfo! track = {0}", track);
                 lock(TracksMutex) {
                     tracks.Add(track);
                 }
-                OnUpdated();
+
+                OnTrackAdded (track);
             }
         }
         
         public override void RemoveTrack(TrackInfo track)
         {
             lock(TracksMutex) {
-                RemoveTrack (track);
+                tracks.Remove (track);
             }
+
+            OnTrackRemoved (track);
         }
 
         protected override bool UpdateName(string oldName, string newName)
@@ -311,7 +336,7 @@ namespace Banshee.Plugins.SmartPlaylists
             return true;
         }
 
-        public void Delete()
+        public override void Delete()
         {
             Globals.Library.Db.Execute(String.Format(
                 @"DELETE FROM SmartPlaylistEntries
@@ -338,7 +363,6 @@ namespace Banshee.Plugins.SmartPlaylists
 
             SmartPlaylist playlist = new SmartPlaylist (id, name, condition, order_by, limit_number);
             SourceManager.AddSource(playlist);
-            playlist.RefreshMembers();
         }
     }
 }

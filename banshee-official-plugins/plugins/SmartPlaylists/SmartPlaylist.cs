@@ -336,7 +336,7 @@ namespace Banshee.Plugins.SmartPlaylists
             return true;
         }
 
-        public override void Delete()
+        public void Delete()
         {
             Globals.Library.Db.Execute(String.Format(
                 @"DELETE FROM SmartPlaylistEntries

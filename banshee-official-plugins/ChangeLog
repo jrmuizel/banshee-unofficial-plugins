@@ -1,5 +1,10 @@
 2006-05-08  Gabriel Burt  <gabriel.burt@gmail.com>
 
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Remove override from Delete
+	method.
+
+2006-05-08  Gabriel Burt  <gabriel.burt@gmail.com>
+
 	* plugins/Podcast/UI/SyncPreferenceComboBox.cs.cs: Moved to
 	SyncPreferenceComboBox.cs, and minor string fix.
 
@@ -10,9 +15,9 @@
 	internal list.  Remove smart playlists from the source list when the
 	plugin is disabled.
 
-	* plugins/Editor.cs: Allow smart playlists to be renamed, again.
+	* plugins/SmartPlaylists/Editor.cs: Allow smart playlists to be renamed, again.
 
-	* plugins/SmartPlaylist.cs: Delay refreshing the current members unless the
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Delay refreshing the current members unless the
 	Library is loaded.  Fix some event triggers so that the track view is
 	actually updated.
 

@@ -18,14 +18,14 @@
 
 2006-05-08  Mike Urbanski  <michael.c.urbanski@gmail.com>
 
-        * plugins/Podcast/DownloadCore/DownloadCore.cs:  Fixed user event 
-        icon strangeness.
-        
-        * plugins/Podcast/DownloadCore/DownloadTask.cs:  *.tmp files are no 
-        longer downloaded to the Library.
-        
-        * plugins/Podcast/DownloadCore/HttpDownloadTask.cs:  Ranges are no 
-        longer added to HTTP request headers unnecessarily.  (BNC #341042)
+	* plugins/Podcast/DownloadCore/DownloadCore.cs: Fixed user event 
+	icon strangeness.
+	
+	* plugins/Podcast/DownloadCore/DownloadTask.cs: *.tmp files are no 
+	longer downloaded to the Library.
+
+	* plugins/Podcast/DownloadCore/HttpDownloadTask.cs: Ranges are no 
+	longer added to HTTP request headers unnecessarily. (BNC #341042)
 
 2006-05-06  Aaron Bockover  <aaron@abock.org>
 

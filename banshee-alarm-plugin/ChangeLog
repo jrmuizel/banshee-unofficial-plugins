@@ -4,6 +4,7 @@
     * AlarmConfigDialog.cs - got rid of outer frame (since everything else it was framing from has moved to the plugin config page.
     * AlarmConfigDialog & SleepTimerConfigDialog - moved some settings to the constructor.  Might make more sense.
     * Random padding changes to be consistent
+    * Quick string changes in Plugin.cs
 
 2006-05-08  Bertrand Lorentz  <bertrand.lorentz@free.fr>
     * Fix crash when AlarmCommand is not set.

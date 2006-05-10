@@ -16,9 +16,9 @@ namespace Banshee.Plugins.Alarm
 		public override string Description {
 			get {
 				return Catalog.GetString(
-					"A very simple Banshee plugin that starts playing " +
-					"at a predefined time, " +
-					"and allows you to set a sleep timer."
+					"Gives Banshee alarm clock type functions.  Provides an alarm " +
+					"which can start playback at a predefined time, " +
+					"and allows you to set a sleep timer to pause playback after a set delay."
 				);
 			}
 		}
@@ -26,8 +26,8 @@ namespace Banshee.Plugins.Alarm
 		public override string [] Authors {
 			get {
 				return new string [] {
-					"Bertrand Lorentz <bertrand.lorentz@free.fr>\n" +
-					"Patrick van Staveren <trick@vanstaveren.us>"
+					"Bertrand Lorentz\n" +
+					"Patrick van Staveren"
 				};
 			}
 		}

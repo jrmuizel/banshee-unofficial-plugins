@@ -1,3 +1,10 @@
+2006-05-10  Patrick van Staveren  <trick@vanstaveren.us>
+    * Converted windows to dialogs.  This is so the WM knows they're dialogs and treats them as so.  Minor change from a window, but worth it.
+    * AlarmConfigDialog.cs - how it accesses widgets to read variables.  Simpler.  Private variables & such.
+    * AlarmConfigDialog.cs - got rid of outer frame (since everything else it was framing from has moved to the plugin config page.
+    * AlarmConfigDialog & SleepTimerConfigDialog - moved some settings to the constructor.  Might make more sense.
+    * Random padding changes to be consistent
+
 2006-05-08  Bertrand Lorentz  <bertrand.lorentz@free.fr>
     * Fix crash when AlarmCommand is not set.
     * Renamed AlarmConfigPage to AlarmConfigDialog, it's a Window now.

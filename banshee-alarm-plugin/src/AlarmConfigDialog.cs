@@ -8,53 +8,50 @@ using Banshee.Widgets;
 
 namespace Banshee.Plugins.Alarm 
 {
-	public class AlarmConfigDialog : Window  
+	public class AlarmConfigDialog : Dialog
 	{
 		private AlarmPlugin plugin;
+		private SpinButton spbHour;
+		private SpinButton spbMinute;
+		private CheckButton isEnabled;
 		
-		public AlarmConfigDialog(AlarmPlugin plugin) : base("Alarm")
+		public AlarmConfigDialog(AlarmPlugin plugin) : base()
 		{
 			this.plugin = plugin;
+            
+            Title = "Alarm";
+            WidthRequest = 250;
+            HeightRequest = 150;
+            IconThemeUtils.SetWindowIcon(this);
+
 			BuildWidget();
+			ShowAll();
 		}
 
 		private void BuildWidget()
 		{
-			SetPosition(WindowPosition.Center);
-            IconThemeUtils.SetWindowIcon(this);
-            
-            SpinButton spbHour = new SpinButton(0, 23, 1);
+            spbHour = new SpinButton(0, 23, 1);
 			spbHour.WidthChars = 2;
-			SpinButton spbMinute = new SpinButton(0, 59, 1);
+			spbMinute = new SpinButton(0, 59, 1);
 			spbMinute.WidthChars = 2;
 
-			CheckButton isEnabled = new CheckButton("Enabled");
+			isEnabled = new CheckButton("Enable Alarm");
 
 			HBox time_box = new HBox();
-			time_box.PackStart(new Label("Time: "));
+			time_box.PackStart(new Label("Set Time: "));
 			time_box.PackStart(spbHour);
 			time_box.PackStart(new Label(" : "));
 			time_box.PackStart(spbMinute);
 
-			VBox time_box_outer = new VBox();
+			VBox time_box_outer = new VBox(false, 10);
 			time_box_outer.PackStart(isEnabled);
 			time_box_outer.PackStart(time_box);
 
-			Frame TimeBoxFrame = new Frame("Set Alarm Time");
-			TimeBoxFrame.Add(time_box_outer);
-
-			HButtonBox OKButtonBox = new HButtonBox();
 			Button OK = new Button(Gtk.Stock.Ok);
 			OK.Clicked += new EventHandler(OnOKClicked);
-			OKButtonBox.PackStart(OK);
 
-            VBox mainbox = new VBox();
-            mainbox.Spacing = 10;
-			
-			mainbox.PackStart(TimeBoxFrame, false, false, 2);
-			mainbox.PackStart(OKButtonBox, false, false, 2);
-			
-			this.Add(mainbox);
+			this.AddActionWidget(OK, 0);
+			this.VBox.PackStart(time_box_outer, true, false, 6);
 
 			#region Initialize with current values
 			spbHour.Value = plugin.AlarmHour;
@@ -65,8 +62,6 @@ namespace Banshee.Plugins.Alarm
 			isEnabled.Toggled += new EventHandler(AlarmEnabled_Changed);
 			spbHour.ValueChanged += new EventHandler(AlarmHour_Changed);
 			spbMinute.ValueChanged += new EventHandler(AlarmMinute_Changed);
-
-			ShowAll();
 		}
 
 		private void OnOKClicked(object o, EventArgs e) {
@@ -74,18 +69,15 @@ namespace Banshee.Plugins.Alarm
 		}
 
 		private void AlarmEnabled_Changed(object source, System.EventArgs args) {
-			CheckButton button = source as CheckButton;
-			plugin.AlarmEnabled = button.Active;
+			plugin.AlarmEnabled = isEnabled.Active;
 		}
 
 		private void AlarmHour_Changed(object source, System.EventArgs args) {
-			SpinButton spinner = source as SpinButton;
-			plugin.AlarmHour = (ushort) spinner.Value;
+			plugin.AlarmHour = (ushort) spbHour.Value;
 		}
 
 		private void AlarmMinute_Changed(object source, System.EventArgs args) {
-			SpinButton spinner = source as SpinButton;
-			plugin.AlarmMinute = (ushort) spinner.Value;
+			plugin.AlarmMinute = (ushort) spbMinute.Value;
 		}
 	}
 }

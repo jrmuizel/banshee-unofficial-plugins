@@ -2,7 +2,7 @@ Global:
 	* UI love
 		* volumes - sliders!  live volume check.
 		* Menu items - check box next to when enabled.
-	* Put alarm/sleep settings into dialogs, so the wm will center them in the app.  This is a must.
+    * Convert all tabs to spaces (CodingStyle)
 
 Sleep Timer:
 	* Evaluate sleep timer fade out - is this what we want?  It fades out till the end of track, and then pauses.

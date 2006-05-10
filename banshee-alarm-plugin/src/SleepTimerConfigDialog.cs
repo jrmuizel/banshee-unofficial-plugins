@@ -5,27 +5,33 @@ using Banshee.Base;
 
 namespace Banshee.Plugins.Alarm 
 {
-	public class SleepTimerConfigDialog : Window 
+	public class SleepTimerConfigDialog : Dialog
 	{
 		AlarmPlugin plugin;
 		
-		public SleepTimerConfigDialog(AlarmPlugin plugin) : base("Sleep Timer")
+		public SleepTimerConfigDialog(AlarmPlugin plugin) : base()
 		{
 			this.plugin = plugin;
+			
+			Title = "Sleep Timer";
+            IconThemeUtils.SetWindowIcon(this);
+            WidthRequest = 250;
+            HeightRequest = 150;
+            VBox.Spacing = 10;
+			DeleteEvent += new DeleteEventHandler(OnSleepTimerDialogDestroy);
+			
 			BuildWidget();
+			ShowAll();
 		}
 		
 		private void BuildWidget()
 		{
-			SetPosition(WindowPosition.Center);
-            IconThemeUtils.SetWindowIcon(this);
             
             plugin.sleepHour.Value = (int) plugin.timervalue / 60 ;
 			plugin.sleepMin.Value = plugin.timervalue - (plugin.sleepHour.Value * 60);
 
-			this.DeleteEvent += new DeleteEventHandler(OnSleepTimerDialogDestroy);
-			plugin.sleepHour.WidthChars = 3;
-			plugin.sleepMin.WidthChars  = 3;
+			plugin.sleepHour.WidthChars = 2;
+			plugin.sleepMin.WidthChars  = 2;
 
 			Label prefix    = new Label("Sleep Timer :");
 			Label separator = new Label(":");
@@ -33,26 +39,19 @@ namespace Banshee.Plugins.Alarm
 			comment.UseMarkup = true;
 
 			Button OK = new Button(Gtk.Stock.Ok);
-			VButtonBox OKbox = new VButtonBox();
-			OKbox.PackStart(OK, false, false, 0);
 			OK.Clicked += new EventHandler(OnSleepTimerOK);
 
-			HBox topbox     = new HBox();
-			VBox mainbox    = new VBox();
+			HBox topbox     = new HBox(false, 10);
 
-			topbox.PackStart(prefix, false, false, 3);
-			topbox.PackStart(plugin.sleepHour, false, false, 3);
-			topbox.PackStart(separator, false, false, 0);
-			topbox.PackStart(plugin.sleepMin, false, false, 3);
+			topbox.PackStart(prefix);
+			topbox.PackStart(plugin.sleepHour);
+			topbox.PackStart(separator);
+			topbox.PackStart(plugin.sleepMin);
 
-			mainbox.PackStart(topbox, false, false, 3);
-			mainbox.PackStart(comment, false, false, 3);
-			mainbox.PackStart(new HSeparator(), false, false, 3);
-			mainbox.PackStart(OKbox, false, false, 3);
+            this.AddActionWidget(OK, 0);
 
-			this.Add(mainbox);
-
-			this.ShowAll();
+			this.VBox.PackStart(topbox);
+			this.VBox.PackStart(comment);
 		}
 		
 		private void OnSleepTimerDialogDestroy(object o, DeleteEventArgs a){

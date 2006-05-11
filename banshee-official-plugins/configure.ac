@@ -57,10 +57,6 @@ if test ! -x "$GMCS"; then
 	AC_MSG_ERROR([No $CS 2.0 (gmcs) compiler found])
 fi
 
-AC_SUBST(MCS)
-AC_SUBST(GMCS)
-AC_SUBST(MONO)
-
 MCS_FLAGS="-debug"
 
 dnl gtk-sharp, other CLR deps
@@ -79,6 +75,7 @@ AC_SUBST(BANSHEE_LIBS)
 
 if test "x`$PKG_CONFIG --variable=pluginapi banshee`" = "x2"; then
 	banshee_0_10="no"
+	MCS=$GMCS
 	AM_CONDITIONAL(BANSHEE_0_10, false)
 else
 	banshee_0_10="yes"
@@ -87,6 +84,8 @@ else
 fi
 
 AC_SUBST(MCS_FLAGS)
+AC_SUBST(MCS)
+AC_SUBST(MONO)
 
 dnl Banshee Plugins Path
 

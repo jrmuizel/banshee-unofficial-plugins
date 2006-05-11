@@ -1,3 +1,10 @@
+2006-05-11  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: If Banshee 0.11.x (plugin API v2) is detected, use gmcs
+	since 0.11.x is now built with gmcs and uses .NET 2.0 libraries; 0.10.x
+	compatible plugins will be built with mcs/.NET 1.0 if a 0.10.x Banshee
+	is detected
+
 2006-05-08  Aaron Bockover  <aaron@abock.org>
 
 	* plugins/SmartPlaylists/QueryBuilderModel.cs: sqlite uses RANDOM instead

@@ -1,3 +1,6 @@
+2006-05-13  Bertrand Lorentz  <bertrand.lorentz@free.fr>
+    * Replace tabs with spaces in all .cs files.
+
 2006-05-10  Patrick van Staveren  <trick@vanstaveren.us>
     * Converted windows to dialogs.  This is so the WM knows they're dialogs and treats them as so.  Minor change from a window, but worth it.
     * AlarmConfigDialog.cs - how it accesses widgets to read variables.  Simpler.  Private variables & such.

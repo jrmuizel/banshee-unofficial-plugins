@@ -90,15 +90,15 @@ namespace Banshee.Plugins.Alarm
 
             // initialize values
             command_entry.Text = plugin.AlarmCommand;
-			fade_start.Value = plugin.FadeStartVolume;
-			fade_end.Value = plugin.FadeEndVolume;
-			fade_duration.Value = plugin.FadeDuration;
+            fade_start.Value = plugin.FadeStartVolume;
+            fade_end.Value = plugin.FadeEndVolume;
+            fade_duration.Value = plugin.FadeDuration;
             
             // attach change handlers
             command_entry.Changed += new EventHandler(AlarmCommand_Changed);
-			fade_start.ValueChanged += new EventHandler(FadeStartVolume_Changed);
-			fade_end.ValueChanged += new EventHandler(FadeEndVolume_Changed);
-			fade_duration.ValueChanged += new EventHandler(FadeDuration_Changed);
+            fade_start.ValueChanged += new EventHandler(FadeStartVolume_Changed);
+            fade_end.ValueChanged += new EventHandler(FadeEndVolume_Changed);
+            fade_duration.ValueChanged += new EventHandler(FadeDuration_Changed);
 
             ShowAll();
         }

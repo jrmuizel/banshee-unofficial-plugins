@@ -37,6 +37,7 @@ namespace Banshee.Plugins.Recommendation
 			InstallInterfaceActions ();
 			
 			PlayerEngineCore.EventChanged += OnPlayerEngineEventChanged;
+			SourceManager.ActiveSourceChanged += OnActiveSourceChanged;
 			
 			if (recommendation_pane != null && ValidTrack)
 				ShowRecommendations (PlayerEngineCore.CurrentTrack.Artist);
@@ -120,6 +121,12 @@ namespace Banshee.Plugins.Recommendation
 					HideRecommendations ();
 				break;
 			}
+		}
+
+		private void OnActiveSourceChanged (SourceEventArgs args)
+		{
+			if (PaneVisible)
+				HideRecommendations ();
 		}
 
 		private bool PaneVisible

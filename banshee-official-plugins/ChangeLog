@@ -1,3 +1,8 @@
+2006-05-14  Lukas Lipka  <lukas@pmad.net>
+
+	* plugins/Recommendation/RecommendationPlugin.cs: Hide the recommendation
+	pane when the active source changes.
+
 2006-05-11  Aaron Bockover  <aaron@abock.org>
 
 	* configure.ac: If Banshee 0.11.x (plugin API v2) is detected, use gmcs

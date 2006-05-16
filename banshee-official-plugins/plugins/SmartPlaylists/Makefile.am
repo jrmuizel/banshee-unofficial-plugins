@@ -21,7 +21,7 @@ all: $(ASSEMBLY)
 $(ASSEMBLY): $(SOURCES)
 	$(MCS) $(CUSTOM_MCS_FLAGS) -out:$(ASSEMBLY) -target:library $(BANSHEE_LIBS) $(GTKSHARP_LIBS) $(SYSTEM_REFERENCES_BUILD) $(SOURCES)
 
-EXTRA_DIST = $(SOURCES) $(srcdir)/AssemblyInfo.cs.in
+EXTRA_DIST = $(SOURCES) $(ASSEMBLY).config smart-playlist.glade source-smart-playlist.png $(srcdir)/AssemblyInfo.cs.in
 CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb 
 DISTCLEANFILES = Makefile.in 
 

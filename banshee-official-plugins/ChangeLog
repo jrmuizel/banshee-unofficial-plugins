@@ -1,3 +1,7 @@
+2006-05-16  Patrick van Staveren  <trick@vanstaveren.us>
+	* Various `make dist` and `make install` fixes - add
+	resources and debug info where necessary.
+
 2006-05-14  Lukas Lipka  <lukas@pmad.net>
 
 	* plugins/Recommendation/RecommendationPlugin.cs: Hide the recommendation

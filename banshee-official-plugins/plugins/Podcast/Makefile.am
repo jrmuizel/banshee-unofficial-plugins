@@ -31,7 +31,7 @@ podcast_resources = \
 podcast_resources_build = $(foreach res,$(podcast_resources), $(addprefix -resource:,$(top_builddir)/plugins/Podcast/$(res)),$(notdir $(res)))
 
 plugindir = $(pluginsdir)
-plugin_SCRIPTS = $(ASSEMBLY)
+plugin_SCRIPTS = $(ASSEMBLY) $(ASSEMBLY).mdb
 
 all: $(ASSEMBLY)
 

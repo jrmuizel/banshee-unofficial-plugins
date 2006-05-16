@@ -7,7 +7,7 @@ SOURCES = \
 	$(srcdir)/AssemblyInfo.cs
 
 plugindir = $(pluginsdir)
-plugin_SCRIPTS = $(ASSEMBLY)
+plugin_SCRIPTS = $(ASSEMBLY) $(ASSEMBLY).mdb
 
 all: $(ASSEMBLY)
 

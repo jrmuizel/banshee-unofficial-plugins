@@ -1,3 +1,6 @@
+2006-05-16  Patrick van Staveren  <trick@vanstaveren.us>
+	* src/Makefile.am: install debug info
+
 2006-01-26  Aaron Bockover  <aaron@aaronbock.net>
 
 	* src/SamplePlugin.cs: Updated to reflect changes in plugin API; added

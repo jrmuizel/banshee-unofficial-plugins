@@ -1,4 +1,11 @@
+2006-05-22  Lukas Lipka  <lukas@pmad.net>
+
+	* plugins/Recommendation/RecommendationPlugin.cs: Fix the remaining
+	glitches when hiding the pane. Show the pane when we switch back to
+	the original source.
+
 2006-05-16  Patrick van Staveren  <trick@vanstaveren.us>
+
 	* Various `make dist` and `make install` fixes - add
 	resources and debug info where necessary.
 

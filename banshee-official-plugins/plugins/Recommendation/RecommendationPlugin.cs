@@ -25,7 +25,8 @@ namespace Banshee.Plugins.Recommendation
 		public override string [] Authors {
 			get {
 				return new string [] {
-					"Fredrik Hedberg"
+					"Fredrik Hedberg",
+					"Lukas Lipka"
 				};
 			}
 		}
@@ -49,6 +50,7 @@ namespace Banshee.Plugins.Recommendation
 			Globals.ActionManager.UI.RemoveActionGroup(actions);
 			
 			PlayerEngineCore.EventChanged -= OnPlayerEngineEventChanged;
+			SourceManager.ActiveSourceChanged -= OnActiveSourceChanged;
 			
 			if (PaneVisible)
 				HideRecommendations ();
@@ -123,10 +125,15 @@ namespace Banshee.Plugins.Recommendation
 			}
 		}
 
+		private Source displayed_on_source;
+		
 		private void OnActiveSourceChanged (SourceEventArgs args)
 		{
-			if (PaneVisible)
-				HideRecommendations ();
+			if (args.Source == displayed_on_source) {
+				PaneVisible = true;
+			} else {
+				PaneVisible = false;
+			}
 		}
 
 		private bool PaneVisible
@@ -136,6 +143,13 @@ namespace Banshee.Plugins.Recommendation
 					return false;
 
 				return recommendation_pane.Visible;
+			}
+
+			set {
+				if (recommendation_pane == null)
+					return;
+
+				recommendation_pane.Visible = value;
 			}
 		}
 
@@ -158,6 +172,7 @@ namespace Banshee.Plugins.Recommendation
 					HideRecommendations ();
 				
 				recommendation_pane.ShowRecommendations (artist);
+				displayed_on_source = SourceManager.ActiveSource;
 			}
 		}
 		

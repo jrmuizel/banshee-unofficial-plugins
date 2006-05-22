@@ -4,6 +4,7 @@ SOURCES = \
 	$(srcdir)/MiniModePlugin.cs \
 	$(srcdir)/MiniModeWindow.cs \
 	$(srcdir)/SourceComboBox.cs \
+	$(srcdir)/SourceModel.cs \
 	$(srcdir)/AssemblyInfo.cs
 
 plugindir = $(pluginsdir)

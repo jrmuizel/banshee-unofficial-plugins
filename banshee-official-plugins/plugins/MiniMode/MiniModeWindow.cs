@@ -147,7 +147,7 @@ namespace Banshee.Plugins.MiniMode
                 InterfaceElements.MainWindow.Shown += TrayIconWorkaround;
                 setup = true;
             }
-            sourceComboBox.UpdateSelectedSource();
+            sourceComboBox.UpdateActiveSource();
             UpdateMetaDisplay();
             InterfaceElements.MainWindow.Hide();
             Shown = true;

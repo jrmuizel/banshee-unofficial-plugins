@@ -1,3 +1,17 @@
+2006-05-22  Aaron Bockover  <aaron@abock.org>
+
+	* plugins/MiniMode/SourceModel.cs: Fixed model to be a Gtk.TreeStore 
+	instead of a Gtk.ListStore; works without using ActiveSourceIndex 
+	and if building against Banshee 0.11.x, supports child sources
+
+	* plugins/MiniMode/SourceComboBox.cs: Cleaned up, adding proper locking
+	where necessary, and work with new SourceModel
+
+	* plugins/MiniMode/MiniModeWindow.cs: reflect a minor API change 
+	in SourceComboBox
+
+	* plugins/MiniMode/Makefile.am: Added SourceModel.cs
+
 2006-05-22  Lukas Lipka  <lukas@pmad.net>
 
 	* plugins/Recommendation/RecommendationPlugin.cs: Fix the remaining

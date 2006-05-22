@@ -1,0 +1,320 @@
+# Serbian translation of banshee-plugins
+# Courtesy of Prevod.org team (http://prevod.org/) -- 2006.
+#
+# This file is distributed under the same license as the banshee-plugins package.
+#
+# Maintainer: Горан Ракић <gox@devbase.net>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: banshee-plugins\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-05-15 05:02+0200\n"
+"PO-Revision-Date: 2006-05-11 23:39+0100\n"
+"Last-Translator: Горан Ракић <gox@devbase.net>\n"
+"Language-Team: Serbian (sr) <gnom@prevod.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4;    plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 :    n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+
+#: ../plugins/Podcast/PodcastCore.cs:433
+msgid "Uri Shceme Not Supported"
+msgstr "Ури шема није подржана"
+
+#: ../plugins/Podcast/PodcastCore.cs:434
+msgid "Podcast feed URI scheme is not supported."
+msgstr "УРИ шема подкаст извора није подржана."
+
+#: ../plugins/Podcast/PodcastCore.cs:446
+msgid "Invalid URL"
+msgstr "Неисправан УРЛ"
+
+#: ../plugins/Podcast/PodcastCore.cs:447
+msgid "Podcast feed URL is invalid."
+msgstr "УРЛ подкаст извора није исправан."
+
+#: ../plugins/Podcast/PodcastCore.cs:715
+#, csharp-format
+msgid "Unable to add: {0} to library.  {1}"
+msgstr "Не могу да додам: {0} у аудиотеку. {1}"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:232
+#, csharp-format
+msgid "Updating \"{0}\""
+msgstr "Ажурирам \"{0}\""
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:270
+msgid "Podcast Feed Update"
+msgstr "Последње ажурирање:"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:274
+msgid "Updating"
+msgstr "Ажурирам"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:275
+msgid "Preparing to update feeds"
+msgstr "Припремам се да ажурирам изворе"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:325
+#, csharp-format
+msgid "Updating podcast feed {0} of {1}"
+msgstr "Ажурирам подкаст извор број {0} од {1}"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:346
+msgid "Canceling updates"
+msgstr "Прекидам ажурирање"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:347
+msgid "Waiting for update to terminate"
+msgstr "Чекам да се ажурирање заврши"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:48
+#: ../plugins/Podcast/PodcastPlugin.cs:53
+msgid "You need to call catalog.Initalize() first!"
+msgstr "Мораш прво позвати функцију catalog.Initalize()!"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:68
+msgid "Podcasting"
+msgstr "Подкаст"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:74
+msgid "Next generation radio content, where you want it, when you want it."
+msgstr "Нова врста радио садржаја, када и где год га желиш."
+
+#: ../plugins/Podcast/PodcastPlugin.cs:75
+msgid "\"Let the feast of 1,000 hams begin!\""
+msgstr ""
+
+#: ../plugins/Podcast/PodcastPlugin.cs:140
+msgid "Podcast"
+msgstr "Подкаст"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:141
+msgid "Manage the Podcast plugin"
+msgstr "Уреди подкаст додатак"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:144
+msgid "Update Feeds"
+msgstr "Ажурирај изворе"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:145
+msgid "Update Subscribed Podcast Feeds"
+msgstr "Ажурирај претплаћене подкаст изворе"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:149
+#: ../plugins/Podcast/UI/PodcastSource.cs:593
+#: ../plugins/Podcast/UI/PodcastSource.cs:649
+msgid "Subscribe to New Feed"
+msgstr "Претплати се на нови извор"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:150
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:68
+msgid "Subscribe to New Podcast Feed"
+msgstr "Претплати се на нови подкаст извор"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:154
+#: ../plugins/Podcast/UI/PodcastSource.cs:603
+msgid "Visit Podcast Alley"
+msgstr "Посети подкаст долину (енг.)"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:155
+msgid "Find New Podcasts at PodcastAlley.com"
+msgstr "Пронаљи нове подкастове на PodcastAlley.com"
+
+#: ../plugins/Podcast/StringUtils.cs:34
+msgid "Unknown"
+msgstr "Непознато"
+
+#: ../plugins/Podcast/StringUtils.cs:37
+#, csharp-format
+msgid "{0} and others"
+msgstr "{0} и остали"
+
+#: ../plugins/Podcast/StringUtils.cs:40
+#, csharp-format
+msgid "{0} and {1}"
+msgstr "{0} и {1}"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:493
+#: ../plugins/Podcast/UI/PodcastSource.cs:720
+msgid "Download"
+msgstr "Преузми"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:497
+msgid "Downloading Files"
+msgstr "Преузимам датотеке"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:498
+msgid "Initializing downloads"
+msgstr "Започињем преузимања"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:534
+msgid "Canceling Downloads"
+msgstr "Прекидам преузимања"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:536
+msgid "Waiting for downloads to terminate"
+msgstr "Чекам да се преузимања заврше"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:624
+#, csharp-format
+msgid "Downloading Files ({0} of {1} completed)"
+msgstr "Преузимање датотека (завршено {0} од {1})"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:630
+#, csharp-format
+msgid ""
+"Downloading Files ({0} of {1} completed)\n"
+"{2} failed"
+msgstr ""
+"Преузимање датотека (заврђено {0} од {1})\n"
+"неуспешно {2}"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:635
+#, csharp-format
+msgid "Currently transfering {0} file at {1} kB/s"
+msgid_plural "Currently transfering {0} files at {1} kB/s"
+msgstr[0] "Преузимам {0} датотеку по {1} кБ/с"
+msgstr[1] "Преузимам {0} датотеке по {1} кБ/с"
+msgstr[2] "Преузимам {0} датотека по {1} кБ/с"
+msgstr[3] "Преузимам {0} датотеку по {1} кБ/с"
+
+#: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:72
+#: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:88
+msgid "Description:"
+msgstr "Опис:"
+
+#: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:77
+msgid "Last Updated:"
+msgstr "Последње ажурирање:"
+
+#: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:82
+#: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:84
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:103
+msgid "URL:"
+msgstr "УРЛ:"
+
+#: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:88
+msgid "When feed is updated:"
+msgstr "Када је извор ажуриран:"
+
+#: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:105
+#: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:105
+msgid "No description available"
+msgstr "Опис није доступан"
+
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:84
+msgid "Feeds"
+msgstr "Извори"
+
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:150
+msgid "All"
+msgstr "Сви"
+
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:201
+msgid "Episode"
+msgid_plural "Episodes"
+msgstr[0] "{0} Епизода"
+msgstr[1] "{0} Епизоде"
+msgstr[2] "{0} Епизода"
+msgstr[3] "{0} Епизода"
+
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:206
+msgid "New"
+msgstr "Ново"
+
+#: ../plugins/Podcast/UI/PodcastPlaylistView.cs:93
+msgid "Title"
+msgstr "Наслов"
+
+#: ../plugins/Podcast/UI/PodcastPlaylistView.cs:94
+msgid "Feed"
+msgstr "Извор"
+
+#: ../plugins/Podcast/UI/PodcastPlaylistView.cs:95
+msgid "Date"
+msgstr "Датум"
+
+#: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:76
+msgid "Feed:"
+msgstr "Извор:"
+
+#: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:80
+msgid "Date:"
+msgstr "Датум:"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:74
+msgid "Podcasts"
+msgstr "Подкаст"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:598
+msgid "Update All Feeds"
+msgstr "Ажурирај све изворе"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:638
+msgid "Subscribed"
+msgstr "Претплата"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:641
+msgid "Update Feed"
+msgstr "Ажурирај извор"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:645
+msgid "Delete Feed"
+msgstr "Обриши извор"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:653
+msgid "Homepage"
+msgstr "Почетна страна"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:657
+#: ../plugins/Podcast/UI/PodcastSource.cs:740
+msgid "Properties"
+msgstr "Особине"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:716
+msgid "Cancel"
+msgstr "Одустани"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:726
+msgid "Remove Podcast(s)"
+msgstr "Уклони подкаст"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:730
+msgid "Select All"
+msgstr "Одабери све"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:733
+msgid "Select None"
+msgstr "Поништи избор"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:736
+msgid "Link"
+msgstr "Веза"
+
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:36
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:122
+msgid "Subscribe"
+msgstr "Пријава"
+
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:73
+msgid "Please enter the URL of the podcast you wish to subscribe to"
+msgstr "Унеси УРЛ подкаста на који желиш да се претплатиш"
+
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:85
+msgid "When new episodes are available:  "
+msgstr "Када је доступна нова епизода: "
+
+#: ../plugins/Podcast/UI/SyncPreferenceComboBox.cs:38
+msgid "Download all episodes"
+msgstr "Преузми све епизоде"
+
+#: ../plugins/Podcast/UI/SyncPreferenceComboBox.cs:39
+msgid "Download the most recent episode"
+msgstr "Преузми најсвежије епизоде"
+
+#: ../plugins/Podcast/UI/SyncPreferenceComboBox.cs:40
+msgid "Let me decide which episodes to download"
+msgstr "Пусти ме да одлучим које епизоде да преузмем"

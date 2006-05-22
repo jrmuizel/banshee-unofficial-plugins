@@ -1,5 +1,31 @@
 2006-05-22  Aaron Bockover  <aaron@abock.org>
 
+	* plugins/*/*.cs: Do not use Mono.Unix; be sure that all calls to
+	Catalog.Get*String go through Banshee.Plugins; thanks to 
+	Горан Ракић <gox@devbase.net> for making the Podcast plugin translatable
+	and for providing ideas on plugin localization:
+	
+		http://goran.fimaks.net/moin.cgi/BansheeL10N
+
+	* plugins/*/Makefile.am: Compile Common.cs into all assemblies
+
+	* plugins/*/AssemblyInfo.cs.in: Moved global information to Common.cs.in
+
+	* plugins/Makefile.am: EXTRA_DIST Common.cs.in
+
+	* Makefile.am: Fixed ordering of SUBDIRS to the way I like it :)
+
+	* configure.ac: generate plugins/Common.cs
+
+	* plugins/Common.cs: Provide a wrapper class for now that works with
+	both branches of Banshee; if HEAD is available, use the new 
+	Mono.Gettext.Catalog API that supports gettext domains bound to 
+	assemblies in order to pull translations in from banshee-plugins 
+	otherwise use Mono.Unix.Catalog to pull translations from the global
+	default application gettext domain (banshee)
+	
+2006-05-22  Aaron Bockover  <aaron@abock.org>
+
 	* plugins/MiniMode/SourceModel.cs: Fixed model to be a Gtk.TreeStore 
 	instead of a Gtk.ListStore; works without using ActiveSourceIndex 
 	and if building against Banshee 0.11.x, supports child sources

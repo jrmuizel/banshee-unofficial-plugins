@@ -30,6 +30,8 @@ using System.IO;
 using System.Threading;
 using System.Collections;
 
+using Banshee.Plugins.Podcast;
+
 namespace Banshee.Plugins.Podcast.Download
 {
     internal class Dispatcher : IDisposable
@@ -138,8 +140,8 @@ namespace Banshee.Plugins.Podcast.Download
         {
             if (max < 0)
             {
-                throw new ArgumentOutOfRangeException
-                ("Maximum number of concurrent downloads cannot be less than 0.");
+                throw new ArgumentOutOfRangeException(Catalog.GetString
+			  ("Maximum number of concurrent downloads cannot be less than 0."));
             }
 
             int delta = 0;

@@ -31,10 +31,10 @@ using System.Threading;
 using System.Collections;
 
 using Gtk;
-using Mono.Unix;
 
 using Banshee.Base;
 using Banshee.Widgets;
+using Banshee.Plugins;
 
 namespace Banshee.Plugins.Podcast.Download
 {
@@ -172,11 +172,11 @@ public enum DownloadState :
             {
                 if (disposing || disposed)
                 {
-                    throw new RegistrationException ("DownloadCore is shutting down.");
+                    throw new RegistrationException (Catalog.GetString("DownloadCore is shutting down."));
                 }
                 else if (dif.State != DownloadState.New)
                 {
-                    throw new RegistrationException ("dif not in 'New' state.");
+                    throw new RegistrationException (Catalog.GetString("dif not in 'New' state."));
                 }
 
                 DownloadTask dt = null;
@@ -189,7 +189,7 @@ public enum DownloadState :
                     }
                     catch (NotSupportedException e)
                     {
-                        throw new RegistrationException ("Uri scheme not supported.");
+                        throw new RegistrationException (Catalog.GetString("Uri scheme not supported."));
                     }
                     catch (Exception e)
                     {
@@ -198,7 +198,7 @@ public enum DownloadState :
 
                     if (downloads.ContainsKey (dif.UniqueKey))
                     {
-                        throw new RegistrationException ("Download already queued.");
+                        throw new RegistrationException (Catalog.GetString("Download already queued."));
                     }
 
                     if (downloads.Count == 0)
@@ -283,11 +283,11 @@ public enum DownloadState :
         {
             if (uri == null || uri == String.Empty)
             {
-                throw new ArgumentException ("uri is empty");
+                throw new ArgumentException (Catalog.GetString("uri is empty"));
             }
             else if (path == null || path == String.Empty)
             {
-                throw new ArgumentException ("path is empty");
+                throw new ArgumentException (Catalog.GetString("path is empty"));
             }
 
             DownloadInfo dif = new DownloadInfo (uri, path, length);
@@ -632,17 +632,10 @@ public enum DownloadState :
             }
 
 
-            // TODO use Catalog.GetPluralString.
-            if (args.CurrentDownloads == 1)
-            {
-                message = String.Format (Catalog.GetString ("Currently transfering 1 file at {0} kB/s"),
-                                         args.Speed);
-            }
-            else
-            {
-                message = String.Format (Catalog.GetString ("Currently transfering {0} files at {1} kB/s"),
-                                         args.CurrentDownloads, args.Speed);
-            }
+	    message = String.Format (Catalog.GetPluralString ("Currently transfering 1 file at {0} kB/s",
+					 		      "Currently transfering {0} files at {1} kB/s",
+							      args.CurrentDownloads),
+                                      args.CurrentDownloads, args.Speed);
 
             ThreadAssist.ProxyToMain ( delegate {
                                            if (userEvent != null)

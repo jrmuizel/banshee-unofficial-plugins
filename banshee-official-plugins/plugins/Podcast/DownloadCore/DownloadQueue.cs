@@ -31,6 +31,8 @@ using System.Collections;
 // remove
 using System.Threading;
 
+using Banshee.Plugins.Podcast;
+
 namespace Banshee.Plugins.Podcast.Download
 {
     public class DownloadQueue : IEnumerable
@@ -71,11 +73,11 @@ namespace Banshee.Plugins.Podcast.Download
         {
             if (dif.State != DownloadState.New)
             {
-                throw new ArgumentException("dif not in 'New' state.");
+                throw new ArgumentException(Catalog.GetString("dif not in 'New' state."));
             }
             else if (downloadQueue.Contains (dif))
             {
-                throw new ArgumentException("Already queued, must be unique.");
+                throw new ArgumentException(Catalog.GetString("Already queued, must be unique."));
             }
             else
             {
@@ -96,7 +98,7 @@ namespace Banshee.Plugins.Podcast.Download
 
             if (!downloadQueue.Contains (dif))
             {
-                throw new ArgumentException("Item not in queue.");
+                throw new ArgumentException(Catalog.GetString("Item not in queue."));
             }
 
             downloadQueue.Remove (dif);

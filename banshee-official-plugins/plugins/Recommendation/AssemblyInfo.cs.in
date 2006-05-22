@@ -1,9 +1,6 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: AssemblyVersion("@VERSION@")]
 [assembly: AssemblyTitle("Banshee MiniMode Plugin")]
 [assembly: AssemblyDescription("Provides music recommendations for the Banshee Music Player")]
-[assembly: AssemblyCopyright("Copyright (C) Novell, Inc.")]
-[assembly: AssemblyCompany("Novell, Inc")]
 

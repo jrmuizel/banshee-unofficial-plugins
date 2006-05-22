@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *  QueryBuilderModel.cs
  *
@@ -32,9 +31,9 @@ using GLib;
 using Gtk;
 using Sql;
 using System.Collections;
-using Mono.Unix;
 
 using Banshee.Widgets;
+using Banshee.Plugins;
 
 namespace Banshee
 {

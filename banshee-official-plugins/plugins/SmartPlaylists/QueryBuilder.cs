@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *  QueryBuilder.cs
  *
@@ -32,9 +31,10 @@ using GLib;
 using Gtk;
 using Sql;
 using System.Collections;
-using Mono.Unix;
 
 using System.Text.RegularExpressions;
+
+using Banshee.Plugins;
 
 namespace Banshee
 {

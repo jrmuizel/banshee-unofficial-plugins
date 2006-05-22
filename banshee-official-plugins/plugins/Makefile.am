@@ -25,4 +25,5 @@ endif
 endif
 
 MAINTAINERCLEANFILES = Makefile.in
-
+EXTRA_DIST = Common.cs.in
+ 

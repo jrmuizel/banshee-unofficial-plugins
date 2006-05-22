@@ -31,9 +31,9 @@ using System.Collections;
 using Gtk;
 using Gdk;
 using Pango;
-using Mono.Unix;
 
 using Banshee.Base;
+using Banshee.Plugins;
 
 namespace Banshee.Plugins.Podcast.UI
 {
@@ -180,10 +180,11 @@ namespace Banshee.Plugins.Podcast.UI
             if (feed == PodcastFeedInfo.All)
             {
 
-                string feed_str = PodcastCore.Library.FeedCount == 1 ? "Feed" : "Feeds";
-
-                renderer.Text = Catalog.GetString (
-                                    String.Format ("{0} {1}", PodcastCore.Library.FeedCount, feed_str)
+                renderer.Text = String.Format( 
+				     Catalog.GetPluralString (
+					"{0} Feed", "{0} Feeds", PodcastCore.Library.FeedCount
+				     ),
+                                     PodcastCore.Library.FeedCount
                                 );
 
                 renderer.Weight = (int) Pango.Weight.Bold;

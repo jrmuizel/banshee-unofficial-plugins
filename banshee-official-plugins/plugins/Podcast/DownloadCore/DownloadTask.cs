@@ -30,6 +30,7 @@ using System.IO;
 using System.Threading;
 
 using Banshee.Base;
+using Banshee.Plugins.Podcast;
 
 namespace Banshee.Plugins.Podcast.Download
 {
@@ -221,7 +222,7 @@ namespace Banshee.Plugins.Podcast.Download
             }
             else
             {
-                throw new NotSupportedException ("Uri scheme not supported");
+                throw new NotSupportedException (Catalog.GetString("Uri scheme not supported"));
             }
 
             return dt;
@@ -261,7 +262,7 @@ namespace Banshee.Plugins.Podcast.Download
                     OnProgressChanged (length);
 
                     Stop (DownloadState.Completed);
-                    throw new TaskStoppedException ("File complete");
+                    throw new TaskStoppedException (Catalog.GetString("File complete"));
                 }
                 else
                 {
@@ -300,7 +301,7 @@ namespace Banshee.Plugins.Podcast.Download
                 if (length == totalLength)
                 {
                     Stop (DownloadState.Completed);
-                    throw new TaskStoppedException ("File complete");
+                    throw new TaskStoppedException (Catalog.GetString("File complete"));
                 }
             }
         }
@@ -317,7 +318,7 @@ namespace Banshee.Plugins.Podcast.Download
             }
             catch {
                 throw new TaskStoppedException (
-                    String.Format ("Unable to create directory:  {0}", path)
+                    String.Format (Catalog.GetString("Unable to create directory:  {0}"), path)
                 );
             }
                 
@@ -404,7 +405,7 @@ namespace Banshee.Plugins.Podcast.Download
             if (dif.State != DownloadState.Running)
             {
                 Stop ();
-                throw new TaskStoppedException ("Dif is not in running state");
+                throw new TaskStoppedException (Catalog.GetString("Dif is not in 'running' state"));
             }
         }
 

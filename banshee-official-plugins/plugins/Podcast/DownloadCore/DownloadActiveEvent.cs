@@ -1,7 +1,6 @@
 // created on 3/31/2006 at 2:59 AM
 /*
 using Gtk;
-using Mono.Unix;
  
 using Banshee.Base;
 using Banshee.Widgets;

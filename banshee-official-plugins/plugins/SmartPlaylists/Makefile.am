@@ -6,7 +6,8 @@ SOURCES = \
 	$(srcdir)/SmartPlaylist.cs \
 	$(srcdir)/QueryBuilder.cs \
 	$(srcdir)/QueryBuilderModel.cs \
-	$(srcdir)/AssemblyInfo.cs
+	$(srcdir)/AssemblyInfo.cs \
+	$(top_srcdir)/plugins/Common.cs
 
 SYSTEM_REFERENCES = \
 	System.Data.dll

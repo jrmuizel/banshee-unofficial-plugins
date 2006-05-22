@@ -7,7 +7,8 @@ SOURCES = \
 	$(srcdir)/StationView.cs \
 	$(srcdir)/StationStore.cs \
 	$(srcdir)/totem-plparser/*.cs \
-	$(srcdir)/AssemblyInfo.cs
+	$(srcdir)/AssemblyInfo.cs \
+	$(top_srcdir)/plugins/Common.cs
 
 plugindir = $(pluginsdir)
 plugin_SCRIPTS = $(ASSEMBLY) $(ASSEMBLY).mdb

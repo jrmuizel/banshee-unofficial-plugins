@@ -1,11 +1,11 @@
 using System;
-using Mono.Unix;
 using Gtk;
 using Glade;
  
 using Banshee.Base;
 using Banshee.Sources;
- 
+using Banshee.Plugins;
+
 namespace Banshee.Plugins.SmartPlaylists
 {
     public class Editor

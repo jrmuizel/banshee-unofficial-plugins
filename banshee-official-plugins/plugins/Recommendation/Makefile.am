@@ -2,7 +2,8 @@ ASSEMBLY = Recommendation.dll
 SOURCES = \
 	$(srcdir)/RecommendationPlugin.cs \
 	$(srcdir)/RecommendationPane.cs \
-	$(srcdir)/AssemblyInfo.cs
+	$(srcdir)/AssemblyInfo.cs \
+	$(top_srcdir)/plugins/Common.cs
 
 MENU_RESOURCE = RecommendationMenu.xml
 ICON_RESOURCE = play.png

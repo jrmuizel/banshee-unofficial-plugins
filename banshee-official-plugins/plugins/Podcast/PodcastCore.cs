@@ -30,7 +30,6 @@ using System.Threading;
 using System.Collections;
 
 using Gtk;
-using Mono.Unix;
 
 using Banshee.Base;
 using Banshee.Sources;
@@ -514,7 +513,7 @@ public enum SyncPreference :
                     initialized = true;
                 }
 
-                Console.WriteLine ("Loading Podcast Feeds:  {0} ms", span.Milliseconds);
+                Console.WriteLine (Catalog.GetString("Loading Podcast Feeds:  {0} ms"), span.Milliseconds);
             }
             finally
             {
@@ -712,7 +711,7 @@ public enum SyncPreference :
                 catch (Exception e)
                 {
                     Console.WriteLine (
-                        "Unable to add: {0} to library.  {1}", local_uri, e.Message
+                        Catalog.GetString("Unable to add: {0} to library.  {1}"), local_uri, e.Message
                     );
                 }
 

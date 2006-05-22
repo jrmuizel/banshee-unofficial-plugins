@@ -753,7 +753,7 @@ namespace Banshee.Plugins.Podcast
                     if (podcast_feeds_keyed.ContainsKey (key))
                     {
                         // Should users be notified of this?
-                        Console.WriteLine ("Already Subscribed");
+                        Console.WriteLine (Catalog.GetString("Already Subscribed"));
                         feed = podcast_feeds_keyed [key] as PodcastFeedInfo;
                         feed.IsSubscribed = true;
                     }

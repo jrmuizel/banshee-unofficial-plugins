@@ -1,11 +1,11 @@
 using System;
-using Mono.Unix;
 using Gtk;
 using Glade;
 
 using Banshee.Base;
 using Banshee.MediaEngine;
 using Banshee.Widgets;
+using Banshee.Plugins;
 
 namespace Banshee.Plugins.MiniMode
 { 

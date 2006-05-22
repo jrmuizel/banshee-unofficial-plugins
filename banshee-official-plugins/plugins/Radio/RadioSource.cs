@@ -29,7 +29,6 @@
 using System;
 using System.IO;
 using System.Collections;
-using Mono.Unix;
 using Gtk;
 
 using Banshee.Base;

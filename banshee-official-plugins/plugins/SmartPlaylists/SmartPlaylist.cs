@@ -1,13 +1,13 @@
 using System;
 using System.Data;
 using System.Collections;
-using Mono.Unix;
  
 using Banshee.Base;
 using Banshee.Sources;
+using Banshee.Plugins;
 
 using Sql;
- 
+
 namespace Banshee.Plugins.SmartPlaylists
 {
     public class SmartPlaylist : Banshee.Sources.Source

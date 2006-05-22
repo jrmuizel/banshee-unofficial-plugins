@@ -1,5 +1,6 @@
 ASSEMBLY = Podcast.dll
 SOURCES = \
+	$(top_srcdir)/plugins/Common.cs \
 	AssemblyInfo.cs \
 	FeedUtils.cs \
 	PodcastCore.cs \

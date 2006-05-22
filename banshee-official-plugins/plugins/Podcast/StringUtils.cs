@@ -21,19 +21,17 @@ using System;
 using System.Collections;
 using System.Text.RegularExpressions;
 
-using Mono.Unix;
-
 public sealed class StringUtils
 {
     // Strings
     private static readonly string string_unknown =
-        Catalog.GetString ("Unknown");
+     	Banshee.Plugins.Catalog.GetString ("Unknown");
 
     private static readonly string string_many =
-        Catalog.GetString ("{0} and others");
+        Banshee.Plugins.Catalog.GetString ("{0} and others");
 
     private static readonly string string_several =
-        Catalog.GetString ("{0} and {1}");
+        Banshee.Plugins.Catalog.GetString ("{0} and {1}");
 
     // Methods
     // Methods :: Public

@@ -30,6 +30,8 @@ using System.IO;
 using System.Net;
 using System.Threading;
 
+using Banshee.Plugins.Podcast;
+
 namespace Banshee.Plugins.Podcast.Download
 {
     internal class HttpDownloadTask : DownloadTask
@@ -104,7 +106,7 @@ namespace Banshee.Plugins.Podcast.Download
                     if (response.ContentLength == localFile.Length)
                     {
                         Stop (DownloadState.Completed);
-                        throw new TaskStoppedException ("File complete");
+                        throw new TaskStoppedException (Catalog.GetString("File complete"));
                     }
                 }
             }
@@ -208,7 +210,7 @@ namespace Banshee.Plugins.Podcast.Download
         {
             try
             {
-                Console.WriteLine ("Contacting {0}...", request.Address.Host.ToString ());
+                Console.WriteLine (Catalog.GetString("Contacting {0}..."), request.Address.Host.ToString ());
 
                 CheckState ();
 
@@ -218,7 +220,7 @@ namespace Banshee.Plugins.Podcast.Download
                 if (IsError (response.StatusCode))
                 {
                     Stop (DownloadState.Failed);
-                    throw new TaskStoppedException ("HTTP error");
+                    throw new TaskStoppedException (Catalog.GetString("HTTP error"));
                 }
 
             }

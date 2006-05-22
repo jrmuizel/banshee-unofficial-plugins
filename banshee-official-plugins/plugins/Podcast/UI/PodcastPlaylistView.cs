@@ -31,7 +31,6 @@ using System.Collections;
 using Gtk;
 using Gdk;
 using Pango;
-using Mono.Unix;
 
 using Banshee.Base;
 

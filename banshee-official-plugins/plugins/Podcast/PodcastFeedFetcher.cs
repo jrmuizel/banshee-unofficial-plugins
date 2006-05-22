@@ -32,7 +32,6 @@ using System.Threading;
 using System.Collections;
 
 using Gtk;
-using Mono.Unix;
 
 using Banshee.Base;
 using Banshee.Widgets;
@@ -107,7 +106,7 @@ namespace Banshee.Plugins.Podcast
             if (!(tmpUri.Scheme == Uri.UriSchemeHttp ||
                         tmpUri.Scheme == Uri.UriSchemeHttps))
                 {
-                    throw new  NotSupportedException ("Uri scheme not supported.");
+                    throw new  NotSupportedException (Catalog.GetString("Uri scheme not supported."));
                 }
 
             return tmpUri;

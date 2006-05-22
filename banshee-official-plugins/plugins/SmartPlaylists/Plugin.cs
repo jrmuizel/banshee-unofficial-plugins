@@ -1,13 +1,13 @@
 using System;
 using System.Data;
 using System.Collections;
-using Mono.Unix;
 using Gtk;
  
 using Banshee.Base;
 using Banshee.Sources;
 using Banshee.Database;
- 
+using Banshee.Plugins;
+
 namespace Banshee.Plugins.SmartPlaylists
 {
     public class Plugin : Banshee.Plugins.Plugin

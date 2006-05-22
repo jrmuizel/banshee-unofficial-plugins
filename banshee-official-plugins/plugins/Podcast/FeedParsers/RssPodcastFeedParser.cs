@@ -55,7 +55,7 @@ namespace Banshee.Plugins.Podcast
 
             if (title == "")
             {
-                throw new ApplicationException ("Feed has no title");
+                throw new ApplicationException (Catalog.GetString("Feed has no title"));
             }
 
             feed_link = FeedUtil.GetXmlNodeText (xml_doc, "/rss/channel/link").Trim ();

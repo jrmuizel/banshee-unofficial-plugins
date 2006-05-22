@@ -176,6 +176,7 @@ AC_OUTPUT([
 Makefile
 po/Makefile.in
 plugins/Makefile
+plugins/Common.cs
 plugins/MiniMode/Makefile
 plugins/MiniMode/AssemblyInfo.cs
 plugins/Podcast/Makefile

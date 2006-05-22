@@ -30,8 +30,6 @@ using System.Data;
 using System.Threading;
 using System.Collections;
 
-using Mono.Unix;
-
 using Gtk;
 using Gdk;
 using GLib;

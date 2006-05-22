@@ -26,9 +26,9 @@
  */
 
 using System;
-
 using Gtk;
-using Mono.Unix;
+
+using Banshee.Plugins.Podcast;
 
 namespace Banshee.Plugins.Podcast.UI
 {

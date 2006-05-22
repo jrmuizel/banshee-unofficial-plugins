@@ -32,6 +32,8 @@ using System.Collections;
 
 using Gtk;
 
+using Banshee.Plugins;
+
 namespace Banshee.Plugins.Podcast
 {
     public delegate void FeedPodcastsUpdatedEventHandler (object sender, FeedPodcastsUpdatedEventArgs args);
@@ -704,7 +706,7 @@ namespace Banshee.Plugins.Podcast
                 {
                     string old_title = Title;
                     title = value;
-                    Console.WriteLine ("Title Prop Changed");
+                    Console.WriteLine (Catalog.GetString("Title Property Changed"));
                     EmitFeedTitleUpdated (old_title, title);
                 }
             }

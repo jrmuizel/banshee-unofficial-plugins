@@ -1,5 +1,4 @@
 using System;
-using Mono.Unix;
 using Gtk;
 
 using Banshee.Base;

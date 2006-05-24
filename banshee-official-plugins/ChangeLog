@@ -1,3 +1,8 @@
+2006-05-24  Aaron Bockover  <aaron@abock.org>
+
+	* plugins/MiniMode/MiniModeWindow.cs: Catch any possible exception
+	that GConf may throw and set a sane default value
+
 2006-05-24  Lukas Lipka  <lukas@pmad.net>
 
 	* plugins/Recommendation/RecommendationPlugin.cs: Fix more glitches related

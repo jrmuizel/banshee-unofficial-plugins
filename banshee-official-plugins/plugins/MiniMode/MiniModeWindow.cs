@@ -114,7 +114,11 @@ namespace Banshee.Plugins.MiniMode
                     Globals.ActionManager["ShuffleAction"] as ToggleAction);
             shuffle_toggle_button.Relief = ReliefStyle.None;
             shuffle_toggle_button.ShowLabel = false;
-            shuffle_toggle_button.ActiveStateIndex = (bool)Globals.Configuration.Get(GConfKeys.PlaylistShuffle) ? 1 : 0;
+            try {
+				shuffle_toggle_button.ActiveStateIndex = (bool)Globals.Configuration.Get(GConfKeys.PlaylistShuffle) ? 1 : 0;
+			} catch {
+				shuffle_toggle_button.ActiveStateIndex = 0;
+			}
             shuffle_toggle_button.ShowAll();
             
             MultiStateToggleButton repeat_toggle_button = new MultiStateToggleButton();
@@ -126,7 +130,11 @@ namespace Banshee.Plugins.MiniMode
                 Globals.ActionManager["RepeatSingleAction"] as ToggleAction);
             repeat_toggle_button.Relief = ReliefStyle.None;
             repeat_toggle_button.ShowLabel = false;
-            repeat_toggle_button.ActiveStateIndex = (int)Globals.Configuration.Get(GConfKeys.PlaylistRepeat);
+            try {
+				repeat_toggle_button.ActiveStateIndex = (int)Globals.Configuration.Get(GConfKeys.PlaylistRepeat);
+			} catch {
+				repeat_toggle_button.ActiveStateIndex = 0;
+			}
             repeat_toggle_button.ShowAll();
             
             LowerButtonsBox.PackEnd(repeat_toggle_button, false, false, 0);

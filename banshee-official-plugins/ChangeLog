@@ -1,3 +1,10 @@
+2006-05-24  Lukas Lipka  <lukas@pmad.net>
+
+	* plugins/Recommendation/RecommendationPlugin.cs: Fix more glitches related
+	to source focus tracking. Move stuff around.
+
+	* plugins/Recommendation/RecommendationPane.cs: Fix nasty code indenting.
+
 2006-05-22  Aaron Bockover  <aaron@abock.org>
 
 	* plugins/*/*.cs: Do not use Mono.Unix; be sure that all calls to

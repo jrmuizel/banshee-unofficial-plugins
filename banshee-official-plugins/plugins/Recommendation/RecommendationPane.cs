@@ -127,10 +127,11 @@ namespace Banshee.Plugins.Recommendation
 
 			// FIXME: Error handling	
 			ThreadAssist.Spawn(delegate {
-                // Last.fm requires double-encoding of '/' characters, see
-                // http://bugzilla.gnome.org/show_bug.cgi?id=340511
-                string encoded_artist = artist.Replace ("/", "%2F");
-                encoded_artist = System.Web.HttpUtility.UrlEncode(encoded_artist);
+
+		                // Last.fm requires double-encoding of '/' characters, see
+                		// http://bugzilla.gnome.org/show_bug.cgi?id=340511
+		                string encoded_artist = artist.Replace ("/", "%2F");
+                		encoded_artist = System.Web.HttpUtility.UrlEncode (encoded_artist);
 
 				// Fetch data for "similar" artists.
 				XmlDocument artists_xml_data = new XmlDocument ();

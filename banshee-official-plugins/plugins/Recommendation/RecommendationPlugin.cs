@@ -56,9 +56,16 @@ namespace Banshee.Plugins.Recommendation
 		
 		// --------------------------------------------------------------- //
 		
+		private RecommendationPane recommendation_pane;
 		private ActionGroup actions;
 		private uint ui_manager_id;
 		
+		private void InstallInterfaceElements ()
+		{
+			recommendation_pane = new RecommendationPane ();
+			InterfaceElements.MainContainer.PackEnd (recommendation_pane, false, false, 0);
+		}
+
 		private void InstallInterfaceActions()
 		{
 			actions = new ActionGroup("Recommendation");
@@ -103,7 +110,6 @@ namespace Banshee.Plugins.Recommendation
 
 		// --------------------------------------------------------------- //
 
-		private RecommendationPane recommendation_pane;
 
 		private void OnPlayerEngineEventChanged (object o, PlayerEngineEventArgs args)
 		{
@@ -124,10 +130,11 @@ namespace Banshee.Plugins.Recommendation
 		}
 
 		private Source displayed_on_source;
+		private string displayed_on_artist;
 		
 		private void OnActiveSourceChanged (SourceEventArgs args)
 		{
-			if (args.Source == displayed_on_source) {
+			if (args.Source == displayed_on_source && displayed_on_artist == recommendation_pane.CurrentArtist) {
 				PaneVisible = true;
 			} else {
 				PaneVisible = false;
@@ -154,11 +161,9 @@ namespace Banshee.Plugins.Recommendation
 		private void ShowRecommendations (string artist)
 		{
 			lock (this) {
-				if (recommendation_pane == null) {
-					recommendation_pane = new RecommendationPane ();
-					InterfaceElements.MainContainer.PackEnd (recommendation_pane, false, false, 0);
-				}
-				
+				if (recommendation_pane == null)
+					InstallInterfaceElements ();
+
 				// Don't do anything if we already are showing recommendations for the
 				// requested artist.
 				if (PaneVisible && recommendation_pane.CurrentArtist == artist)
@@ -170,7 +175,9 @@ namespace Banshee.Plugins.Recommendation
 					HideRecommendations ();
 				
 				recommendation_pane.ShowRecommendations (artist);
+
 				displayed_on_source = SourceManager.ActiveSource;
+				displayed_on_artist = artist;
 			}
 		}
 		

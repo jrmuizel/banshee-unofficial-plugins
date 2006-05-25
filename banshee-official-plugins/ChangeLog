@@ -1,3 +1,9 @@
+2006-05-25  Lukas Lipka  <lukas@pmad.net>
+
+	* plugins/Recommendation/RecommendationPane.cs: Commit a patch from Koike
+	Kazuhiko, which checks if we are still playing the same artist as we requested,
+	prior to displaying the details pane.
+
 2006-05-24  Aaron Bockover  <aaron@abock.org>
 
 	* plugins/MiniMode/MiniModeWindow.cs: Catch any possible exception

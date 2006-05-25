@@ -171,6 +171,9 @@ namespace Banshee.Plugins.Recommendation
 				if (artists_xml_list.Count < 1 && tracks_xml_list.Count < 1 && albums_xml_list.Count < 1)
 					return;
 				
+				if (artist != PlayerEngineCore.CurrentTrack.Artist)
+					return;
+
 				ThreadAssist.ProxyToMain (delegate {
 					// Wipe the old recommendations here, we keep them around in case 
 					// where the the artist is the same as the last song.

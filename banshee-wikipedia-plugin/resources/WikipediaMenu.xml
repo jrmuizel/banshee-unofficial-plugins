@@ -1,0 +1,9 @@
+<ui>
+    <menubar name="MainMenu">
+        <menu name="ViewMenu" action="ViewMenuAction">
+            <placeholder name="ViewMenuAdditions">
+                 <menuitem name="ShowWikipedia" action="ShowWikipediaAction" />
+            </placeholder> 
+        </menu>
+    </menubar>
+</ui>

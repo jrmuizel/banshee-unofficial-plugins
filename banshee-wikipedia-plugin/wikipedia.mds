@@ -1,16 +1,16 @@
-<Combine name="banshee-wikipedia-plugin" fileversion="2.0">
+<Combine name="wikipedia" fileversion="2.0">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
-      <Entry build="True" name="banshee-wikipedia-plugin" configuration="Debug" />
+      <Entry build="True" name="wikipedia" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
-      <Entry build="True" name="banshee-wikipedia-plugin" configuration="Debug" />
+      <Entry build="True" name="wikipedia" configuration="Debug" />
     </Configuration>
   </Configurations>
-  <StartMode startupentry="banshee-wikipedia-plugin" single="True">
-    <Execute type="None" entry="banshee-wikipedia-plugin" />
+  <StartMode startupentry="wikipedia" single="True">
+    <Execute type="None" entry="wikipedia" />
   </StartMode>
   <Entries>
-    <Entry filename="./banshee-wikipedia-plugin.mdp" />
+    <Entry filename="./wikipedia.mdp" />
   </Entries>
 </Combine>

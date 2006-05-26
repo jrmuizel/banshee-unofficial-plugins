@@ -12,6 +12,7 @@ namespace Banshee.Plugins.Wikipedia
 	public class WikipediaPlugin : Banshee.Plugins.Plugin
 	{
 		protected override string ConfigurationName { get { return "Wikipedia"; } }
+		
 		public override string DisplayName { get { return Catalog.GetString ("Wikipedia"); } }
 		
 		public override string Description {
@@ -23,21 +24,24 @@ namespace Banshee.Plugins.Wikipedia
 		public override string [] Authors {
 			get {
 				return new string [] {
-					"Patrick van Staveren <trick@vanstaveren.us>"
+					"Patrick van Staveren <trick@vanstaveren.us>",
+					"David Schneider <david.schneider@picle.org>"
 				};
 			}
 		}
 		
 		// --------------------------------------------------------------- //
 		
+		public WikipediaPlugin() {
+			Console.WriteLine("Initializing {0}",this.GetType());
+		}
 		protected override void PluginInitialize()
 		{
-			InstallInterfaceActions ();
-			
+			InstallInterfaceActions ();			
 			PlayerEngineCore.EventChanged += OnPlayerEngineEventChanged;
 			
-			if (wikipedia_pane != null && ValidTrack)
-				ShowWikipedia (PlayerEngineCore.CurrentTrack.Artist);
+			if (ValidTrack)
+				ShowWikipedia (PlayerEngineCore.CurrentTrack);
 		}
 		
 		protected override void PluginDispose()
@@ -50,9 +54,9 @@ namespace Banshee.Plugins.Wikipedia
 			if (PaneVisible) {
 				// nope, we actually need to kill the widgets here!
 				//HideWikipedia ();
-				InterfaceElements.MainContainer.Remove(wikipedia_pane);
+				InterfaceElements.MainContainer.Remove(wiki_controller.Pane);
 				//InterfaceElements.MainContainer.Remove(separator);
-				wikipedia_pane.Destroy();
+				wiki_controller.Destroy();
 				//separator.Destroy();
 			}
 		}
@@ -90,8 +94,8 @@ namespace Banshee.Plugins.Wikipedia
 				if (enabled && !value && PaneVisible)
 					HideWikipedia ();
 				else if (!enabled && value && ValidTrack)
-					ShowWikipedia (PlayerEngineCore.CurrentTrack.Artist);
-
+					ShowWikipedia (PlayerEngineCore.CurrentTrack);
+				
 				enabled = value;
 			}
 		}
@@ -106,8 +110,8 @@ namespace Banshee.Plugins.Wikipedia
 
 		// --------------------------------------------------------------- //
 
-		private WikipediaPane wikipedia_pane;
-		
+		private WikipediaQueryController wiki_controller;
+				
 		private void OnPlayerEngineEventChanged (object o, PlayerEngineEventArgs args)
 		{
 			if (!Enabled)
@@ -116,7 +120,7 @@ namespace Banshee.Plugins.Wikipedia
 			switch (args.Event) {
 			case PlayerEngineEvent.StartOfStream:
 				if (ValidTrack)
-					ShowWikipedia (PlayerEngineCore.CurrentTrack.Artist);
+					ShowWikipedia (PlayerEngineCore.CurrentTrack);
 				break;
 				
 			case PlayerEngineEvent.EndOfStream:
@@ -125,65 +129,49 @@ namespace Banshee.Plugins.Wikipedia
 				break;
 			}
 		}
-
 		private bool PaneVisible
 		{
 			get {
-				if (wikipedia_pane == null)
+				if (wiki_controller != null)
+					return wiki_controller.Pane.Visible;
+				else
 					return false;
 
-				return wikipedia_pane.Visible;
+				
 			}
 		}
-		
-		//private VPaned separator;
 
-		private void ShowWikipedia (string artist)
+		private void ShowWikipedia (TrackInfo info)
 		{
+			
 			lock (this) {
-				if (wikipedia_pane == null) {
-					wikipedia_pane = new WikipediaPane ();
-					/*separator = new VPaned();
-					//Gtk.Box list = InterfaceElements.MainContainer.Children[0]
-					//InterfaceElements.MainContainer.Rem
-					Gtk.VBox list = new Gtk.VBox();
-					
-					for(int i = 0; i < InterfaceElements.MainContainer.Children.GetLength(0); i++) {
-						Console.WriteLine("Found a widget: {0}", i);
-						Gtk.Widget cur = InterfaceElements.MainContainer.Children[i];
-						InterfaceElements.MainContainer.Remove(InterfaceElements.MainContainer.Children[i]);
-						list.PackStart(cur);
+				if ( InterfaceElements.MainContainer != null ) {
+					if ( this.wiki_controller == null ) {
+						this.wiki_controller = new WikipediaQueryController();
+						InterfaceElements.MainContainer.PackEnd (wiki_controller.Pane, false, false, 0);
+						wiki_controller.Pane.ShowAll();
 					}
-						
-						
-						
-					
-					separator.Add1(list);
-					separator.Add2(wikipedia_pane);
-					//InterfaceElements.MainContainer.Add(separator);
-					//InterfaceElements.MainContainer.PackEnd (separator, false, false, 0);*/
-					InterfaceElements.MainContainer.PackEnd (wikipedia_pane, false, false, 0);
 				}
-				
-				// Don't do anything if we already are showing wikipedia for the
-				// requested artist.
-				if (PaneVisible && wikipedia_pane.current_artist == artist)
-					return;
-				
-				// If we manually switch track we don't get an EndOfStream event and 
-				// must clear the wikipedia pane here.
-				if (PaneVisible)
-					HideWikipedia ();
-				
-				wikipedia_pane.ShowWikipedia (artist);
-				//separator.Visible = true;
 			}
+			// Don't do anything if we already are showing wikipedia for the
+			// requested artist.
+			if ( wiki_controller.Track != null )  
+				if (PaneVisible && wiki_controller.Track.Artist == info.Artist)	return;
+			
+			// If we manually switch track we don't get an EndOfStream event and 
+			// must clear the wikipedia pane here.
+			if (PaneVisible)
+				HideWikipedia ();
+			wiki_controller.Pane.Visible = true;
+			wiki_controller.Track = info;
+			
+			
 		}
 		
 		private void HideWikipedia ()
 		{
-			wikipedia_pane.HideWikipedia ();
-			//separator.Visible = false;
+			wiki_controller.Pane.Visible = false;
 		}
+		
 	}
 }

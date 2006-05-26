@@ -1,3 +1,6 @@
+2006-05-25  David Schneider <david.scheneider@picle.org>
+        (will update ChangeLog soon)
+
 2006-04-30  Patrick van Staveren  <trick@vanstaveren.us>
 	* Google search mode - uses the "i'm feeling lucky" feature of Google to direct to the closes match using Google, adding the keyword "band".  I know, this isn't the best way, but it is much much more accurate than just searching for the artist keyword.
 	* Experimenting with stuff like a status bar and progress bar for loading.

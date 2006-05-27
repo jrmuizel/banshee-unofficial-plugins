@@ -54,7 +54,8 @@ namespace Banshee.Plugins.Alarm
                 PlayerEngineCore.Volume = plugin.FadeStartVolume;
                 new VolumeFade(plugin.FadeStartVolume, plugin.FadeEndVolume, plugin.FadeDuration);
             }
-            PlayerEngineCore.Play();
+            // PlayerEngineCore.Play() only works if we're paused in a track
+            Globals.ActionManager["PlayPauseAction"].Activate();
             
             if(plugin.AlarmCommand != null && plugin.AlarmCommand.Trim() != "")
                 Process.Start(plugin.AlarmCommand);

@@ -1,3 +1,8 @@
+2006-05-27  Bertrand Lorentz  <bertrand.lorentz@free.fr>
+    * configure.ac: Detect Banshee API version and choose compiler accordingly (copied from banshee-official-plugins).
+    * configure.ac, Makefile.am, data/Makefile.am, src/Makefile.am:  Autotools fixes so that "make distcheck" works.
+    * alarm.mdp: Update MonoDevelop project.
+
 2006-05-13  Bertrand Lorentz  <bertrand.lorentz@free.fr>
     * Replace tabs with spaces in all .cs files.
 

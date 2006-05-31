@@ -43,10 +43,10 @@ namespace Banshee.Plugins.Wikipedia
 			string temp;
 			if ( p != null ) {
 				StringReader sr = new StringReader(p.Content);
-				web.OpenStream("http://en.wikipedia.org","text/html");
+				web.OpenStream("http://en.wikipedia.org/","text/html");
 				while ( (temp = sr.ReadLine())!= null ) {
-					web.AppendData(temp);
-					//Console.WriteLine("Appending {0}",temp);
+					web.AppendData(temp);					
+					//Console.Write(temp);
 				}
 				web.CloseStream();
 				web.ShowAll();

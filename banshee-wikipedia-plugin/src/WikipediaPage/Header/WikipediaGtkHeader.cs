@@ -1,4 +1,3 @@
-
 using System;
 
 namespace Banshee.Plugins.Wikipedia
@@ -19,6 +18,19 @@ namespace Banshee.Plugins.Wikipedia
 			Gdk.Color text  	= s.Text(Gtk.StateType.Normal);
 			Gdk.Color dark  	= s.Dark(Gtk.StateType.Selected);
 			Gdk.Color dark_text	= s.Text(Gtk.StateType.Selected);
+			
+			//Background image for error div
+			// crashes
+//			string bg_image;
+//			try {
+//				string name       = Gtk.Stock.DialogError;
+//				Gtk.IconInfo info = Gtk.IconTheme.Default.LookupIcon(name,256,Gtk.IconLookupFlags.ForceSvg);
+//				bg_image  = info.Filename;
+//			} catch (Exception e) {
+//				Console.WriteLine(e.Message);
+//				bg_image= "";
+//			}
+			
 			this.content = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"+
 			"<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\" dir=\"ltr\">"+
 			"<head>"+
@@ -41,6 +53,7 @@ namespace Banshee.Plugins.Wikipedia
 			"background-color: rgb("+(bg.Red>>8)+","+(bg.Green>>8)+","+(bg.Blue>>8)+");"+
 			"color: rgb("+(text.Red>>8)+","+(text.Green>>8)+","+(text.Blue>>8)+");"+
 			"font-size:x-small;"+
+			"font:Verdana,Sans-serif;"+
 			"}"+
 			"h1 { background-color: rgb("+(light.Red>>8)+","+(light.Green>>8)+","+(light.Blue>>8)+"); }"+
 			"#title {"+
@@ -52,9 +65,14 @@ namespace Banshee.Plugins.Wikipedia
 			".e_msg {"+
 			"	border:1px solid red;font-size:medium; width:60%;margin:auto;"+
 			"	background-color: rgb("+(e_bg.Red>>8)+","+(e_bg.Green>>8)+","+(e_bg.Blue>>8)+");"+
-			"	padding:10px;"+
+			"	padding:40px;"+
+//			"	background-image: url(\"file://"+bg_image+"\"); "+
+//			"	background-repeat: no-repeat; "+
+//			" 	background-position: top left;"+
 			"}"+
-			"</style></head><body>";			
+			"</style></head><body>";
+//			"<img src=\""+bg_image+"\" /><br />"+
+//			"<img src=\"file://"+bg_image+"\" />";
 //			Array st = Enum.GetValues(typeof(Gtk.StateType));
 //			foreach ( Gtk.StateType t in st ) {
 //				bg = s.Background(t);

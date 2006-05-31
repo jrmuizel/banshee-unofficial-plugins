@@ -1,7 +1,7 @@
 AC_INIT(README)
 AC_CANONICAL_SYSTEM
 
-AM_INIT_AUTOMAKE(banshee-wikipedia-plugin, 0.0.2)
+AM_INIT_AUTOMAKE(banshee-wikipedia-plugin, 0.0.3.2)
 
 AM_MAINTAINER_MODE
 

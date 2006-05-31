@@ -156,7 +156,7 @@ namespace Banshee.Plugins.Wikipedia
 			// Don't do anything if we already are showing wikipedia for the
 			// requested artist.
 			if ( wiki_controller.Track != null )  
-				if (PaneVisible && wiki_controller.Track.Artist == info.Artist)	return;
+				if (PaneVisible && wiki_controller.Track == info)	return;
 			
 			// If we manually switch track we don't get an EndOfStream event and 
 			// must clear the wikipedia pane here.

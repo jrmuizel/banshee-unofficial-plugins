@@ -372,7 +372,7 @@ namespace Banshee.Plugins.Recommendation
 
 		private string GetCachedPathFromUrl (string url)
 		{			
-			return System.IO.Path.Combine (CACHE_PATH, Math.Abs (url.GetHashCode ()).ToString ());
+			return System.IO.Path.Combine (CACHE_PATH, url.GetHashCode ().ToString ("X"));
 		}
 	}
 }

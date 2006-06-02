@@ -1,3 +1,7 @@
+2006-06-02  Fredrik Hedberg  <fredrik@avafan.com>
+
+	* plugins/Recommendation/RecommendationPane.cs: Fix the url-hashing.
+
 2006-05-25  Lukas Lipka  <lukas@pmad.net>
 
 	* plugins/Recommendation/RecommendationPane.cs: Commit a patch from Koike

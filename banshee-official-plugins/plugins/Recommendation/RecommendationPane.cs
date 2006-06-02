@@ -89,8 +89,20 @@ namespace Banshee.Plugins.Recommendation
 			event_box.Add (main_box);
 			Add (event_box);
 
+
 			if (!Directory.Exists (CACHE_PATH))
-				Directory.CreateDirectory (CACHE_PATH);
+                                Directory.CreateDirectory (CACHE_PATH);
+			
+			// Create our cache subdirectories.
+			for (int i = 0; i < 256; ++i) {
+				string subdir = i.ToString ("x");
+				if (i < 16)
+					subdir = "0" + subdir;
+				subdir = System.IO.Path.Combine (CACHE_PATH, subdir);
+				
+				if (!Directory.Exists (subdir))
+					Directory.CreateDirectory (subdir);
+			}
 		}
 		
 		private void OnSizeAllocated (object o, SizeAllocatedArgs args)
@@ -372,7 +384,8 @@ namespace Banshee.Plugins.Recommendation
 
 		private string GetCachedPathFromUrl (string url)
 		{			
-			return System.IO.Path.Combine (CACHE_PATH, url.GetHashCode ().ToString ("X"));
+			string hash = url.GetHashCode ().ToString ("X").ToLower ();
+			return System.IO.Path.Combine (System.IO.Path.Combine (CACHE_PATH, hash.Substring (0,2)), hash);
 		}
 	}
 }

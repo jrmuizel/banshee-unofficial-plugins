@@ -1,3 +1,11 @@
+2006-06-20  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: Bump to 0.2.3
+
+	* src/hxplayer.cc: Check title from Helix for negative characters,
+	which will cause DBus to end up exiting 01; it seems as if hxclientkit
+	cannot handle accented characters (BNC #185276)
+
 2006-05-03  Aaron Bockover  <aaron@abock.org>
 
 	* src/helix-dbus-server.cc: Call dbus_message_unref on the reply message

@@ -85,6 +85,16 @@ OnLengthChanged(void * user_data, UInt32 length)
 static void
 OnTitleChanged(void * user_data, const char* pTitle)
 {
+    const char *p = pTitle;
+    
+    while(true) {
+        if(*p == '\0') {
+            break;
+        } else if(*(p++) < 0) {
+            return;
+        }
+    }
+    
     __RAISE__ (user_data, hxmessage_new_args(HX_MESSAGE_TITLE,
         hxmessage_segment_new_string("Title", pTitle),
         NULL

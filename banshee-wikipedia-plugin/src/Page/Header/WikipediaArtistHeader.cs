@@ -6,7 +6,7 @@ using System.Text;
 namespace Banshee.Plugins.Wikipedia
 {
 	
-	public class WikipediaArtistHeader : WikipediaGtkHeader
+	public class WikipediaArtistHeader : PageGtkHeader
 	{
 		public WikipediaArtistHeader(WikipediaPage p) : base (p)		
 		{

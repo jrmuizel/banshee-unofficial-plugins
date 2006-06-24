@@ -4,7 +4,7 @@ using System;
 namespace Banshee.Plugins.Wikipedia
 {
 	
-	public class WikipediaAlbumHeader : WikipediaGtkHeader
+	public class WikipediaAlbumHeader : PageGtkHeader
 	{
 		
 		public WikipediaAlbumHeader(WikipediaPage p ) :base(p)

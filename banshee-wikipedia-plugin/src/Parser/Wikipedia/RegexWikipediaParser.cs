@@ -6,15 +6,15 @@ using System.Text.RegularExpressions;
 namespace Banshee.Plugins.Wikipedia
 {
 	
-	public class RegexWikipediaParser : WikipediaParser
+	public class RegexWikipediaParser : Parser
 	{
 		private string body;
 		public RegexWikipediaParser(Stream s) : base(s)
 		{
 		}
-		public override WikipediaPage GetPage() {
+		public override Page GetPage() {
 			this.Parse();
-			return new WikipediaBody(body);
+			return new PageBody(body);
 		}
 		
 		protected override void Parse()

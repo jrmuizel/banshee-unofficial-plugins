@@ -4,7 +4,7 @@ using System;
 namespace Banshee.Plugins.Wikipedia
 {
 	
-	public class WikipediaCommonHeader : WikipediaGtkHeader
+	public class WikipediaCommonHeader : PageGtkHeader
 	{
 		
 		public WikipediaCommonHeader()

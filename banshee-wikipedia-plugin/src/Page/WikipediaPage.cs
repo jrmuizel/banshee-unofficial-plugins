@@ -4,21 +4,22 @@ using System.IO;
 
 namespace Banshee.Plugins.Wikipedia
 {
-	
-	public abstract class WikipediaPage
-	{
+	public abstract class Page {
 		protected string content;
-		public WikipediaPage()
-		{
+		protected string url;
+		public abstract string Url {
+			get;
+			set;
 		}
-		/*public WikipediaPage Decorate() {
-			return new WikipediaHeader(new WikipediaFooter(this));
-		}*/
-		
 		public abstract string Content {
 			get;
 		}
-		
+	}
+	public abstract class WikipediaPage : Page
+	{
+		public WikipediaPage()
+		{
+		}
 	}
 	
 }

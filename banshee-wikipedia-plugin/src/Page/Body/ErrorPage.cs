@@ -6,17 +6,19 @@ using Mono.Unix;
 namespace Banshee.Plugins.Wikipedia
 {
 	
-	public class WikipediaErrorPage  : WikipediaBody
+	public class ErrorPage  : PageBody
 	{
 		//private Stream stream;
-		public WikipediaErrorPage()		
+		public ErrorPage()		
 		{
 			this.content = "<h1 id=\"error\">"+Catalog.GetString("An error Occured")+"</h1>";
+			this.Url = "file:///";
 		}
-		public WikipediaErrorPage(string title,string message) {
+		public ErrorPage(string title,string message) {
 			this.content = "<h1 id=\"error\">"+title+"</h1>"
 			+"<br /><br/>"+
 			"<div class=\"e_msg\">"+message+"</div>";
+			this.Url = "file:///";
 		}
 		
 		

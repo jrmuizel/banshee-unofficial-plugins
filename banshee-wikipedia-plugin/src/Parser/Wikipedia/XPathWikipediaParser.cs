@@ -8,16 +8,16 @@ using Mono.Unix;
 namespace Banshee.Plugins.Wikipedia
 {
 	
-	public class XPathWikipediaParser : WikipediaParser
+	public class XPathWikipediaParser : Parser
 	{
 		private MemoryStream body;
 		public XPathWikipediaParser(Stream s ) : base(s)
 		{
 		}
 		
-		public override WikipediaPage GetPage(){
+		public override Page GetPage(){
 			this.Parse();
-			return new WikipediaBody(new StreamReader(this.body).ReadToEnd() );
+			return new PageBody(new StreamReader(this.body).ReadToEnd() );
 		}
 		
 		protected override void Parse()

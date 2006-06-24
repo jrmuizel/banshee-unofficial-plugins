@@ -3,13 +3,13 @@ using System;
 namespace Banshee.Plugins.Wikipedia
 {
 	
-	public abstract class WikipediaGtkHeader :WikipediaHeader
+	public abstract class PageGtkHeader : PageHeader
 	{
 		
-		public WikipediaGtkHeader(WikipediaPage p) : base(p)
+		public PageGtkHeader(Page p) : base(p)
 		{
 		}
-		public WikipediaGtkHeader()
+		public PageGtkHeader()
 		{
 			Gtk.Style s 		= Gtk.Rc.GetStyle(new Gtk.Button());
 			Gdk.Color bg 		= s.Base(Gtk.StateType.Normal);
@@ -48,14 +48,18 @@ namespace Banshee.Plugins.Wikipedia
 //			"/*]]>*/</style>"+
 			"<style>"+
 			"body { "+
-			"margin:0px;"+
+			"margin:10px;"+
 			"border:0px;"+
 			"background-color: rgb("+(bg.Red>>8)+","+(bg.Green>>8)+","+(bg.Blue>>8)+");"+
 			"color: rgb("+(text.Red>>8)+","+(text.Green>>8)+","+(text.Blue>>8)+");"+
 			"font-size:x-small;"+
 			"font:Verdana,Sans-serif;"+
 			"}"+
-			"h1 { background-color: rgb("+(light.Red>>8)+","+(light.Green>>8)+","+(light.Blue>>8)+"); }"+
+			"h1 { "+
+			"	padding:5px;"+
+			"	background-color: rgb("+(light.Red>>8)+","+(light.Green>>8)+","+(light.Blue>>8)+"); "+
+			"	-moz-border-radius:5px;"+
+			"	}"+
 			"#title {"+
 			"background-color: rgb("+(dark.Red>>8)+","+(dark.Green>>8)+","+(dark.Blue>>8)+");"+
 			"color: rgb("+(dark_text.Red>>8)+","+(dark_text.Green>>8)+","+(dark_text.Blue>>8)+"); }"+
@@ -66,6 +70,7 @@ namespace Banshee.Plugins.Wikipedia
 			"	border:1px solid red;font-size:medium; width:60%;margin:auto;"+
 			"	background-color: rgb("+(e_bg.Red>>8)+","+(e_bg.Green>>8)+","+(e_bg.Blue>>8)+");"+
 			"	padding:40px;"+
+			"	-moz-border-radius:15px;"+
 //			"	background-image: url(\"file://"+bg_image+"\"); "+
 //			"	background-repeat: no-repeat; "+
 //			" 	background-position: top left;"+

@@ -4,7 +4,7 @@ using System;
 namespace Banshee.Plugins.Wikipedia
 {
 	
-	public class WikipediaSongHeader  : WikipediaGtkHeader
+	public class WikipediaSongHeader  : PageGtkHeader
 	{
 		
 		public WikipediaSongHeader(WikipediaPage p) : base(p)

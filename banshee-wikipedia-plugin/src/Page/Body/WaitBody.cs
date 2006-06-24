@@ -4,12 +4,13 @@ using System;
 namespace Banshee.Plugins.Wikipedia
 {
 	
-	public class WikipediaWaitBody : WikipediaBody
+	public sealed class WaitBody : PageBody
 	{
 		
-		public WikipediaWaitBody(string message)
+		public WaitBody(string message)
 		{
 			this.content += "<h1>"+message+"</h1>";
+			this.Url = "file:///";
 		}
 	}
 	

@@ -4,10 +4,10 @@ using System;
 namespace Banshee.Plugins.Wikipedia
 {
 	
-	public abstract class WikipediaDecorator : WikipediaPage
+	public abstract class PageDecorator : WikipediaPage
 	{
-		protected WikipediaPage page;
-		public WikipediaPage Component {
+		protected Page page;
+		public Page Component {
 			set {
 				this.page = value;
 				//Console.WriteLine("Set_Page {0}",this.page.GetType());
@@ -15,7 +15,7 @@ namespace Banshee.Plugins.Wikipedia
 		}
 		
 		
-		public WikipediaDecorator()
+		public PageDecorator()
 		{
 		}
 	}

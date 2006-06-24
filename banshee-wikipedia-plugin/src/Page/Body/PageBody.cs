@@ -4,14 +4,14 @@ using System.IO;
 namespace Banshee.Plugins.Wikipedia
 {
 	
-	public class WikipediaBody  : WikipediaPage
+	public class PageBody  : Page
 	{
-		public WikipediaBody(string s)		
+		public PageBody(string s)		
 		{
 			this.content = s;
 			//Console.WriteLine("Body: {0}",this.content);
 		}
-		public WikipediaBody()		
+		public PageBody()		
 		{
 			
 		}
@@ -20,6 +20,14 @@ namespace Banshee.Plugins.Wikipedia
 			get {
 				//return "Help";
 				return this.content;
+			}
+		}
+		public override string Url {
+			get {
+				return this.url;
+			}
+			set {
+				this.url = value;
 			}
 		}
 		

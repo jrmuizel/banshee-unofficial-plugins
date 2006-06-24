@@ -6,14 +6,14 @@ using System.Text;
 namespace Banshee.Plugins.Wikipedia
 {
 	
-	public class CommonWikipediaFooter : WikipediaFooter
+	public sealed class CommonPageFooter : PageFooter
 	{
 		
-		/*public CommonWikipediaFooter(WikipediaHeader h) : base(h)
+		/*public CommonPageFooter(PageHeader h) : base(h)
 		{
 			this.content =  new MemoryStream(Encoding.UTF8.GetBytes("</body></html>"));
 		}*/
-		public CommonWikipediaFooter()
+		public CommonPageFooter()
 		{
 			this.content = "</body></html>";
 		}

@@ -5,13 +5,13 @@ using System.IO;
 namespace Banshee.Plugins.Wikipedia
 {
 	
-	public class WikipediaHeader  : WikipediaDecorator
+	public abstract class PageHeader  : PageDecorator
 	{
-		public WikipediaHeader(WikipediaPage p)		
+		public PageHeader(Page p)		
 		{
 			this.page = p;
 		}
-		public WikipediaHeader() :base()		
+		public PageHeader() :base()		
 		{
 		}
 		
@@ -24,6 +24,14 @@ namespace Banshee.Plugins.Wikipedia
 					//Console.WriteLine("Page is null");
 				*/
 				return this.content+this.page.Content;
+			}
+		}
+		public override string Url {
+			get {
+				return this.page.Url;
+			}
+			set {
+				this.page.Url = value;
 			}
 		}
 	}

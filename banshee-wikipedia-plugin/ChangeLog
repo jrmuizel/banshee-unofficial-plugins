@@ -1,3 +1,8 @@
+2006-05-28  David Schneider <david.schneider@picle.org>
+	* Some Refactoring, to meet the more general concept of context information plugin
+	* added Lyrics fetching based on www.autolyrics.com
+	* few ui changes, using -moz-border-radius
+	
 2006-06-23  Patrick van Staveren <trick@vanstaveren.us>
 	* configure.ac: detect mcs or gmcs compiled Banshee
 
@@ -9,7 +14,6 @@
 	* Created one class per requset (artist, genre,album,etc) to provide specific information as query url 
 	* Added Regex and a Xpath based parser for Wikipedia pages ( xpath one seems buggy?)
 	* Added Request specific decorator for displaying results based on the current gtk-theme colors
-	
 	
 2006-04-30  Patrick van Staveren  <trick@vanstaveren.us>
 	* Google search mode - uses the "i'm feeling lucky" feature of Google to direct to the closes match using Google, adding the keyword "band".  I know, this isn't the best way, but it is much much more accurate than just searching for the artist keyword.

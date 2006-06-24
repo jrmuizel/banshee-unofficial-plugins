@@ -22,26 +22,6 @@
     <File name="./src/Parser/RegexWikipediaParser.cs" subtype="Code" buildaction="Compile" />
     <File name="./src/Parser/WikipediaParser.cs" subtype="Code" buildaction="Compile" />
     <File name="./src/Parser/XPathWikipediaParser.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikipediaPage/WikipediaDecorator.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikipediaPage/WikipediaFooter.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikipediaPage/WikipediaHeader.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikipediaPage/WikipediaPage.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikipediaPage/Body/WikipediaBody.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikipediaPage/Body/WikipediaErrorPage.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikipediaPage/Body/WikipediaWaitBody.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikipediaPage/Footer/CommonWikipediaFooter.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikipediaPage/Header/WikipediaAlbumHeader.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikipediaPage/Header/WikipediaArtistHeader.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikipediaPage/Header/WikipediaCommonHeader.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikipediaPage/Header/WikipediaGenreHeader.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikipediaPage/Header/WikipediaGtkHeader.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikipediaPage/Header/WikipediaSongHeader.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikiQuery/WikipediaAlbumQuery.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikiQuery/WikipediaArtistQuery.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikiQuery/WikipediaCommonQuery.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikiQuery/WikipediaGenreQuery.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikiQuery/WikipediaQuery.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/WikiQuery/WikipediaSongQuery.cs" subtype="Code" buildaction="Compile" />
     <File name="./src/AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
     <File name="./src/Plugin.cs" subtype="Code" buildaction="Compile" />
     <File name="./src/WebRequestHandler.cs" subtype="Code" buildaction="Compile" />
@@ -65,6 +45,39 @@
     <File name="./TODO" subtype="Code" buildaction="Nothing" />
     <File name="./src/Makefile.am" subtype="Code" buildaction="Nothing" />
     <File name="./src/Wikipedia.dll.config" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/Wikipedia-logo-small.png" subtype="Code" buildaction="Nothing" />
+    <File name="./resources/lyrics.png" subtype="Code" buildaction="Nothing" />
+    <File name="./src/QueryController.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Gui/ContextBrowser.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Gui/ContextPane.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Page/PageDecorator.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Page/PageFooter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Page/PageHeader.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Page/WikipediaPage.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Page/Body/ErrorPage.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Page/Body/PageBody.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Page/Body/WaitBody.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Page/Footer/CommonPageFooter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Page/Header/LyricsHeader.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Page/Header/PageGtkHeader.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Page/Header/WikipediaAlbumHeader.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Page/Header/WikipediaArtistHeader.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Page/Header/WikipediaCommonHeader.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Page/Header/WikipediaGenreHeader.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Page/Header/WikipediaSongHeader.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Parser/Parser.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Parser/Lyrics/LyricsParser.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Parser/Wikipedia/RegexWikipediaParser.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Parser/Wikipedia/WikipediaParser.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Parser/Wikipedia/XPathWikipediaParser.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Query/Query.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Query/Lyrics/LyricsQuery.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Query/Wikipedia/WikipediaAlbumQuery.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Query/Wikipedia/WikipediaArtistQuery.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Query/Wikipedia/WikipediaCommonQuery.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Query/Wikipedia/WikipediaGenreQuery.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Query/Wikipedia/WikipediaQuery.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/Query/Wikipedia/WikipediaSongQuery.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="gtk-sharp, Version=2.8.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />

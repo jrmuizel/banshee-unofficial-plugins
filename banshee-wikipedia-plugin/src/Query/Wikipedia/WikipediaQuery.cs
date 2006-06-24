@@ -6,13 +6,10 @@ namespace Banshee.Plugins.Wikipedia
 {
 	
 	
-	public abstract class WikiQuery
+	public abstract class WikiQuery : Query
 	{
-		protected string query_url;
-		protected WebRequestHandler wrh;
-		protected abstract void Init();
-		protected abstract string BuildQueryURL();
-		public bool Find() {
+		
+		public override bool Find() {
 			string url = this.BuildQueryURL();
 			wrh.LookUp(url);
 			if ( wrh.ResponseUri == null ) Console.WriteLine("ResponseUri is null");
@@ -24,12 +21,13 @@ namespace Banshee.Plugins.Wikipedia
 			}
 			
 		}
-		public WikipediaPage GetResult() {
-			WikipediaPage p = null;
+		public override Page GetResult() {
+			Page p = null;
 			Stream s;
 			//try {
 				s = wrh.ResponseStream;
 				p = new RegexWikipediaParser(s).GetPage();
+				p.Url = wrh.ResponseUri.ToString();
 				s.Close();
 				
 			//} catch (Exception e) {
@@ -43,8 +41,8 @@ namespace Banshee.Plugins.Wikipedia
 		}
 		
 		
-		protected WikiQuery() {
-			this.wrh = WebRequestHandler.Instance;
+		protected WikiQuery() :base() {
+			
 		}
 		
 		

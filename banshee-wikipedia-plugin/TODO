@@ -1,4 +1,4 @@
-* store response url in page-objects to make it easier to use different wikipedias and other sources
+* change the name of the plugin to something like Context information
 * handle links
 	* inside wikipedia maybe using wikipediacommonquery
 	* outside ->opening in browser 

@@ -1,3 +1,7 @@
+2006-06-24  Patrick van Staveren <trick@vanstaveren.us>
+	* Updated TODO file from David
+	* COPYING: LGPL (2.1)
+
 2006-05-28  David Schneider <david.schneider@picle.org>
 	* Some Refactoring, to meet the more general concept of context information plugin
 	* added Lyrics fetching based on www.autolyrics.com

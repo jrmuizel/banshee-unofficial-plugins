@@ -7,7 +7,7 @@ using Banshee.Base;
 namespace Banshee.Plugins.Wikipedia
 {
 	
-	public class WikipediaBrowser : VBox
+	public class ContextBrowser : VBox
 	{
 		private WebControl web;
 		//private Viewport win;
@@ -15,7 +15,7 @@ namespace Banshee.Plugins.Wikipedia
 		//private VBox main;
 		private int bot_queue_length;
 		
-		public WikipediaBrowser()
+		public ContextBrowser()
 		{
 			this.InitBrowser();
 		}
@@ -38,12 +38,14 @@ namespace Banshee.Plugins.Wikipedia
 			
 		}
 		
-		public void Render(WikipediaPage p) {
+		public void Render(Page p) {
 			//ThreadAssist.Spawn(delegate {
 			string temp;
 			if ( p != null ) {
 				StringReader sr = new StringReader(p.Content);
-				web.OpenStream("http://en.wikipedia.org/","text/html");
+				web.OpenStream(p.Url,"text/html");
+				//Console.WriteLine(p.Url);
+				//Console.WriteLine(p.GetType());
 				while ( (temp = sr.ReadLine())!= null ) {
 					web.AppendData(temp);					
 					//Console.Write(temp);

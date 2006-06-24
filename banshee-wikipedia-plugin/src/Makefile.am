@@ -1,44 +1,50 @@
 MCS_FLAGS = -debug
 ASSEMBLY = Wikipedia.dll
 SOURCES = \
+	$(srcdir)/WebRequestHandler.cs \
+	$(srcdir)/Gui/ContextBrowser.cs \
+	$(srcdir)/Gui/ContextPane.cs \
+	$(srcdir)/Page/PageDecorator.cs \
+	$(srcdir)/Page/PageFooter.cs \
+	$(srcdir)/Page/PageHeader.cs \
+	$(srcdir)/Page/WikipediaPage.cs \
+	$(srcdir)/Page/Body/ErrorPage.cs \
+	$(srcdir)/Page/Body/PageBody.cs \
+	$(srcdir)/Page/Body/WaitBody.cs \
+	$(srcdir)/Page/Footer/CommonPageFooter.cs \
+	$(srcdir)/Page/Header/PageGtkHeader.cs \
+	$(srcdir)/Page/Header/LyricsHeader.cs \
+	$(srcdir)/Page/Header/WikipediaAlbumHeader.cs \
+	$(srcdir)/Page/Header/WikipediaArtistHeader.cs \
+	$(srcdir)/Page/Header/WikipediaCommonHeader.cs \
+	$(srcdir)/Page/Header/WikipediaGenreHeader.cs \
+	$(srcdir)/Page/Header/WikipediaSongHeader.cs \
+	$(srcdir)/Parser/Parser.cs \
+	$(srcdir)/Parser/Lyrics/LyricsParser.cs \
+	$(srcdir)/Parser/Wikipedia/RegexWikipediaParser.cs \
+	$(srcdir)/Parser/Wikipedia/XPathWikipediaParser.cs \
+	$(srcdir)/Parser/Wikipedia/WikipediaParser.cs \
+	$(srcdir)/Query/Query.cs \
+	$(srcdir)/Query/Lyrics/LyricsQuery.cs \
+	$(srcdir)/Query/Wikipedia/WikipediaAlbumQuery.cs \
+	$(srcdir)/Query/Wikipedia/WikipediaArtistQuery.cs \
+	$(srcdir)/Query/Wikipedia/WikipediaCommonQuery.cs \
+	$(srcdir)/Query/Wikipedia/WikipediaGenreQuery.cs \
+	$(srcdir)/Query/Wikipedia/WikipediaQuery.cs \
+	$(srcdir)/Query/Wikipedia/WikipediaSongQuery.cs \
 	$(srcdir)/AssemblyInfo.cs \
 	$(srcdir)/Plugin.cs \
-	$(srcdir)/WebRequestHandler.cs \
-	$(srcdir)/WikipediaQueryController.cs \
-	$(srcdir)/Gui/WikipediaBrowser.cs \
-	$(srcdir)/Gui/WikipediaPane.cs \
-	$(srcdir)/Parser/RegexWikipediaParser.cs \
-	$(srcdir)/Parser/WikipediaParser.cs \
-	$(srcdir)/Parser/XPathWikipediaParser.cs \
-	$(srcdir)/WikipediaPage/WikipediaDecorator.cs \
-	$(srcdir)/WikipediaPage/WikipediaFooter.cs \
-	$(srcdir)/WikipediaPage/WikipediaHeader.cs \
-	$(srcdir)/WikipediaPage/WikipediaPage.cs \
-	$(srcdir)/WikipediaPage/Body/WikipediaBody.cs \
-	$(srcdir)/WikipediaPage/Body/WikipediaErrorPage.cs \
-	$(srcdir)/WikipediaPage/Body/WikipediaWaitBody.cs \
-	$(srcdir)/WikipediaPage/Footer/CommonWikipediaFooter.cs \
-	$(srcdir)/WikipediaPage/Header/WikipediaAlbumHeader.cs \
-	$(srcdir)/WikipediaPage/Header/WikipediaArtistHeader.cs \
-	$(srcdir)/WikipediaPage/Header/WikipediaCommonHeader.cs \
-	$(srcdir)/WikipediaPage/Header/WikipediaGenreHeader.cs \
-	$(srcdir)/WikipediaPage/Header/WikipediaGtkHeader.cs \
-	$(srcdir)/WikipediaPage/Header/WikipediaSongHeader.cs \
-	$(srcdir)/WikiQuery/WikipediaAlbumQuery.cs \
-	$(srcdir)/WikiQuery/WikipediaArtistQuery.cs \
-	$(srcdir)/WikiQuery/WikipediaCommonQuery.cs \
-	$(srcdir)/WikiQuery/WikipediaGenreQuery.cs \
-	$(srcdir)/WikiQuery/WikipediaQuery.cs \
-	$(srcdir)/WikiQuery/WikipediaSongQuery.cs
+	$(srcdir)/QueryController.cs
 	
 	
 
 RESOURCES = \
-	$(srcdir)/../resources/Wikipedia-logo.png \
 	$(srcdir)/../resources/WikipediaMenu.xml \
-	$(srcdir)/../resources/cubo_verde.png \
 	$(srcdir)/../resources/minus.png \
-	$(srcdir)/../resources/plus.png 	
+	$(srcdir)/../resources/plus.png \
+	$(srcdir)/../resources/Wikipedia-logo-small.png \
+	$(srcdir)/../resources/lyrics.png
+	
 EMBEDDED = $(foreach res,$(RESOURCES),$(addprefix -resource:,$(res)),$(notdir $(res))) 
 plugindir = $(PLUGINDIR)
 plugin_SCRIPTS = $(ASSEMBLY) $(ASSEMBLY).config $(ASSEMBLY).mdb

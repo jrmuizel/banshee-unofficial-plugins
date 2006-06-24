@@ -5,13 +5,13 @@ using Mono.Unix;
 namespace Banshee.Plugins.Wikipedia
 {
 	
-	public class WikipediaQueryController
+	public class QueryController
 	{
-		private WikipediaPane pane;
-		private WikiQuery wq;
-		private WikipediaHeader wh;
-		private WikipediaFooter wf;
-		private WikipediaWaitBody wp;
+		private ContextPane pane;
+		private Query wq;
+		private PageHeader wh;
+		private PageFooter wf;
+		private WaitBody wp;
 		private TrackInfo track;
 		public TrackInfo Track {
 			get {
@@ -28,7 +28,7 @@ namespace Banshee.Plugins.Wikipedia
 			}
 		}
 				
-		public WikipediaPane Pane {
+		public ContextPane Pane {
 			get {
 				if ( pane == null ) {
 					//Console.WriteLine("Pane ist NULL");
@@ -39,15 +39,16 @@ namespace Banshee.Plugins.Wikipedia
 			}
 		}
 		
-		public WikipediaQueryController()
+		public QueryController()
 		{
 			
-			this.pane = new WikipediaPane();
-			this.wf   = new CommonWikipediaFooter();
-			this.wp   = new WikipediaWaitBody(Catalog.GetString("Please Wait while retrieving infomation"));
+			this.pane = new ContextPane();
+			this.wf   = new CommonPageFooter();
+			this.wp   = new WaitBody(Catalog.GetString("Please Wait while retrieving infomation"));
 			pane.ArtistButton.Clicked   += new EventHandler(onArtistButtonClicked);
 			pane.AlbumButton.Clicked    += new EventHandler(onAlbumButtonClicked);
 			pane.GenreButton.Clicked    += new EventHandler(onGenreButtonClicked);
+			pane.LyricButton.Clicked    += new EventHandler(onLyricButtonClicked);
 			//Console.WriteLine("Initializing {0}",this.GetType());
 		}
 		
@@ -58,11 +59,11 @@ namespace Banshee.Plugins.Wikipedia
 					wf.Component = wh;			
 					this.Pane.Browser.Render(wf);
 				});
-				WikipediaPage p = null;
+				Page p = null;
 				if ( wq.Find() ) {
 					p = wq.GetResult();
 				} else { //show error page or hide pane
-					p = new WikipediaErrorPage(Catalog.GetString("Error:"),Catalog.GetString("Information not found"));
+					p = new ErrorPage(Catalog.GetString("Error:"),Catalog.GetString("Information not found"));
 				}
 				wh.Component = p;
 				wf.Component = wh;
@@ -99,5 +100,11 @@ namespace Banshee.Plugins.Wikipedia
 			this.wh = new WikipediaGenreHeader();
 			this.PerformLookUp();
 		}
+		private void onLyricButtonClicked(object sender, EventArgs args) {
+			this.wq = new LyricsQuery(track);
+			this.wh = new LyricsHeader();
+			this.PerformLookUp();
+		}
+		
 	} 
 }

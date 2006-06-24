@@ -110,7 +110,7 @@ namespace Banshee.Plugins.Wikipedia
 
 		// --------------------------------------------------------------- //
 
-		private WikipediaQueryController wiki_controller;
+		private QueryController wiki_controller;
 				
 		private void OnPlayerEngineEventChanged (object o, PlayerEngineEventArgs args)
 		{
@@ -147,7 +147,7 @@ namespace Banshee.Plugins.Wikipedia
 			lock (this) {
 				if ( InterfaceElements.MainContainer != null ) {
 					if ( this.wiki_controller == null ) {
-						this.wiki_controller = new WikipediaQueryController();
+						this.wiki_controller = new QueryController();
 						InterfaceElements.MainContainer.PackEnd (wiki_controller.Pane, false, false, 0);
 						wiki_controller.Pane.ShowAll();
 					}

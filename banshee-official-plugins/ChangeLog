@@ -1,3 +1,19 @@
+2006-06-14  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Compensate for strange
+	date/time foo in Banshee to make time-dependent smart playlists actually
+	work.
+
+	* plugins/SmartPlaylists/Plugin.cs: Start a timer that automatically
+	refreshes time-dependent smart playlists every minute. (BGO #344719).
+	Make smart playlists children of the Music Library (BGO #344723).
+
+	* plugins/SmartPlaylists/Editor.cs: Check if the timer is needed after
+	creating/editing smart playlists.  Make playlists children of the Library.
+
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Subclass from ChildSource not
+	Source.  Add TimeDependent property.
+
 2006-06-13  Aaron Bockover  <aaron@abock.org>
 
 	* plugins/Radio/RadioSource.cs: Create user plugin directory if it 

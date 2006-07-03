@@ -78,7 +78,8 @@ namespace Banshee.Plugins.SmartPlaylists
                     //Console.WriteLine ("Name = {0}, Cond = {1}, OrderAndLimit = {2}", name, condition, order_by, limit_number);
                     if (playlist == null) {
                         playlist = new SmartPlaylist(name, condition, order_by, limit_number);
-                        SourceManager.AddSource(playlist);
+                        LibrarySource.Instance.AddChildSource(playlist);
+                        Plugin.Instance.StartTimer(playlist);
                     } else {
                         playlist.Rename(name);
                         playlist.Condition = condition;
@@ -86,6 +87,11 @@ namespace Banshee.Plugins.SmartPlaylists
                         playlist.LimitNumber = limit_number;
                         playlist.Commit();
                         playlist.RefreshMembers();
+
+                        if (playlist.TimeDependent)
+                            Plugin.Instance.StartTimer(playlist);
+                        else
+                            Plugin.Instance.StopTimer();
                     }
                 });
             }

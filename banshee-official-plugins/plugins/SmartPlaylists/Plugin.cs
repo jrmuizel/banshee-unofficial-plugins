@@ -17,6 +17,14 @@ namespace Banshee.Plugins.SmartPlaylists
         private Menu musicMenu;
         private MenuItem addItem;
 
+        private static Plugin instance = null;
+
+        private uint timeout_id = 0;
+
+        public static Plugin Instance {
+            get { return instance; }
+        }
+
         protected override string ConfigurationName {
             get { return "SmartPlaylists"; }
         }
@@ -40,6 +48,11 @@ namespace Banshee.Plugins.SmartPlaylists
                     "Gabriel Burt"
                 };
             }
+        }
+
+        public Plugin ()
+        {
+            instance = this;
         }
  
         protected override void PluginInitialize()
@@ -94,29 +107,24 @@ namespace Banshee.Plugins.SmartPlaylists
             // Insert it right after the New Playlist item
             musicMenu.Insert (addItem, 2);
             addItem.Show ();
-
-            // Add option for editing smart playlists
-            /*Globals.ActionManager.PlaylistActions.Add(new ActionEntry [] {
-                new ActionEntry("EditSmartPlaylistAction", null,
-                    Catalog.GetString("Edit Smart Playlist"), "<shift>Delete",
-                    Catalog.GetString("Edit the active smart playlist"), null)
-            });
-
-            Globals.ActionManager.PlaylistActions.GetAction ("EditSmartPlaylistAction").Visible = true;
-            Globals.ActionManager.PlaylistActions.GetAction ("EditSmartPlaylistAction").Sensitive = true;*/
         }
 
         protected override void PluginDispose()
         {
+            if (timeout_id != 0)
+                GLib.Source.Remove (timeout_id);
+
             musicMenu.Remove(addItem);
 
             SourceManager.SourceAdded -= HandleSourceAdded;
             SourceManager.SourceRemoved -= HandleSourceRemoved;
 
             foreach (SmartPlaylist playlist in playlists)
-                SourceManager.RemoveSource(playlist);
+                LibrarySource.Instance.RemoveChildSource(playlist);
 
             playlists.Clear();
+
+            instance = null;
         }
 
         private void HandleLibraryReloaded (object sender, EventArgs args)
@@ -143,6 +151,8 @@ namespace Banshee.Plugins.SmartPlaylists
             if (playlist == null)
                 return;
 
+            StartTimer (playlist);
+
             playlists.Add(playlist);
         }
 
@@ -153,6 +163,8 @@ namespace Banshee.Plugins.SmartPlaylists
                 return;
 
             playlists.Remove (playlist);
+
+            StopTimer();
         }
 
         private void HandleTrackAdded (object sender, LibraryTrackAddedArgs args)
@@ -173,6 +185,56 @@ namespace Banshee.Plugins.SmartPlaylists
         {
             if (args.Track != null)
                 args.Track.Changed -= HandleTrackChanged;
+        }
+
+        public void StartTimer (SmartPlaylist playlist)
+        {
+            // Check if the playlist is time-dependent, and if it is,
+            // start the auto-refresh timer if needed.
+            if (timeout_id == 0 && playlist.TimeDependent) {
+                LogCore.Instance.PushInformation (
+                        "Starting timer",
+                        "Time-dependent smart playlist added, so starting auto-refresh timer.",
+                        false
+                );
+                timeout_id = GLib.Timeout.Add(1000*60, OnTimerBeep);
+            }
+        }
+
+        public void StopTimer ()
+        {
+            // If the timer is going and there are no more time-dependent playlists,
+            // stop the timer.
+            if (timeout_id != 0) {
+                foreach (SmartPlaylist p in playlists) {
+                    if (p.TimeDependent) {
+                        return;
+                    }
+                }
+
+                // No more time-dependent playlists, so remove the timer
+                LogCore.Instance.PushInformation (
+                        "Stopping timer",
+                        "There are no time-dependent smart playlists, so stopping auto-refresh timer.",
+                        false
+                );
+
+                GLib.Source.Remove (timeout_id);
+                timeout_id = 0;
+            }
+        }
+
+
+        private bool OnTimerBeep ()
+        {
+            foreach (SmartPlaylist p in playlists) {
+                if (p.TimeDependent) {
+                    p.RefreshMembers();
+                }
+            }
+
+            // Keep the timer going
+            return true;
         }
 
         private void CheckTrack (TrackInfo track)

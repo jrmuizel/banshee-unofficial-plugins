@@ -6,11 +6,13 @@ using Banshee.Base;
 using Banshee.Sources;
 using Banshee.Plugins;
 
+using Mono.Unix;
+
 using Sql;
 
 namespace Banshee.Plugins.SmartPlaylists
 {
-    public class SmartPlaylist : Banshee.Sources.Source
+    public class SmartPlaylist : Banshee.Sources.ChildSource
     {
         private ArrayList tracks = new ArrayList();
 
@@ -27,6 +29,10 @@ namespace Banshee.Plugins.SmartPlaylists
             }
         }
 
+        public bool TimeDependent {
+            get { return (Condition == null) ? false : Condition.IndexOf ("current_timestamp") != -1; }
+        }
+
         private int id;
         public int Id {
             get { return id; }
@@ -34,25 +40,27 @@ namespace Banshee.Plugins.SmartPlaylists
         }
 
         public override int Count {
-            get {
-                return tracks.Count;
-            }
+            get { return tracks.Count; }
         }
         
         public override IEnumerable Tracks {
-            get {
-                return tracks;
-            }
+            get { return tracks; }
         }
 
         public override Gdk.Pixbuf Icon {
-            get {
-                return Gdk.Pixbuf.LoadFromResource("source-smart-playlist.png");
-            }
+            get { return Gdk.Pixbuf.LoadFromResource("source-smart-playlist.png"); }
         }
 
         public override object TracksMutex {
             get { return tracks.SyncRoot; }
+        }
+
+        public override string UnmapLabel {
+            get { return Catalog.GetString ("Delete Smart Playlist"); }
+        }
+
+        public override string SourceType {
+            get { return Catalog.GetString ("Smart Playlist"); }
         }
 
         // For existing smart playlists that we're loading from the database
@@ -275,7 +283,7 @@ namespace Banshee.Plugins.SmartPlaylists
                     RemoveTrack(args.Track);
                     
                     if(Count == 0) {
-                        Delete();
+                        Unmap();
                     } else {
                         Commit();
                     }
@@ -297,7 +305,7 @@ namespace Banshee.Plugins.SmartPlaylists
             
             if(removed_count > 0) {
                 if(Count == 0) {
-                    Delete();
+                    Unmap();
                 } else {
                     Commit();
                 }
@@ -336,7 +344,7 @@ namespace Banshee.Plugins.SmartPlaylists
             return true;
         }
 
-        public void Delete()
+        public override bool Unmap()
         {
             Globals.Library.Db.Execute(String.Format(
                 @"DELETE FROM SmartPlaylistEntries
@@ -350,7 +358,8 @@ namespace Banshee.Plugins.SmartPlaylists
                     id
             ));
             
-            SourceManager.RemoveSource(this);
+            LibrarySource.Instance.RemoveChildSource(this);
+            return true;
         }
 
         public static void LoadFromReader (IDataReader reader)
@@ -362,7 +371,8 @@ namespace Banshee.Plugins.SmartPlaylists
             string limit_number = reader[4] as string;
 
             SmartPlaylist playlist = new SmartPlaylist (id, name, condition, order_by, limit_number);
-            SourceManager.AddSource(playlist);
+            //SourceManager.AddSource(playlist);
+            LibrarySource.Instance.AddChildSource(playlist);
         }
     }
 }

@@ -239,7 +239,7 @@ namespace Banshee
 		}
 
         public override string SqlColumn {
-            get { return String.Format("(strftime(\"%s\", current_timestamp) - {0})", Column); }
+            get { return String.Format("(strftime(\"%s\", current_timestamp) - {0} + 3600)", Column); }
         }
 		
         public override string Value1 {

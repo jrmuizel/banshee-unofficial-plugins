@@ -59,7 +59,7 @@ namespace Banshee.Plugins.SmartPlaylists
             get { return Catalog.GetString ("Delete Smart Playlist"); }
         }
 
-        public override string SourceType {
+        public override string GenericName {
             get { return Catalog.GetString ("Smart Playlist"); }
         }
 

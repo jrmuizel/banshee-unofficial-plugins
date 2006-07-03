@@ -429,7 +429,7 @@ public enum SyncPreference :
                         DialogFlags.Modal,
                         MessageType.Warning,
                         ButtonsType.Ok,
-                        Catalog.GetString ("Uri Shceme Not Supported"),
+                        Catalog.GetString ("Uri Scheme Not Supported"),
                         Catalog.GetString ("Podcast feed URI scheme is not supported.")
                     );
 

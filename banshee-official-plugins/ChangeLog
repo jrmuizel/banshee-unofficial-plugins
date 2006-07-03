@@ -1,3 +1,10 @@
+2006-07-02  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/Podcast/PodcastCore.cs: Fixed typo (from P. van de Geer)
+
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Should be GenericName not
+	SourceType.
+
 2006-06-14  Gabriel Burt  <gabriel.burt@gmail.com>
 
 	* plugins/SmartPlaylists/QueryBuilderModel.cs: Compensate for strange

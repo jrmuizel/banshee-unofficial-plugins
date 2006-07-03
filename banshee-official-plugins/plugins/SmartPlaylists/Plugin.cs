@@ -97,6 +97,15 @@ namespace Banshee.Plugins.SmartPlaylists
             reader.Dispose();
 
             // Add a menu option to create a new smart playlist
+            if(!Globals.UIManager.IsInitialized) {
+                Globals.UIManager.Initialized += OnUIManagerInitialized;
+            } else {
+                OnUIManagerInitialized (null, null);
+            }
+        }
+
+        private void OnUIManagerInitialized(object o, EventArgs args)
+        {
             musicMenu = (Globals.ActionManager.GetWidget ("/MainMenu/MusicMenu") as MenuItem).Submenu as Menu;
             addItem = new MenuItem (Catalog.GetString("New Smart Playlist..."));
             addItem.Activated += delegate {
@@ -114,7 +123,8 @@ namespace Banshee.Plugins.SmartPlaylists
             if (timeout_id != 0)
                 GLib.Source.Remove (timeout_id);
 
-            musicMenu.Remove(addItem);
+            if (musicMenu != null)
+                musicMenu.Remove(addItem);
 
             SourceManager.SourceAdded -= HandleSourceAdded;
             SourceManager.SourceRemoved -= HandleSourceRemoved;

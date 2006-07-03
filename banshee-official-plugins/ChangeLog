@@ -1,3 +1,9 @@
+2006-07-03  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/Plugin.cs: For some reason we can no longer add
+	things to the main menu on Initialization, so delay it until the UI is
+	initialized.
+
 2006-07-02  Gabriel Burt  <gabriel.burt@gmail.com>
 
 	* plugins/Podcast/PodcastCore.cs: Fixed typo (from P. van de Geer)

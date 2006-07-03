@@ -22,3 +22,5 @@ plugins/SmartPlaylists/Editor.cs
 plugins/SmartPlaylists/Plugin.cs
 plugins/SmartPlaylists/QueryBuilder.cs
 plugins/SmartPlaylists/QueryBuilderModel.cs
+plugins/SmartPlaylists/SmartPlaylist.cs
+plugins/SmartPlaylists/smart-playlist.glade

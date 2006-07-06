@@ -1,8 +1,9 @@
-CUSTOM_MCS_FLAGS = $(MCS_FLAGS) -resource:smart-playlist.glade,smart-playlist.glade -resource:source-smart-playlist.png,source-smart-playlist.png
+CUSTOM_MCS_FLAGS = $(MCS_FLAGS) -resource:smart-playlist.glade,smart-playlist.glade -resource:source-smart-playlist.png,source-smart-playlist.png -resource:icon-blank.png,icon-blank.png -resource:icon-rated.png,icon-rated.png
 ASSEMBLY = SmartPlaylists.dll
 SOURCES = \
 	$(srcdir)/Plugin.cs \
 	$(srcdir)/Editor.cs \
+	$(srcdir)/Rating.cs \
 	$(srcdir)/SmartPlaylist.cs \
 	$(srcdir)/QueryBuilder.cs \
 	$(srcdir)/QueryBuilderModel.cs \

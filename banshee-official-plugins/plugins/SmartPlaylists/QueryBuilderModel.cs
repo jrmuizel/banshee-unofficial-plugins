@@ -196,6 +196,82 @@ namespace Banshee
 			}
 		}
 	}
+
+    /*-- Query Match Rating --*/
+	public class QueryMatchRating : QueryMatch
+	{
+		protected Rating rating1, rating2;
+		private HBox rangeBox;
+
+		public override string FilterValues()
+		{
+            QueryFilter filter = QueryFilter.GetByName (Filter);
+            if (filter == null)
+                return null;
+            else
+                return filter.Operator.FormatValues (false, Column, Value1, Value2);
+		}
+		
+        public override string Value1 {
+            get { return rating1.Value.ToString (); }
+            set { rating1.Value = Int32.Parse(value); }
+        }
+
+        public override string Value2 {
+            get { return (rating2 == null) ? null : rating2.Value.ToString (); }
+            set {
+                if (value == null)
+                    return;
+
+                rating2.Value = Int32.Parse(value);
+            }
+
+        }
+		
+		public override Widget DisplayWidget
+		{
+			get {
+				if(rating1 == null) {
+					rating1 = new Rating();
+					rating1.Show();
+				}
+				
+				if(QueryFilter.GetByName(Filter).Operator != QueryOperator.Between) {
+					if(rangeBox != null && rating2 != null) {
+						rangeBox.Remove(rating1);
+						rangeBox.Remove(rating2);
+						
+						rating2.Destroy();
+						rating2 = null;
+						rangeBox.Destroy();
+						rangeBox = null;
+					}
+				
+					return rating1;
+				}
+				
+				if(rating2 == null) {
+					rating2 = new Rating();
+					rating2.Show();
+				}
+				
+				rangeBox = BuildRangeBox(rating1, rating2);
+				return rangeBox;
+			}
+		}
+		
+		public override QueryFilter [] ValidFilters {
+			get {	
+				return new QueryFilter [] {
+					QueryFilter.Is,
+					QueryFilter.IsNot,
+					QueryFilter.IsLessThan,
+					QueryFilter.IsGreaterThan,
+					QueryFilter.IsInTheRange
+				};
+			}
+		}
+	}
   
     // --- Query Match Time --- 
     // Used to match things like [duration] [less|greater] than [2] [minutes]
@@ -610,7 +686,7 @@ namespace Banshee
 			AddField(Catalog.GetString("Duration"), "Duration", typeof(QueryMatchTime));
 			AddField(Catalog.GetString("Play Count"), "NumberOfPlays", typeof(QueryMatchInteger));
 			AddField(Catalog.GetString("Playlist"), "PlaylistID", typeof(QueryMatchPlaylist));
-			AddField(Catalog.GetString("Rating"), "Rating", typeof(QueryMatchInteger));
+			AddField(Catalog.GetString("Rating"), "Rating", typeof(QueryMatchRating));
 			AddField(Catalog.GetString("Path"), "Uri", typeof(QueryMatchString));
 			AddField(Catalog.GetString("Year"), "Year", typeof(QueryMatchInteger));
 			

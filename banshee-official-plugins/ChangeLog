@@ -1,5 +1,11 @@
 2006-07-06  Gabriel Burt  <gabriel.burt@gmail.com>
 
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Give the user the
+	ability to select the duration time in seconds, minutes or hours (BGO
+	#346457, patch from Dominik Meister).
+
+2006-07-06  Gabriel Burt  <gabriel.burt@gmail.com>
+
 	* plugins/SmartPlaylists/Plugin.cs: Attempt at a better description.
 
 	* plugins/SmartPlaylists/QueryBuilder.cs: Add InPlaylist and NotInPlaylist

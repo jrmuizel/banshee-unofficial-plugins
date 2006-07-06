@@ -118,7 +118,7 @@ namespace Banshee
 
 	public class QueryMatchInteger : QueryMatch
 	{
-		private SpinButton spinButton1, spinButton2;
+		protected SpinButton spinButton1, spinButton2;
 		private HBox rangeBox;
 
 		public override string FilterValues()
@@ -196,6 +196,139 @@ namespace Banshee
 			}
 		}
 	}
+  
+    // --- Query Match Time --- 
+    // Used to match things like [duration] [less|greater] than [2] [minutes]
+		
+    public class QueryMatchTime : QueryMatchInteger
+    {
+        // Multiplied by the spinButton inputs to determine the equivalent number of seconds the user
+        // has entered.
+        private static int [] time_multipliers = {1, 60, 60*60 };
+        private ComboBox comboBox1, comboBox2;
+        private HBox hBox1, hBox2;
+        private HBox rangeBox;
+
+        private static ComboBox GetComboBox ()
+        {
+            ComboBox box = ComboBox.NewText();
+
+            box.AppendText(Catalog.GetString("Seconds"));
+            box.AppendText(Catalog.GetString("Minutes"));
+            box.AppendText(Catalog.GetString("Hours"));
+
+            box.Active = 1;
+
+            return box;
+        }
+
+        public override string Value1 {
+            get { return (comboBox1 == null) ? null : (time_multipliers [comboBox1.Active] * spinButton1.ValueAsInt).ToString(); }
+            set {
+
+                if (value == null)
+                    return;
+
+                int val = Int32.Parse (value);
+
+                int i = 1;
+                for (i = (time_multipliers.Length - 1); i >= 0; i--) {
+                    if (val % time_multipliers[i] == 0) {
+                        comboBox1.Active = i;
+                        break;
+                    }
+
+                }
+
+                spinButton1.Value = (double) (val / time_multipliers[comboBox1.Active]);
+            }
+        }
+
+        public override string Value2 {
+            get { return (comboBox2 == null) ? null : (time_multipliers [comboBox2.Active] * spinButton2.ValueAsInt).ToString(); }
+            set {
+                if (value == null)
+                    return;
+
+                int val = Int32.Parse (value);
+
+                int i = 1;
+                for (i = (time_multipliers.Length - 1); i >= 0; i--) {
+                    if (val % time_multipliers[i] == 0) {
+                        comboBox2.Active = i;
+                        break;
+                    }
+
+                }
+
+                spinButton2.Value = (double) (val / time_multipliers[comboBox2.Active]);
+            }
+        }
+		
+        public override Widget DisplayWidget
+        {
+            get {
+                if(spinButton1 == null) {
+                    spinButton1 = new SpinButton(Int32.MinValue, Int32.MaxValue, 1.0);
+                    spinButton1.Value = 2.0;
+                    spinButton1.Digits = 0;
+                    spinButton1.WidthChars = 4;
+                    spinButton1.Show();
+
+                    comboBox1 = GetComboBox();
+
+                    hBox1 = new HBox();
+                    hBox1.Spacing = 5;
+                    hBox1.PackStart(spinButton1, false, false, 0);
+                    hBox1.PackStart(comboBox1, false, false, 0);
+
+                    hBox1.ShowAll();
+                }
+
+                if(QueryFilter.GetByName(Filter).Operator != QueryOperator.Between) {
+                    if(rangeBox != null && spinButton2 != null) {
+                        rangeBox.Remove(hBox1);
+                        rangeBox.Remove(hBox2);
+
+                        spinButton2.Destroy();
+                        spinButton2 = null;
+
+                        comboBox2.Destroy();
+                        comboBox2 = null;
+
+                        hBox2.Destroy();
+                        hBox2 = null;
+
+                        rangeBox.Destroy();
+                        rangeBox = null;
+
+                    }
+
+                    return hBox1;
+                }
+
+                if(spinButton2 == null) {
+                    spinButton2 = new SpinButton(Int32.MinValue, Int32.MaxValue, 1.0);
+                    spinButton2.Value = 4.0;
+                    spinButton2.Digits = 0;
+                    spinButton2.WidthChars = 4;
+                    spinButton2.Show();
+
+                    comboBox2 = GetComboBox();
+                    comboBox2.Active = comboBox1.Active;
+
+                    hBox2 = new HBox();
+                    hBox2.Spacing = 5;
+                    hBox2.PackStart(spinButton2, false, false, 0);
+                    hBox2.PackStart(comboBox2, false, false, 0);
+                    hBox2.ShowAll();
+                }
+
+                rangeBox = BuildRangeBox(hBox1, hBox2);
+                return rangeBox;
+            }
+        }
+    }
 	
 	// --- Query Match Date --- 
     // Used to match things like [Added|Last Played] [less|greater] than [2] [weeks] ago
@@ -474,7 +607,7 @@ namespace Banshee
 			AddField(Catalog.GetString("Genre"), "Genre", typeof(QueryMatchString));
 			AddField(Catalog.GetString("Date Added"), "DateAddedStamp", typeof(QueryMatchDate));
 			AddField(Catalog.GetString("Last Played"), "LastPlayedStamp", typeof(QueryMatchDate));
-			AddField(Catalog.GetString("Duration"), "Duration", typeof(QueryMatchInteger));
+			AddField(Catalog.GetString("Duration"), "Duration", typeof(QueryMatchTime));
 			AddField(Catalog.GetString("Play Count"), "NumberOfPlays", typeof(QueryMatchInteger));
 			AddField(Catalog.GetString("Playlist"), "PlaylistID", typeof(QueryMatchPlaylist));
 			AddField(Catalog.GetString("Rating"), "Rating", typeof(QueryMatchInteger));

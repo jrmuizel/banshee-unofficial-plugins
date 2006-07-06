@@ -61,9 +61,7 @@ namespace Banshee
 
         public bool MatchesCondition (string condition, out string column, out string value1, out string value2) {
             // Remove trailing parens from the end of the format b/c trailing parens are trimmed from the condition
-            string f = format.TrimEnd (new char[] {')'});
-
-            string regex = String.Format(f.Replace("(", "\\(").Replace(")", "\\)"),
+            string regex = String.Format(format.Replace("(", "\\(").Replace(")", "\\)"),
                     "'?",   // ignore the single quotes if they exist
                     "(.*)", // match the column
                     "(.*)", // match the first value
@@ -770,8 +768,11 @@ namespace Banshee
                 // Remove leading spaces and parens from the first condition
                 conditions[0] = conditions[0].Remove(0, 2);
 
-                // Remove trailing parens and spaces from the last condition
-                conditions[conditions.Length-1] = conditions[conditions.Length-1].TrimEnd(new char[] {')', ' '});
+                // Remove trailing spaces and last paren from the last condition
+                string tmp = conditions[conditions.Length-1];
+                tmp = tmp.TrimEnd(new char[] {' '});
+                tmp = tmp.Substring(0, tmp.Length - 1);
+                conditions[conditions.Length-1] = tmp;
 
                 matchCheckBox.Active = true;
 

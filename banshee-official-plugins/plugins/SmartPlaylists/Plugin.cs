@@ -36,7 +36,7 @@ namespace Banshee.Plugins.SmartPlaylists
         public override string Description {
             get {
                 return Catalog.GetString(
-                    "Allows for playlists based on a set of parameters"
+                    "Create playlists that automatically add and remove songs based on customizable queries."
                 );
             }
         }

@@ -1,3 +1,15 @@
+2006-07-06  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/Plugin.cs: Attempt at a better description.
+
+	* plugins/SmartPlaylists/QueryBuilder.cs: Add InPlaylist and NotInPlaylist
+	operators and make regex condition matching more flexible.
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Add widgetry for making
+	adding membership in a playlist (or not) as a condition for a smart
+	playlist.  Need to listen for when songs are added/removed from playlists
+	to have smart playlists update continuously.
+
 2006-07-03  Gabriel Burt  <gabriel.burt@gmail.com>
 
 	* plugins/SmartPlaylists/Plugin.cs: For some reason we can no longer add

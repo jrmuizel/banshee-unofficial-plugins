@@ -33,6 +33,7 @@ using Sql;
 using System.Collections;
 
 using Banshee.Widgets;
+using Banshee.Sources;
 using Banshee.Plugins;
 
 namespace Banshee
@@ -379,6 +380,87 @@ namespace Banshee
 			}
 		}
 	}
+
+	public class QueryMatchPlaylist : QueryMatch
+	{
+		private ComboBox comboBox1;
+
+        private static ComboBox GetComboBox ()
+        {
+			ComboBox box = ComboBox.NewText();
+
+            foreach (ChildSource child in LibrarySource.Instance.Children) {
+                if (child is PlaylistSource) {
+                    box.AppendText(child.Name);
+                }
+            }
+
+            box.Active = 0;
+
+            return box;
+        }
+
+		public override string FilterValues()
+		{
+            int playlist_id = -1;
+
+            foreach (ChildSource child in LibrarySource.Instance.Children) {
+                if (child is PlaylistSource && child.Name == Value1) {
+                    playlist_id = (child as PlaylistSource).Id;
+                    break;
+                }
+            }
+
+            QueryFilter filter = QueryFilter.GetByName (Filter);
+
+            return filter.Operator.FormatValues (false, "PlaylistID", playlist_id.ToString(), null);
+		}
+
+        public override string Value1 {
+            get { return (comboBox1 == null) ? null : comboBox1.ActiveText; }
+            set {
+                if (value == null)
+                    return;
+
+                int val = Int32.Parse (value);
+
+                int i = 1;
+                foreach (ChildSource child in LibrarySource.Instance.Children) {
+                    if (child is PlaylistSource && (child as PlaylistSource).Id == val) {
+                        comboBox1.Active = i - 1;
+                        break;
+                    }
+                    i++;
+                }
+            }
+        }
+
+        public override string Value2 {
+            get { return null; }
+            set { }
+        }
+
+		public override Widget DisplayWidget
+		{
+			get {
+				if(comboBox1 == null) {
+                    comboBox1 = GetComboBox();
+                    comboBox1.ShowAll();
+				}
+				
+                return comboBox1;
+            }
+		}
+		
+		public override QueryFilter [] ValidFilters {
+			get {	
+				return new QueryFilter [] {
+					QueryFilter.InPlaylist,
+					QueryFilter.NotInPlaylist
+				};
+			}
+		}
+	}
 	
 	public class TracksQueryModel : QueryBuilderModel
 	{
@@ -394,6 +476,7 @@ namespace Banshee
 			AddField(Catalog.GetString("Last Played"), "LastPlayedStamp", typeof(QueryMatchDate));
 			AddField(Catalog.GetString("Duration"), "Duration", typeof(QueryMatchInteger));
 			AddField(Catalog.GetString("Play Count"), "NumberOfPlays", typeof(QueryMatchInteger));
+			AddField(Catalog.GetString("Playlist"), "PlaylistID", typeof(QueryMatchPlaylist));
 			AddField(Catalog.GetString("Rating"), "Rating", typeof(QueryMatchInteger));
 			AddField(Catalog.GetString("Path"), "Uri", typeof(QueryMatchString));
 			AddField(Catalog.GetString("Year"), "Year", typeof(QueryMatchInteger));

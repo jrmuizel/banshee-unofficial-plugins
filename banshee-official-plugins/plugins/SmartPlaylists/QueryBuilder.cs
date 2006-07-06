@@ -60,13 +60,18 @@ namespace Banshee
         }
 
         public bool MatchesCondition (string condition, out string column, out string value1, out string value2) {
-            string regex = String.Format(format.Replace("(", "\\(").Replace(")", "\\)"),
+            // Remove trailing parens from the end of the format b/c trailing parens are trimmed from the condition
+            string f = format.TrimEnd (new char[] {')'});
+
+            string regex = String.Format(f.Replace("(", "\\(").Replace(")", "\\)"),
                     "'?",   // ignore the single quotes if they exist
                     "(.*)", // match the column
                     "(.*)", // match the first value
                     "(.*)"  // match the second value
             );
 
+
+            //Console.WriteLine ("regex = {0}", regex);
             MatchCollection mc = System.Text.RegularExpressions.Regex.Matches (condition, regex);
             if (mc != null && mc.Count > 0 && mc[0].Groups.Count > 0) {
                 column = mc[0].Groups[1].Captures[0].Value;
@@ -97,6 +102,9 @@ namespace Banshee
         public static QueryOperator NotLike    = new QueryOperator("lower({1}) NOT LIKE '%{2}%'");
         public static QueryOperator StartsWith = new QueryOperator("lower({1}) LIKE '{2}%'");
         public static QueryOperator EndsWith   = new QueryOperator("lower({1}) LIKE '%{2}'");
+
+        public static QueryOperator InPlaylist      = new QueryOperator("TrackID IN (SELECT TrackID FROM PlaylistEntries WHERE {1} = {0}{2}{0})");
+        public static QueryOperator NotInPlaylist   = new QueryOperator("TrackID NOT IN (SELECT TrackID FROM PlaylistEntries WHERE {1} = {0}{2}{0})");
     }
 
 	public sealed class QueryFilter
@@ -137,6 +145,15 @@ namespace Banshee
             this.op = op;
         }
 
+		public static QueryFilter InPlaylist = NewOperation (
+            Catalog.GetString ("is"),
+            QueryOperator.InPlaylist
+        );
+
+		public static QueryFilter NotInPlaylist = NewOperation (
+            Catalog.GetString ("is not"),
+            QueryOperator.NotInPlaylist
+        );
 
 		public static QueryFilter Is = NewOperation (
             Catalog.GetString ("is"),
@@ -750,10 +767,10 @@ namespace Banshee
                     conditions = new string [] {value};
                 }
 
-                // Remove the first space and paren from the first condition
+                // Remove leading spaces and parens from the first condition
                 conditions[0] = conditions[0].Remove(0, 2);
 
-                // Remove the last paren and space from the last condition
+                // Remove trailing parens and spaces from the last condition
                 conditions[conditions.Length-1] = conditions[conditions.Length-1].TrimEnd(new char[] {')', ' '});
 
                 matchCheckBox.Active = true;

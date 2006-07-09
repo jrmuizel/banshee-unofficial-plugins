@@ -34,6 +34,7 @@ namespace Banshee.Plugins.SmartPlaylists
             Condition = playlist.Condition;
             OrderBy = playlist.OrderBy;
             LimitNumber = playlist.LimitNumber;
+            LimitCriterion = playlist.LimitCriterion;
         }
 	
         public Editor ()
@@ -73,11 +74,12 @@ namespace Banshee.Plugins.SmartPlaylists
                 string condition = Condition;
                 string order_by = OrderBy;
                 string limit_number = LimitNumber;
+                int limit_criterion = LimitCriterion;
 
                 ThreadAssist.Spawn (delegate {
                     //Console.WriteLine ("Name = {0}, Cond = {1}, OrderAndLimit = {2}", name, condition, order_by, limit_number);
                     if (playlist == null) {
-                        playlist = new SmartPlaylist(name, condition, order_by, limit_number);
+                        playlist = new SmartPlaylist(name, condition, order_by, limit_number, limit_criterion);
                         LibrarySource.Instance.AddChildSource(playlist);
                         Plugin.Instance.StartTimer(playlist);
                     } else {
@@ -85,6 +87,7 @@ namespace Banshee.Plugins.SmartPlaylists
                         playlist.Condition = condition;
                         playlist.OrderBy = order_by;
                         playlist.LimitNumber = limit_number;
+                        playlist.LimitCriterion = limit_criterion;
                         playlist.Commit();
                         playlist.RefreshMembers();
 
@@ -165,8 +168,20 @@ namespace Banshee.Plugins.SmartPlaylists
             }
             
             set {
-                if (value != null && value != "" && value != "0")
+                if (value != null && value != "" && value != "0") {
+                    builder.Limit = true;
                     builder.LimitNumber = value;
+                }
+            }
+        }
+
+        private int LimitCriterion {
+            get {
+                return builder.LimitCriterion;
+            }
+            
+            set {
+                builder.LimitCriterion = value;
             }
         }
     }

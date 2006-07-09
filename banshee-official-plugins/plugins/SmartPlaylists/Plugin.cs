@@ -65,8 +65,18 @@ namespace Banshee.Plugins.SmartPlaylists
                         Name        TEXT NOT NULL,
                         Condition   TEXT,
                         OrderBy     TEXT,
-                        LimitNumber TEXT)
+                        LimitNumber TEXT,
+                        LimitCriterion INTEGER)
                 ");
+            } else {
+                // Database Schema Updates
+                try {
+                    Globals.Library.Db.QuerySingle("SELECT LimitCriterion FROM SmartPlaylists LIMIT 1");
+                } catch(ApplicationException) {
+                    LogCore.Instance.PushDebug("Adding new database column", "LimitCriterion INTEGER");
+                    Globals.Library.Db.Execute("ALTER TABLE SmartPlaylists ADD LimitCriterion INTEGER");
+                    Globals.Library.Db.Execute("UPDATE SmartPlaylists SET LimitCriterion = 0");
+                }
             }
 
             if(!Globals.Library.Db.TableExists("SmartPlaylistEntries")) {
@@ -78,7 +88,7 @@ namespace Banshee.Plugins.SmartPlaylists
                 ");
             }
 
-            // Listen for added/removed source and added/changed songs
+            // Listen for added/removed sources and added/changed songs
             SourceManager.SourceAdded += HandleSourceAdded;
             SourceManager.SourceRemoved += HandleSourceRemoved;
             Globals.Library.Reloaded += HandleLibraryReloaded;
@@ -87,7 +97,7 @@ namespace Banshee.Plugins.SmartPlaylists
 
             // Load existing smart playlists
             IDataReader reader = Globals.Library.Db.Query(String.Format(
-                "SELECT PlaylistID, Name, Condition, OrderBy, LimitNumber FROM SmartPlaylists"
+                "SELECT PlaylistID, Name, Condition, OrderBy, LimitNumber, LimitCriterion FROM SmartPlaylists"
             ));
 
             while (reader.Read()) {
@@ -136,6 +146,11 @@ namespace Banshee.Plugins.SmartPlaylists
 
             instance = null;
         }
+
+        /*public override Widget GetConfigurationWidget ()
+        {
+            return new Label ("Smart Playlist Configuration..");
+        }*/
 
         private void HandleLibraryReloaded (object sender, EventArgs args)
         {

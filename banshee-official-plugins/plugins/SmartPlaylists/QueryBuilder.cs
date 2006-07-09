@@ -848,8 +848,7 @@ namespace Banshee
             }
 		}
 		
-		public string LimitNumber
-		{
+		public string LimitNumber {
 			get {
 				try {
 					Convert.ToInt32(limitEntry.Text);
@@ -864,21 +863,13 @@ namespace Banshee
             }
 		}
 		
-		public string LimitCriteria
-		{
-			get {
-				return ComboBoxUtil.GetActiveString(limitComboBox);
-			}
+		public int LimitCriterion {
+			get { return limitComboBox.Active; }
 
-			set {
-                // We only support limited by the number of songs rightnow
-                //Console.WriteLine ("Reconstructing limitCriteria from {0}", value);
-				//ComboBoxUtil.SetActiveString(limitComboBox, value);
-			}
+			set { limitComboBox.Active = value; }
 		}
 		
-		public bool Limit
-		{
+		public bool Limit {
 			get {
 				return limitCheckBox.Active;
 			}
@@ -888,8 +879,7 @@ namespace Banshee
 			}
 		}
 		
-		public string OrderBy
-		{
+		public string OrderBy {
 			get {
 				return model.GetOrder(ComboBoxUtil.GetActiveString(orderComboBox));
 			}
@@ -898,7 +888,6 @@ namespace Banshee
                 if (value == null)
                     return;
 
-                Console.WriteLine ("Setting orderComboBox to {0}", model.GetOrderName(value));
                 ComboBoxUtil.SetActiveString(orderComboBox, model.GetOrderName(value));
             }
 		}

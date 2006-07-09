@@ -19,13 +19,17 @@ namespace Banshee.Plugins.SmartPlaylists
         public string Condition;
         public string OrderBy;
         public string LimitNumber;
+        public int LimitCriterion;
 
         private string OrderAndLimit {
             get {
                 if (OrderBy == null || OrderBy == "")
                     return null;
 
-                return String.Format ("ORDER BY {0} LIMIT {1}", OrderBy, LimitNumber);
+                if (LimitCriterion == 0)
+                    return String.Format ("ORDER BY {0} LIMIT {1}", OrderBy, LimitNumber);
+                else
+                    return String.Format ("ORDER BY {0}", OrderBy);
             }
         }
 
@@ -64,13 +68,14 @@ namespace Banshee.Plugins.SmartPlaylists
         }
 
         // For existing smart playlists that we're loading from the database
-        public SmartPlaylist(int id, string name, string condition, string order_by, string limit_number) : base(name, 100)
+        public SmartPlaylist(int id, string name, string condition, string order_by, string limit_number, int limit_criterion) : base(name, 100)
         {
             Id = id;
             Name = name;
             Condition = condition;
             OrderBy = order_by;
             LimitNumber = limit_number;
+            LimitCriterion = limit_criterion;
 
             Globals.Library.TrackRemoved += OnLibraryTrackRemoved;
 
@@ -81,18 +86,20 @@ namespace Banshee.Plugins.SmartPlaylists
         }
 
         // For new smart playlists
-        public SmartPlaylist(string name, string condition, string order_by, string limit_number) : base(name, 100)
+        public SmartPlaylist(string name, string condition, string order_by, string limit_number, int limit_criterion) : base(name, 100)
         {
             Name = name;
             Condition = condition;
             OrderBy = order_by;
             LimitNumber = limit_number;
+            LimitCriterion = limit_criterion;
 
             Statement query = new Insert("SmartPlaylists", true,
                 "Name", Name,
                 "Condition", Condition,
                 "OrderBy", OrderBy,
-                "LimitNumber", LimitNumber
+                "LimitNumber", LimitNumber,
+                "LimitCriterion", LimitCriterion
             );
 
             Id = Globals.Library.Db.Execute(query);
@@ -134,10 +141,62 @@ namespace Banshee.Plugins.SmartPlaylists
                     Id
             ));
             
-            while(reader.Read())
-                AddTrack (Globals.Library.Tracks[Convert.ToInt32(reader[0])] as TrackInfo);
+            // If the limit is by any but songs, we need to prune the list up based on the desired 
+            // attribute (time/size)
+            if (LimitCriterion == 0 || LimitNumber == "0") {
+                while(reader.Read()) {
+                    AddTrack (Globals.Library.Tracks[Convert.ToInt32(reader[0])] as TrackInfo);
+                }
+            } else {
+                LimitTracks (reader, false);
+            }
 
             reader.Dispose();
+        }
+
+
+        public void LimitTracks (IDataReader reader, bool remove_if_limited)
+        {
+            bool was_limited = false;
+            double sum = 0;
+            double limit = Double.Parse(LimitNumber); 
+            while(reader.Read()) {
+                TrackInfo track = Globals.Library.Tracks[Convert.ToInt32(reader[0])] as TrackInfo;
+
+                switch (LimitCriterion) {
+                case 1: // minutes
+                    sum += track.Duration.TotalMinutes;
+                    break;
+                case 2: // hours
+                    sum += track.Duration.TotalHours;
+                    break;
+                case 3: // MB
+                    try {
+                        Gnome.Vfs.FileInfo file = new Gnome.Vfs.FileInfo(track.Uri.AbsoluteUri);
+                        sum += (double) (file.Size / (1024 * 1024));
+                    } catch (System.IO.FileNotFoundException) {}
+
+                    break;
+                }
+
+                if (sum > limit) {
+                    was_limited = true;
+
+                    if (remove_if_limited) {
+                        RemoveTrack (track);
+                    } else {
+                        break;
+                    }
+                } else if (!tracks.Contains (track)) {
+                    AddTrack (track);
+                }
+            }
+
+            // We do a commit here to clean up the tracks listed in the database..the commit deletes
+            // all Entries for this playlist then inserts them based on one's that are actually in the playlist...
+            // so all the tracks that were beyond the limit point are cleaned out
+            if (was_limited || remove_if_limited)
+                Commit();
         }
 
         public void Check (TrackInfo track)
@@ -191,31 +250,16 @@ namespace Banshee.Plugins.SmartPlaylists
                     return;
 
                 // We have removed tracks no longer in this smart playlist, now need to add
-                // tracks that replace those that were removed (if any)
-                IDataReader new_tracks = Globals.Library.Db.Query(String.Format(
+                // tracks that replace those that were removed (if any), and do limited by size/duration
+                IDataReader tracks_res = Globals.Library.Db.Query(String.Format(
                     @"SELECT TrackId FROM Tracks 
-                        WHERE TrackID NOT IN (SELECT TrackID FROM SmartPlaylistEntries WHERE PlaylistID = {0})
-                        AND TrackID IN (SELECT TrackID FROM Tracks {1} {2})",
+                        WHERE TrackID IN (SELECT TrackID FROM Tracks {1} {2})",
                     Id, PrependCondition("WHERE"), OrderAndLimit
                 ));
 
-                bool have_new_tracks = false;
-                while (new_tracks.Read()) {
-                    AddTrack (Globals.Library.Tracks[Convert.ToInt32(new_tracks[0])] as TrackInfo);
-                    have_new_tracks = true;
-                }
+                LimitTracks (tracks_res, true);
 
-                new_tracks.Dispose();
-
-                if (have_new_tracks) {
-                    Globals.Library.Db.Execute(String.Format(
-                        @"INSERT INTO SmartPlaylistEntries 
-                            SELECT NULL as EntryId, {0} as PlaylistId, TrackId FROM Tracks 
-                            WHERE TrackID NOT IN (SELECT TrackID FROM SmartPlaylistEntries WHERE PlaylistID = {0})
-                            AND TrackID IN (SELECT TrackID FROM Tracks {1} {2})",
-                        Id, PrependCondition("WHERE"), OrderAndLimit
-                    ));
-                }
+                tracks_res.Dispose();
             }
         }
 
@@ -225,7 +269,8 @@ namespace Banshee.Plugins.SmartPlaylists
                 "Name", Name,
                 "Condition", Condition,
                 "OrderBy", OrderBy,
-                "LimitNumber", LimitNumber) + 
+                "LimitNumber", LimitNumber,
+                "LimitCriterion", LimitCriterion) + 
                 new Where(new Compare("PlaylistID", Op.EqualTo, Id));
 
             Globals.Library.Db.Execute(query);
@@ -369,9 +414,9 @@ namespace Banshee.Plugins.SmartPlaylists
             string condition = reader[2] as string;
             string order_by = reader[3] as string;
             string limit_number = reader[4] as string;
+            int limit_criterion = (int) reader[5];
 
-            SmartPlaylist playlist = new SmartPlaylist (id, name, condition, order_by, limit_number);
-            //SourceManager.AddSource(playlist);
+            SmartPlaylist playlist = new SmartPlaylist (id, name, condition, order_by, limit_number, limit_criterion);
             LibrarySource.Instance.AddChildSource(playlist);
         }
     }

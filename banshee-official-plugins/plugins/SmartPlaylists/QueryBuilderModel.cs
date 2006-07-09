@@ -61,6 +61,7 @@ namespace Banshee
 		public static string Songs = Catalog.GetString("songs");
 		public static string Minutes = Catalog.GetString("minutes");
 		public static string Hours = Catalog.GetString("hours");
+		public static string MB = Catalog.GetString("MB");
 	}
 
 	// --- Query Match String --- 
@@ -691,7 +692,7 @@ namespace Banshee
 			AddField(Catalog.GetString("Year"), "Year", typeof(QueryMatchInteger));
 			
 			AddOrder(QuerySelectedByCriteria.Random, "RANDOM()");
-			AddOrder(QuerySelectedByCriteria.Album, "Album");
+			AddOrder(QuerySelectedByCriteria.Album, "AlbumTitle");
 			AddOrder(QuerySelectedByCriteria.Artist, "Artist");
 			AddOrder(QuerySelectedByCriteria.Genre, "Genre");
 			AddOrder(QuerySelectedByCriteria.SongName, "Title");
@@ -709,9 +710,10 @@ namespace Banshee
 		{
 			get {
 				string [] criteria = {
-					QueryLimitCriteria.Songs
-					//QueryLimitCriteria.Minutes,
-					//QueryLimitCriteria.Hours
+					QueryLimitCriteria.Songs,
+					QueryLimitCriteria.Minutes,
+					QueryLimitCriteria.Hours,
+					QueryLimitCriteria.MB
 				};
 				
 				return criteria;

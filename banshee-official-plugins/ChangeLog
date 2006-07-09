@@ -1,3 +1,17 @@
+2006-07-08  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/QueryBuilder.cs: Implement the LimitCriterion
+	property, fix some style issues.
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Add MB as limit option, fix
+	bug with ordering by Album, enable limiting by minutes, hours, and MB.
+
+	* plugins/SmartPlaylists/Plugin.cs: Add LimitCriterion column to
+	SmartPlaylists table, and add update code for existing users.
+
+	* plugins/SmartPlaylists/Editor.cs:
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Support the LimitCriterion
+
 2006-07-06  Gabriel Burt  <gabriel.burt@gmail.com>
 
 	* plugins/SmartPlaylists/icon-blank.png

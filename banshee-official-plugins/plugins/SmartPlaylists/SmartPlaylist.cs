@@ -37,6 +37,10 @@ namespace Banshee.Plugins.SmartPlaylists
             get { return (Condition == null) ? false : Condition.IndexOf ("current_timestamp") != -1; }
         }
 
+        public bool PlaylistDerived {
+            get { return (Condition == null) ? false : Condition.IndexOf ("Playlist") != -1; }
+        }
+
         private int id;
         public int Id {
             get { return id; }

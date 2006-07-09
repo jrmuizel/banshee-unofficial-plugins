@@ -1,5 +1,22 @@
 2006-07-08  Gabriel Burt  <gabriel.burt@gmail.com>
 
+	* plugins/SmartPlaylists/QueryBuilder.cs: Improve how we get the Filter
+	from the drop down list, and make it so differen't filters can have the
+	same name.
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Use the new way to get the
+	Filter.
+
+	* plugins/SmartPlaylists/Plugin.cs: Watch static playlists when there is
+	at least one smart playlist that is derived from one.  This should round
+	out the playlists feature, but unfortunately Banshee doesn't fire the
+	necessary TrackAdded/Removed events yet.  We are ready for when that is
+	fixed.
+
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Add PlaylistDerived property.
+
+2006-07-08  Gabriel Burt  <gabriel.burt@gmail.com>
+
 	* plugins/SmartPlaylists/QueryBuilder.cs: Implement the LimitCriterion
 	property, fix some style issues.
 

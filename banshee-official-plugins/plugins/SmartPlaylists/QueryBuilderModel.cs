@@ -72,11 +72,10 @@ namespace Banshee
 
 		public override string FilterValues()
 		{
-            QueryFilter filter = QueryFilter.GetByName (Filter);
-            if (filter == null)
+            if (Filter == null)
                 return null;
             else
-                return filter.Operator.FormatValues (true, Column, Statement.EscapeQuotes(Value1.ToLower()), null);
+                return Filter.Operator.FormatValues (true, Column, Statement.EscapeQuotes(Value1.ToLower()), null);
 		}
 		
         public override string Value1 {
@@ -124,11 +123,10 @@ namespace Banshee
 
 		public override string FilterValues()
 		{
-            QueryFilter filter = QueryFilter.GetByName (Filter);
-            if (filter == null)
+            if (Filter == null)
                 return null;
             else
-                return filter.Operator.FormatValues (false, Column, Value1, Value2);
+                return Filter.Operator.FormatValues (false, Column, Value1, Value2);
 		}
 		
         public override string Value1 {
@@ -158,7 +156,7 @@ namespace Banshee
 					spinButton1.Show();
 				}
 				
-				if(QueryFilter.GetByName(Filter).Operator != QueryOperator.Between) {
+				if(Filter.Operator != QueryOperator.Between) {
 					if(rangeBox != null && spinButton2 != null) {
 						rangeBox.Remove(spinButton1);
 						rangeBox.Remove(spinButton2);
@@ -206,11 +204,10 @@ namespace Banshee
 
 		public override string FilterValues()
 		{
-            QueryFilter filter = QueryFilter.GetByName (Filter);
-            if (filter == null)
+            if (Filter == null)
                 return null;
             else
-                return filter.Operator.FormatValues (false, Column, Value1, Value2);
+                return Filter.Operator.FormatValues (false, Column, Value1, Value2);
 		}
 		
         public override string Value1 {
@@ -237,7 +234,7 @@ namespace Banshee
 					rating1.Show();
 				}
 				
-				if(QueryFilter.GetByName(Filter).Operator != QueryOperator.Between) {
+				if(Filter.Operator != QueryOperator.Between) {
 					if(rangeBox != null && rating2 != null) {
 						rangeBox.Remove(rating1);
 						rangeBox.Remove(rating2);
@@ -362,7 +359,7 @@ namespace Banshee
                     hBox1.ShowAll();
                 }
 
-                if(QueryFilter.GetByName(Filter).Operator != QueryOperator.Between) {
+                if(Filter.Operator != QueryOperator.Between) {
                     if(rangeBox != null && spinButton2 != null) {
                         rangeBox.Remove(hBox1);
                         rangeBox.Remove(hBox2);
@@ -442,11 +439,10 @@ namespace Banshee
 			string pv = Statement.EscapeQuotes(Value1);
             string pv2 = (spinButton2 == null) ? null : Statement.EscapeQuotes(Value2);
 
-            QueryFilter filter = QueryFilter.GetByName (Filter);
-            if (filter == null)
+            if (Filter == null)
                 return null;
             else
-                return filter.Operator.FormatValues (false, SqlColumn, pv, pv2);
+                return Filter.Operator.FormatValues (false, SqlColumn, pv, pv2);
 		}
 
         public override string SqlColumn {
@@ -523,7 +519,7 @@ namespace Banshee
                     hBox1.ShowAll();
 				}
 				
-				if(QueryFilter.GetByName(Filter).Operator != QueryOperator.Between) {
+				if(Filter.Operator != QueryOperator.Between) {
 					if(rangeBox != null && spinButton2 != null) {
 						rangeBox.Remove(hBox1);
 						rangeBox.Remove(hBox2);
@@ -621,9 +617,7 @@ namespace Banshee
                 }
             }
 
-            QueryFilter filter = QueryFilter.GetByName (Filter);
-
-            return filter.Operator.FormatValues (false, "PlaylistID", playlist_id.ToString(), null);
+            return Filter.Operator.FormatValues (false, "PlaylistID", playlist_id.ToString(), null);
 		}
 
         public override string Value1 {

@@ -262,7 +262,8 @@ namespace Banshee
 
 	public abstract class QueryMatch
 	{
-		public string Column, Filter;
+		public string Column;
+        public int Op;
 
         public abstract string Value1 {
             get; set;
@@ -285,6 +286,12 @@ namespace Banshee
 
 		public virtual string SqlColumn {
 			get { return Column; }
+        }
+
+        public QueryFilter Filter {
+            get {
+                return ValidFilters [Op];
+            }
         }
 		
 		protected static HBox BuildRangeBox(Widget a, Widget b)
@@ -490,7 +497,7 @@ namespace Banshee
 			opBox.GetActiveIter(out iter);
 			string opName = (string)opBox.Model.GetValue(iter, 0);
 			
-			match.Filter = opName;
+            match.Op = opBox.Active;
 			
 			widgetBox.Foreach(WidgetBoxForeachRemoveChild);
 			widgetBox.Add(match.DisplayWidget);
@@ -527,7 +534,7 @@ namespace Banshee
 			get {
 				match.Column = 
 					model.GetColumn(ComboBoxUtil.GetActiveString(fieldBox));
-				match.Filter = ComboBoxUtil.GetActiveString(opBox);
+                match.Op = opBox.Active;
 				return match.FilterValues();
 			}
 		}

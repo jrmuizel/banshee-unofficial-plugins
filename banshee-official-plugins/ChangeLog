@@ -1,5 +1,19 @@
 2006-07-08  Gabriel Burt  <gabriel.burt@gmail.com>
 
+	* plugins/SmartPlaylists/QueryBuilder.cs: Use ArrayLists to sort the
+	field and order options.  Add properties so the first field drop down can
+	be focused when the dialog is first presented.
+
+	* plugins/SmartPlaylists/smart-playlist.glade: Make the default title
+	blank.
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Remove unused hashtable.
+
+	* plugins/SmartPlaylists/Editor.cs: Make the Editor focus on the first
+	field drop down instead of the name entry.
+
+2006-07-08  Gabriel Burt  <gabriel.burt@gmail.com>
+
 	* plugins/SmartPlaylists/QueryBuilder.cs: Improve how we get the Filter
 	from the drop down list, and make it so differen't filters can have the
 	same name.

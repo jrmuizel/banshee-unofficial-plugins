@@ -63,6 +63,8 @@ namespace Banshee.Plugins.SmartPlaylists
         public void RunDialog()
         {
             dialog.ShowAll();
+            builder.MatchesBox.FirstRow.FieldBox.GrabFocus();
+
 			ResponseType response = (ResponseType) dialog.Run ();
 
             //int w = -1, h = -1;

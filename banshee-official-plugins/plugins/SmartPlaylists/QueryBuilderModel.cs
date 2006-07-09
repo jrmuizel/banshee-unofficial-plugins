@@ -668,8 +668,6 @@ namespace Banshee
 	
 	public class TracksQueryModel : QueryBuilderModel
 	{
-		private Hashtable fields;
-		
 		public TracksQueryModel() : base()
 		{
 			AddField(Catalog.GetString("Artist"), "Artist", typeof(QueryMatchString));

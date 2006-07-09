@@ -319,15 +319,18 @@ namespace Banshee
 	
 	public abstract class QueryBuilderModel : IEnumerable
 	{
-		private Hashtable fields;
+		private Hashtable fieldsMap;
 		private Hashtable columnLookup;
 		private Hashtable nameLookup;
 		private Hashtable orderMap;
 		private Hashtable mapOrder;
+
+        private ArrayList fields = new ArrayList();
+        private ArrayList orders = new ArrayList();
 		
 		public QueryBuilderModel()
 		{
-			fields = new Hashtable();
+			fieldsMap = new Hashtable();
 			columnLookup = new Hashtable();
 			nameLookup = new Hashtable();
 			orderMap = new Hashtable();
@@ -337,26 +340,30 @@ namespace Banshee
 		public Type this [string index] 
 		{
 			get {
-				return (Type)fields[index];
+				return (Type)fieldsMap[index];
 			}
 		}
 		
 		public IEnumerator GetEnumerator()
 		{
-			return fields.Keys.GetEnumerator();
+			return fields.GetEnumerator();
 		}
 		
 		public void AddField(string name, string column, Type matchType)
 		{
-			fields[name] = matchType;
+            fields.Add (name);
+			fieldsMap[name] = matchType;
 			columnLookup[name] = column;
 			nameLookup[column] = name;
+            fields.Sort();
 		}
 		
 		public void AddOrder(string name, string map)
 		{
+            orders.Add (name);
 			orderMap[name] = map;
 			mapOrder[map] = name;
+            orders.Sort();
 		}
 		
 		public string GetOrder(string name)
@@ -387,7 +394,7 @@ namespace Banshee
 		public ICollection OrderCriteria 
 		{
 			get {
-				return orderMap.Keys;
+				return orders;
 			}
 		}
 	}
@@ -562,6 +569,12 @@ namespace Banshee
 	public class QueryBuilderMatches : VBox
 	{
 		private QueryBuilderModel model;
+
+        private QueryBuilderMatchRow first_row = null;
+
+        public QueryBuilderMatchRow FirstRow {
+            get { return first_row; }
+        }
 		
 		public QueryBuilderMatches(QueryBuilderModel model) : base()
 		{
@@ -577,6 +590,11 @@ namespace Banshee
 			row.CanDelete = canDelete;
 			row.AddRequest += OnRowAddRequest;
 			row.RemoveRequest += OnRowRemoveRequest;
+
+            if (first_row == null) {
+                first_row = row;
+                row.FieldBox.GrabFocus();
+            }
 		}
 		
 		public void OnRowAddRequest(object o, EventArgs args)
@@ -623,6 +641,10 @@ namespace Banshee
 		private Entry limitEntry;
 		private ComboBox limitComboBox;
 		private ComboBox orderComboBox;
+
+        public QueryBuilderMatches MatchesBox {
+            get { return matchesBox; }
+        }
 	
 		public QueryBuilder(QueryBuilderModel model) : base()
 		{

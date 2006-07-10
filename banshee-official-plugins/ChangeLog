@@ -1,3 +1,8 @@
+2006-07-11  Ruben Vermeersch  <ruben@Lambda1.be>
+
+	* plugins/Radio/RadioSource.cs: Remove needless test to see if the user
+	plugin dir exists.
+
 2006-07-08  Gabriel Burt  <gabriel.burt@gmail.com>
 
 	* plugins/SmartPlaylists/QueryBuilder.cs: Use ArrayLists to sort the

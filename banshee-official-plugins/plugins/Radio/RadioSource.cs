@@ -65,10 +65,6 @@ namespace Banshee.Plugins.Radio
             
             stations_file = Path.Combine(Paths.UserPluginDirectory, "radio-stations.xml");
 
-            if(!Directory.Exists(Paths.UserPluginDirectory)) {
-                Directory.CreateDirectory(Paths.UserPluginDirectory);
-            }
-
             if(!File.Exists(stations_file)) {
                 string default_xml = Resource.GetFileContents("stations.xml");
                 TextWriter writer = new StreamWriter(stations_file);

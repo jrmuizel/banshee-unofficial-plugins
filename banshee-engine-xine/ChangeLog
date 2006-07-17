@@ -1,0 +1,4 @@
+2006-07-18  Ivan N. Zlatev  <contact i-nZ.net>
+
+	* src/Xine.cs: Implemented equalizer support.
+	* src/XinePlayerEngine.cs: Implemented IEqualizer.

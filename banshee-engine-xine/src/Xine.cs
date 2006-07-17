@@ -211,6 +211,84 @@ namespace Xine
 			}
 		}		  
 
+
+
+		
+		// value is between -100 and +100.
+		// frequancy in hz 
+		//
+		public void SetEqualizerGain (uint frequency, int value)
+		{
+			if (_stream == IntPtr.Zero) {
+				return;
+			}		 
+			if (value < -100 || value > 100) {
+				throw new ArgumentOutOfRangeException ("value");
+			}
+
+			switch (frequency) {
+			case 30:
+				xine_set_param (_stream, XINE_PARAM_EQ_30HZ, value);
+				break;
+			case 60:
+				xine_set_param (_stream, XINE_PARAM_EQ_60HZ, value);
+				break;
+			case 125:
+				xine_set_param (_stream, XINE_PARAM_EQ_125HZ, value);
+				break;
+			case 250:
+				xine_set_param (_stream, XINE_PARAM_EQ_250HZ, value);
+				break;
+			case 500:
+				xine_set_param (_stream, XINE_PARAM_EQ_500HZ, value);
+				break;
+			case 1000:
+				xine_set_param (_stream, XINE_PARAM_EQ_1000HZ, value);
+				break;
+			case 2000:
+				xine_set_param (_stream, XINE_PARAM_EQ_2000HZ, value);
+				break;
+			case 4000:
+				xine_set_param (_stream, XINE_PARAM_EQ_4000HZ, value);
+				break;
+			case 80000:
+				xine_set_param (_stream, XINE_PARAM_EQ_8000HZ, value);
+				break;
+			case 16000:
+				xine_set_param (_stream, XINE_PARAM_EQ_16000HZ, value);
+				break;
+			}
+		}
+				
+		public uint[] EqualizerFrequencies
+		{
+			get {
+				return new uint[] { 30, 60, 125, 250, 500, 1000, 2000, 4000, 80000, 16000 };
+			}
+		}
+
+		// Xine Default: 100%
+		// Xine Range: 0 - 200%
+		//
+		public uint AmplifierLevel
+		{
+			get {
+				uint level = 0;
+				if (_stream != IntPtr.Zero) {
+					 level = (uint) xine_get_param (_stream, XINE_PARAM_AUDIO_AMP_LEVEL);
+				}
+				return level;
+			}
+			set {
+				if (value > 200) {
+					throw new ArgumentOutOfRangeException ("AmplifierLevel");
+				}
+				if (_stream != IntPtr.Zero) {
+					xine_set_param (_stream, XINE_PARAM_AUDIO_AMP_LEVEL, (int) value);
+				}
+			}
+		}
+		
 		public uint Length {
 			get {
 				int length, positionTime, positionStream;
@@ -266,7 +344,6 @@ namespace Xine
 			}
         }
 
-		
 		public void Dispose ()
 		{
 			if (_stream != IntPtr.Zero) {
@@ -283,7 +360,6 @@ namespace Xine
 					_eventQueue = IntPtr.Zero;
 				}
 			}
-			GC.SuppressFinalize(this);
 		}
 
 		~Stream ()
@@ -292,13 +368,25 @@ namespace Xine
 		}
 
 
-		private const int XINE_PARAM_SPEED = 1;
+
 		private const int XINE_SPEED_PAUSE = 0;
 		private const int XINE_SPEED_NORMAL = 4;
 		private const int XINE_PARAM_AUDIO_VOLUME = 6;
 		private const int XINE_STREAM_INFO_SEEKABLE = 1;
 		private const int XINE_EVENT_UI_PLAYBACK_FINISHED = 1;
 		private const int XINE_TRICK_MODE_SEEK_TO_TIME = 2;
+		private const int XINE_PARAM_SPEED = 1;
+		private const int XINE_PARAM_AUDIO_AMP_LEVEL = 9;
+		private const int XINE_PARAM_EQ_30HZ = 18;
+		private const int XINE_PARAM_EQ_60HZ = 19;
+		private const int XINE_PARAM_EQ_125HZ = 20;
+		private const int XINE_PARAM_EQ_250HZ = 21;
+		private const int XINE_PARAM_EQ_500HZ = 22;
+		private const int XINE_PARAM_EQ_1000HZ = 23;
+		private const int XINE_PARAM_EQ_2000HZ = 24;
+		private const int XINE_PARAM_EQ_4000HZ = 25;
+		private const int XINE_PARAM_EQ_8000HZ = 26;
+		private const int XINE_PARAM_EQ_16000HZ = 27;
 		
 		[DllImport ("libxine")]
 		private static extern IntPtr xine_open_audio_driver (IntPtr engine, string driverId, IntPtr data);

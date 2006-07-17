@@ -29,17 +29,18 @@
 using System;
 using System.Collections;
 
-using Xine;
 using Banshee.Base;
 using Banshee.MediaEngine;
 
+using Xine;
+
 namespace Banshee.MediaEngine.Xine
 {
-	public class XinePlayerEngine : PlayerEngine
+	public class XinePlayerEngine : PlayerEngine, IEqualizer
 	{
 		private XineEngine _xine;
 		private Stream _stream;
-		private uint timeout_id;
+		private uint _timeoutId;
 		
 		public XinePlayerEngine ()
 		{
@@ -50,11 +51,11 @@ namespace Banshee.MediaEngine.Xine
 
 		private void StartTimer()
 		{
-			if(timeout_id > 0) {
+			if(_timeoutId > 0) {
 				return;
 			}
 
-			timeout_id = GLib.Timeout.Add(500, delegate {
+			_timeoutId = GLib.Timeout.Add(500, delegate {
 				_stream.ProcessEventQueue();
 							
 				if(CurrentState == PlayerEngineState.Playing) {
@@ -67,9 +68,9 @@ namespace Banshee.MediaEngine.Xine
 
 		private void StopTimer()
 		{
-			if(timeout_id > 0) {
-				GLib.Source.Remove(timeout_id);
-				timeout_id = 0;
+			if(_timeoutId > 0) {
+				GLib.Source.Remove(_timeoutId);
+				_timeoutId = 0;
 			}
 		}
 		
@@ -103,6 +104,11 @@ namespace Banshee.MediaEngine.Xine
 			_stream.Pause ();
 			OnStateChanged (PlayerEngineState.Paused);
         }        
+
+		public void SetEqualizerGain (uint frequency, int value)
+		{
+			_stream.SetEqualizerGain (frequency, value);
+		}
 		
 		public override ushort Volume {
             get {
@@ -132,7 +138,24 @@ namespace Banshee.MediaEngine.Xine
             get {
 				return _stream.Length;
 			}
-        }      
+        }
+
+		public uint[] EqualizerFrequencies
+		{
+			get { return _stream.EqualizerFrequencies; }
+		}
+
+		// Xine Default: 100%
+		// Xine Range: 0 - 200%
+		// Plugin Default: 0
+		// Plugin Range: -100 +100 
+		// Plugin = Xine - 100
+		//
+		public int AmplifierLevel
+		{
+			get { return (int) _stream.AmplifierLevel - 100; }
+			set { _stream.AmplifierLevel = (uint) value + 100; }
+		}
 
 		private static string [] source_capabilities = { "file", "http", "cdda" };
         public override IEnumerable SourceCapabilities {

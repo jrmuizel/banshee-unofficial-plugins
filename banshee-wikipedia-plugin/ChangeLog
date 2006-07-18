@@ -1,3 +1,9 @@
+2006-07-18  Patrick van Staveren  <trick@vanstaveren.us>
+
+	* configure.ac:
+	* src/Makefile.am: Automatically detect gecko-sharp-2.0 0.11
+	and complain if not found.  Thanks to Pierre Cros for reporting!
+
 2006-06-24  Patrick van Staveren <trick@vanstaveren.us>
 	* Updated TODO file from David
 	* COPYING: LGPL (2.1)

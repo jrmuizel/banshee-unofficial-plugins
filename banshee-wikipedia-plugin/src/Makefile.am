@@ -52,7 +52,7 @@ plugin_SCRIPTS = $(ASSEMBLY) $(ASSEMBLY).config $(ASSEMBLY).mdb
 all: $(ASSEMBLY)
 
 $(ASSEMBLY): $(SOURCES)
-	$(MCS) $(MCS_FLAGS) -out:$(ASSEMBLY) -target:library -pkg:gecko-sharp-2.0 -r:System.Web $(EMBEDDED) $(BANSHEE_LIBS) $(SOURCES)
+	$(MCS) $(MCS_FLAGS) $(GECKO_FLAGS) -out:$(ASSEMBLY) -target:library -r:System.Web $(EMBEDDED) $(BANSHEE_LIBS) $(SOURCES)
 
 EXTRA_DIST = $(SOURCES) $(MENU_RESOURCE) Wikipedia.dll.config
 CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb 

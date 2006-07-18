@@ -6,9 +6,6 @@
 * auto detect disambig pages somehow?
 * search within all the categories for music groups so we're 99% sure we'll get the right one, and not a disambig or a random article
 	* use one of the external wikipedia indexing engines?  is there one for music?
-* find a skin that doesn't show the left side of wikipedia, or hide it somehow on client side.
-* initial size should be 50% (or maybe 33%?) of MainContainer's current size.
-	* Grab from Gdk Allocation, calculate when creating the widget, pass as parameter, and groovy. 
-* gecko-sharp detection in configure.ac (not just a -pkg flag!)
+* make resizeable, and save size to gconf
 
 there's always more to do :)

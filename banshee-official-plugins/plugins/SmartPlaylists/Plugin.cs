@@ -106,7 +106,10 @@ namespace Banshee.Plugins.SmartPlaylists
             }
 
             reader.Dispose();
+        }
 
+        protected override void InterfaceInitialize()
+        {
             // Add a menu option to create a new smart playlist
             if(!Globals.UIManager.IsInitialized) {
                 Globals.UIManager.Initialized += OnUIManagerInitialized;

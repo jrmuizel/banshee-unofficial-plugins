@@ -1,3 +1,27 @@
+2006-07-18  Aaron Bockover  <abock@gnome.org>
+
+	* banshee-official-plugins.mds:
+	* plugins/MiniMode/MiniMode.mdp:
+	* plugins/Recommendation/Recommendation.mdp: Added MonoDevelop solution 
+	and projects for MiniMode and Recommendation
+
+	* plugins/MiniMode/Makefile.am
+	* plugins/Recommendation/Makefile.am: Updated build
+
+	* plugins/Radio/RadioSource.cs:
+	* plugins/Recommendation/RecommendationPlugin.cs: tabs->spaces
+
+	* plugins/Recommendation/RecommendationPane.cs: Use the new TileView/Tile 
+	widgets in Banshee.Widgets to show similar artists; similar functionality 
+	to new application browser in SLED 10
+
+	* plugins/Recommendation/play.png: Removed
+
+	* plugins/SmartPlaylists/Plugin.cs: 
+	* plugins/Podcast/PodcastPlugin.cs:
+	* plugins/Radio/RadioPlugin.cs: Do all interface setup in
+	InterfaceInitialize
+	
 2006-07-11  Ruben Vermeersch  <ruben@Lambda1.be>
 
 	* plugins/Radio/RadioSource.cs: Remove needless test to see if the user
@@ -80,6 +104,7 @@
 	playlist.  Need to listen for when songs are added/removed from playlists
 	to have smart playlists update continuously.
 
+>>>>>>> .r191
 2006-07-03  Gabriel Burt  <gabriel.burt@gmail.com>
 
 	* plugins/SmartPlaylists/Plugin.cs: For some reason we can no longer add

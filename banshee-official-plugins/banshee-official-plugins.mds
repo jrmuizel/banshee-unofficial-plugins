@@ -1,0 +1,21 @@
+<Combine name="banshee-official-plugins" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="Recommendation" configuration="Debug" />
+      <Entry build="True" name="MiniMode" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="Recommendation" configuration="Debug" />
+      <Entry build="True" name="MiniMode" configuration="Debug" />
+    </Configuration>
+  </Configurations>
+  <DeployTargets />
+  <StartMode startupentry="banshee-official-plugins" single="True">
+    <Execute type="None" entry="Recommendation" />
+    <Execute type="None" entry="MiniMode" />
+  </StartMode>
+  <Entries>
+    <Entry filename="./plugins/Recommendation/Recommendation.mdp" />
+    <Entry filename="./plugins/MiniMode/MiniMode.mdp" />
+  </Entries>
+</Combine>

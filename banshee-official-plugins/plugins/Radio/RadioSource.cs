@@ -138,12 +138,12 @@ namespace Banshee.Plugins.Radio
 
                 ArrayList uris = new ArrayList();
                 TotemPlParser.Parser parser = new TotemPlParser.Parser();
-        	        parser.Entry += delegate(object o, TotemPlParser.EntryArgs args) {
-        	           uris.Add(args.Uri);
-        	        };
-    	        
-        	        TotemPlParser.Result result = parser.Parse(uri, false);
-        	        if(result == TotemPlParser.Result.Success && uris.Count > 0) {	   
+                    parser.Entry += delegate(object o, TotemPlParser.EntryArgs args) {
+                       uris.Add(args.Uri);
+                    };
+                
+                    TotemPlParser.Result result = parser.Parse(uri, false);
+                    if(result == TotemPlParser.Result.Success && uris.Count > 0) {       
                     uri = uris[0] as string;
                 }
             } catch(Exception e) {

@@ -67,6 +67,10 @@ namespace Banshee.Plugins.Radio
         {
             source = new RadioSource(this);
             SourceManager.AddSource(source);
+        }
+
+        protected override void InterfaceInitialize()
+        {
             LoadMenus();
         }
         

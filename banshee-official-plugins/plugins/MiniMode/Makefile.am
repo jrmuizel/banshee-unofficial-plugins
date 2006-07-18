@@ -18,6 +18,6 @@ $(ASSEMBLY): $(SOURCES)
 
 EXTRA_DIST = $(SOURCES) minimode.glade $(srcdir)/AssemblyInfo.cs.in
 CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb 
-MAINTAINERCLEANFILES = Makefile.in
+MAINTAINERCLEANFILES = Makefile.in *.pidb
 DISTCLEANFILES = minimode.gladep* minimode.glade.bak
 

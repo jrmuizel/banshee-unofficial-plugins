@@ -1,5 +1,9 @@
 2006-07-18  Aaron Bockover  <abock@gnome.org>
 
+	* configure.ac: Recommendations plugin now requires CVS/0.11.x
+
+2006-07-18  Aaron Bockover  <abock@gnome.org>
+
 	* banshee-official-plugins.mds:
 	* plugins/MiniMode/MiniMode.mdp:
 	* plugins/Recommendation/Recommendation.mdp: Added MonoDevelop solution 

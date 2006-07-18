@@ -126,9 +126,16 @@ if test "x$enable_radio" = "xyes"; then
 fi
 
 AC_ARG_ENABLE(recommendation, AC_HELP_STRING(--disable-recommendation, [Do not build recommendation plugin]), enable_recommendation=no, enable_recommendation=yes)
-AM_CONDITIONAL(ENABLE_RECOMMENDATION, test "x$enable_recommendation" = "xyes")
 if test "x$enable_recommendation" = "xyes"; then 
-	ENABLED_PLUGINS="$ENABLED_PLUGINS Recommendation"
+	if test "x$banshee_0_10" = "xno"; then
+		ENABLED_PLUGINS="$ENABLED_PLUGINS Recommendation"
+	else
+		AC_MSG_ERROR([The Recommendation plugin requires Banshee 0.11.0-cvs or better. Please pass --disable-recommendation to configure.])
+	fi
+	
+	AM_CONDITIONAL(ENABLE_RECOMMENDATION, test "x$enable_recommendation" = "xyes")
+else
+	AM_CONDITIONAL(ENABLE_RECOMMENDATION, false)
 fi
 
 AC_ARG_ENABLE(smart-playlists, AC_HELP_STRING(--disable-smart-playlists, [Do not build smart playlists plugin]), enable_smart_playlists=no, enable_smart_playlists=yes)

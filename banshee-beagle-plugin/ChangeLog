@@ -1,3 +1,7 @@
+2006-07-18  Patrick van Staveren  <trick@vanstaveren.us>
+
+	* configure.ac: detect mcs or gmcs compiled Banshee
+
 2006-04-15  Aaron Bockover  <aaron@abock.org>
 
 	Patch from Lukas Lipka (BGO #338584)

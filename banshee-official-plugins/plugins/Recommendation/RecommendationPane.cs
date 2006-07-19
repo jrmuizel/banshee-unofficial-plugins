@@ -1,9 +1,36 @@
+/***************************************************************************
+ *  RecommendationPane.cs
+ *
+ *  Copyright (C) 2006 Novell, Inc.
+ *  Written by Fredrik Hedberg
+ *             Aaron Bockover
+ *             Lukas Lipka
+ ****************************************************************************/
+
+/*  THIS FILE IS LICENSED UNDER THE MIT LICENSE AS OUTLINED IMMEDIATELY BELOW:
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a
+ *  copy of this software and associated documentation files (the "Software"),  
+ *  to deal in the Software without restriction, including without limitation  
+ *  the rights to use, copy, modify, merge, publish, distribute, sublicense,  
+ *  and/or sell copies of the Software, and to permit persons to whom the  
+ *  Software is furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in 
+ *  all copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+ *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+ *  DEALINGS IN THE SOFTWARE.
+ */
+ 
 using System;
 using System.IO;
 using System.Xml;
-using System.Net;
-using System.Web;
-using System.Threading;
 using System.Collections;
 
 using Gtk;
@@ -23,11 +50,10 @@ namespace Banshee.Plugins.Recommendation
         private const int NUM_TRACKS = 5;
         private const int NUM_ALBUMS = 5;
 
-        private static string CACHE_PATH = System.IO.Path.Combine(Paths.UserPluginDirectory, "recommendation");
-        private static TimeSpan CACHE_TIME = TimeSpan.FromHours(2);
-
         private Box main_box, similar_box, tracks_box, albums_box;
         private Box tracks_items_box, albums_items_box;
+        private ScrolledWindow similar_artists_view_sw;
+        private MessagePane no_artists_pane;
         private TileView similar_artists_view;
         private Label tracks_header, albums_header;
         private ArrayList artists_widgets_list = new ArrayList();
@@ -41,8 +67,8 @@ namespace Banshee.Plugins.Recommendation
         {
             CreateWidget();
 
-            if(!Directory.Exists(CACHE_PATH)) {
-                Directory.CreateDirectory(CACHE_PATH);
+            if(!Directory.Exists(Utilities.CACHE_PATH)) {
+                Directory.CreateDirectory(Utilities.CACHE_PATH);
             }
             
             // Create our cache subdirectories.
@@ -52,7 +78,7 @@ namespace Banshee.Plugins.Recommendation
                     subdir = "0" + subdir;
                 }
                 
-                subdir = System.IO.Path.Combine(CACHE_PATH, subdir);
+                subdir = System.IO.Path.Combine(Utilities.CACHE_PATH, subdir);
                 
                 if(!Directory.Exists(subdir)) {
                     Directory.CreateDirectory(subdir);
@@ -62,8 +88,8 @@ namespace Banshee.Plugins.Recommendation
 
         private void CreateWidget()
         {
-            Hide();
-
+            ShadowType = ShadowType.In;
+        
             EventBox event_box = new EventBox();
             event_box.ModifyBg(StateType.Normal, Style.Base(StateType.Normal));
             
@@ -95,12 +121,27 @@ namespace Banshee.Plugins.Recommendation
 
             similar_artists_view = new TileView(2);
             similar_artists_view.ModifyBg(StateType.Normal, Style.Base(StateType.Normal));
-            ScrolledWindow similar_artists_view_sw = new ScrolledWindow();
+            similar_artists_view_sw = new ScrolledWindow();
             similar_artists_view_sw.SetPolicy(PolicyType.Automatic, PolicyType.Automatic);
             similar_artists_view_sw.Add(similar_artists_view);
             similar_artists_view_sw.ShowAll();
             similar_box.PackEnd(similar_artists_view_sw, true, true, 0);
-
+            
+            no_artists_pane = new MessagePane();
+            string no_results_message;
+            
+            if(!Globals.ArgumentQueue.Contains("debug")) {
+                no_artists_pane.HeaderIcon = IconThemeUtils.LoadIcon(48, "face-sad", Stock.DialogError);
+                no_results_message = Catalog.GetString("No similar artists found");
+            } else {
+                no_artists_pane.HeaderIcon = Gdk.Pixbuf.LoadFromResource("no-results.png");
+                no_results_message = "No one likes your music, fool!";
+            }
+            
+            no_artists_pane.HeaderMarkup = String.Format("<big><b>{0}</b></big>", 
+                GLib.Markup.EscapeText(no_results_message));
+            similar_box.PackEnd(no_artists_pane, true, true, 0);
+            
             tracks_items_box = new VBox(false, 0);
             tracks_box.PackEnd(tracks_items_box, true, true, 0);
 
@@ -122,99 +163,147 @@ namespace Banshee.Plugins.Recommendation
             Hide();
         }
 
-        public void ShowRecommendations (string artist)
+        public void ShowRecommendations(string artist)
         {
-            if (current_artist == artist) {
-                Visible = true;
+            if(current_artist == artist) {
+                Show();
                 return;
             }
-
-            // FIXME: Error handling    
+            
+            Hide();
+  
             ThreadAssist.Spawn(delegate {
-
-                        // Last.fm requires double-encoding of '/' characters, see
-                        // http://bugzilla.gnome.org/show_bug.cgi?id=340511
-                        string encoded_artist = artist.Replace ("/", "%2F");
-                        encoded_artist = System.Web.HttpUtility.UrlEncode (encoded_artist);
-
-                // Fetch data for "similar" artists.
-                XmlDocument artists_xml_data = new XmlDocument ();
-                artists_xml_data.LoadXml (RequestContent (String.Format (AUDIOSCROBBLER_SIMILAR_URL, encoded_artist)));
-                XmlNodeList artists_xml_list = artists_xml_data.SelectNodes ("/similarartists/artist");
-
-                // Cache artists images (here in the spawned thread)
-                for (int i = 0; i < artists_xml_list.Count && i < NUM_MAX_ARTISTS; i++) {
-                    string url = artists_xml_list [i].SelectSingleNode ("image_small").InnerText;                    
-                    DownloadContent (url, GetCachedPathFromUrl (url), true);
+                XmlNodeList artists, tracks, albums;
+                try {
+                    if(QueryRecommendationData(artist, out artists, out tracks, out albums)) {
+                        ThreadAssist.ProxyToMain(delegate {
+                            RenderRecommendationData(artist, artists, tracks, albums);
+                        });
+                    }
+                } catch(Exception e) {
+                    Console.Error.WriteLine("Could not fetch recommendations: {0}", e.Message);
                 }
+            });
+        }
+        
+        private void RenderRecommendationData(string artist, XmlNodeList artistsXmlList, 
+            XmlNodeList tracksXmlList, XmlNodeList albumsXmlList)
+        {
+            // Wipe the old recommendations here, we keep them around in case
+            // where the the artist is the same as the last song.
+            
+            similar_artists_view.ClearWidgets();
                     
-                // Fetch data for top tracks
-                XmlDocument tracks_xml_data = new XmlDocument ();
-                tracks_xml_data.LoadXml (RequestContent (String.Format (AUDIOSCROBBLER_TOP_TRACKS_URL, encoded_artist)));
-                XmlNodeList tracks_xml_list = tracks_xml_data.SelectNodes ("/mostknowntracks/track");                    
-                
-                // Try to match top tracks with the users's library
-                for (int i = 0; i < tracks_xml_list.Count && i < NUM_TRACKS; i++) {
-                    string track_name = tracks_xml_list [i].SelectSingleNode ("name").InnerText;
-                        int track_id = GetTrackId (artist, track_name);
+            foreach(Widget child in tracks_items_box.Children) {
+                tracks_items_box.Remove(child);
+            }
                     
-                    if (track_id == -1)
-                        continue;
+            foreach(Widget child in albums_items_box.Children) {
+                albums_items_box.Remove(child);
+            }
                     
-                    XmlNode track_id_node = tracks_xml_list [i].OwnerDocument.CreateNode (XmlNodeType.Element, "track_id", null);
-                    track_id_node.InnerText = track_id.ToString ();
-
-                    tracks_xml_list [i].AppendChild (track_id_node);
+            // Display recommendations and artist information
+            current_artist = artist;
+            tracks_header.Markup = "<b>" + String.Format(Catalog.GetString("Top Tracks by {0}"), 
+                GLib.Markup.EscapeText(artist)) + "</b>";
+            albums_header.Markup = "<b>" + String.Format(Catalog.GetString("Top Albums by {0}"), 
+                GLib.Markup.EscapeText(artist)) + "</b>";
+                    
+            artists_widgets_list.Clear();
+            
+            ShowAll();
+            
+            if(artistsXmlList != null && artistsXmlList.Count > 0) {
+                for(int i = 0; i < artistsXmlList.Count && i < NUM_MAX_ARTISTS; i++) {
+                    artists_widgets_list.Add(RenderSimilarArtist(artistsXmlList[i]));
+                }
+            
+                RenderSimilarArtists();
+                no_artists_pane.Hide();
+                similar_artists_view_sw.ShowAll();
+            } else {
+                similar_artists_view_sw.Hide();
+                no_artists_pane.ShowAll();
+            }
+            
+            if(tracksXmlList != null) {
+                for(int i = 0; i < tracksXmlList.Count && i < NUM_TRACKS; i++) {
+                    tracks_items_box.PackStart(RenderTrack(tracksXmlList[i], i + 1), false, true, 0);
                 }
                 
-                // Fetch data for top albums
-                XmlDocument albums_xml_data = new XmlDocument ();
-                albums_xml_data.LoadXml (RequestContent (String.Format (AUDIOSCROBBLER_TOP_ALBUMS_URL, encoded_artist)));
-                XmlNodeList albums_xml_list = albums_xml_data.SelectNodes ("/topalbums/album");
+                tracks_items_box.ShowAll();
+            }    
+            
+            if(albumsXmlList != null) {
+                for(int i = 0; i < albumsXmlList.Count && i < NUM_ALBUMS; i++) {
+                    albums_items_box.PackStart(RenderAlbum(albumsXmlList[i], i + 1), false, true, 0);
+                }
                 
-                if (artists_xml_list.Count < 1 && tracks_xml_list.Count < 1 && albums_xml_list.Count < 1)
-                    return;
+                albums_items_box.ShowAll();
+            }
+        }
+        
+        private bool QueryRecommendationData(string artist, out XmlNodeList artistsXmlList, 
+            out XmlNodeList tracksXmlList, out XmlNodeList albumsXmlList)
+        {
+            // Last.fm requires double-encoding of '/' characters, see
+            // http://bugzilla.gnome.org/show_bug.cgi?id=340511
+            string encoded_artist = artist.Replace("/", "%2F");
+            encoded_artist = System.Web.HttpUtility.UrlEncode(encoded_artist);
+
+            // Fetch data for "similar" artists.
+            XmlDocument artists_xml_data = new XmlDocument();
+            artists_xml_data.LoadXml(Utilities.RequestContent(
+                String.Format(AUDIOSCROBBLER_SIMILAR_URL, encoded_artist)));
+            XmlNodeList artists_xml_list = artists_xml_data.SelectNodes("/similarartists/artist");
+
+            // Cache artists images
+            for(int i = 0; i < artists_xml_list.Count && i < NUM_MAX_ARTISTS; i++) {
+                string url = artists_xml_list [i].SelectSingleNode("image_small").InnerText;                    
+                Utilities.DownloadContent(url, Utilities.GetCachedPathFromUrl(url), true);
+            }
+                    
+            // Fetch data for top tracks
+            XmlDocument tracks_xml_data = new XmlDocument();
+            tracks_xml_data.LoadXml(Utilities.RequestContent(
+                String.Format(AUDIOSCROBBLER_TOP_TRACKS_URL, encoded_artist)));
+            XmlNodeList tracks_xml_list = tracks_xml_data.SelectNodes("/mostknowntracks/track");                    
                 
-                if (artist != PlayerEngineCore.CurrentTrack.Artist)
-                    return;
-
-                ThreadAssist.ProxyToMain (delegate {
-                    // Wipe the old recommendations here, we keep them around in case 
-                    // where the the artist is the same as the last song.
-                    similar_artists_view.ClearWidgets();
+            // Try to match top tracks with the users's library
+            for(int i = 0; i < tracks_xml_list.Count && i < NUM_TRACKS; i++) {
+                string track_name = tracks_xml_list [i].SelectSingleNode("name").InnerText;
+                int track_id = Utilities.GetTrackId(artist, track_name);
                     
-                    foreach (Widget child in tracks_items_box.Children)
-                        tracks_items_box.Remove (child);
-                    foreach (Widget child in albums_items_box.Children)
-                        albums_items_box.Remove (child);
-
-                    // Display recommendations and artist information
-                    current_artist = artist;
-                    tracks_header.Markup = String.Format ("<b>{0} {1}</b>", Catalog.GetString ("Top Tracks by"), artist);
-                    albums_header.Markup = String.Format ("<b>{0} {1}</b>", Catalog.GetString ("Top Albums by"), artist);
-                    
-                    artists_widgets_list.Clear ();
-                    if (artists_xml_list != null) {    
-                        for (int i = 0; i < artists_xml_list.Count && i < NUM_MAX_ARTISTS; i++)
-                            artists_widgets_list.Add (RenderSimilarArtist (artists_xml_list [i]));
-
-                        RenderSimilarArtists ();
-                    }
-
-                    if (tracks_xml_list != null) {
-                        for (int i = 0; i < tracks_xml_list.Count && i < NUM_TRACKS; i++)
-                            tracks_items_box.PackStart (RenderTrack (tracks_xml_list [i], i + 1), false, true, 0);
-                    }
-                    
-                    if (albums_xml_list != null) {
-                        for (int i = 0; i < albums_xml_list.Count && i < NUM_ALBUMS; i++)
-                            albums_items_box.PackStart (RenderAlbum (albums_xml_list [i], i + 1), false, true, 0);
-                    }
-                    
-                    Visible = true;
-                    ShowAll ();
-                });
-                });
+                if(track_id == -1) {
+                    continue;
+                }
+                
+                XmlNode track_id_node = tracks_xml_list[i].OwnerDocument.CreateNode(
+                    XmlNodeType.Element, "track_id", null);
+                track_id_node.InnerText = track_id.ToString();
+                
+                tracks_xml_list[i].AppendChild(track_id_node);
+            }
+                
+            // Fetch data for top albums
+            XmlDocument albums_xml_data = new XmlDocument();
+            albums_xml_data.LoadXml(Utilities.RequestContent(
+                String.Format(AUDIOSCROBBLER_TOP_ALBUMS_URL, encoded_artist)));
+            XmlNodeList albums_xml_list = albums_xml_data.SelectNodes("/topalbums/album");
+            
+            if(artists_xml_list.Count < 1 && tracks_xml_list.Count < 1 && albums_xml_list.Count < 1) {
+                artistsXmlList = null;
+                albumsXmlList = null;
+                tracksXmlList = null;
+            
+                return false;
+            }
+            
+            artistsXmlList = artists_xml_list;
+            albumsXmlList = albums_xml_list;
+            tracksXmlList = tracks_xml_list;
+            
+            return artist == PlayerEngineCore.CurrentTrack.Artist;
         }
         
         // --------------------------------------------------------------- //
@@ -224,8 +313,6 @@ namespace Banshee.Plugins.Recommendation
             foreach(Widget artist in artists_widgets_list) {
                 similar_artists_view.AddWidget(artist);
             }
-
-            similar_artists_view.ShowAll();
         }
                 
         private Widget RenderSimilarArtist(XmlNode node)
@@ -248,129 +335,61 @@ namespace Banshee.Plugins.Recommendation
         private static Gdk.Pixbuf now_playing_arrow = IconThemeUtils.LoadIcon(16, "media-playback-start",
             Stock.MediaPlay, "now-playing-arrow");
 
-        private Widget RenderTrack (XmlNode node, int rank)
+        private Widget RenderTrack(XmlNode node, int rank)
         {
-            Button track_button = new Button ();
+            Button track_button = new Button();
             track_button.Relief = ReliefStyle.None;
 
-            HBox box = new HBox ();
+            HBox box = new HBox();
 
-            Label label = new Label ();
+            Label label = new Label();
             label.Ellipsize = Pango.EllipsizeMode.End;
             label.Xalign = 0;
-            label.Markup = String.Format ("{0}. {1}", rank, GLib.Markup.EscapeText (node.SelectSingleNode ("name").InnerText).Trim ());
+            label.Markup = String.Format("{0}. {1}", rank, GLib.Markup.EscapeText(
+                node.SelectSingleNode("name").InnerText).Trim());
 
-            if (node.SelectSingleNode ("track_id") != null) {
-                box.PackEnd (new Image(now_playing_arrow), false, false, 0);
-                track_button.Clicked += delegate(object o, EventArgs args) {
-                    PlayerEngineCore.OpenPlay (Globals.Library.GetTrack (Convert.ToInt32 (node.SelectSingleNode ("track_id").InnerText)));
+            if(node.SelectSingleNode("track_id") != null) {
+                box.PackEnd(new Image(now_playing_arrow), false, false, 0);
+                track_button.Clicked += delegate {
+                    PlayerEngineCore.OpenPlay(Globals.Library.GetTrack(
+                        Convert.ToInt32(node.SelectSingleNode("track_id").InnerText)));
                 };
             } else {
-                track_button.Clicked += delegate(object o, EventArgs args) {
-                    Gnome.Url.Show (node.SelectSingleNode ("url").InnerText);
+                track_button.Clicked += delegate {
+                    Gnome.Url.Show(node.SelectSingleNode("url").InnerText);
                 };
             }
 
-            box.PackStart (label, true, true, 0);
-
-            track_button.Add (box);
+            box.PackStart(label, true, true, 0);
+            track_button.Add(box);
 
             return track_button;
         }
 
-        // FIXME: Image?
-        private Widget RenderAlbum (XmlNode node, int rank)
+        private Widget RenderAlbum(XmlNode node, int rank)
         {
-            Button album_button = new Button ();
+            Button album_button = new Button();
             album_button.Relief = ReliefStyle.None;
 
             Label label = new Label ();
             label.Ellipsize = Pango.EllipsizeMode.End;
             label.Xalign = 0;
-            label.Markup = String.Format ("{0}. {1}", rank, GLib.Markup.EscapeText (node.SelectSingleNode ("name").InnerText).Trim ());
-            album_button.Add (label);
+            label.Markup = String.Format("{0}. {1}", rank, GLib.Markup.EscapeText(
+                node.SelectSingleNode("name").InnerText).Trim());
+            album_button.Add(label);
 
-            album_button.Clicked += delegate(object o, EventArgs args) {
-                Gnome.Url.Show (node.SelectSingleNode ("url").InnerText);
+            album_button.Clicked += delegate {
+                Gnome.Url.Show(node.SelectSingleNode("url").InnerText);
             };
 
             return album_button;
         }
 
-        // --------------------------------------------------------------- //
-
-        private Gdk.Pixbuf RenderImage (string url)
+        private Gdk.Pixbuf RenderImage(string url)
         {
-            string path = GetCachedPathFromUrl (url);
-            DownloadContent (url, path, true);
-            return new Gdk.Pixbuf (path);
-        }
-
-        private string RequestContent (string url)
-        {
-            string path = GetCachedPathFromUrl (url);
-            DownloadContent (url, path, false);
-
-            StreamReader reader = new StreamReader (path);
-            string content = reader.ReadToEnd();
-            
-            return content;
-        }
-
-        private void DownloadContent (string url, string path, bool static_content)
-        {
-            if (File.Exists (path)) {
-                DateTime last_updated_time = File.GetLastWriteTime (path);
-                if (static_content || DateTime.Now - last_updated_time < CACHE_TIME)
-                    return;
-            }
-            
-            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
-            request.KeepAlive = false;
-            
-            HttpWebResponse response = (HttpWebResponse) request.GetResponse();
-            
-            Stream stream = response.GetResponseStream ();
-
-            FileStream file_stream = File.OpenWrite (path);
-                        BufferedStream buffered_stream = new BufferedStream (file_stream);
-
-                        byte [] buffer = new byte [8192];
-
-                        int read;
-                        do {
-                                read = stream.Read (buffer, 0, buffer.Length);
-                                if (read > 0)
-                                        buffered_stream.Write (buffer, 0, read);
-                        } while (read > 0);
-
-                        buffered_stream.Close ();
-            response.Close();            
-        }
-
-        private int GetTrackId (string artist, string title)
-        {
-            string query = String.Format(@"
-             SELECT TrackId 
-                 FROM Tracks 
-                 WHERE Artist LIKE '{0}' 
-                     AND Title LIKE '{1}' 
-                 LIMIT 1",
-                Sql.Escape.EscapeQuotes(artist),
-                Sql.Escape.EscapeQuotes(title));
-
-            object result = Globals.Library.Db.QuerySingle (query);
-            if (result == null)
-                return -1;
-            
-            return (int) result;
-        }
-
-        private string GetCachedPathFromUrl (string url)
-        {            
-            string hash = url.GetHashCode ().ToString ("X").ToLower ();
-            return System.IO.Path.Combine (System.IO.Path.Combine (CACHE_PATH, hash.Substring (0,2)), hash);
+            string path = Utilities.GetCachedPathFromUrl(url);
+            Utilities.DownloadContent(url, path, true);
+            return new Gdk.Pixbuf(path);
         }
     }
 }
-

@@ -3,19 +3,23 @@
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="Recommendation" configuration="Debug" />
       <Entry build="True" name="MiniMode" configuration="Debug" />
+      <Entry build="True" name="Podcast" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
       <Entry build="True" name="Recommendation" configuration="Debug" />
       <Entry build="True" name="MiniMode" configuration="Debug" />
+      <Entry build="True" name="Podcast" configuration="Debug" />
     </Configuration>
   </Configurations>
   <DeployTargets />
-  <StartMode startupentry="banshee-official-plugins" single="True">
+  <StartMode startupentry="Podcast" single="True">
     <Execute type="None" entry="Recommendation" />
     <Execute type="None" entry="MiniMode" />
+    <Execute type="None" entry="Podcast" />
   </StartMode>
   <Entries>
     <Entry filename="./plugins/Recommendation/Recommendation.mdp" />
     <Entry filename="./plugins/MiniMode/MiniMode.mdp" />
+    <Entry filename="./plugins/Podcast/Podcast.mdp" />
   </Entries>
 </Combine>

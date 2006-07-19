@@ -41,5 +41,6 @@ $(ASSEMBLY): $(SOURCES)
 
 EXTRA_DIST = $(SOURCES) $(podcast_resources)
 CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb 
+DISTCLEANFILES = *.pidb
 MAINTAINERCLEANFILES = Makefile.in 
 

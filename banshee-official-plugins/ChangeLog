@@ -1,3 +1,23 @@
+2006-07-19  Aaron Bockover  <abock@gnome.org>
+
+	* banshee-official-plugins.mds: Added Podcast project
+
+	* plugins/Recommendation/Recommendation.mdp: Added new files
+
+	* plugins/Recommendation/RecommendationUtilities.cs: Moved utility
+	methods to a separate internal static class
+
+	* plugins/Recommendation/RecommendationPlugin.cs: Minor fixes and
+	clean up for QA/review
+
+	* plugins/Recommendation/RecommendationPane.cs: More clean up and 
+	refactoring; added 'no results' view for artists
+
+	* plugins/Recommendation/Makefile.am: 
+	* plugins/Podcast/Makefile.am: Updated build
+
+	* plugins/Podcast/Podcast.mdp: Added MonoDevelop project for Podcast
+
 2006-07-18  Aaron Bockover  <abock@gnome.org>
 
 	* configure.ac: Recommendations plugin now requires CVS/0.11.x
@@ -108,7 +128,6 @@
 	playlist.  Need to listen for when songs are added/removed from playlists
 	to have smart playlists update continuously.
 
->>>>>>> .r191
 2006-07-03  Gabriel Burt  <gabriel.burt@gmail.com>
 
 	* plugins/SmartPlaylists/Plugin.cs: For some reason we can no longer add

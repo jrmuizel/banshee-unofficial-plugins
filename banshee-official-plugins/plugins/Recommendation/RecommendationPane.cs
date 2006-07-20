@@ -246,9 +246,9 @@ namespace Banshee.Plugins.Recommendation
         private bool QueryRecommendationData(string artist, out XmlNodeList artistsXmlList, 
             out XmlNodeList tracksXmlList, out XmlNodeList albumsXmlList)
         {
-            // Last.fm requires double-encoding of '/' characters, see
+            // Last.fm requires double-encoding of all '/,&?' characters, see
             // http://bugzilla.gnome.org/show_bug.cgi?id=340511
-            string encoded_artist = artist.Replace("/", "%2F");
+            string encoded_artist = artist.Replace("/", "%2F").Replace (",", "%2C").Replace ("&", "%26").Replace ("?", "%3F");
             encoded_artist = System.Web.HttpUtility.UrlEncode(encoded_artist);
 
             // Fetch data for "similar" artists.

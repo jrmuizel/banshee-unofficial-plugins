@@ -1,3 +1,9 @@
+2006-07-19  Patrick van Staveren  <trick@vanstaveren.us>
+
+	* plugins/Recommendation/RecommendationPane.cs:
+	double-escape comma, ampersand, and question mark like we
+	do with slashes
+
 2006-07-19  Aaron Bockover  <abock@gnome.org>
 
 	* banshee-official-plugins.mds: Added Podcast project

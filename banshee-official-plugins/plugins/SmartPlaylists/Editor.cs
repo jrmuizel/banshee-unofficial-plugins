@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
 using Gtk;
 using Glade;
  
 using Banshee.Base;
 using Banshee.Sources;
 using Banshee.Plugins;
+using Banshee.Widgets;
 
 namespace Banshee.Plugins.SmartPlaylists
 {
@@ -58,6 +60,63 @@ namespace Banshee.Plugins.SmartPlaylists
             name_entry.Changed += HandleNameChanged;
 
             Update();
+        }
+
+        public void SetQueryFromSearch()
+        {
+            Banshee.Widgets.SearchEntry search_entry = InterfaceElements.SearchEntry;
+
+            string field = search_entry.Field;
+            string query = search_entry.Query;
+
+            string condition = String.Empty;
+            ArrayList condition_candidates = new ArrayList ();
+
+            QueryFilter FilterContains = QueryFilter.Contains;
+            QueryFilter FilterIs       = QueryFilter.Is;
+
+            condition_candidates.Add (FilterContains.Operator.FormatValues (true, "Artist", query, null) );
+            condition_candidates.Add (FilterContains.Operator.FormatValues (true, "Title", query, null) );
+            condition_candidates.Add (FilterContains.Operator.FormatValues (true, "AlbumTitle", query, null) );
+            condition_candidates.Add (FilterContains.Operator.FormatValues (true, "Genre", query, null) );
+
+            // only search for years if the query is a number
+            try {
+                int.Parse(query);
+                condition_candidates.Add (FilterIs.Operator.FormatValues (false, "Year", query, null) );
+            }
+            catch {
+                //Console.WriteLine ("{0} is not a valid year", query);
+                condition_candidates.Add (String.Empty);
+            }
+
+            if(field == Catalog.GetString("Artist Name")) {
+                condition = " (" + condition_candidates[0].ToString() + ") ";
+            } else if(field == Catalog.GetString("Song Name")) {
+                condition = " (" + condition_candidates[1].ToString() + ") ";
+            } else if(field == Catalog.GetString("Album Title")) {
+                condition = " (" + condition_candidates[2].ToString() + ") ";
+            } else if(field == Catalog.GetString("Genre")) {
+                condition = " (" + condition_candidates[3].ToString() + ") ";
+            } else if(field == Catalog.GetString("Year")) {
+                condition = " (" + condition_candidates[4].ToString() + ") ";
+            } else {
+                // Searching for all possible conditions
+                for(int i = 0; i < condition_candidates.Count; i++) {
+                    string c = condition_candidates[i].ToString();
+                    if (c.Length > 0) {
+                        if (i > 0)
+                            condition += "OR";
+                        
+                        condition += " (" + c  + ") ";
+                    }
+                }
+            }
+
+            Condition = condition;
+
+            dialog.Title = Catalog.GetString ("Create Smart Playlist from Search");
+            name_entry.Text = field + ": " + query;
         }
 
         public void RunDialog()

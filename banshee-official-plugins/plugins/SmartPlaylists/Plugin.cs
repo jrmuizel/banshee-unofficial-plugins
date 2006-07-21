@@ -16,6 +16,7 @@ namespace Banshee.Plugins.SmartPlaylists
 
         private Menu musicMenu;
         private MenuItem addItem;
+        private MenuItem addFromSearchItem;
 
         private static Plugin instance = null;
 
@@ -103,7 +104,7 @@ namespace Banshee.Plugins.SmartPlaylists
 
             while (reader.Read()) {
                 SmartPlaylist.LoadFromReader (reader);
-            }
+          }
 
             reader.Dispose();
         }
@@ -127,8 +128,17 @@ namespace Banshee.Plugins.SmartPlaylists
                 ed.RunDialog ();
             };
 
+            addFromSearchItem = new MenuItem (Catalog.GetString("New Smart Playlist from Search..."));
+            addFromSearchItem.Activated += delegate {
+                SmartPlaylists.Editor ed = new SmartPlaylists.Editor ();
+                ed.SetQueryFromSearch ();
+                ed.RunDialog ();
+            };
+
             // Insert it right after the New Playlist item
+            musicMenu.Insert (addFromSearchItem, 2);
             musicMenu.Insert (addItem, 2);
+            addFromSearchItem.Show ();
             addItem.Show ();
         }
 
@@ -137,8 +147,10 @@ namespace Banshee.Plugins.SmartPlaylists
             if (timeout_id != 0)
                 GLib.Source.Remove (timeout_id);
 
-            if (musicMenu != null)
+            if (musicMenu != null) {
                 musicMenu.Remove(addItem);
+                musicMenu.Remove(addFromSearchItem);
+            }
 
             SourceManager.SourceAdded -= HandleSourceAdded;
             SourceManager.SourceRemoved -= HandleSourceRemoved;

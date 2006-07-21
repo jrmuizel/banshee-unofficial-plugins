@@ -1,5 +1,9 @@
 2006-07-20  Gabriel Burt  <gabriel.burt@gmail.com>
 
+	* plugins/SmartPlaylist/Plugin.cs: Add Dominik Meister to Authors.
+
+2006-07-20  Gabriel Burt  <gabriel.burt@gmail.com>
+
 	* banshee-official-plugins.mds: Add SmartPlaylits project to MonoDevelop
 	solution.
 

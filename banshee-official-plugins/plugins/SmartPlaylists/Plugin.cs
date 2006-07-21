@@ -47,7 +47,8 @@ namespace Banshee.Plugins.SmartPlaylists
             get {
                 return new string [] {
                     "Aaron Bockover",
-                    "Gabriel Burt"
+                    "Gabriel Burt",
+                    "Dominik Meister"
                 };
             }
         }

@@ -1,4 +1,12 @@
-2006-07-19  Dominik Meister  <meister@greenmail.ch>
+2006-07-20  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* banshee-official-plugins.mds: Add SmartPlaylits project to MonoDevelop
+	solution.
+
+	* plugins/SmartPlaylists/SmartPlaylists.mdp: new project for
+	SmartPlaylists plugin.  Still needs references to Banshee libs.
+
+2006-07-20  Dominik Meister  <meister@greenmail.ch>
 
 	* plugins/SmartPlaylists/Plugin.cs: Add menu for creating smart playlist
 	from search (BGO #348054).

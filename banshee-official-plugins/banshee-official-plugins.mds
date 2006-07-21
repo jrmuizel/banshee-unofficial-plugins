@@ -4,22 +4,25 @@
       <Entry build="True" name="Recommendation" configuration="Debug" />
       <Entry build="True" name="MiniMode" configuration="Debug" />
       <Entry build="True" name="Podcast" configuration="Debug" />
+      <Entry build="True" name="SmartPlaylists" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
       <Entry build="True" name="Recommendation" configuration="Debug" />
       <Entry build="True" name="MiniMode" configuration="Debug" />
       <Entry build="True" name="Podcast" configuration="Debug" />
+      <Entry build="True" name="SmartPlaylists" configuration="Debug" />
     </Configuration>
   </Configurations>
-  <DeployTargets />
   <StartMode startupentry="Podcast" single="True">
     <Execute type="None" entry="Recommendation" />
     <Execute type="None" entry="MiniMode" />
     <Execute type="None" entry="Podcast" />
+    <Execute type="None" entry="SmartPlaylists" />
   </StartMode>
   <Entries>
     <Entry filename="./plugins/Recommendation/Recommendation.mdp" />
     <Entry filename="./plugins/MiniMode/MiniMode.mdp" />
     <Entry filename="./plugins/Podcast/Podcast.mdp" />
+    <Entry filename="./plugins/SmartPlaylists/SmartPlaylists.mdp" />
   </Entries>
 </Combine>

@@ -36,131 +36,131 @@ using Xine;
 
 namespace Banshee.MediaEngine.Xine
 {
-	public class XinePlayerEngine : PlayerEngine, IEqualizer
-	{
-		private XineEngine _xine;
-		private Stream _stream;
-		private uint _timeoutId;
-		
-		public XinePlayerEngine ()
-		{
-			_xine = new XineEngine ();
-			_stream = _xine.CreateStream ();
-			Stream.EndOfStream += new EventHandler (OnEndOfStream);
-		}
+    public class XinePlayerEngine : PlayerEngine, IEqualizer
+    {
+        private XineEngine _xine;
+        private Stream _stream;
+        private uint _timeoutId;
+        
+        public XinePlayerEngine ()
+        {
+            _xine = new XineEngine ();
+            _stream = _xine.CreateStream ();
+            Stream.EndOfStream += new EventHandler (OnEndOfStream);
+        }
 
-		private void StartTimer()
-		{
-			if(_timeoutId > 0) {
-				return;
-			}
+        private void StartTimer()
+        {
+            if(_timeoutId > 0) {
+                return;
+            }
 
-			_timeoutId = GLib.Timeout.Add(500, delegate {
-				_stream.ProcessEventQueue();
-							
-				if(CurrentState == PlayerEngineState.Playing) {
-					OnEventChanged(PlayerEngineEvent.Iterate);
-				}
+            _timeoutId = GLib.Timeout.Add(500, delegate {
+                _stream.ProcessEventQueue();
+                            
+                if(CurrentState == PlayerEngineState.Playing) {
+                    OnEventChanged(PlayerEngineEvent.Iterate);
+                }
 
-				return true;
-			});		
-		}
+                return true;
+            });     
+        }
 
-		private void StopTimer()
-		{
-			if(_timeoutId > 0) {
-				GLib.Source.Remove(_timeoutId);
-				_timeoutId = 0;
-			}
-		}
-		
-		private void OnEndOfStream (object sender, EventArgs args)
-		{
-			OnEventChanged(PlayerEngineEvent.EndOfStream);
-		}
-		
-		protected override void OpenUri (SafeUri uri)
-		{
-			_stream.Open(uri.AbsoluteUri);
-		}
+        private void StopTimer()
+        {
+            if(_timeoutId > 0) {
+                GLib.Source.Remove(_timeoutId);
+                _timeoutId = 0;
+            }
+        }
+        
+        private void OnEndOfStream (object sender, EventArgs args)
+        {
+            OnEventChanged(PlayerEngineEvent.EndOfStream);
+        }
+        
+        protected override void OpenUri (SafeUri uri)
+        {
+            _stream.Open(uri.AbsoluteUri);
+        }
 
         public override void Close()
         {
-			StopTimer();
-			_stream.Close ();
-			OnStateChanged (PlayerEngineState.Idle);
+            StopTimer();
+            _stream.Close ();
+            OnStateChanged (PlayerEngineState.Idle);
         }       
-		
-		public override void Play()
+        
+        public override void Play()
         {
-			_stream.Play ();			
-			StartTimer();
-			OnStateChanged (PlayerEngineState.Playing);
-		}
+            _stream.Play ();            
+            StartTimer();
+            OnStateChanged (PlayerEngineState.Playing);
+        }
 
         public override void Pause()
         {
-			StopTimer();
-			_stream.Pause ();
-			OnStateChanged (PlayerEngineState.Paused);
+            StopTimer();
+            _stream.Pause ();
+            OnStateChanged (PlayerEngineState.Paused);
         }
-	  
-		public void SetEqualizerGain (uint frequency, int value)
-		{
-			if (value == 0) {
-				value = 1;
-			}
-			_stream.SetEqualizerGain (frequency, value);
-		}
-		
-		public override ushort Volume {
-            get {
-				return (ushort) _stream.Volume;
-			}
-            set {
-				_stream.Volume = (uint) value;
-				OnEventChanged (PlayerEngineEvent.Volume);
-			}
+      
+        public void SetEqualizerGain (uint frequency, int value)
+        {
+            if (value == 0) {
+                value = 1;
+            }
+            _stream.SetEqualizerGain (frequency, value);
         }
         
-		public override bool CanSeek {
+        public override ushort Volume {
+            get {
+                return (ushort) _stream.Volume;
+            }
+            set {
+                _stream.Volume = (uint) value;
+                OnEventChanged (PlayerEngineEvent.Volume);
+            }
+        }
+        
+        public override bool CanSeek {
             get { return _stream.CanSeek; }
         }
         
-      	public override uint Position {
+        public override uint Position {
             get {
-				return _stream.Position;
-			}
+                return _stream.Position;
+            }
             set {
-				_stream.Position = value;
- 				OnEventChanged (PlayerEngineEvent.Seek);
-			}
+                _stream.Position = value;
+                OnEventChanged (PlayerEngineEvent.Seek);
+            }
         }
         
         public override uint Length {
             get {
-				return _stream.Length;
-			}
+                return _stream.Length;
+            }
         }
 
-		public uint[] EqualizerFrequencies
-		{
-			get { return _stream.EqualizerFrequencies; }
-		}
+        public uint[] EqualizerFrequencies
+        {
+            get { return _stream.EqualizerFrequencies; }
+        }
 
-		// Xine Default: 100
-		// Xine Range: 0 - 200
-		// Plugin Default: 0
-		// Plugin Range: -100 +100 
-		// Plugin = Xine - 100
-		//
-		public int AmplifierLevel
-		{
-			get { return (int) _stream.AmplifierLevel - 100; }
-			set { _stream.AmplifierLevel = (uint) value + 100; }
-		}
+        // Xine Default: 100
+        // Xine Range: 0 - 200
+        // Plugin Default: 0
+        // Plugin Range: -100 +100 
+        // Plugin = Xine - 100
+        //
+        public int AmplifierLevel
+        {
+            get { return (int) _stream.AmplifierLevel - 100; }
+            set { _stream.AmplifierLevel = (uint) value + 100; }
+        }
 
-		private static string [] source_capabilities = { "file", "http", "cdda" };
+        private static string [] source_capabilities = { "file", "http", "cdda" };
         public override IEnumerable SourceCapabilities {
             get { return source_capabilities; }
         }
@@ -169,29 +169,29 @@ namespace Banshee.MediaEngine.Xine
         public override IEnumerable ExplicitDecoderCapabilities {
             get { return decoder_capabilities; }
         }
-		
+        
         public override string Id {
             get { return "xine-engine"; }
         }
         
         public override string Name {
             get { return "Xine"; }
-        }		
+        }       
 
-		public override void Dispose ()
-		{
-			StopTimer();		
-			
-			_stream.Dispose ();
-			_xine.Dispose ();
-			
-			base.Dispose ();
-			GC.SuppressFinalize(this);
-		}
+        public override void Dispose ()
+        {
+            StopTimer();        
+            
+            _stream.Dispose ();
+            _xine.Dispose ();
+            
+            base.Dispose ();
+            GC.SuppressFinalize(this);
+        }
 
-		~XinePlayerEngine ()
-		{
-			Dispose ();
-		}
-	}
+        ~XinePlayerEngine ()
+        {
+            Dispose ();
+        }
+    }
 }

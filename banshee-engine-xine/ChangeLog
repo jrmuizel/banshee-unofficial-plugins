@@ -1,5 +1,10 @@
 2006-07-22  Ivan N. Zlatev  <contact i-nZ.net>
 
+	* src/XinePlayerEngine.cs: Untabify.
+	* src/Xine.cs: Untabify.
+
+2006-07-22  Ivan N. Zlatev  <contact i-nZ.net>
+
 	* src/XinePlayerEngine.cs: Fix SetEqualizerGain behaviour.
 	
 2006-07-18  Ivan N. Zlatev  <contact i-nZ.net>

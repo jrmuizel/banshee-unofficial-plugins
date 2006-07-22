@@ -103,10 +103,13 @@ namespace Banshee.MediaEngine.Xine
 			StopTimer();
 			_stream.Pause ();
 			OnStateChanged (PlayerEngineState.Paused);
-        }        
-
+        }
+	  
 		public void SetEqualizerGain (uint frequency, int value)
 		{
+			if (value == 0) {
+				value = 1;
+			}
 			_stream.SetEqualizerGain (frequency, value);
 		}
 		
@@ -145,8 +148,8 @@ namespace Banshee.MediaEngine.Xine
 			get { return _stream.EqualizerFrequencies; }
 		}
 
-		// Xine Default: 100%
-		// Xine Range: 0 - 200%
+		// Xine Default: 100
+		// Xine Range: 0 - 200
 		// Plugin Default: 0
 		// Plugin Range: -100 +100 
 		// Plugin = Xine - 100

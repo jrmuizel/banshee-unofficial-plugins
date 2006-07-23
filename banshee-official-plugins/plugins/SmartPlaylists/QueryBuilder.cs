@@ -87,6 +87,10 @@ namespace Banshee
             }
         }
 
+        // calling lower() to have case insensitive comparisons with strings
+        public static QueryOperator EQText     = new QueryOperator("lower({1}) = {0}{2}{0}");
+        public static QueryOperator NotEQText  = new QueryOperator("lower({1}) != {0}{2}{0}");
+
         public static QueryOperator EQ         = new QueryOperator("{1} = {0}{2}{0}");
         public static QueryOperator NotEQ      = new QueryOperator("{1} != {0}{2}{0}");
         public static QueryOperator Between    = new QueryOperator("{1} BETWEEN {0}{2}{0} AND {0}{3}{0}");
@@ -151,6 +155,19 @@ namespace Banshee
 		public static QueryFilter NotInPlaylist = NewOperation (
             Catalog.GetString ("is not"),
             QueryOperator.NotInPlaylist
+        );
+    
+        // caution: the equal/not-equal operators for text fields (TextIs and TextNotIs) have to be defined
+        // before the ones for non-text fields. Otherwise MatchesCondition will not return the right column names.
+        // (because the regular expression for non-string fields machtes also for string fields)
+		public static QueryFilter TextIs = NewOperation (
+            Catalog.GetString ("is"),
+            QueryOperator.EQText
+        );
+
+		public static QueryFilter TextIsNot = NewOperation (
+            Catalog.GetString ("is not"),
+            QueryOperator.NotEQText
         );
 
 		public static QueryFilter Is = NewOperation (

@@ -1,3 +1,10 @@
+2006-07-23  Dominik Meister  <meister@greenmail.ch>
+
+	* plugins/SmartPlaylists/QueryBuilder.cs:
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Add special equal/not-equal
+	operators for strings to support case-insensitive string matches (BGO
+	#348366).
+
 2006-07-20  Gabriel Burt  <gabriel.burt@gmail.com>
 
 	* plugins/SmartPlaylist/Plugin.cs: Add Dominik Meister to Authors.

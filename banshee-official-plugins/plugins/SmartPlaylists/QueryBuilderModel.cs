@@ -103,8 +103,8 @@ namespace Banshee
 		public override QueryFilter [] ValidFilters {
 			get {
 				return new QueryFilter [] {
-					QueryFilter.Is,
-					QueryFilter.IsNot,
+					QueryFilter.TextIs,
+					QueryFilter.TextIsNot,
 					QueryFilter.Contains,
 					QueryFilter.DoesNotContain,
 					QueryFilter.StartsWith,

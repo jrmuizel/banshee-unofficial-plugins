@@ -5,10 +5,7 @@ AM_INIT_AUTOMAKE(banshee-locker-plugin, 0.1)
 
 AM_MAINTAINER_MODE
 
-#AC_PROG_INTLTOOL([0.21])
-
-#AC_PROG_INSTALL
-#AM_PROG_LIBTOOL
+AC_PROG_INSTALL
 
 MONO_REQUIRED_VERSION=1.1.13
 PKG_CHECK_MODULES(MONO, mono >= $MONO_REQUIRED_VERSION)
@@ -44,11 +41,6 @@ else
 fi
 
 AC_SUBST(MCS)
-
-#AC_PATH_PROG(MCS, gmcs, no)
-#if test "x$MCS" = "xno"; then
-#	AC_MSG_ERROR([Cannot find "mcs" compiler in your PATH])
-#fi
 
 PKG_CHECK_MODULES(BANSHEE, banshee >= 0.10.4)
 AC_SUBST(BANSHEE_LIBS)

@@ -26,11 +26,17 @@ using System.Text;
 using System.Collections;
 using System.Globalization;
 
+using Banshee.Base;
+
 namespace MP3tunes
 {
     public class Track
     {
+#if BANSHEE_0_10
         private Uri uri;
+#else		
+        private SafeUri uri;
+#endif
         private string artist;
         private string album;
         private string title;
@@ -43,7 +49,11 @@ namespace MP3tunes
 
         }
 
+#if BANSHEE_0_10
         public Uri Uri
+#else
+        public SafeUri Uri		
+#endif
         {
             get { return uri; }
             set { uri = value; }
@@ -213,7 +223,11 @@ namespace MP3tunes
                 XmlNode artistName = node.SelectSingleNode( "artistName" );
 
                 Track tr = new Track();
+#if BANSHEE_0_10
                 tr.Uri = new Uri( downloadURL.InnerXml );
+#else
+                tr.Uri = new SafeUri( downloadURL.InnerXml );
+#endif
                 tr.Artist = artistName.InnerXml;
                 tr.Album = albumTitle.InnerXml;
                 tr.Title = trackTitle.InnerXml;

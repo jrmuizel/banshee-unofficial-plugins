@@ -1,8 +1,14 @@
+2006-07-27  Patrick van Staveren  <trick@vanstaveren.us>
+
+	* configure.ac: fix req'd version back to 0.10.2 (not 0.10.10).
+	* ChangeLog: tidy up
+
 2006-07-18  Patrick van Staveren  <trick@vanstaveren.us>
 
         * configure.ac: detect mcs or gmcs and compile accordingly
 
 2006-05-16  Patrick van Staveren  <trick@vanstaveren.us>
+
 	* src/Makefile.am: install debug info
 
 2006-01-26  Aaron Bockover  <aaron@aaronbock.net>

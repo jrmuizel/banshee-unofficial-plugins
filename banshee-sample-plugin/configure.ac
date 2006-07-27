@@ -31,7 +31,7 @@ fi
 MCS_FLAGS="-debug"
 
 dnl Banshee deps
-PKG_CHECK_MODULES(BANSHEE, banshee >= 0.10.10)
+PKG_CHECK_MODULES(BANSHEE, banshee >= 0.10.2)
 AC_SUBST(BANSHEE_LIBS)
 
 if test "x`$PKG_CONFIG --variable=pluginapi banshee`" = "x2"; then

@@ -1,3 +1,8 @@
+2006-07-27  Dominik Meister  <meister@greenmail.ch>
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Set more convenient default
+	values when searching in the year column (BGO #348987)
+
 2006-07-23  Dominik Meister  <meister@greenmail.ch>
 
 	* plugins/SmartPlaylists/QueryBuilder.cs:

@@ -121,6 +121,14 @@ namespace Banshee
 		protected SpinButton spinButton1, spinButton2;
 		private HBox rangeBox;
 
+        private int default_value_1;
+        private int default_value_2;
+
+        public QueryMatchInteger() : base ()
+        {
+            DefaultValue1 = DefaultValue2 = 1;
+        }
+
 		public override string FilterValues()
 		{
             if (Filter == null)
@@ -150,7 +158,7 @@ namespace Banshee
 			get {
 				if(spinButton1 == null) {
 					spinButton1 = new SpinButton(Int32.MinValue, Int32.MaxValue, 1.0);
-                    spinButton1.Value = 1.0;
+                    spinButton1.Value = DefaultValue1;
                     spinButton1.Digits = 0;
                     spinButton1.WidthChars = 4;
 					spinButton1.Show();
@@ -172,7 +180,7 @@ namespace Banshee
 				
 				if(spinButton2 == null) {
 					spinButton2 = new SpinButton(Int32.MinValue, Int32.MaxValue, 1.0);
-                    spinButton2.Value = 1.0;
+                    spinButton2.Value = DefaultValue2;
                     spinButton2.Digits = 0;
                     spinButton2.WidthChars = 4;
 					spinButton2.Show();
@@ -194,7 +202,33 @@ namespace Banshee
 				};
 			}
 		}
+
+        public int DefaultValue1 {
+            get {
+                return default_value_1;
+            }
+            set {
+                default_value_1 = value;
+            }
+        }
+
+        public int DefaultValue2 {
+            get {
+                return default_value_2;
+            }
+            set {
+                default_value_2 = value;
+            }
+        }
 	}
+
+	public class QueryMatchYear : QueryMatchInteger
+	{
+        public QueryMatchYear() : base ()
+        {
+            DefaultValue1 = DefaultValue2 = DateTime.Now.Year;
+        }
+    }
 
     /*-- Query Match Rating --*/
 	public class QueryMatchRating : QueryMatch
@@ -681,7 +715,7 @@ namespace Banshee
 			AddField(Catalog.GetString("Playlist"), "PlaylistID", typeof(QueryMatchPlaylist));
 			AddField(Catalog.GetString("Rating"), "Rating", typeof(QueryMatchRating));
 			AddField(Catalog.GetString("Path"), "Uri", typeof(QueryMatchString));
-			AddField(Catalog.GetString("Year"), "Year", typeof(QueryMatchInteger));
+			AddField(Catalog.GetString("Year"), "Year", typeof(QueryMatchYear));
 			
 			AddOrder(QuerySelectedByCriteria.Random, "RANDOM()");
 			AddOrder(QuerySelectedByCriteria.Album, "AlbumTitle");

@@ -15,6 +15,7 @@ namespace Banshee.Plugins.SmartPlaylists
     public class SmartPlaylist : Banshee.Sources.ChildSource
     {
         private ArrayList tracks = new ArrayList();
+        private ArrayList watchedPlaylists = new ArrayList();
 
         public string Condition;
         public string OrderBy;
@@ -37,8 +38,8 @@ namespace Banshee.Plugins.SmartPlaylists
             get { return (Condition == null) ? false : Condition.IndexOf ("current_timestamp") != -1; }
         }
 
-        public bool PlaylistDerived {
-            get { return (Condition == null) ? false : Condition.IndexOf ("Playlist") != -1; }
+        public bool PlaylistDependent {
+            get { return (Condition == null) ? false : Condition.IndexOf ("PlaylistID") != -1; }
         }
 
         private int id;
@@ -87,6 +88,8 @@ namespace Banshee.Plugins.SmartPlaylists
                 OnLibraryReloaded(Globals.Library, new EventArgs());
             else
                 Globals.Library.Reloaded += OnLibraryReloaded;
+
+            ListenToPlaylists();
         }
 
         // For new smart playlists
@@ -114,6 +117,31 @@ namespace Banshee.Plugins.SmartPlaylists
                 OnLibraryReloaded(Globals.Library, new EventArgs());
             else
                 Globals.Library.Reloaded += OnLibraryReloaded;
+
+            ListenToPlaylists();
+        }
+
+        public void ListenToPlaylists()
+        {
+            // First, stop listening to any/all playlists
+            foreach (PlaylistSource source in watchedPlaylists) {
+                source.TrackAdded -= HandlePlaylistChanged;
+                source.TrackRemoved -= HandlePlaylistChanged;
+            }
+            watchedPlaylists.Clear();
+
+            if (PlaylistDependent) {
+                foreach (PlaylistSource source in PlaylistSource.Playlists) {
+                    if (Condition.IndexOf (String.Format ("PlaylistID = {0}", source.Id)) != -1 ||
+                        Condition.IndexOf (String.Format ("PlaylistID != {0}", source.Id)) != -1)
+                    {
+                        //Console.WriteLine ("{0} now listening to {1}", Name, source.Name);
+                        source.TrackAdded += HandlePlaylistChanged;
+                        source.TrackRemoved += HandlePlaylistChanged;
+                        watchedPlaylists.Add (source);
+                    }
+                }
+            }
         }
 
         public void RefreshMembers()
@@ -124,7 +152,7 @@ namespace Banshee.Plugins.SmartPlaylists
 
             // Delete existing tracks
             Globals.Library.Db.Execute(String.Format(
-                "DELETE FROM SmartPlaylistEntries WHERE PlaylistId = {0}", Id
+                "DELETE FROM SmartPlaylistEntries WHERE PlaylistID = {0}", Id
             ));
 
             foreach (TrackInfo track in tracks)
@@ -135,7 +163,7 @@ namespace Banshee.Plugins.SmartPlaylists
             // Add matching tracks
             Globals.Library.Db.Execute(String.Format(
                 @"INSERT INTO SmartPlaylistEntries 
-                    SELECT NULL as EntryId, {0} as PlaylistId, TrackId FROM Tracks {1} {2}",
+                    SELECT NULL as EntryId, {0} as PlaylistID, TrackId FROM Tracks {1} {2}",
                     Id, PrependCondition("WHERE"), OrderAndLimit
             ));
 
@@ -162,7 +190,7 @@ namespace Banshee.Plugins.SmartPlaylists
             t.Stop();
         }
 
-        public void LimitTracks (IDataReader reader, bool remove_if_limited)
+        private void LimitTracks (IDataReader reader, bool remove_if_limited)
         {
             Timer t = new Timer ("LimitTracks " + Name);
 
@@ -312,11 +340,6 @@ namespace Banshee.Plugins.SmartPlaylists
             t.Stop();
         }
 
-        private string PrependCondition (string with)
-        {
-            return (Condition == null) ? " " : with + " " + Condition;
-        }
-
         public override void ShowPropertiesDialog()
         {
             SmartPlaylists.Editor ed = new SmartPlaylists.Editor (this);
@@ -328,47 +351,6 @@ namespace Banshee.Plugins.SmartPlaylists
             RemoveTrack(track);
             lock(TracksMutex) {
                 tracks.Insert(position, track);
-            }
-        }
-
-        private void OnLibraryReloaded (object o, EventArgs args)
-        {
-            RefreshMembers();
-        }
-
-        private void OnLibraryTrackRemoved(object o, LibraryTrackRemovedArgs args)
-        {
-            if(args.Track != null) {
-                if(tracks.Contains(args.Track)) {
-                    RemoveTrack(args.Track);
-                    
-                    if(Count == 0) {
-                        Unmap();
-                    } else {
-                        Commit();
-                    }
-                }
-                
-                return;
-            } else if(args.Tracks == null) {
-                return;
-            }
-            
-            int removed_count = 0;
-            
-            foreach(TrackInfo track in args.Tracks) {
-                if(tracks.Contains(track)) {
-                    RemoveTrack (track);
-                    removed_count++;
-                }
-            }
-            
-            if(removed_count > 0) {
-                if(Count == 0) {
-                    Unmap();
-                } else {
-                    Commit();
-                }
             }
         }
 
@@ -421,6 +403,59 @@ namespace Banshee.Plugins.SmartPlaylists
             
             LibrarySource.Instance.RemoveChildSource(this);
             return true;
+        }
+
+        private string PrependCondition (string with)
+        {
+            return (Condition == null) ? " " : with + " (" + Condition + ")";
+        }
+
+        private void OnLibraryReloaded (object o, EventArgs args)
+        {
+            RefreshMembers();
+        }
+
+        private void OnLibraryTrackRemoved(object o, LibraryTrackRemovedArgs args)
+        {
+            if(args.Track != null) {
+                if(tracks.Contains(args.Track)) {
+                    RemoveTrack(args.Track);
+                    
+                    if(Count == 0) {
+                        Unmap();
+                    } else {
+                        Commit();
+                    }
+                }
+                
+                return;
+            } else if(args.Tracks == null) {
+                return;
+            }
+            
+            int removed_count = 0;
+            
+            foreach(TrackInfo track in args.Tracks) {
+                if(tracks.Contains(track)) {
+                    RemoveTrack (track);
+                    removed_count++;
+                }
+            }
+            
+            if(removed_count > 0) {
+                if(Count == 0) {
+                    Unmap();
+                } else {
+                    Commit();
+                }
+            }
+        }
+
+        private void HandlePlaylistChanged (object sender, TrackEventArgs args)
+        {
+            //Console.WriteLine ("{0} sent playlist changed to {1}", (sender as PlaylistSource).Name, Name);
+            if (args.Track != null)
+                Check (args.Track);
         }
 
         public static void LoadFromReader (IDataReader reader)

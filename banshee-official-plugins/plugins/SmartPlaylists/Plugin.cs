@@ -21,7 +21,6 @@ namespace Banshee.Plugins.SmartPlaylists
         private static Plugin instance = null;
 
         private uint timeout_id = 0;
-        private bool watching_playlists = false;
 
         public static Plugin Instance {
             get { return instance; }
@@ -197,9 +196,12 @@ namespace Banshee.Plugins.SmartPlaylists
 
         private void HandleSourceAdded (SourceEventArgs args)
         {
-            if (watching_playlists && args.Source is PlaylistSource) {
-                args.Source.TrackAdded += HandlePlaylistChanged;
-                args.Source.TrackRemoved += HandlePlaylistChanged;
+            if (args.Source is PlaylistSource) {
+                foreach (SmartPlaylist pl in playlists) {
+                    if (pl.PlaylistDependent) {
+                        pl.ListenToPlaylists();
+                    }
+                }
                 return;
             }
 
@@ -211,14 +213,6 @@ namespace Banshee.Plugins.SmartPlaylists
 
             StartTimer (playlist);
             
-            if (playlist.PlaylistDerived && !watching_playlists) {
-                foreach (PlaylistSource source in PlaylistSource.Playlists) {
-                    source.TrackAdded += HandlePlaylistChanged;
-                    source.TrackRemoved += HandlePlaylistChanged;
-                }
-                watching_playlists = true;
-            }
-
             playlists.Add(playlist);
 
             t.Stop();
@@ -226,12 +220,6 @@ namespace Banshee.Plugins.SmartPlaylists
 
         private void HandleSourceRemoved (SourceEventArgs args)
         {
-            if (watching_playlists && args.Source is PlaylistSource) {
-                args.Source.TrackAdded -= HandlePlaylistChanged;
-                args.Source.TrackRemoved -= HandlePlaylistChanged;
-                return;
-            }
-
             SmartPlaylist playlist = args.Source as SmartPlaylist;
             if (playlist == null)
                 return;
@@ -239,23 +227,6 @@ namespace Banshee.Plugins.SmartPlaylists
             playlists.Remove (playlist);
 
             StopTimer();
-
-            if (playlist.PlaylistDerived) {
-                watching_playlists = false;
-                foreach (SmartPlaylist p in playlists) {
-                    if (p.PlaylistDerived) {
-                        watching_playlists = true;
-                        break;
-                    }
-                }
-
-                if (!watching_playlists) {
-                    foreach (PlaylistSource source in PlaylistSource.Playlists) {
-                        source.TrackAdded -= HandlePlaylistChanged;
-                        source.TrackRemoved -= HandlePlaylistChanged;
-                    }
-                }
-            }
         }
 
         private void HandleTrackAdded (object sender, LibraryTrackAddedArgs args)
@@ -279,17 +250,6 @@ namespace Banshee.Plugins.SmartPlaylists
                     track.Changed -= HandleTrackChanged;
         }
 
-        private void HandlePlaylistChanged (object sender, TrackEventArgs args)
-        {
-            Timer t = new Timer ("HandlePlaylistChanged");
-
-            foreach (SmartPlaylist playlist in playlists) {
-                if (playlist.PlaylistDerived)
-                    playlist.Check (args.Track);
-            }
-
-            t.Stop();
-        }
 
         public void StartTimer (SmartPlaylist playlist)
         {

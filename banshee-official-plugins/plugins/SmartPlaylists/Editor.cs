@@ -158,6 +158,8 @@ namespace Banshee.Plugins.SmartPlaylists
                             Plugin.Instance.StartTimer(playlist);
                         else
                             Plugin.Instance.StopTimer();
+
+                        playlist.ListenToPlaylists();
                     }
                 });
             }

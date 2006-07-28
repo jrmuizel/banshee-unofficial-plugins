@@ -1,5 +1,17 @@
 2006-07-28  Gabriel Burt  <gabriel.burt@gmail.com>
 
+	* plugins/SmartPlaylists/Plugin.cs: Remove logic for listening to
+	playlists - it is now in the SmartPlaylists themselves.
+
+	* plugins/SmartPlaylists/Editor.cs: When editing a SmartPlaylist, have it
+	check if it needs to monitor any static playlists.
+
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Listen only to those playlists
+	we actually are dependent on.  Fix bug with how the Condition was used in
+	SQL queries (it needed parens around it for compound conditions).
+
+2006-07-28  Gabriel Burt  <gabriel.burt@gmail.com>
+
 	* plugins/SmartPlaylists/Plugin.cs: Add timers for testing speed of
 	operations (commented out).  Change playlist watching to work with
 	proposed patch to core.

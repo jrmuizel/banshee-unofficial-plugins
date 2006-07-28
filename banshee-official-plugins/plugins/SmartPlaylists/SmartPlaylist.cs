@@ -118,6 +118,8 @@ namespace Banshee.Plugins.SmartPlaylists
 
         public void RefreshMembers()
         {
+            Timer t = new Timer ("RefreshMembers " + Name);
+
             //Console.WriteLine ("Refreshing smart playlist {0} with condition {1}", Source.Name, Condition);
 
             // Delete existing tracks
@@ -156,11 +158,14 @@ namespace Banshee.Plugins.SmartPlaylists
             }
 
             reader.Dispose();
-        }
 
+            t.Stop();
+        }
 
         public void LimitTracks (IDataReader reader, bool remove_if_limited)
         {
+            Timer t = new Timer ("LimitTracks " + Name);
+
             bool was_limited = false;
             double sum = 0;
             double limit = Double.Parse(LimitNumber); 
@@ -201,6 +206,8 @@ namespace Banshee.Plugins.SmartPlaylists
             // so all the tracks that were beyond the limit point are cleaned out
             if (was_limited || remove_if_limited)
                 Commit();
+
+            t.Stop();
         }
 
         public void Check (TrackInfo track)
@@ -209,7 +216,7 @@ namespace Banshee.Plugins.SmartPlaylists
                 // If this SmartPlaylist doesn't have an OrderAndLimit clause, then it's quite simple
                 // to check this track - if it matches the Condition we make sure it's in, and vice-versa
                 //Console.WriteLine ("Limitless condition");
-
+                
                 object id = Globals.Library.Db.QuerySingle(String.Format(
                     "SELECT TrackId FROM Tracks WHERE TrackId = {0} {1}",
                     track.TrackId, PrependCondition("AND")
@@ -269,6 +276,8 @@ namespace Banshee.Plugins.SmartPlaylists
 
         public override void Commit ()
         {
+            Timer t = new Timer ("Commit");
+
             Statement query = new Update("SmartPlaylists",
                 "Name", Name,
                 "Condition", Condition,
@@ -299,6 +308,8 @@ namespace Banshee.Plugins.SmartPlaylists
                     ));
                 }
             }
+
+            t.Stop();
         }
 
         private string PrependCondition (string with)
@@ -378,6 +389,7 @@ namespace Banshee.Plugins.SmartPlaylists
         {
             lock(TracksMutex) {
                 tracks.Remove (track);
+				//  playlistModel.RemoveTrack(ref iters[i], track);
             }
 
             OnTrackRemoved (track);

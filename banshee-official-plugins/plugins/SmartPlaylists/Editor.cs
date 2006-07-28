@@ -140,9 +140,11 @@ namespace Banshee.Plugins.SmartPlaylists
                 ThreadAssist.Spawn (delegate {
                     //Console.WriteLine ("Name = {0}, Cond = {1}, OrderAndLimit = {2}", name, condition, order_by, limit_number);
                     if (playlist == null) {
+                        Timer t = new Timer ("Create/Add new Playlist");
                         playlist = new SmartPlaylist(name, condition, order_by, limit_number, limit_criterion);
                         LibrarySource.Instance.AddChildSource(playlist);
                         Plugin.Instance.StartTimer(playlist);
+                        t.Stop();
                     } else {
                         playlist.Rename(name);
                         playlist.Condition = condition;

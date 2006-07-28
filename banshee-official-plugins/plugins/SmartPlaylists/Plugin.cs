@@ -60,6 +60,8 @@ namespace Banshee.Plugins.SmartPlaylists
  
         protected override void PluginInitialize()
         {
+            Timer t = new Timer ("PluginInitialize");
+
             // Check that our SmartPlaylists table exists in the database, otherwise make it
             if(!Globals.Library.Db.TableExists("SmartPlaylists")) {
                 Globals.Library.Db.Execute(@"
@@ -105,9 +107,11 @@ namespace Banshee.Plugins.SmartPlaylists
 
             while (reader.Read()) {
                 SmartPlaylist.LoadFromReader (reader);
-          }
+            }
 
             reader.Dispose();
+
+            t.Stop();
         }
 
         protected override void InterfaceInitialize()
@@ -122,6 +126,8 @@ namespace Banshee.Plugins.SmartPlaylists
 
         private void OnUIManagerInitialized(object o, EventArgs args)
         {
+            Timer t = new Timer ("OnUIManagerInitialized");
+
             musicMenu = (Globals.ActionManager.GetWidget ("/MainMenu/MusicMenu") as MenuItem).Submenu as Menu;
             addItem = new MenuItem (Catalog.GetString("New Smart Playlist..."));
             addItem.Activated += delegate {
@@ -141,6 +147,8 @@ namespace Banshee.Plugins.SmartPlaylists
             musicMenu.Insert (addItem, 2);
             addFromSearchItem.Show ();
             addItem.Show ();
+
+            t.Stop();
         }
 
         protected override void PluginDispose()
@@ -199,6 +207,8 @@ namespace Banshee.Plugins.SmartPlaylists
             if (playlist == null)
                 return;
 
+            Timer t = new Timer ("HandleSourceAdded" + playlist.Name);
+
             StartTimer (playlist);
             
             if (playlist.PlaylistDerived && !watching_playlists) {
@@ -210,6 +220,8 @@ namespace Banshee.Plugins.SmartPlaylists
             }
 
             playlists.Add(playlist);
+
+            t.Stop();
         }
 
         private void HandleSourceRemoved (SourceEventArgs args)
@@ -269,10 +281,14 @@ namespace Banshee.Plugins.SmartPlaylists
 
         private void HandlePlaylistChanged (object sender, TrackEventArgs args)
         {
-            foreach (SmartPlaylist playlist in playlists)
+            Timer t = new Timer ("HandlePlaylistChanged");
+
+            foreach (SmartPlaylist playlist in playlists) {
                 if (playlist.PlaylistDerived)
-                    foreach (TrackInfo track in args.Tracks)
-                        playlist.Check (track);
+                    playlist.Check (args.Track);
+            }
+
+            t.Stop();
         }
 
         public void StartTimer (SmartPlaylist playlist)
@@ -312,14 +328,17 @@ namespace Banshee.Plugins.SmartPlaylists
             }
         }
 
-
         private bool OnTimerBeep ()
         {
+            Timer t = new Timer ("OnTimerBeep");
+
             foreach (SmartPlaylist p in playlists) {
                 if (p.TimeDependent) {
                     p.RefreshMembers();
                 }
             }
+
+            t.Stop ();
 
             // Keep the timer going
             return true;
@@ -327,8 +346,34 @@ namespace Banshee.Plugins.SmartPlaylists
 
         private void CheckTrack (TrackInfo track)
         {
+            Timer t = new Timer ("CheckTrack " + track.Title);
+
             foreach (SmartPlaylist playlist in playlists)
                 playlist.Check (track);
+
+            t.Stop();
+        }
+    }
+
+    // Class used for timing different operations.  Commented out for normal operation.
+    public class Timer
+    {
+        //DateTime time;
+        //string name;
+
+        public Timer () : this ("Timer") {}
+
+        public Timer (string name)
+        {
+            //this.name = name;
+            //time = DateTime.Now;
+
+            //System.Console.WriteLine ("{0} started", name);
+        }
+
+        public void Stop ()
+        {
+            //System.Console.WriteLine ("{0} stopped: {1} seconds elapsed", name, (DateTime.Now - time).TotalSeconds);
         }
     }
 }

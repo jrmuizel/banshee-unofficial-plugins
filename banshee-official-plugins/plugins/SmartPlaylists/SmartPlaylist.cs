@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Collections;
+using System.Collections.Generic;
  
 using Banshee.Base;
 using Banshee.Sources;
@@ -14,7 +15,7 @@ namespace Banshee.Plugins.SmartPlaylists
 {
     public class SmartPlaylist : Banshee.Sources.ChildSource
     {
-        private ArrayList tracks = new ArrayList();
+        private List<TrackInfo> tracks = new List<TrackInfo>();
         private ArrayList watchedPlaylists = new ArrayList();
 
         public string Condition;
@@ -52,16 +53,17 @@ namespace Banshee.Plugins.SmartPlaylists
             get { return tracks.Count; }
         }
         
-        public override IEnumerable Tracks {
+        public override IEnumerable<TrackInfo> Tracks {
             get { return tracks; }
         }
 
+        private static Gdk.Pixbuf icon = Gdk.Pixbuf.LoadFromResource("source-smart-playlist.png");
         public override Gdk.Pixbuf Icon {
-            get { return Gdk.Pixbuf.LoadFromResource("source-smart-playlist.png"); }
+            get { return icon; }
         }
 
         public override object TracksMutex {
-            get { return tracks.SyncRoot; }
+            get { return ((IList)tracks).SyncRoot; }
         }
 
         public override string UnmapLabel {

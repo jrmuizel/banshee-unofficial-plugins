@@ -1,3 +1,8 @@
+2006-07-28  Aaron Bockover  <aaron@abock.org>
+
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Updated to use generics,
+	now that Banshee.Sources.Source uses generics in its public API
+
 2006-07-28  Gabriel Burt  <gabriel.burt@gmail.com>
 
 	* plugins/SmartPlaylists/Plugin.cs: Remove logic for listening to

@@ -1,3 +1,4 @@
+/* -*- Mode:csharp; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /***************************************************************************
  *  XinePlayerEngine.cs
  *
@@ -49,16 +50,16 @@ namespace Banshee.MediaEngine.Xine
             Stream.EndOfStream += new EventHandler (OnEndOfStream);
         }
 
-        private void StartTimer()
+        private void StartTimer ()
         {
-            if(_timeoutId > 0) {
+            if (_timeoutId > 0) {
                 return;
             }
 
-            _timeoutId = GLib.Timeout.Add(500, delegate {
-                _stream.ProcessEventQueue();
+            _timeoutId = GLib.Timeout.Add (500, delegate {
+                _stream.ProcessEventQueue ();
                             
-                if(CurrentState == PlayerEngineState.Playing) {
+                if (CurrentState == PlayerEngineState.Playing) {
                     OnEventChanged(PlayerEngineEvent.Iterate);
                 }
 
@@ -66,9 +67,9 @@ namespace Banshee.MediaEngine.Xine
             });     
         }
 
-        private void StopTimer()
+        private void StopTimer ()
         {
-            if(_timeoutId > 0) {
+            if (_timeoutId > 0) {
                 GLib.Source.Remove(_timeoutId);
                 _timeoutId = 0;
             }
@@ -76,41 +77,68 @@ namespace Banshee.MediaEngine.Xine
         
         private void OnEndOfStream (object sender, EventArgs args)
         {
-            OnEventChanged(PlayerEngineEvent.EndOfStream);
+            OnEventChanged (PlayerEngineEvent.EndOfStream);
         }
         
         protected override void OpenUri (SafeUri uri)
         {
-            _stream.Open(uri.AbsoluteUri);
+            _stream.Open (uri.AbsoluteUri);
         }
 
-        public override void Close()
+        public override void Close ()
         {
-            StopTimer();
+            StopTimer ();
             _stream.Close ();
             OnStateChanged (PlayerEngineState.Idle);
         }       
         
-        public override void Play()
+        public override void Play ()
         {
             _stream.Play ();            
-            StartTimer();
+            StartTimer ();
             OnStateChanged (PlayerEngineState.Playing);
         }
 
-        public override void Pause()
+        public override void Pause ()
         {
-            StopTimer();
+            StopTimer ();
             _stream.Pause ();
             OnStateChanged (PlayerEngineState.Paused);
         }
-      
+
         public void SetEqualizerGain (uint frequency, int value)
         {
             if (value == 0) {
                 value = 1;
             }
-            _stream.SetEqualizerGain (frequency, value);
+            if (value < -100 || value > 100) {
+                throw new ArgumentOutOfRangeException ("value must be in range -100..100");
+            }
+
+            // Normalize the passed frequency in the context of the available frequencies
+            //
+            uint normalizedFrequency = 0;
+            int foundIndex = -1;
+            foundIndex = Array.BinarySearch (EqualizerFrequencies, frequency);
+            
+            if (foundIndex >= 0) {
+                normalizedFrequency = EqualizerFrequencies[foundIndex];
+            }
+            else if (frequency < EqualizerFrequencies[0]) {
+                normalizedFrequency = EqualizerFrequencies[0];
+            }
+            else if (frequency > EqualizerFrequencies[EqualizerFrequencies.Length - 1]) {
+                normalizedFrequency = EqualizerFrequencies[EqualizerFrequencies.Length - 1];
+            }
+            else {                
+                for (int i = 0; i + 1 < EqualizerFrequencies.Length; i++) {
+                    if (frequency <= EqualizerFrequencies[i] && frequency <= EqualizerFrequencies[i+1]) {
+                        normalizedFrequency = EqualizerFrequencies[i];
+                    }
+                }
+            }
+
+            _stream.SetEqualizerGain (normalizedFrequency, value);
         }
         
         public override ushort Volume {
@@ -145,7 +173,11 @@ namespace Banshee.MediaEngine.Xine
 
         public uint[] EqualizerFrequencies
         {
-            get { return _stream.EqualizerFrequencies; }
+            get {
+                uint[] freqs = _stream.EqualizerFrequencies;
+                Array.Sort (freqs);
+                return freqs;
+            }
         }
 
         // Xine Default: 100

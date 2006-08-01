@@ -1,3 +1,10 @@
+2006-08-01  Mike Urbanski <michael.c.urbanski@gmail.com>
+	
+	* plugins/Podcast/FeedParsers/RFC822DateTime.cs: Now makes a best 
+	effort to parse invalid RFC-822 date-times that are "close enough."  
+	E.g. accepts "July" when "Jul" is expected for the month identifier 
+	or "Monday" when "Mon" is expected for the day of week identifier.
+
 2006-07-31  Mike Urbanski <michael.c.urbanski@gmail.com> 
 	
 	* AUTHORS: Added self as author.
@@ -13,7 +20,7 @@
 
 	* plugins/Podcast/PodcastLibrary.cs:
 	* plugins/Podcast/UI/PodcastSource.cs: 
-	Partially .Net 2.0-ified, Both 'PodcastLibrary' and 'PodcastSource' now 
+	Partially .Net 2.0-ified, both 'PodcastLibrary' and 'PodcastSource' now 
 	use generic collections where required.
 	
 	* plugins/Podcast/FeedUtils.cs: Relaxed supported file format

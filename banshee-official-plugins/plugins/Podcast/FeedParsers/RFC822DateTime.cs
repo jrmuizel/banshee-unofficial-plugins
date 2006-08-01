@@ -31,25 +31,34 @@ using System.Text.RegularExpressions;
 
 namespace Banshee.Plugins.Podcast
 {
-    public class RFC822DateTime
+    public static class RFC822DateTime
     {
-        private const string monthsStr = "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec";
-
+        private const string monthsStr = 
+            "Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|" +
+            "January|February|March|April|May|June|July|August|" +
+            "September|October|November|December";
+        
+        private const string daysOfWeek = 
+            "Mon|Tue|Wed|Thu|Fri|Sat|Sun|" +
+            "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday";
+        
         private const string rfc822DTExp =
-            @"^(?<dayofweek>(Mon|Tue|Wed|Thu|Fri|Sat|Sun), )?" +
+            @"^(?<dayofweek>(" + daysOfWeek + "), )?" +
             @"(?<day>\d\d?) " +
             @"(?<month>" + monthsStr + ") " +
             @"(?<year>\d\d(\d\d)?) " +
-            @"(?<hours>[0-2]\d):(?<minutes>[0-5]\d)(:(?<seconds>[0-5]\d))? " +
-            @"(?<timezone>[A-I]|[K-Z]|GMT|UT|EST|EDT|CST|CDT|MST|MDT|PST|PDT|([+-]\d\d\d\d))$";
+            @"(?<hours>[0-2]\d):(?<minutes>[0-5]\d)(:(?<seconds>[0-5]\d))?" +
+            @"( (?<timezone>[A-I]|[K-Z]|GMT|UT|EST|EDT|CST|CDT|MST|MDT|PST|PDT|([+-]\d\d\d\d))$)?";
 
         private static readonly string[] months;
         private static readonly Regex rfc822DTRegex;
 
         static RFC822DateTime()
         {
+        	Console.WriteLine (rfc822DTExp);
             months = monthsStr.Split ('|');
-            rfc822DTRegex = new Regex (rfc822DTExp);
+            rfc822DTRegex = new Regex (rfc822DTExp, 
+                RegexOptions.Compiled | RegexOptions.IgnoreCase);
         }
 
         public static DateTime Parse (string dateTime)
@@ -64,7 +73,7 @@ namespace Banshee.Plugins.Podcast
             if (m.Success)
             {
                 GroupCollection groups = m.Groups;
-
+				DateTime ret;
                 int day = Convert.ToInt32 (groups ["day"].Value);
                 int month = MonthToInt32 (groups ["month"].Value);
                 int year = Convert.ToInt32 (groups ["year"].Value);
@@ -74,6 +83,7 @@ namespace Banshee.Plugins.Podcast
 
                 int seconds = 0;
                 string secondsStr = groups ["seconds"].Value;
+                string timeZone = groups ["timezone"].Value;
 
                 if (secondsStr != String.Empty)
                 {
@@ -85,9 +95,15 @@ namespace Banshee.Plugins.Podcast
                     int curYear = DateTime.Now.Year;
                     year = curYear - (curYear % 100) + year;
                 }
-
-                return new DateTime (year, month, day, hours, minutes, seconds) +
-                    ParseGmtOffset (groups ["timezone"].Value);
+				
+				ret = new DateTime (year, month, day, hours, minutes, seconds);
+                                
+                if (timeZone != String.Empty)
+                {
+                    ret += ParseGmtOffset (timeZone);
+                }
+				
+                return ret;
             }
 
             throw new FormatException ("'dateTime' does not represent a valid RFC 822 date-time");
@@ -102,7 +118,11 @@ namespace Banshee.Plugins.Podcast
                 if (month == s)
                 {
                     break;
-                } ++i;
+                }
+                
+                if (++i % 13 == 0) {
+                    i = 1;
+                }
             }
 
             return i;

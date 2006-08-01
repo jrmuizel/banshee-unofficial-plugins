@@ -28,7 +28,6 @@
 	* plugins/Podcast/DownloadCore/DownloadTask.cs: Minor refactoring of file 
 	deletion code.
 
-
 2006-07-28  Aaron Bockover  <aaron@abock.org>
 
 	* plugins/SmartPlaylists/SmartPlaylist.cs: Updated to use generics,

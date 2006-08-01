@@ -69,13 +69,12 @@ namespace Banshee.Plugins.Podcast.Download
         public event DownloadProgressChangedEventHandler DownloadProgressChanged;
 
         public int CompletedDownloads {
-            get
-            { return (FailedDownloads + SuccessfulDownloads); }
+            get { return (FailedDownloads + SuccessfulDownloads); }
         }
 
         public int CurrentDownloads {
-            get
-            { return current_downloads; }
+            get { return current_downloads; }
+            
             internal set
             {
                 if (value == current_downloads)

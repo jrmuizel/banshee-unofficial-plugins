@@ -27,6 +27,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 using Banshee.Base;
 using Banshee.Sources;
@@ -41,7 +42,7 @@ namespace Banshee.Plugins.Podcast
         private Hashtable podcast_feeds_keyed; // [string-(url) | PodcastFeedInfo]
 
         // TODO:  Locking this collection is redundant, change it
-        private Hashtable tracks_keyed; // [TrackInfo | PodcastInfo]
+        private Dictionary<TrackInfo, PodcastInfo> tracks_keyed; // [TrackInfo | PodcastInfo]
 
         private readonly object podcast_feed_sync = new object ();
 
@@ -58,6 +59,13 @@ namespace Banshee.Plugins.Podcast
                 return podcast_feed_sync;
             }
         }
+
+		public object TrackSync {
+		    get 
+		    {
+		        return ((IDictionary)tracks_keyed).SyncRoot;
+		    }
+		}
 
         public event TrackEventHandler TrackAdded;
         public event TrackEventHandler TrackRemoved;
@@ -86,7 +94,7 @@ namespace Banshee.Plugins.Podcast
         {
             get
             {
-                lock (tracks_keyed.SyncRoot)
+                lock (TrackSync)
                 {
                     return tracks_keyed.Keys.Count;
                 }
@@ -109,10 +117,10 @@ namespace Banshee.Plugins.Podcast
             }
         }
 
-        public IEnumerable Tracks {
+        public IEnumerable<TrackInfo> Tracks {
             get
             {
-                lock (tracks_keyed.SyncRoot)
+                lock (((IDictionary)tracks_keyed).SyncRoot)
                 {
                     return tracks_keyed.Keys;
                 }
@@ -124,7 +132,7 @@ namespace Banshee.Plugins.Podcast
             podcast_feeds = new ArrayList ();
 
             podcasts = new Hashtable ();
-            tracks_keyed = new Hashtable ();
+            tracks_keyed = new Dictionary<TrackInfo, PodcastInfo> ();
 
             podcast_feeds_keyed = new Hashtable ();
 
@@ -568,33 +576,26 @@ namespace Banshee.Plugins.Podcast
                             {
                                 removed_podcasts.Add (pi);
                             }
-                        }
-                        catch {
+                        } catch {
                             continue;
                         }
                     }
-            }
+                }
 
-            if (update && (removed_podcasts.Count > 0))
+                if (update && (removed_podcasts.Count > 0))
                 {
                     PodcastEventArgs args;
 
-                    if (removed_podcasts.Count == 1)
-                    {
+                    if (removed_podcasts.Count == 1) {
                         args = new PodcastEventArgs (removed_podcasts[0] as PodcastInfo);
-                    }
-                    else
-                    {
+                    } else {
                         args = new PodcastEventArgs (removed_podcasts);
                     }
 
-                    try
-                    {
+                    try {
                         UpdateParentFeeds (removed_podcasts);
                         EmitPodcastRemoved (args);
-                    }
-                    finally
-                    {
+                    } finally {
                         PodcastDBManager.Deactivate (removed_podcasts);
                     }
                 }
@@ -667,7 +668,7 @@ namespace Banshee.Plugins.Podcast
                 ti.Title = pi.Title;
             }
 
-            lock (tracks_keyed.SyncRoot)
+            lock (TrackSync)
             {
                 if (!tracks_keyed.ContainsKey (ti))
                 {
@@ -694,23 +695,26 @@ namespace Banshee.Plugins.Podcast
                 throw new ArgumentNullException ("ti");
             }
 
-            if (BadTrackHash (ti))
-            {
-                return false;
-            }
-
             bool ret = false;
 
-            lock (tracks_keyed.SyncRoot)
+            if (BadTrackHash (ti))
             {
-                try
-                {
-                    tracks_keyed.Remove (ti);
-                    ret = true;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine (e.Message);
+                return ret;
+            }
+            
+            lock (TrackSync)
+            {
+                if (tracks_keyed.ContainsKey (ti)) {
+                    try
+                    {
+                        tracks_keyed.Remove (ti);
+                        ret = true;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine (e.Message);
+                        return ret;
+                    }
                 }
             }
 
@@ -771,7 +775,7 @@ namespace Banshee.Plugins.Podcast
             }
         }
 
-    public void Clear ()
+        public void Clear ()
         {
             lock (podcasts.SyncRoot)
             {
@@ -785,10 +789,9 @@ namespace Banshee.Plugins.Podcast
             }
 
             ThreadAssist.ProxyToMain (delegate {
-                                          lock (tracks_keyed.SyncRoot)
-                                      {
-                                          tracks_keyed.Clear ()
-                                              ;
+                                          lock (TrackSync)
+                                          {
+                                              tracks_keyed.Clear ();
                                           }
                                       });
         }
@@ -799,13 +802,13 @@ namespace Banshee.Plugins.Podcast
             {
                 PodcastInfo pi = null;
                 TrackInfo ti = args.Track;
-
+               
                 if (BadTrackHash (ti))
                 {
                     return;
                 }
 
-                lock (tracks_keyed.SyncRoot)
+                lock (TrackSync)
                 {
                     if (tracks_keyed.ContainsKey (ti))
                     {
@@ -828,7 +831,7 @@ namespace Banshee.Plugins.Podcast
             {
                 ArrayList podcast_remove_list = new ArrayList ();
 
-                lock (tracks_keyed.SyncRoot)
+                lock (TrackSync)
                 {
                     PodcastInfo tmpPi;
 
@@ -836,13 +839,17 @@ namespace Banshee.Plugins.Podcast
                     {
                         if (ti != null)
                         {
+							tmpPi = null;                            
+                            
                             if (BadTrackHash (ti))
                             {
                                 continue;
                             }
-
-                            tmpPi = tracks_keyed [ti] as PodcastInfo;
-
+															
+							if (tracks_keyed.ContainsKey (ti)) {
+                                tmpPi = tracks_keyed [ti] as PodcastInfo;
+                            }
+                            
                             if (tmpPi != null)
                             {
                                 podcast_remove_list.Add (tmpPi);

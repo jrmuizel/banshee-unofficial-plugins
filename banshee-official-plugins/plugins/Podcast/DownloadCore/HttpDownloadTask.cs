@@ -47,10 +47,7 @@ namespace Banshee.Plugins.Podcast.Download
             {
                 ImplDownload ();
             }
-            catch (TaskStoppedException tse)
-            {
-                Console.WriteLine (tse.Message);
-            }
+            catch {}
         }
 
         private void ImplDownload ()
@@ -213,8 +210,9 @@ namespace Banshee.Plugins.Podcast.Download
                 Console.WriteLine (Catalog.GetString("Contacting {0}..."), request.Address.Host.ToString ());
 
                 CheckState ();
-
+                
                 response = request.GetResponse () as HttpWebResponse;
+                
                 CheckState ();
                 
                 if (IsError (response.StatusCode))
@@ -226,8 +224,25 @@ namespace Banshee.Plugins.Podcast.Download
             }
             catch (WebException we)
             {
-                Stop (DownloadState.Failed);
-                throw new TaskStoppedException (we.Message);
+                if ((we.Response as HttpWebResponse).StatusCode == 
+                        HttpStatusCode.RequestedRangeNotSatisfiable) {
+                    
+                    CheckState ();
+
+                    Disconnect ();
+                    
+                    bytesRead = 0;
+                    DeleteTempFile ();
+                    
+                    PrepRequest ();
+                    Connect ();
+
+                    CheckState ();                    
+                    
+                } else {
+                    Stop (DownloadState.Failed);
+                    throw new TaskStoppedException (we.Message);                
+                }
             }
         }
 

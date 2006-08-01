@@ -48,8 +48,7 @@ namespace Banshee.Plugins.Podcast
 
         public PodcastFeedInfo Feed
         {
-            get
-            { return podcast_feed; }
+            get { return podcast_feed; }
         }
 
         public UpdateActivityEventArgs (PodcastFeedInfo podcastFeed)
@@ -165,8 +164,7 @@ namespace Banshee.Plugins.Podcast
                                                       CreateUserEvent ();
                                                       ThreadAssist.Spawn (new ThreadStart (UpdateThread));
                                                   }
-                                                  catch (Exception e)
-                                              {
+                                                  catch {
                                                   EndUpdate ()
                                                       ;
                                                       return;
@@ -211,16 +209,12 @@ namespace Banshee.Plugins.Podcast
                 {
                     lock (update_sync)
                     {
-                        if (currentFeed == totalFeeds)
-                        {
+                        if (currentFeed == totalFeeds) {
                             return;
                         }
-                        if (userEvent.IsCancelRequested)
-                        {
+                        if (userEvent.IsCancelRequested) {
                             return;
-                        }
-                        else
-                        {
+                        } else {
                             tmp_feed = update_queue [currentFeed++] as PodcastFeedInfo;
                         }
                     }
@@ -237,17 +231,16 @@ namespace Banshee.Plugins.Podcast
                         }
                     }
                     catch {
-                    } finally
-                    {
+                    } finally {
                         userEvent.Progress = (double) (currentFeed) / (double) totalFeeds;
-                        }
+                    }
                 }
             }
             catch {
             } finally
             {
                 EndUpdate ();
-                }
+            }
         }
 
         private void EndUpdate ()

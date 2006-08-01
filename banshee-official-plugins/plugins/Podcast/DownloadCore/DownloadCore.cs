@@ -187,7 +187,7 @@ public enum DownloadState :
                     {
                         dt = DownloadTask.Create (dif);
                     }
-                    catch (NotSupportedException e)
+                    catch (NotSupportedException)
                     {
                         throw new RegistrationException (Catalog.GetString("Uri scheme not supported."));
                     }
@@ -291,7 +291,6 @@ public enum DownloadState :
             }
 
             DownloadInfo dif = new DownloadInfo (uri, path, length);
-            ;
 
             return dif;
         }
@@ -314,8 +313,7 @@ public enum DownloadState :
                     registered_downloads.Add (dif);
                 }
                 catch {
-                    unregistered_downloads.Add (dif)
-                    ;
+                    unregistered_downloads.Add (dif);
                     continue;
                 }
             }
@@ -489,9 +487,8 @@ public enum DownloadState :
         {
             ThreadAssist.ProxyToMain ( delegate {
                                            if(userEvent == null)
-                                       {
-                                           userEvent = new ActiveUserEvent(Catalog.GetString("Download"))
-                                                           ;
+                                           {
+                                               userEvent = new ActiveUserEvent(Catalog.GetString("Download"));
 
                                                userEvent.Icon = IconThemeUtils.LoadIcon ("gtk-network", 22);
                                                userEvent.Header = Catalog.GetString ("Downloading Files");
@@ -527,12 +524,11 @@ public enum DownloadState :
             ThreadAssist.ProxyToMain ( delegate {
                                            if(userEvent != null)
                                        {
-                                           userEvent.CancelRequested -= OnUserEventCancelRequestedHandler;
-                                           cancel_requested = true;
-                                           userEvent.CanCancel = false;
-                                           userEvent.Progress = 0.0;
-                                           userEvent.Header = Catalog.GetString ("Canceling Downloads")
-                                                                  ;
+                                               userEvent.CancelRequested -= OnUserEventCancelRequestedHandler;
+                                               cancel_requested = true;
+                                               userEvent.CanCancel = false;
+                                               userEvent.Progress = 0.0;
+                                               userEvent.Header = Catalog.GetString ("Canceling Downloads");
                                                userEvent.Message = Catalog.GetString ("Waiting for downloads to terminate");
 
                                                ThreadAssist.Spawn(new ThreadStart(CancelAll));
@@ -582,7 +578,7 @@ public enum DownloadState :
                         Drop (d, false);
                         dropped_downloads.Add (d);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         continue;
                     }
@@ -618,24 +614,29 @@ public enum DownloadState :
             double progress = (double) args.Progress / 100;
 
             // TODO  This could be shortened up
-            if (args.FailedDownloads <= 0)
+            if (args.FailedDownloads == 0)
             {
-                disp_progress = String.Format (
-                                    Catalog.GetString ("Downloading Files ({0} of {1} completed)"),
-                                    args.DownloadsComplete, args.TotalDownloads);
+                disp_progress = String.Format (Catalog.GetPluralString (
+                   "Downloading File",
+                   "Downloading Files ({0} of {1} completed)",
+                   args.TotalDownloads),
+                   args.DownloadsComplete, args.TotalDownloads
+                );
             }
             else
             {
-                disp_progress = String.Format (
-                                    Catalog.GetString ("Downloading Files ({0} of {1} completed)\n{2} failed"),
-                                    args.DownloadsComplete, args.TotalDownloads, args.FailedDownloads);
+                disp_progress = String.Format (Catalog.GetString (
+                    "Downloading Files ({0} of {1} completed)\n{2} failed"),
+                    args.DownloadsComplete, args.TotalDownloads, args.FailedDownloads);
             }
 
 
-	    message = String.Format (Catalog.GetPluralString ("Currently transfering 1 file at {0} kB/s",
-					 		      "Currently transfering {0} files at {1} kB/s",
-							      args.CurrentDownloads),
-                                      args.CurrentDownloads, args.Speed);
+	        message = String.Format (Catalog.GetPluralString (
+	            "Currently transfering 1 file at {0} kB/s",
+				"Currently transfering {1} files at {0} kB/s", 
+				args.CurrentDownloads),
+                args.Speed, args.CurrentDownloads
+            );
 
             ThreadAssist.ProxyToMain ( delegate {
                                            if (userEvent != null)

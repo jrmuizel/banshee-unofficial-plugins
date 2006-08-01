@@ -36,6 +36,8 @@ using Banshee.Plugins;
 
 namespace Banshee.Plugins.Podcast
 {
+    public class FeedNotModifiedException : Exception {}
+    
     public delegate void FeedPodcastsUpdatedEventHandler (object sender, FeedPodcastsUpdatedEventArgs args);
 
     public delegate void FeedUrlUpdatedEventHandler (object sender, FeedUrlUpdatedEventArgs args);
@@ -111,7 +113,6 @@ namespace Banshee.Plugins.Podcast
 
         private TreeIter tree_iter;
 
-        //        private bool active = true;
         private bool updating;
 
         private ArrayList podcasts;
@@ -416,14 +417,13 @@ namespace Banshee.Plugins.Podcast
 
                 feed_parser = PodcastFeedParser.Create (doc, this);
                 feed_parser.Parse ();
-            }
-            catch (FeedNotModifiedException fnme)
-            {
+                
+            } catch (FeedNotModifiedException) {
+                
                 SyncPodcasts ();
                 return;
-            }
-            catch (Exception e)
-            {
+                
+            } catch {
                 return;
             }
 
@@ -431,7 +431,7 @@ namespace Banshee.Plugins.Podcast
             link = feed_parser.Link;
             image = feed_parser.Image;
             description = feed_parser.Description;
-
+            
             Commit ();
 
             PodcastInfo[] remote_podcasts = feed_parser.Podcasts;

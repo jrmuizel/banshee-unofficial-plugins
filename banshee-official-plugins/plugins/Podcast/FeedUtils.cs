@@ -32,17 +32,15 @@ using System.Xml;
 
 namespace Banshee.Plugins.Podcast
 {
-    public class FeedNotModifiedException : Exception {}
-
     public static class FeedUtil
     {
 
         // -- Adapted from Monopod
         public static bool KnownType (string type)
         {
-            switch (type)
+/*          switch (type)
             {
-                case "audio/mpeg":
+              case "audio/mpeg":
                 case "x-audio/mp3":
                 case "audio/ogg":
                 case "audio/m4a":
@@ -50,12 +48,14 @@ namespace Banshee.Plugins.Podcast
                 case "application/ogg":
                 case "audio/x-wav":
 
-                    // Don't like this one bit.
                 case "":
                     return true;
                 default:
-                    return false;
+                    return true;
             }
+*/
+            // Don't like this one bit.
+            return true;            
         }
 
         // -- Adapted from Monopod
@@ -97,6 +97,7 @@ namespace Banshee.Plugins.Podcast
             }
             catch (WebException we)
             {
+                Console.WriteLine (we.Message);
                 HttpStatusCode resp_code = 0;
 
                 if (we.Response != null)

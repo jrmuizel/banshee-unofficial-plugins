@@ -85,10 +85,8 @@ namespace Banshee.Plugins.Podcast.Download
         private readonly string new_file_path;
         private readonly string previous_file_path;
 
-        public string NewMimeType { get
-                                    { return new_file_path; } }
-        public string PreviousMimeType { get
-                                         { return previous_file_path; } }
+        public string NewMimeType { get { return new_file_path; } }
+        public string PreviousMimeType { get { return previous_file_path; } }
 
         public DownloadFilePathChangedEventArgs (DownloadInfo downloadInfo,
                 string previousFilePath, string newFilePath) : base (downloadInfo)
@@ -268,8 +266,7 @@ namespace Banshee.Plugins.Podcast.Download
                 {
                     try
                     {
-                        File.Delete (FilePath);
-                        DeleteDirectory ();
+                        DeleteExistingFile ();
                     }
                     catch {}
                 }
@@ -287,13 +284,11 @@ namespace Banshee.Plugins.Podcast.Download
                 {
                     try
                     {
-                        File.Delete (TempFilePath);
-                        DeleteTempDirectory ();
-                    }
-                    catch {}
+                        DeleteTempFile ();
+                    } catch {}
 
                     return;
-            }
+                }
 
                 bytesRead = length;
                 OnProgressChanged (length);
@@ -354,6 +349,18 @@ namespace Banshee.Plugins.Podcast.Download
             return DeleteDirectory (Path.GetDirectoryName (TempFilePath));
         }
 
+        protected virtual void DeleteTempFile ()
+        {
+            File.Delete (TempFilePath);
+            DeleteTempDirectory ();
+        }        
+
+        protected virtual void DeleteExistingFile ()
+        {
+            File.Delete (FilePath);
+            DeleteDirectory ();
+        }
+        
         protected virtual void CheckLength ()
         {        	
             if (totalLength != webContentLength)

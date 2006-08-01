@@ -29,6 +29,7 @@ using System;
 using System.Data;
 using System.Threading;
 using System.Collections;
+using System.Collections.Generic;
 
 using Gtk;
 using Gdk;
@@ -68,6 +69,12 @@ namespace Banshee.Plugins.Podcast.UI
         private bool loading = false;
 
         private PodcastFeedInfo previously_selected = PodcastFeedInfo.All;
+
+        public override object TracksMutex {
+            get {
+                return PodcastCore.Library.TrackSync; 
+            }
+        }
 
         public PodcastSource() : base(Catalog.GetString ("Podcasts"), 2)
         {
@@ -149,7 +156,7 @@ namespace Banshee.Plugins.Podcast.UI
             }
         }
 
-    private void BuildView ()
+        private void BuildView ()
         {
             podcast_view_scroller = new ScrolledWindow();
 
@@ -252,7 +259,7 @@ namespace Banshee.Plugins.Podcast.UI
             { return false; }
         }
 
-        public override IEnumerable Tracks {
+        public override IEnumerable<TrackInfo> Tracks {
             get
             {
                 return PodcastCore.Library.Tracks;

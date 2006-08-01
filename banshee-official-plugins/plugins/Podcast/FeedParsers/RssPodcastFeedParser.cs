@@ -49,9 +49,7 @@ namespace Banshee.Plugins.Podcast
         // Adapted from Monopod
         private void LoadPodcastFeedFromXml ()
         {
-            title = StringUtils.StripHTML (
-                        FeedUtil.GetXmlNodeText (xml_doc, "/rss/channel/title")
-                    ).Trim ();
+            title = StringUtils.StripHTML (FeedUtil.GetXmlNodeText (xml_doc, "/rss/channel/title")).Trim ();
 
             if (title == "")
             {
@@ -60,8 +58,7 @@ namespace Banshee.Plugins.Podcast
 
             feed_link = FeedUtil.GetXmlNodeText (xml_doc, "/rss/channel/link").Trim ();
             image_url = FeedUtil.GetXmlNodeText (xml_doc, "/rss/channel/image/url").Trim ();
-            description = StringUtils.StripHTML (
-                              FeedUtil.GetXmlNodeText (xml_doc, "/rss/channel/description").Trim ());
+            description = StringUtils.StripHTML (FeedUtil.GetXmlNodeText (xml_doc, "/rss/channel/description").Trim ());
         }
 
         // Adapted from Monopod
@@ -108,55 +105,31 @@ namespace Banshee.Plugins.Podcast
                         tmpPi.Length = 0;
                     }
 
-                    tmpPi.Title = StringUtils.StripHTML (
-                                      FeedUtil.GetXmlNodeText (item, "title").Trim())
-                                      ;
+                    tmpPi.Title = StringUtils.StripHTML (FeedUtil.GetXmlNodeText (item, "title").Trim());
 
-                    tmpPi.Author = StringUtils.StripHTML (
-                                       FeedUtil.GetXmlNodeText (item, "author").Trim());
+                    tmpPi.Author = StringUtils.StripHTML (FeedUtil.GetXmlNodeText (item, "author").Trim());
 
                     tmpPi.Link = FeedUtil.GetXmlNodeText (item, "link").Trim();
 
-                    tmpPi.Description = StringUtils.StripHTML (
-                                            FeedUtil.GetXmlNodeText (item, "description").Trim());
+                    tmpPi.Description = StringUtils.StripHTML (FeedUtil.GetXmlNodeText (item, "description").Trim());
 
                     pubDate = FeedUtil.GetXmlNodeText (item, "pubDate").Trim();
-
-                    try
-                    {
-                        tmpPi.PubDate = DateTime.Parse (pubDate);
+                    
+                    try {
+                       tmpPi.PubDate = RFC822DateTime.Parse (pubDate);
+                    } catch {
+                        tmpPi.PubDate = DateTime.MinValue;
                     }
-                    catch (Exception e)
-                    {
-                        try
+
+                    // Some feeds actually release multiple episodes w\ the same file name. Gah!
+                    if (tmp_podcast_hash.Contains (enc_url))
                         {
-                            string tmpPubDate = pubDate.Substring (0, pubDate.Length - 5);
-                            tmpPubDate += "GMT";
-                            tmpPi.PubDate = DateTime.Parse (tmpPubDate);
-                        }
-                        catch {
-                            try
-                            {
-                                string tmpPubDate = pubDate.Substring (0, pubDate.Length - 3);
-                                    tmpPubDate += "GMT";
-                                    tmpPi.PubDate = DateTime.Parse (tmpPubDate);
-                                }
-                                catch {
-                                    //continue;
-                                    tmpPi.PubDate = DateTime.MinValue;
-                                }
-                            }
+                            continue;
                         }
 
-                // Some feeds actually release multiple episodes w\ the same file name.
-                if (tmp_podcast_hash.Contains (enc_url))
-                    {
-                        continue;
+                        tmp_podcast_hash.Add (enc_url, tmpPi);
                     }
-
-                    tmp_podcast_hash.Add (enc_url, tmpPi);
-                }
-                catch (Exception e)
+                catch
                 {
                     continue;
                 }
@@ -168,10 +141,8 @@ namespace Banshee.Plugins.Podcast
                 tmp_podcast_hash.Values.CopyTo (tmp_podcasts, 0);
 
                 Array.Sort (tmp_podcasts);
-                //ArrayList sort_list = new ArrayList (tmp_podcast_hash.Values);
-                //sort_list.Sort ();
 
-                podcasts = tmp_podcasts;//sort_list.ToArray (typeof(PodcastInfo)) as PodcastInfo;
+                podcasts = tmp_podcasts;
             }
         }
     }

@@ -1,3 +1,34 @@
+2006-07-31  Mike Urbanski <michael.c.urbanski@gmail.com> 
+	
+	* AUTHORS: Added self as author.
+
+	* plugins/Podcast/Podcast.mdp: Added 'RFC822DateTime.cs' to podcast 
+	project.
+
+	* plugins/Podcast/FeedParsers/RFC822DateTime.cs: Initial commit of 
+	RFC-822 date-time parser.  Yay!
+	
+	* plugins/Podcast/FeedParsers/RssPodcastFeedParser.cs: 'RFC822DateTime' 
+	is now used to parse RSS 2.0 date-time values.
+
+	* plugins/Podcast/PodcastLibrary.cs:
+	* plugins/Podcast/UI/PodcastSource.cs: 
+	Partially .Net 2.0-ified, Both 'PodcastLibrary' and 'PodcastSource' now 
+	use generic collections where required.
+	
+	* plugins/Podcast/FeedUtils.cs: Relaxed supported file format
+	requirements to a negligent level.  Will update further.
+	
+	* plugins/Podcast/DownloadCore/DownloadCore.cs: Corrected minor string 
+	bugs introduced during translation.
+
+	* plugins/Podcast/DownloadCore/HttpDownloadTask.cs: Added invalid range 
+	request handling.
+
+	* plugins/Podcast/DownloadCore/DownloadTask.cs: Minor refactoring of file 
+	deletion code.
+
+
 2006-07-28  Aaron Bockover  <aaron@abock.org>
 
 	* plugins/SmartPlaylists/SmartPlaylist.cs: Updated to use generics,

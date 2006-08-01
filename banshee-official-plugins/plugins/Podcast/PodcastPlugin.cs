@@ -47,10 +47,11 @@ namespace Banshee.Plugins.Podcast
         public override string Description {
             get
             {
-                return String.Format ("{0}\n\n{1}",
-                                      Catalog.GetString ("Next generation radio content, where you want it, when you want it."),
-                                      Catalog.GetString ("\"Let the feast of 1,000 hams begin!\"")
-                                     );
+                return String.Format (
+                    "{0}\n\n{1}",
+                    Catalog.GetString ("Next generation radio content, where you want it, when you want it."),
+                    Catalog.GetString ("\"Hey, guess what you're accessories to.\"")
+                );
             }
         }
 

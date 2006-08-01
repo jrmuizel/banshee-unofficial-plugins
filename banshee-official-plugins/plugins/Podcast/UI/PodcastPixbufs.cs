@@ -26,6 +26,7 @@
  */
 
 using Gdk;
+using Gtk;
 
 using Banshee.Base;
 

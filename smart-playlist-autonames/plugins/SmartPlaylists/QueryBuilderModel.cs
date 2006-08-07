@@ -94,14 +94,11 @@ namespace Banshee
 				if(dispEntry == null) {
 					dispEntry = new Entry();
 					dispEntry.Show();
+                    dispEntry.Changed += HandleInputChanged;
 				}
 					
 				return dispEntry;
 			}
-		}
-
-		public override void addChangedHandler (EventHandler o) {
-			dispEntry.Changed += o;
 		}
 
 		public override QueryFilter [] ValidFilters {
@@ -165,6 +162,7 @@ namespace Banshee
                     spinButton1.Value = DefaultValue1;
                     spinButton1.Digits = 0;
                     spinButton1.WidthChars = 4;
+                    spinButton1.Changed += HandleInputChanged;
 					spinButton1.Show();
 				}
 				
@@ -173,6 +171,7 @@ namespace Banshee
 						rangeBox.Remove(spinButton1);
 						rangeBox.Remove(spinButton2);
 						
+                        spinButton2.Changed -= HandleInputChanged;
 						spinButton2.Destroy();
 						spinButton2 = null;
 						rangeBox.Destroy();
@@ -188,6 +187,7 @@ namespace Banshee
                     spinButton2.Digits = 0;
                     spinButton2.WidthChars = 4;
 					spinButton2.Show();
+                    spinButton2.Changed += HandleInputChanged;
 				}
 				
 				rangeBox = BuildRangeBox(spinButton1, spinButton2);
@@ -195,10 +195,6 @@ namespace Banshee
 			}
 		}
 
-		public override void addChangedHandler (EventHandler o) {
-
-		}
-		
 		public override QueryFilter [] ValidFilters {
 			get {	
 				return new QueryFilter [] {
@@ -273,6 +269,7 @@ namespace Banshee
 			get {
 				if(rating1 == null) {
 					rating1 = new Rating();
+                    rating1.Changed += HandleInputChanged;
 					rating1.Show();
 				}
 				
@@ -281,6 +278,7 @@ namespace Banshee
 						rangeBox.Remove(rating1);
 						rangeBox.Remove(rating2);
 						
+                        rating2.Changed -= HandleInputChanged;
 						rating2.Destroy();
 						rating2 = null;
 						rangeBox.Destroy();
@@ -292,6 +290,7 @@ namespace Banshee
 				
 				if(rating2 == null) {
 					rating2 = new Rating();
+                    rating2.Changed += HandleInputChanged;
 					rating2.Show();
 				}
 				
@@ -300,10 +299,6 @@ namespace Banshee
 			}
 		}
 
-		public override void addChangedHandler (EventHandler o) {
-
-		}
-		
 		public override QueryFilter [] ValidFilters {
 			get {	
 				return new QueryFilter [] {
@@ -393,9 +388,11 @@ namespace Banshee
                     spinButton1.Value = 2.0;
                     spinButton1.Digits = 0;
                     spinButton1.WidthChars = 4;
+                    spinButton1.Changed += HandleInputChanged;
                     spinButton1.Show();
 
                     comboBox1 = GetComboBox();
+                    comboBox1.Changed += HandleInputChanged;
 
                     hBox1 = new HBox();
                     hBox1.Spacing = 5;
@@ -410,9 +407,11 @@ namespace Banshee
                         rangeBox.Remove(hBox1);
                         rangeBox.Remove(hBox2);
 
+                        spinButton2.Changed -= HandleInputChanged;
                         spinButton2.Destroy();
                         spinButton2 = null;
 
+                        comboBox2.Changed -= HandleInputChanged;
                         comboBox2.Destroy();
                         comboBox2 = null;
 
@@ -432,10 +431,12 @@ namespace Banshee
                     spinButton2.Value = 4.0;
                     spinButton2.Digits = 0;
                     spinButton2.WidthChars = 4;
+                    spinButton2.Changed += HandleInputChanged;
                     spinButton2.Show();
 
                     comboBox2 = GetComboBox();
                     comboBox2.Active = comboBox1.Active;
+                    comboBox2.Changed += HandleInputChanged;
 
                     hBox2 = new HBox();
                     hBox2.Spacing = 5;
@@ -553,9 +554,11 @@ namespace Banshee
                     spinButton1.Value = 2.0;
                     spinButton1.Digits = 0;
                     spinButton1.WidthChars = 2;
+                    spinButton1.Changed += HandleInputChanged;
 					spinButton1.Show();
 
                     comboBox1 = GetComboBox();
+                    comboBox1.Changed += HandleInputChanged;
 
                     hBox1 = new HBox();
                     hBox1.Spacing = 5;
@@ -570,9 +573,11 @@ namespace Banshee
 						rangeBox.Remove(hBox1);
 						rangeBox.Remove(hBox2);
 						
+                        spinButton2.Changed -= HandleInputChanged;
 						spinButton2.Destroy();
 						spinButton2 = null;
 
+                        comboBox2.Changed -= HandleInputChanged;
 						comboBox2.Destroy();
 						comboBox2 = null;
 
@@ -598,6 +603,7 @@ namespace Banshee
                     spinButton2.Value = 4.0;
                     spinButton2.Digits = 0;
                     spinButton2.WidthChars = 2;
+                    spinButton2.Changed += HandleInputChanged;
 					spinButton2.Show();
                     hBox1.Remove(ago1);
                     ago1.Destroy();
@@ -605,6 +611,7 @@ namespace Banshee
 
                     comboBox2 = GetComboBox();
                     comboBox2.Active = comboBox1.Active;
+                    comboBox2.Changed += HandleInputChanged;
 
                     hBox2 = new HBox();
                     hBox2.Spacing = 5;
@@ -619,10 +626,6 @@ namespace Banshee
 			}
 		}
 
-		public override void addChangedHandler (EventHandler o) {
-
-		}
-		
 		public override QueryFilter [] ValidFilters {
 			get {	
 				return new QueryFilter [] {
@@ -699,6 +702,7 @@ namespace Banshee
 			get {
 				if(comboBox1 == null) {
                     comboBox1 = GetComboBox();
+                    comboBox1.Changed += HandleInputChanged;
                     comboBox1.ShowAll();
 				}
 				
@@ -706,10 +710,6 @@ namespace Banshee
             }
 		}
 
-		public override void addChangedHandler (EventHandler o) {
-
-		}
-		
 		public override QueryFilter [] ValidFilters {
 			get {	
 				return new QueryFilter [] {

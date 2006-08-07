@@ -282,6 +282,8 @@ namespace Banshee
 		public string Column;
         public int Op;
 
+		public event EventHandler Changed;
+
         public abstract string Value1 {
             get; set;
         }
@@ -297,7 +299,17 @@ namespace Banshee
 			get;
 		}
 
-		public abstract void addChangedHandler (EventHandler o);
+        protected void HandleInputChanged (object sender, EventArgs args)
+        {
+            OnChanged ();
+        }
+
+        protected void OnChanged ()
+        {
+			EventHandler handler = Changed;
+			if(handler != null)
+				handler(this, new EventArgs());		
+        }
 
 		public abstract QueryFilter [] ValidFilters {
 			get;
@@ -531,7 +543,8 @@ namespace Banshee
 			
 			widgetBox.Foreach(WidgetBoxForeachRemoveChild);
 			widgetBox.Add(match.DisplayWidget);
-			match.addChangedHandler (OnMatchRowChanged);
+
+			match.Changed += OnMatchRowChanged;
 
 			OnMatchRowChanged (o, args);
 		}

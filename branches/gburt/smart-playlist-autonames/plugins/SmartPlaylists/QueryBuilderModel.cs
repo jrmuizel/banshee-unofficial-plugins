@@ -99,7 +99,11 @@ namespace Banshee
 				return dispEntry;
 			}
 		}
-		
+
+		public override void addChangedHandler (EventHandler o) {
+			dispEntry.Changed += o;
+		}
+
 		public override QueryFilter [] ValidFilters {
 			get {
 				return new QueryFilter [] {
@@ -189,6 +193,10 @@ namespace Banshee
 				rangeBox = BuildRangeBox(spinButton1, spinButton2);
 				return rangeBox;
 			}
+		}
+
+		public override void addChangedHandler (EventHandler o) {
+
 		}
 		
 		public override QueryFilter [] ValidFilters {
@@ -290,6 +298,10 @@ namespace Banshee
 				rangeBox = BuildRangeBox(rating1, rating2);
 				return rangeBox;
 			}
+		}
+
+		public override void addChangedHandler (EventHandler o) {
+
 		}
 		
 		public override QueryFilter [] ValidFilters {
@@ -606,6 +618,10 @@ namespace Banshee
 				return rangeBox;
 			}
 		}
+
+		public override void addChangedHandler (EventHandler o) {
+
+		}
 		
 		public override QueryFilter [] ValidFilters {
 			get {	
@@ -688,6 +704,10 @@ namespace Banshee
 				
                 return comboBox1;
             }
+		}
+
+		public override void addChangedHandler (EventHandler o) {
+
 		}
 		
 		public override QueryFilter [] ValidFilters {

@@ -1,0 +1,29 @@
+SUBDIRS = 
+
+if ENABLE_MINIMODE
+SUBDIRS += MiniMode
+endif
+
+if ENABLE_RADIO
+SUBDIRS += Radio
+endif
+
+if ENABLE_RECOMMENDATION
+SUBDIRS += Recommendation
+endif
+
+if ENABLE_SMART_PLAYLISTS
+if !BANSHEE_0_10
+SUBDIRS += SmartPlaylists
+endif
+endif
+
+if ENABLE_PODCAST
+if !BANSHEE_0_10
+SUBDIRS += Podcast
+endif
+endif
+
+MAINTAINERCLEANFILES = Makefile.in
+EXTRA_DIST = Common.cs.in
+ 

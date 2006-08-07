@@ -1,0 +1,712 @@
+# Dutch translation of banshee-official-plugins
+# Copyright (C) 2006 Aaron Bockover, Novell
+# This file is distributed under the same license as the Banshee package.
+# P. van de Geer <pvandegeer@gmail>, 2006.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Banshee\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-06-17 19:13+0200\n"
+"PO-Revision-Date: 2006-06-17 20:18+0200\n"
+"Last-Translator: P. van de Geer <pvandegeer@gmail>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../plugins/MiniMode/MiniModePlugin.cs:26
+msgid ""
+"Mini Mode allows controlling Banshee through a small window with only "
+"playback controls"
+msgstr ""
+"Met Mini Mode kan Banshee worden gebruikt via een klein venster met "
+"alleen bedieningsfuncties."
+
+#: ../plugins/MiniMode/MiniModePlugin.cs:47
+msgid "Mini mode"
+msgstr "Mini mode"
+
+#: ../plugins/MiniMode/MiniModeWindow.cs:258
+msgid "Banshee Music Player"
+msgstr "Banshee Muziekspeler"
+
+#: ../plugins/MiniMode/MiniModeWindow.cs:286
+msgid "Repeat None"
+msgstr "Niets herhalen"
+
+#: ../plugins/MiniMode/MiniModeWindow.cs:296
+msgid "Repeat Single"
+msgstr "Nummer herhalen"
+
+#: ../plugins/MiniMode/MiniModeWindow.cs:306
+msgid "Repeat All"
+msgstr "Alles herhalen"
+
+#: ../plugins/MiniMode/MiniModeWindow.cs:316
+msgid "Shuffle"
+msgstr "Shuffle"
+
+#: ../plugins/MiniMode/MiniModeWindow.cs:328
+msgid "Continuous"
+msgstr "Doorlopend"
+
+#: ../plugins/Podcast/PodcastCore.cs:432
+msgid "Uri Shceme Not Supported"
+msgstr "Uri schema wordt niet ondersteund"
+
+#: ../plugins/Podcast/PodcastCore.cs:433
+msgid "Podcast feed URI scheme is not supported."
+msgstr "Podcast feed URI schema wordt niet ondersteund"
+
+#: ../plugins/Podcast/PodcastCore.cs:445
+msgid "Invalid URL"
+msgstr "Ongeldige URL"
+
+#: ../plugins/Podcast/PodcastCore.cs:446
+msgid "Podcast feed URL is invalid."
+msgstr "Podcast feed URL is ongeldig"
+
+#: ../plugins/Podcast/PodcastCore.cs:516
+#, csharp-format
+msgid "Loading Podcast Feeds:  {0} ms"
+msgstr "Laden van Podcast feeds: {0} ms"
+
+#: ../plugins/Podcast/PodcastCore.cs:714
+#, csharp-format
+msgid "Unable to add: {0} to library.  {1}"
+msgstr "Toevoegen van {0} aan bibliotheek mislukt. {1}"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:109
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:192
+msgid "Uri scheme not supported."
+msgstr "Uri schema wordt niet ondersteund"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:231
+#, csharp-format
+msgid "Updating \"{0}\""
+msgstr "Bezig met bijwerken \"{0}\""
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:269
+msgid "Podcast Feed Update"
+msgstr "Podcast Feed Update"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:273
+msgid "Updating"
+msgstr "Bezig met bijwerken"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:274
+msgid "Preparing to update feeds"
+msgstr "Bezig met klaarmaken om feeds bij te werken"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:324
+#, csharp-format
+msgid "Updating podcast feed {0} of {1}"
+msgstr "Bezig met bijwerken feed {0} van {1}"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:345
+msgid "Canceling updates"
+msgstr "Bezig met annuleren van updates"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:346
+msgid "Waiting for update to terminate"
+msgstr "Bezig met wachten op het stoppen van de update"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:43
+#: ../plugins/Podcast/PodcastPlugin.cs:106
+msgid "Podcast"
+msgstr "Podcast"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:45
+msgid "Podcasting"
+msgstr "Podcasten"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:51
+msgid "Next generation radio content, where you want it, when you want it."
+msgstr "Volgende generatie radiocontent, waar jij het wilt, wanneer jij het wilt"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:52
+msgid "\"Let the feast of 1,000 hams begin!\""
+msgstr "\"Let the feast of 1,000 hams begin!\""
+
+#: ../plugins/Podcast/PodcastPlugin.cs:107
+msgid "Manage the Podcast plugin"
+msgstr "Beheer the Podcast plugin"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:110
+msgid "Update Feeds"
+msgstr "Feeds bijwerken"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:111
+msgid "Update Subscribed Podcast Feeds"
+msgstr ""
+
+#: ../plugins/Podcast/PodcastPlugin.cs:115
+#: ../plugins/Podcast/UI/PodcastSource.cs:591
+#: ../plugins/Podcast/UI/PodcastSource.cs:647
+msgid "Subscribe to New Feed"
+msgstr "Abonneren op nieuwe feed"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:116
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:68
+msgid "Subscribe to New Podcast Feed"
+msgstr "Abonneren op nieuwe Podcast feed"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:120
+#: ../plugins/Podcast/UI/PodcastSource.cs:601
+msgid "Visit Podcast Alley"
+msgstr "Bezoek Podcast Alley"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:121
+msgid "Find New Podcasts at PodcastAlley.com"
+msgstr "Zoek nieuwe Podcasts op PodcastAlley.com"
+
+#: ../plugins/Podcast/StringUtils.cs:28
+msgid "Unknown"
+msgstr "Onbekend"
+
+#: ../plugins/Podcast/StringUtils.cs:31
+#, csharp-format
+msgid "{0} and others"
+msgstr "{0} en anderen"
+
+#: ../plugins/Podcast/StringUtils.cs:34
+#, csharp-format
+msgid "{0} and {1}"
+msgstr "{0} en {1}"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:175
+msgid "DownloadCore is shutting down."
+msgstr "DownloadCore stopt nu"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:179
+msgid "dif not in 'New' state."
+msgstr "dif niet in 'New'-staat."
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:201
+msgid "Download already queued."
+msgstr "Download staat al in de wachtrij"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:286
+msgid "uri is empty"
+msgstr "uri is leeg"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:290
+msgid "path is empty"
+msgstr "pad is leeg"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:493
+#: ../plugins/Podcast/UI/PodcastSource.cs:718
+msgid "Download"
+msgstr "Download"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:497
+msgid "Downloading Files"
+msgstr "Bezig met downloaden bestanden"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:498
+msgid "Initializing downloads"
+msgstr "Bezig met initialiseren van de downloads"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:534
+msgid "Canceling Downloads"
+msgstr "Bezig met annuleren van de downloads"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:536
+msgid "Waiting for downloads to terminate"
+msgstr "Bezig met wachten op het stoppen van de downloads"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:624
+#, csharp-format
+msgid "Downloading Files ({0} of {1} completed)"
+msgstr "Bezig met downloaden bestanden ({0} van {1) gereed)"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:630
+#, csharp-format
+msgid ""
+"Downloading Files ({0} of {1} completed)\n"
+"{2} failed"
+msgstr ""
+"Bezig met downloaden bestanden ({0} van {1) gereed)"
+"{2} mislukt"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:635
+#, csharp-format
+msgid "Currently transfering 1 file at {0} kB/s"
+msgid_plural "Currently transfering {0} files at {1} kB/s"
+msgstr[0] "Bezig met binnenhalen van 1 bestand met {0} kB/s"
+msgstr[1] "Bezig met binnenhalen van {0} bestanden met {1} kB/s"
+
+#: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:72
+#: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:88
+msgid "Description:"
+msgstr "Omschrijving:"
+
+#: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:77
+msgid "Last Updated:"
+msgstr "Laatste update:"
+
+#: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:82
+#: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:84
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:103
+msgid "URL:"
+msgstr "URL:"
+
+#: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:88
+msgid "When feed is updated:"
+msgstr "Als de ge-update is:"
+
+#: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:105
+#: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:105
+msgid "No description available"
+msgstr "Geen omschrijving beschikbaar"
+
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:84
+msgid "Feeds"
+msgstr "Feeds"
+
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:150
+msgid "All"
+msgstr "Alles"
+
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:185
+#, csharp-format
+msgid "{0} Feed"
+msgid_plural "{0} Feeds"
+msgstr[0] "{0} Feed"
+msgstr[1] "{0} Feeds"
+
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:202
+msgid "Episode"
+msgid_plural "Episodes"
+msgstr[0] "Aflevering"
+msgstr[1] "Afleveringen"
+
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:207
+msgid "New"
+msgstr "Nieuw"
+
+#: ../plugins/Podcast/UI/PodcastPlaylistView.cs:92
+#: ../plugins/Radio/StationDialog.cs:107
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:47
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:390
+msgid "Title"
+msgstr "Titel"
+
+#: ../plugins/Podcast/UI/PodcastPlaylistView.cs:93
+msgid "Feed"
+msgstr "Feed"
+
+#: ../plugins/Podcast/UI/PodcastPlaylistView.cs:94
+msgid "Date"
+msgstr "Datum"
+
+#: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:76
+msgid "Feed:"
+msgstr "Feed:"
+
+#: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:80
+msgid "Date:"
+msgstr "Datum:"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:72
+msgid "Podcasts"
+msgstr "Podcasts"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:596
+msgid "Update All Feeds"
+msgstr "Alle feeds bijwerken"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:636
+msgid "Subscribed"
+msgstr "Geabonneerd"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:639
+msgid "Update Feed"
+msgstr "Feed bijwerken"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:643
+msgid "Delete Feed"
+msgstr "Feed verwijderen"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:651
+msgid "Homepage"
+msgstr "Homepage"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:655
+#: ../plugins/Podcast/UI/PodcastSource.cs:738
+msgid "Properties"
+msgstr "Eigenschappen"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:714
+msgid "Cancel"
+msgstr "Annuleren"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:724
+msgid "Remove Podcast(s)"
+msgstr "Podcast(s) verwijderen"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:728
+msgid "Select All"
+msgstr "Alles selecteren"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:731
+msgid "Select None"
+msgstr "Niets selecteren"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:734
+msgid "Link"
+msgstr "Link"
+
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:36
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:122
+msgid "Subscribe"
+msgstr "Abonneren"
+
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:73
+msgid "Please enter the URL of the podcast you wish to subscribe to"
+msgstr "Geef a.u.b. de URL op van de podcast waarop je je wilt abonneren"
+
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:85
+msgid "When new episodes are available:  "
+msgstr "Als nieuwe afleveringen beschikbaar zijn:  "
+
+#: ../plugins/Podcast/UI/SyncPreferenceComboBox.cs:38
+msgid "Download all episodes"
+msgstr "Alle afleveringen downloaden"
+
+#: ../plugins/Podcast/UI/SyncPreferenceComboBox.cs:39
+msgid "Download the most recent episode"
+msgstr "De meest recente aflevering downloaden"
+
+#: ../plugins/Podcast/UI/SyncPreferenceComboBox.cs:40
+msgid "Let me decide which episodes to download"
+msgstr "Laat mij kiezen welke afleveringen te downloaden"
+
+#: ../plugins/Radio/RadioPlugin.cs:45
+msgid "Provides Internet radio/streaming audio station support"
+msgstr "Maakt Internet radio/streaming audio station ondersteuning beschikbaar"
+
+#: ../plugins/Radio/RadioPlugin.cs:84
+msgid "New Radio Station..."
+msgstr "Nieuw radiostation..."
+
+#: ../plugins/Radio/RadioPlugin.cs:85
+msgid "Add a new streaming radio station"
+msgstr "Nieuw streaming radiostation toevoegen"
+
+#: ../plugins/Radio/RadioPlugin.cs:91
+msgid "Edit Station"
+msgstr "Station bewerken"
+
+#: ../plugins/Radio/RadioPlugin.cs:92
+msgid "Edit selected streaming radio station"
+msgstr "Geselecteerd streaming radiostation bewerken"
+
+#: ../plugins/Radio/RadioPlugin.cs:95
+msgid "Remove Station"
+msgstr "Station verwijderen"
+
+#: ../plugins/Radio/RadioPlugin.cs:96
+msgid "Remove selected streaming radio station"
+msgstr "Geselecteerd streaming radiostation verwijderen"
+
+#: ../plugins/Radio/RadioSource.cs:62
+msgid "Internet Radio"
+msgstr "Internetradio"
+
+#: ../plugins/Radio/RadioSource.cs:102
+msgid "Station"
+msgstr "Station"
+
+#: ../plugins/Radio/RadioSource.cs:103
+msgid "Description"
+msgstr "Beschrijving"
+
+#: ../plugins/Radio/RadioSource.cs:104 ../plugins/Radio/StationDialog.cs:158
+msgid "Stream"
+msgstr "Stream"
+
+#: ../plugins/Radio/StationDialog.cs:105
+msgid "Active"
+msgstr "Actief"
+
+#: ../plugins/Radio/StationDialog.cs:106
+msgid "Type"
+msgstr "Type"
+
+#: ../plugins/Radio/StationDialog.cs:108
+msgid "URI"
+msgstr "URI"
+
+#: ../plugins/Radio/StationDialog.cs:159
+msgid "Information"
+msgstr "Informatie"
+
+#: ../plugins/Recommendation/RecommendationPane.cs:58
+msgid "Recommended Artists"
+msgstr "Aanbevolen artiesten"
+
+#: ../plugins/Recommendation/RecommendationPane.cs:201
+msgid "Top Tracks by"
+msgstr "Top Tracks van"
+
+#: ../plugins/Recommendation/RecommendationPane.cs:202
+msgid "Top Albums by"
+msgstr "Top Albums van"
+
+#: ../plugins/Recommendation/RecommendationPane.cs:260
+msgid "similarity"
+msgstr "overeenkomst"
+
+#: ../plugins/Recommendation/RecommendationPlugin.cs:13
+msgid "Music Recommendations"
+msgstr "Muziek aanbevelingen"
+
+#: ../plugins/Recommendation/RecommendationPlugin.cs:17
+msgid ""
+"Automatically recommends music that you might like. The recommendations are "
+"based on the what song you are listening to at the moment, and finds artists "
+"and popular songs that others, that share your taste in music, prefers."
+msgstr ""
+"Beveelt automatisch muziek aan die je misschien leuk vindt. De aanbevelingen zijn "
+"gebasseerd op de muziek die je op het moment beluisterd en vindt artiesten "
+"en populaire nummers die anderen, die jouw muzieksmaak delen, leuk vinden."
+
+#: ../plugins/Recommendation/RecommendationPlugin.cs:75
+#: ../plugins/Recommendation/RecommendationPlugin.cs:76
+msgid "Show Recommendations"
+msgstr "Aanbevelingen tonen"
+
+#: ../plugins/SmartPlaylists/Editor.cs:31
+msgid "Edit Smart Playlist"
+msgstr "Slimme afspeellijst bewerken"
+
+#: ../plugins/SmartPlaylists/Editor.cs:47
+msgid "New Smart Playlist"
+msgstr "Nieuwe slimme afspeellijst"
+
+#: ../plugins/SmartPlaylists/Editor.cs:114
+msgid "This name is already in use"
+msgstr "Deze naam is al in gebruik"
+
+#: ../plugins/SmartPlaylists/Plugin.cs:25
+msgid "Smart Playlists"
+msgstr "Slimme afspeellijsten"
+
+#: ../plugins/SmartPlaylists/Plugin.cs:31
+msgid "Allows for playlists based on a set of parameters"
+msgstr "Staat afspeellijsten toe gebasseerd op bepaalde parameters"
+
+#: ../plugins/SmartPlaylists/Plugin.cs:88
+msgid "New Smart Playlist..."
+msgstr "Nieuwe slimme afspeellijst..."
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:142
+msgid "is"
+msgstr "is"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:147
+msgid "is not"
+msgstr "is niet"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:152
+msgid "is less than"
+msgstr "is minder dan"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:157
+msgid "is greater than"
+msgstr "is groter dan"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:162
+msgid "more than"
+msgstr "meer dan"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:167
+msgid "less than"
+msgstr "minder dan"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:172
+msgid "is at least"
+msgstr "is minstens"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:177
+msgid "contains"
+msgstr "bevat"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:182
+msgid "does not contain"
+msgstr "bevat niet"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:187
+msgid "starts with"
+msgstr "start met"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:192
+msgid "ends with"
+msgstr "eindigt op"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:197
+msgid "is before"
+msgstr "is voor"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:202
+msgid "is after"
+msgstr "is na"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:207
+msgid "is between"
+msgstr "is tussen"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:212
+msgid "between"
+msgstr "tussen"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:282
+msgid "to"
+msgstr "naar"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:633
+msgid "_Match"
+msgstr "_Zoek op"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:640
+msgid "all"
+msgstr "alles"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:641
+msgid "any"
+msgstr "één of meer"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:646
+msgid "of the following:"
+msgstr "van het volgende:"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:665
+msgid "_Limit to"
+msgstr "_Beperk tot"
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:682
+msgid "selected by"
+msgstr "geselecteerd op"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:43
+msgid "Random"
+msgstr "Willekeurig"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:44
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:391
+msgid "Album"
+msgstr "Album"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:45
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:389
+msgid "Artist"
+msgstr "Artiest"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:46
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:392
+msgid "Genre"
+msgstr "Genre"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:48
+msgid "Highest Rating"
+msgstr "Hoogste score"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:49
+msgid "Lowest Rating"
+msgstr "Laagste score"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:50
+msgid "Least Often Played"
+msgstr "Minst gespeeld"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:51
+msgid "Most Often Played"
+msgstr "Meest gespeeld"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:52
+msgid "Most Recently Added"
+msgstr "Meest recent toegevoegd"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:53
+msgid "Least Recently Added"
+msgstr "Minst recent toegevoegd"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:54
+msgid "Most Recently Played"
+msgstr "Meest recent gespeeld"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:55
+msgid "Least Recently Played"
+msgstr "Minst recent gespeeld "
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:60
+msgid "songs"
+msgstr "nummers"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:61
+msgid "minutes"
+msgstr "minuten"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:62
+msgid "hours"
+msgstr "uren"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:217
+msgid "Minutes"
+msgstr "Minuten"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:218
+msgid "Hours"
+msgstr "Uren"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:219
+msgid "Days"
+msgstr "Dagen"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:220
+msgid "Weeks"
+msgstr "Weken"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:221
+msgid "Months"
+msgstr "Maanden"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:222
+msgid "Years"
+msgstr "Jaren"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:335
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:360
+msgid "ago"
+msgstr "geleden"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:393
+msgid "Date Added"
+msgstr "Datum toegevoegd"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:394
+msgid "Last Played"
+msgstr "Laatst gespeeld"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:395
+msgid "Duration"
+msgstr "Duur"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:396
+msgid "Play Count"
+msgstr "Aantal maal gespeeld"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:397
+msgid "Rating"
+msgstr "Score"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:398
+msgid "Path"
+msgstr "Pad"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:399
+msgid "Year"
+msgstr "Jaar"

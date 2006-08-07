@@ -1,0 +1,18 @@
+2006-07-02  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* POTFILES.in: added SmartPlaylists/SmartPlaylist.cs
+
+	* nl.po: Dutch translation from P. van de Geer <pip@molyvos.net>
+
+	* LINGUAS: added nl
+
+2006-05-22  Aaron Bockover  <aaron@abock.org>
+
+	* POTFILES.in: initial set up from Øivind Hoel
+
+	* nb.po: Norwegian Bokmal translation from Øivind Hoel
+
+	* sr.po: Serbian translation from Горан Ракић 
+
+	* LINGUAS: added nb sr
+

@@ -1,0 +1,6 @@
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
+[assembly: AssemblyTitle("Banshee Smart Playlists Plugin")]
+[assembly: AssemblyDescription("Provides smart/automatic playlists for the Banshee Music Player")]
+

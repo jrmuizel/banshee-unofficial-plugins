@@ -7,7 +7,7 @@
   <property name="border_width">10</property>
   <property name="title" translatable="yes">Banshee</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
-  <property name="window_position">GTK_WIN_CENTER</property>
+  <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
   <property name="resizable">False</property>
   <property name="destroy_with_parent">False</property>
@@ -20,7 +20,7 @@
   <property name="urgency_hint">False</property>
 
   <child>
-    <widget class="GtkVBox" id="vbox1">
+    <widget class="GtkVBox" id="mini_mode_contents">
       <property name="visible">True</property>
       <property name="homogeneous">False</property>
       <property name="spacing">12</property>

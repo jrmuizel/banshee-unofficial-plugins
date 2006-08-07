@@ -13,6 +13,7 @@
       <Entry build="True" name="SmartPlaylists" configuration="Debug" />
     </Configuration>
   </Configurations>
+  <DeployTargets />
   <StartMode startupentry="Podcast" single="True">
     <Execute type="None" entry="Recommendation" />
     <Execute type="None" entry="MiniMode" />

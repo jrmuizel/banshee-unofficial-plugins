@@ -1,3 +1,19 @@
+2006-08-07  Aaron Bockover  <abock@gnome.org>
+
+	* banshee-official-plugins.mds:
+	* plugins/MiniMode/MiniMode.mdp:
+	* plugins/Recommendation/Recommendation.mdp: 
+	* plugins/SmartPlaylists/SmartPlaylists.mdp:
+	* plugins/Podcast/Podcast.mdp: Updated MonoDevelop projects
+
+	* plugins/MiniMode/MiniModePlugin.cs: Updated plugin description
+
+	* plugins/MiniMode/MiniModeWindow.cs: Removed old toggle states, using
+	from Banshee.Gui now (BGO #350295); only allow window resizing 
+	horizontally; clean up and review
+
+	* plugins/MiniMode/minimode.glade: Renamed base vbox widget
+
 2006-08-01  Mike Urbanski <michael.c.urbanski@gmail.com>
 	
 	* plugins/Podcast/FeedParsers/RFC822DateTime.cs: Now makes a best 

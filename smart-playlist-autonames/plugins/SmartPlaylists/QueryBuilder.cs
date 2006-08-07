@@ -296,7 +296,9 @@ namespace Banshee
 		{
 			get;
 		}
-		
+
+		public abstract void addChangedHandler (EventHandler o);
+
 		public abstract QueryFilter [] ValidFilters {
 			get;
 		}
@@ -430,6 +432,7 @@ namespace Banshee
 		
 		public event EventHandler AddRequest;
 		public event EventHandler RemoveRequest;
+		public event EventHandler MatchRowChanged;
 		
 		private bool canDelete;
 		
@@ -508,11 +511,14 @@ namespace Banshee
 			opBox.SetActiveIter(opIterFirst);
 		}
 		
+		
 		private void OnFieldComboBoxChanged(object o, EventArgs args)
 		{
 			TreeIter iter;
 			fieldBox.GetActiveIter(out iter);
 			Select(iter);
+
+			OnMatchRowChanged (o, args);
 		}
 		
 		private void OnOpComboBoxChanged(object o, EventArgs args)
@@ -525,8 +531,17 @@ namespace Banshee
 			
 			widgetBox.Foreach(WidgetBoxForeachRemoveChild);
 			widgetBox.Add(match.DisplayWidget);
+			match.addChangedHandler (OnMatchRowChanged);
+
+			OnMatchRowChanged (o, args);
 		}
-		
+
+		private void OnMatchRowChanged (object o, EventArgs args) {
+			EventHandler handler = MatchRowChanged;
+			if(handler != null)
+				handler(this, new EventArgs());		
+		}
+
 		private void WidgetBoxForeachRemoveChild(Widget widget)
 		{
 			widgetBox.Remove(widget);
@@ -607,6 +622,7 @@ namespace Banshee
 			row.CanDelete = canDelete;
 			row.AddRequest += OnRowAddRequest;
 			row.RemoveRequest += OnRowRemoveRequest;
+			row.MatchRowChanged += OnMatchRowChanged;
 
             if (first_row == null) {
                 first_row = row;
@@ -624,6 +640,26 @@ namespace Banshee
 		{
 			Remove(o as Widget);
 			UpdateCanDelete();
+		}
+
+		public void OnMatchRowChanged(object o, EventArgs args)
+		{
+			TreeIter iter;
+
+			string query = null;
+			for(int i = 0, n = Children.Length; i < n; i++) {
+				QueryBuilderMatchRow match = Children[i] as QueryBuilderMatchRow;
+				match.FieldBox.GetActiveIter(out iter);
+				string fieldName = (string)match.FieldBox.Model.GetValue(iter, 0);
+				match.FilterBox.GetActiveIter(out iter);
+				string opName = (string)match.FilterBox.Model.GetValue(iter, 0);
+				QueryMatch queryMatch = match.Match;
+				query += fieldName + " " + opName + " " + queryMatch.Value1;
+				if(i < n - 1)
+					query += " AND ";
+			}
+			Console.WriteLine("Hey!");
+			Console.WriteLine(query);
 		}
 		
 		public void UpdateCanDelete()

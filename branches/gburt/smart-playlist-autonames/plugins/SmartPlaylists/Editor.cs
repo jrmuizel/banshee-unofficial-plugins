@@ -52,6 +52,7 @@ namespace Banshee.Plugins.SmartPlaylists
             // Add the QueryBuilder widget
 			model = new TracksQueryModel();
 			builder = new QueryBuilder(model);
+			builder.MatchesBox.MatchChanged += OnMatchChanged;
 			builder.Show();
 			builder.Spacing = 4;
 
@@ -61,6 +62,11 @@ namespace Banshee.Plugins.SmartPlaylists
 
             Update();
         }
+
+		private void OnMatchChanged (object o, EventArgs args) {
+			Console.WriteLine (builder.MatchesBox.MatchDescription);
+            name_entry.Text = builder.MatchesBox.MatchDescription;
+		}
 
         public void SetQueryFromSearch()
         {

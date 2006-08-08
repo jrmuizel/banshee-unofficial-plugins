@@ -617,6 +617,8 @@ namespace Banshee
 
         private QueryBuilderMatchRow first_row = null;
 
+		public event EventHandler MatchChanged;
+
         public QueryBuilderMatchRow FirstRow {
             get { return first_row; }
         }
@@ -657,23 +659,30 @@ namespace Banshee
 
 		public void OnMatchRowChanged(object o, EventArgs args)
 		{
-			TreeIter iter;
-
-			string query = null;
-			for(int i = 0, n = Children.Length; i < n; i++) {
-				QueryBuilderMatchRow match = Children[i] as QueryBuilderMatchRow;
-				match.FieldBox.GetActiveIter(out iter);
-				string fieldName = (string)match.FieldBox.Model.GetValue(iter, 0);
-				match.FilterBox.GetActiveIter(out iter);
-				string opName = (string)match.FilterBox.Model.GetValue(iter, 0);
-				QueryMatch queryMatch = match.Match;
-				query += fieldName + " " + opName + " " + queryMatch.Value1;
-				if(i < n - 1)
-					query += " AND ";
-			}
-			Console.WriteLine("Hey!");
-			Console.WriteLine(query);
+			EventHandler handler = MatchChanged;
+			if (handler != null) 
+				handler (this, new EventArgs());
 		}
+
+        public string MatchDescription {
+            get {
+                TreeIter iter;
+
+                string query = null;
+                for(int i = 0, n = Children.Length; i < n; i++) {
+                    QueryBuilderMatchRow match = Children[i] as QueryBuilderMatchRow;
+                    match.FieldBox.GetActiveIter(out iter);
+                    string fieldName = (string)match.FieldBox.Model.GetValue(iter, 0);
+                    match.FilterBox.GetActiveIter(out iter);
+                    string opName = (string)match.FilterBox.Model.GetValue(iter, 0);
+                    QueryMatch queryMatch = match.Match;
+                    query += fieldName + " " + opName + " " + queryMatch.Value1;
+                    if(i < n - 1)
+                        query += " AND ";
+                }
+                return query;
+            }
+        }
 		
 		public void UpdateCanDelete()
 		{
@@ -734,7 +743,7 @@ namespace Banshee
 			PackStart(matchesFrame, true, true, 0);
 			PackStart(BuildLimitFooter(), false, false, 0);
 		}
-		
+
 		private HBox BuildMatchHeader()
 		{
 			HBox matchHeader = new HBox();

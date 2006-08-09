@@ -55,7 +55,6 @@ namespace Banshee.Plugins.Podcast
 
         static RFC822DateTime()
         {
-        	Console.WriteLine (rfc822DTExp);
             months = monthsStr.Split ('|');
             rfc822DTRegex = new Regex (rfc822DTExp, 
                 RegexOptions.Compiled | RegexOptions.IgnoreCase);

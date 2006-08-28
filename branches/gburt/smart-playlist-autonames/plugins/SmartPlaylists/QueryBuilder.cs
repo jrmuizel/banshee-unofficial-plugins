@@ -664,24 +664,22 @@ namespace Banshee
 				handler (this, new EventArgs());
 		}
 
-        public string MatchDescription {
-            get {
-                TreeIter iter;
+        public string getMatchDescription (string join) {
+			TreeIter iter;
 
-                string query = null;
-                for(int i = 0, n = Children.Length; i < n; i++) {
-                    QueryBuilderMatchRow match = Children[i] as QueryBuilderMatchRow;
-                    match.FieldBox.GetActiveIter(out iter);
-                    string fieldName = (string)match.FieldBox.Model.GetValue(iter, 0);
-                    match.FilterBox.GetActiveIter(out iter);
-                    string opName = (string)match.FilterBox.Model.GetValue(iter, 0);
-                    QueryMatch queryMatch = match.Match;
-                    query += fieldName + " " + opName + " " + queryMatch.Value1;
-                    if(i < n - 1)
-                        query += " AND ";
-                }
-                return query;
-            }
+			string query = null;
+			for(int i = 0, n = Children.Length; i < n; i++) {
+				QueryBuilderMatchRow match = Children[i] as QueryBuilderMatchRow;
+				match.FieldBox.GetActiveIter(out iter);
+				string fieldName = (string)match.FieldBox.Model.GetValue(iter, 0);
+				match.FilterBox.GetActiveIter(out iter);
+				string opName = (string)match.FilterBox.Model.GetValue(iter, 0);
+				QueryMatch queryMatch = match.Match;
+				query += queryMatch.Value1;
+				if(i < n - 1)
+					query += " " + join + " ";
+			}
+			return query;
         }
 		
 		public void UpdateCanDelete()
@@ -716,6 +714,9 @@ namespace Banshee
 		private Entry limitEntry;
 		private ComboBox limitComboBox;
 		private ComboBox orderComboBox;
+
+		public event EventHandler MatchLogicChanged;
+		public event EventHandler MatchLimitChanged;
 
         public QueryBuilderMatches MatchesBox {
             get { return matchesBox; }
@@ -758,6 +759,7 @@ namespace Banshee
 			matchLogicCombo = ComboBox.NewText();
 			matchLogicCombo.AppendText(Catalog.GetString("all"));
 			matchLogicCombo.AppendText(Catalog.GetString("any"));
+			matchLogicCombo.Changed += OnMatchLogicChanged;
 			matchLogicCombo.Show();
 			matchLogicCombo.Active = 0;
 			matchHeader.PackStart(matchLogicCombo, false, false, 0);
@@ -789,6 +791,7 @@ namespace Banshee
 			limitEntry = new Entry("25");
 			limitEntry.Show();
 			limitEntry.SetSizeRequest(50, -1);
+			limitEntry.Changed += OnLimitChanged;
 			limitFooter.PackStart(limitEntry, false, false, 0);
 			
 			limitComboBox = ComboBox.NewText();
@@ -796,6 +799,7 @@ namespace Banshee
 			foreach(string criteria in model.LimitCriteria)
 				limitComboBox.AppendText(criteria);
 			limitComboBox.Active = 0;
+			limitComboBox.Changed += OnLimitChanged;
 			limitFooter.PackStart(limitComboBox, false, false, 0);
 				
 			Label orderLabel = new Label(Catalog.GetString("selected by"));
@@ -807,6 +811,7 @@ namespace Banshee
 			foreach(string order in model.OrderCriteria)
 				orderComboBox.AppendText(order);
 			orderComboBox.Active = 0;
+			orderComboBox.Changed += OnLimitChanged;
 			limitFooter.PackStart(orderComboBox, false, false, 0);
 				
 			limitCheckBox.Active = false;
@@ -820,6 +825,17 @@ namespace Banshee
 			matchesBox.Sensitive = matchCheckBox.Active;
 			matchLogicCombo.Sensitive = matchCheckBox.Active;
 			matchLabelFollowing.Sensitive = matchCheckBox.Active;
+
+			EventHandler handler = MatchLogicChanged;
+			if (handler != null)
+				handler (o, args);
+		}
+
+		private void OnMatchLogicChanged (object o, EventArgs args)
+		{
+			EventHandler handler = MatchLogicChanged;
+			if (handler != null)
+				handler (o, args);
 		}
 		
 		private void OnLimitCheckBoxToggled(object o, EventArgs args)
@@ -827,6 +843,24 @@ namespace Banshee
 			limitEntry.Sensitive = limitCheckBox.Active;
 			limitComboBox.Sensitive = limitCheckBox.Active;
             orderComboBox.Sensitive = limitCheckBox.Active;
+
+			OnLimitChanged (o, args);
+		}
+
+		private void OnLimitChanged (object o, EventArgs args) 
+		{
+			EventHandler handler = MatchLimitChanged;
+			if (handler != null)
+				handler (o, args);		
+		}
+
+		public string MatchLogicType 
+		{
+			get {
+				TreeIter iter;
+				matchLogicCombo.GetActiveIter(out iter);
+				return (string) matchLogicCombo.Model.GetValue(iter, 0);
+			}
 		}
 		
 		public bool MatchesEnabled 
@@ -972,6 +1006,14 @@ namespace Banshee
 
 			set { limitComboBox.Active = value; }
 		}
+
+		public string LimitCriterionType {
+			get {
+				TreeIter iter;
+				limitComboBox.GetActiveIter(out iter);
+				return (string) limitComboBox.Model.GetValue(iter, 0);
+			}
+		}
 		
 		public bool Limit {
 			get {
@@ -994,6 +1036,14 @@ namespace Banshee
 
                 ComboBoxUtil.SetActiveString(orderComboBox, model.GetOrderName(value));
             }
+		}
+
+		public string LimitOrderBy {
+			get {
+				TreeIter iter;
+				orderComboBox.GetActiveIter(out iter);
+				return (string) orderComboBox.Model.GetValue(iter, 0);
+			}
 		}
 	}
 }

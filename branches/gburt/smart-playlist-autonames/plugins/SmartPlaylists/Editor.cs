@@ -53,6 +53,8 @@ namespace Banshee.Plugins.SmartPlaylists
 			model = new TracksQueryModel();
 			builder = new QueryBuilder(model);
 			builder.MatchesBox.MatchChanged += OnMatchChanged;
+			builder.MatchLogicChanged += OnMatchChanged;
+			builder.MatchLimitChanged += OnMatchChanged;
 			builder.Show();
 			builder.Spacing = 4;
 
@@ -64,8 +66,29 @@ namespace Banshee.Plugins.SmartPlaylists
         }
 
 		private void OnMatchChanged (object o, EventArgs args) {
-			Console.WriteLine (builder.MatchesBox.MatchDescription);
-            name_entry.Text = builder.MatchesBox.MatchDescription;
+			createPlaylistName ();
+		}
+
+		private void createPlaylistName () {
+			string matchDescription = "";
+
+			if (builder.MatchesEnabled) {
+				string join = builder.MatchLogicType;
+				if (join == "all") join = ",";
+				else join = "or";
+
+				matchDescription = builder.MatchesBox.getMatchDescription (join);
+			}
+
+			if (builder.Limit) {
+				string limitNumber = builder.LimitNumber;
+				string limitType = builder.LimitCriterionType;
+				string orderBy = builder.LimitOrderBy;
+				
+				matchDescription += " " + limitNumber + " " + limitType + " by " + orderBy;
+			}
+			Console.WriteLine (matchDescription);
+			name_entry.Text = matchDescription;
 		}
 
         public void SetQueryFromSearch()

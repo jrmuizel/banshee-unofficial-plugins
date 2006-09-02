@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: banshee-plugins\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-05-22 22:56+0200\n"
-"PO-Revision-Date: 2006-05-23 00:00+0100\n"
-"Last-Translator: Øivind Hoel <oivind.hoel@gmail.com>\n"
+"POT-Creation-Date: 2006-08-28 00:58+0200\n"
+"PO-Revision-Date: 2006-08-31 03:58+0100\n"
+"Last-Translator: Øivind Hoel <ohoel@cvs.gnome.org>\n"
 "Language-Team: Norwegian <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,174 +18,187 @@ msgstr ""
 "X-Poedit-Country: NORWAY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../plugins/MiniMode/MiniModePlugin.cs:27
-msgid "Mini Mode allows controlling Banshee through a small window with only playback controls"
-msgstr "Minispilleren tillater kontrol av Banshee gjennom et lite vindu med bare de mest nødvendige funksjonene"
+#: ../plugins/MiniMode/MiniModePlugin.cs:26
+msgid "Mini Mode allows controlling Banshee through a small window with only playback controls and track information."
+msgstr "Minispilleren tillater styring av Banshee gjennom et lite vindu med bare de mest nødvendige funksjonene."
 
-#: ../plugins/MiniMode/MiniModePlugin.cs:48
+#: ../plugins/MiniMode/MiniModePlugin.cs:50
 msgid "Mini mode"
 msgstr "Minispiller"
 
-#: ../plugins/MiniMode/MiniModeWindow.cs:250
-msgid "Banshee Music Player"
-msgstr "Banshee musikkavspiller"
-
-#: ../plugins/MiniMode/MiniModeWindow.cs:278
-msgid "Repeat None"
-msgstr "Gjenta ingen"
-
-#: ../plugins/MiniMode/MiniModeWindow.cs:288
-msgid "Repeat Single"
-msgstr "Gjenta enkeltspor"
-
-#: ../plugins/MiniMode/MiniModeWindow.cs:298
-msgid "Repeat All"
-msgstr "Gjenta alle"
-
-#: ../plugins/MiniMode/MiniModeWindow.cs:308
-msgid "Shuffle"
-msgstr "Tilfeldig"
-
-#: ../plugins/MiniMode/MiniModeWindow.cs:320
-msgid "Continuous"
-msgstr "Sammenhengende"
+#: ../plugins/Podcast/PodcastCore.cs:432
+msgid "Uri Scheme Not Supported"
+msgstr "Adressetypen er ikke støttet"
 
 #: ../plugins/Podcast/PodcastCore.cs:433
-msgid "Uri Shceme Not Supported"
-msgstr "Adressetype ikke støttet"
-
-#: ../plugins/Podcast/PodcastCore.cs:434
 msgid "Podcast feed URI scheme is not supported."
-msgstr "Adressetypen til denne Podcasten er ikke støttet."
+msgstr "Denne podcastens adressetype er ikke støttet."
 
-#: ../plugins/Podcast/PodcastCore.cs:446
+#: ../plugins/Podcast/PodcastCore.cs:445
 msgid "Invalid URL"
 msgstr "Ugyldig adresse"
 
-#: ../plugins/Podcast/PodcastCore.cs:447
+#: ../plugins/Podcast/PodcastCore.cs:446
 msgid "Podcast feed URL is invalid."
-msgstr "Podcast-adressen er ugyldig."
+msgstr "Podcastkildens adresse er ugyldig."
 
-#: ../plugins/Podcast/PodcastFeedFetcher.cs:232
+#: ../plugins/Podcast/PodcastCore.cs:516
+#, csharp-format
+msgid "Loading Podcast Feeds:  {0} ms"
+msgstr "Laster podcastkilder:  {0} ms"
+
+#: ../plugins/Podcast/PodcastCore.cs:714
+#, csharp-format
+msgid "Unable to add: {0} to library.  {1}"
+msgstr "Kunne ikke legge til {0} i biblioteket.  {1}"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:108
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:192
+msgid "Uri scheme not supported."
+msgstr "Adressetypen er ikke støttet."
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:225
 #, csharp-format
 msgid "Updating \"{0}\""
 msgstr "Oppdaterer \"{0}\""
 
-#: ../plugins/Podcast/PodcastFeedFetcher.cs:270
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:262
 msgid "Podcast Feed Update"
-msgstr "Oppdatering av podcaststrøm"
+msgstr "Oppdatering av podcastkilde"
 
-#: ../plugins/Podcast/PodcastFeedFetcher.cs:274
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:266
 msgid "Updating"
 msgstr "Oppdaterer"
 
-#: ../plugins/Podcast/PodcastFeedFetcher.cs:275
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:267
 msgid "Preparing to update feeds"
-msgstr "Forbereder oppdatering av strømmer"
+msgstr "Forbereder oppdatering av kilder"
 
-#: ../plugins/Podcast/PodcastFeedFetcher.cs:325
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:317
 #, csharp-format
 msgid "Updating podcast feed {0} of {1}"
-msgstr "Oppdaterer podcaststrøm {0} av {1}"
+msgstr "Oppdaterer podcastkilde {0} av {1}"
 
-#: ../plugins/Podcast/PodcastFeedFetcher.cs:346
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:338
 msgid "Canceling updates"
 msgstr "Avbryter oppdateringer"
 
-#: ../plugins/Podcast/PodcastFeedFetcher.cs:347
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:339
 msgid "Waiting for update to terminate"
 msgstr "Venter på avbrytning av oppdatering"
 
-#: ../plugins/Podcast/PodcastPlugin.cs:45
-#: ../plugins/Podcast/PodcastPlugin.cs:108
+#: ../plugins/Podcast/PodcastPlugin.cs:43
+#: ../plugins/Podcast/PodcastPlugin.cs:111
 msgid "Podcast"
 msgstr "Podcast"
 
-#: ../plugins/Podcast/PodcastPlugin.cs:47
+#: ../plugins/Podcast/PodcastPlugin.cs:45
 msgid "Podcasting"
 msgstr "Podcasting"
 
-#: ../plugins/Podcast/PodcastPlugin.cs:53
+#: ../plugins/Podcast/PodcastPlugin.cs:52
 msgid "Next generation radio content, where you want it, when you want it."
 msgstr "Moderne radioinnhold - der og når du selv vil ha det."
 
-#: ../plugins/Podcast/PodcastPlugin.cs:54
-msgid "\"Let the feast of 1,000 hams begin!\""
-msgstr "\"La pølsefesten begynne!\""
+#: ../plugins/Podcast/PodcastPlugin.cs:53
+msgid "\"Hey, guess what you're accessories to.\""
+msgstr ""
 
-#: ../plugins/Podcast/PodcastPlugin.cs:109
+#: ../plugins/Podcast/PodcastPlugin.cs:112
 msgid "Manage the Podcast plugin"
 msgstr "Endre innstillinger for Podcast-innstikket"
 
-#: ../plugins/Podcast/PodcastPlugin.cs:112
+#: ../plugins/Podcast/PodcastPlugin.cs:115
 msgid "Update Feeds"
-msgstr "Oppdater strømmer"
+msgstr "Oppdater kilder"
 
-#: ../plugins/Podcast/PodcastPlugin.cs:113
+#: ../plugins/Podcast/PodcastPlugin.cs:116
 msgid "Update Subscribed Podcast Feeds"
-msgstr "Oppdater podcaststrømmer som abonneres på"
+msgstr "Oppdater podcastkilder som abonneres på"
 
-#: ../plugins/Podcast/PodcastPlugin.cs:117
-#: ../plugins/Podcast/UI/PodcastSource.cs:593
-#: ../plugins/Podcast/UI/PodcastSource.cs:649
+#: ../plugins/Podcast/PodcastPlugin.cs:120
+#: ../plugins/Podcast/UI/PodcastSource.cs:598
+#: ../plugins/Podcast/UI/PodcastSource.cs:654
 msgid "Subscribe to New Feed"
-msgstr "Abonner på ny strøm"
+msgstr "Abonner på ny kilde"
 
-#: ../plugins/Podcast/PodcastPlugin.cs:118
+#: ../plugins/Podcast/PodcastPlugin.cs:121
 #: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:68
 msgid "Subscribe to New Podcast Feed"
-msgstr "Abonner på ny podcaststrøm"
+msgstr "Abonner på ny podcast"
 
-#: ../plugins/Podcast/PodcastPlugin.cs:122
-#: ../plugins/Podcast/UI/PodcastSource.cs:603
+#: ../plugins/Podcast/PodcastPlugin.cs:125
+#: ../plugins/Podcast/UI/PodcastSource.cs:608
 msgid "Visit Podcast Alley"
 msgstr "Besøk Podcast Alley"
 
-#: ../plugins/Podcast/PodcastPlugin.cs:123
+#: ../plugins/Podcast/PodcastPlugin.cs:126
 msgid "Find New Podcasts at PodcastAlley.com"
 msgstr "Finn nye podcaster på PodcastAlley.com"
 
-#: ../plugins/Podcast/StringUtils.cs:30
+#: ../plugins/Podcast/StringUtils.cs:28
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: ../plugins/Podcast/StringUtils.cs:33
+#: ../plugins/Podcast/StringUtils.cs:31
 #, csharp-format
 msgid "{0} and others"
 msgstr "{0} og andre"
 
-#: ../plugins/Podcast/StringUtils.cs:36
+#: ../plugins/Podcast/StringUtils.cs:34
 #, csharp-format
 msgid "{0} and {1}"
 msgstr "{0} og {1}"
 
-#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:493
-#: ../plugins/Podcast/UI/PodcastSource.cs:720
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:175
+msgid "DownloadCore is shutting down."
+msgstr "DownloadCore stenges ned."
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:179
+msgid "dif not in 'New' state."
+msgstr ""
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:201
+msgid "Download already queued."
+msgstr "Nedlasting allerede i kø."
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:286
+msgid "uri is empty"
+msgstr "adresse er tom"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:290
+msgid "path is empty"
+msgstr "sti er tom"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:491
+#: ../plugins/Podcast/UI/PodcastSource.cs:725
 msgid "Download"
 msgstr "Last ned"
 
-#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:497
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:494
 msgid "Downloading Files"
 msgstr "Laster ned filer"
 
-#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:498
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:495
 msgid "Initializing downloads"
 msgstr "Starter nedlastinger"
 
-#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:534
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:531
 msgid "Canceling Downloads"
 msgstr "Avbryter nedlastinger"
 
-#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:536
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:532
 msgid "Waiting for downloads to terminate"
 msgstr "Venter på avslutning av nedlastinger"
 
-#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:624
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:620
 #, csharp-format
-msgid "Downloading Files ({0} of {1} completed)"
-msgstr "Laster ned filer ({0} av {1} ferdig)"
+msgid "Downloading File"
+msgid_plural "Downloading Files ({0} of {1} completed)"
+msgstr[0] "Laster ned fil"
+msgstr[1] "Laster ned filer ({0} av {1} fullført)"
 
-#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:630
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:629
 #, csharp-format
 msgid ""
 "Downloading Files ({0} of {1} completed)\n"
@@ -194,15 +207,12 @@ msgstr ""
 "Laster ned filer ({0} av {1} ferdig)\n"
 "{2} mislykkes"
 
-#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:638
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:635
 #, csharp-format
 msgid "Currently transfering 1 file at {0} kB/s"
-msgstr "Overfører 1 fil ved {0} kB/s"
-
-#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:643
-#, csharp-format
-msgid "Currently transfering {0} files at {1} kB/s"
-msgstr "Overfører {0} filer ved {1} kB/s"
+msgid_plural "Currently transfering {1} files at {0} kB/s"
+msgstr[0] "Overfører 1 fil ved {0} kB/s"
+msgstr[1] "Overfører {1} filer ved {0} kB/s"
 
 #: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:72
 #: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:88
@@ -221,7 +231,7 @@ msgstr "Adresse:"
 
 #: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:88
 msgid "When feed is updated:"
-msgstr "Når strøm oppdateres:"
+msgstr "Når kilde oppdateres:"
 
 #: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:105
 #: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:105
@@ -230,91 +240,98 @@ msgstr "Ingen beskrivelse er oppgitt"
 
 #: ../plugins/Podcast/UI/PodcastFeedView.cs:84
 msgid "Feeds"
-msgstr "Stømmer"
+msgstr "Kilder"
 
 #: ../plugins/Podcast/UI/PodcastFeedView.cs:150
 msgid "All"
 msgstr "Alle"
 
-#: ../plugins/Podcast/UI/PodcastFeedView.cs:201
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:185
+#, csharp-format
+msgid "{0} Feed"
+msgid_plural "{0} Feeds"
+msgstr[0] "{0} Kilde"
+msgstr[1] "{0} Kilder"
+
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:202
 msgid "Episode"
 msgid_plural "Episodes"
 msgstr[0] "Episode"
 msgstr[1] "Episoder"
 
-#: ../plugins/Podcast/UI/PodcastFeedView.cs:206
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:207
 msgid "New"
 msgstr "Ny"
 
-#: ../plugins/Podcast/UI/PodcastPlaylistView.cs:93
-#: ../plugins/Radio/StationDialog.cs:108
+#: ../plugins/Podcast/UI/PodcastPlaylistView.cs:92
+#: ../plugins/Radio/StationDialog.cs:107
 #: ../plugins/SmartPlaylists/QueryBuilderModel.cs:48
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:391
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:708
 msgid "Title"
 msgstr "Tittel"
 
-#: ../plugins/Podcast/UI/PodcastPlaylistView.cs:94
+#: ../plugins/Podcast/UI/PodcastPlaylistView.cs:93
 msgid "Feed"
-msgstr "Strøm"
+msgstr "Kilde"
 
-#: ../plugins/Podcast/UI/PodcastPlaylistView.cs:95
+#: ../plugins/Podcast/UI/PodcastPlaylistView.cs:94
 msgid "Date"
 msgstr "Dato"
 
 #: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:76
 msgid "Feed:"
-msgstr "Strøm:"
+msgstr "Kilde:"
 
 #: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:80
 msgid "Date:"
 msgstr "Dato:"
 
-#: ../plugins/Podcast/UI/PodcastSource.cs:74
+#: ../plugins/Podcast/UI/PodcastSource.cs:79
 msgid "Podcasts"
 msgstr "Podcaster"
 
-#: ../plugins/Podcast/UI/PodcastSource.cs:598
+#: ../plugins/Podcast/UI/PodcastSource.cs:603
 msgid "Update All Feeds"
-msgstr "Oppdater alle strømmer"
+msgstr "Oppdater alle kilder"
 
-#: ../plugins/Podcast/UI/PodcastSource.cs:638
+#: ../plugins/Podcast/UI/PodcastSource.cs:643
 msgid "Subscribed"
 msgstr "Abonnerer"
 
-#: ../plugins/Podcast/UI/PodcastSource.cs:641
+#: ../plugins/Podcast/UI/PodcastSource.cs:646
 msgid "Update Feed"
-msgstr "Oppdater strøm"
+msgstr "Oppdater kilde"
 
-#: ../plugins/Podcast/UI/PodcastSource.cs:645
+#: ../plugins/Podcast/UI/PodcastSource.cs:650
 msgid "Delete Feed"
-msgstr "Slett strøm"
+msgstr "Slett kilde"
 
-#: ../plugins/Podcast/UI/PodcastSource.cs:653
+#: ../plugins/Podcast/UI/PodcastSource.cs:658
 msgid "Homepage"
 msgstr "Hjemmeside"
 
-#: ../plugins/Podcast/UI/PodcastSource.cs:657
-#: ../plugins/Podcast/UI/PodcastSource.cs:740
+#: ../plugins/Podcast/UI/PodcastSource.cs:662
+#: ../plugins/Podcast/UI/PodcastSource.cs:745
 msgid "Properties"
 msgstr "Egenskaper"
 
-#: ../plugins/Podcast/UI/PodcastSource.cs:716
+#: ../plugins/Podcast/UI/PodcastSource.cs:721
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ../plugins/Podcast/UI/PodcastSource.cs:726
+#: ../plugins/Podcast/UI/PodcastSource.cs:731
 msgid "Remove Podcast(s)"
 msgstr "Fjern Podcast(er)"
 
-#: ../plugins/Podcast/UI/PodcastSource.cs:730
+#: ../plugins/Podcast/UI/PodcastSource.cs:735
 msgid "Select All"
 msgstr "Velg alle"
 
-#: ../plugins/Podcast/UI/PodcastSource.cs:733
+#: ../plugins/Podcast/UI/PodcastSource.cs:738
 msgid "Select None"
 msgstr "Velg ingen"
 
-#: ../plugins/Podcast/UI/PodcastSource.cs:736
+#: ../plugins/Podcast/UI/PodcastSource.cs:741
 msgid "Link"
 msgstr "Lenke"
 
@@ -343,205 +360,248 @@ msgstr "Last ned den siste episoden"
 msgid "Let me decide which episodes to download"
 msgstr "La meg bestemme hvilke episoder som skal lastes ned"
 
-#: ../plugins/Radio/RadioPlugin.cs:46
+#: ../plugins/Radio/RadioPlugin.cs:45
 msgid "Provides Internet radio/streaming audio station support"
-msgstr "Lar deg høre på internett-radio."
+msgstr "Lar deg høre på internett-radio"
 
-#: ../plugins/Radio/RadioPlugin.cs:85
+#: ../plugins/Radio/RadioPlugin.cs:88
 msgid "New Radio Station..."
 msgstr "Ny radiostasjon..."
 
-#: ../plugins/Radio/RadioPlugin.cs:86
+#: ../plugins/Radio/RadioPlugin.cs:89
 msgid "Add a new streaming radio station"
-msgstr "Legg til en ny internettradiostasjon"
+msgstr "Legg til en ny internett-radiostasjon"
 
-#: ../plugins/Radio/RadioPlugin.cs:92
+#: ../plugins/Radio/RadioPlugin.cs:95
 msgid "Edit Station"
 msgstr "Rediger stasjon"
 
-#: ../plugins/Radio/RadioPlugin.cs:93
-msgid "Edit selected streaming radio station"
-msgstr "Rediger valgt internettradiostasjon"
-
 #: ../plugins/Radio/RadioPlugin.cs:96
+msgid "Edit selected streaming radio station"
+msgstr "Rediger valgt internett-radiostasjon"
+
+#: ../plugins/Radio/RadioPlugin.cs:99
 msgid "Remove Station"
 msgstr "Fjern stasjon"
 
-#: ../plugins/Radio/RadioPlugin.cs:97
+#: ../plugins/Radio/RadioPlugin.cs:100
 msgid "Remove selected streaming radio station"
-msgstr "Fjern valgt internettradiostasjon"
+msgstr "Fjern valgt internett-radiostasjon"
 
-#: ../plugins/Radio/RadioSource.cs:63
+#: ../plugins/Radio/RadioSource.cs:62
 msgid "Internet Radio"
 msgstr "Internettradio"
 
-#: ../plugins/Radio/RadioSource.cs:99
+#: ../plugins/Radio/RadioSource.cs:98
 msgid "Station"
 msgstr "Stasjon"
 
-#: ../plugins/Radio/RadioSource.cs:100
+#: ../plugins/Radio/RadioSource.cs:99
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: ../plugins/Radio/RadioSource.cs:101
-#: ../plugins/Radio/StationDialog.cs:159
+#: ../plugins/Radio/RadioSource.cs:100
+#: ../plugins/Radio/StationDialog.cs:158
 msgid "Stream"
-msgstr "Strøm"
+msgstr "Kilde"
 
-#: ../plugins/Radio/StationDialog.cs:106
+#: ../plugins/Radio/StationDialog.cs:105
 msgid "Active"
 msgstr "Aktiv"
 
-#: ../plugins/Radio/StationDialog.cs:107
+#: ../plugins/Radio/StationDialog.cs:106
 msgid "Type"
 msgstr "Type"
 
-#: ../plugins/Radio/StationDialog.cs:109
+#: ../plugins/Radio/StationDialog.cs:108
 msgid "URI"
 msgstr "Adresse"
 
-#: ../plugins/Radio/StationDialog.cs:160
+#: ../plugins/Radio/StationDialog.cs:159
 msgid "Information"
 msgstr "Informasjon"
 
-#: ../plugins/Recommendation/RecommendationPane.cs:59
+#: ../plugins/Recommendation/RecommendationPane.cs:107
 msgid "Recommended Artists"
 msgstr "Anbefalte artister"
 
-#: ../plugins/Recommendation/RecommendationPane.cs:186
-msgid "Top Tracks by"
-msgstr "Beste spor av"
+#: ../plugins/Recommendation/RecommendationPane.cs:135
+msgid "No similar artists found"
+msgstr "Fant ingen lignende artister"
 
-#: ../plugins/Recommendation/RecommendationPane.cs:187
-msgid "Top Albums by"
-msgstr "Beste album av"
+#: ../plugins/Recommendation/RecommendationPane.cs:207
+#, csharp-format
+msgid "Top Tracks by {0}"
+msgstr "Beste spor av {0}"
 
-#: ../plugins/Recommendation/RecommendationPane.cs:245
-msgid "similarity"
-msgstr "likhet"
+#: ../plugins/Recommendation/RecommendationPane.cs:209
+#, csharp-format
+msgid "Top Albums by {0}"
+msgstr "Beste album av {0}"
 
-#: ../plugins/Recommendation/RecommendationPlugin.cs:15
+#. translators: 25% similarity
+#: ../plugins/Recommendation/RecommendationPane.cs:325
+#, csharp-format
+msgid "{0}% similarity"
+msgstr "{0}% lik"
+
+#: ../plugins/Recommendation/RecommendationPlugin.cs:43
 msgid "Music Recommendations"
 msgstr "Musikkanbefalinger"
 
-#: ../plugins/Recommendation/RecommendationPlugin.cs:19
-msgid "Automatically recommends music that you might like. The recommendations are based on the what song you are listening to at the moment, and finds artists and popular songs that others, that share your taste in music, prefers."
+#: ../plugins/Recommendation/RecommendationPlugin.cs:48
+msgid "Automatically recommends music that you might like, based on the currently playing song. It finds artists and popular songs that others with similar musical tastes enjoy."
 msgstr "Anbefaler automatisk musikk du sannsynligvis vil like. Anbefalingene er basert på hvilken sang du hører på for øyeblikket, og finner artister og populære sanger som andre med lignende musikksmak foretrekker."
 
-#: ../plugins/Recommendation/RecommendationPlugin.cs:70
-#: ../plugins/Recommendation/RecommendationPlugin.cs:71
+#: ../plugins/Recommendation/RecommendationPlugin.cs:118
+#: ../plugins/Recommendation/RecommendationPlugin.cs:119
 msgid "Show Recommendations"
 msgstr "Vis anbefalinger"
 
-#: ../plugins/SmartPlaylists/Editor.cs:31
+#: ../plugins/SmartPlaylists/Editor.cs:33
 msgid "Edit Smart Playlist"
 msgstr "Rediger smart spilleliste"
 
-#: ../plugins/SmartPlaylists/Editor.cs:47
+#: ../plugins/SmartPlaylists/Editor.cs:50
 msgid "New Smart Playlist"
 msgstr "Ny smart spilleliste"
 
-#: ../plugins/SmartPlaylists/Editor.cs:114
+#: ../plugins/SmartPlaylists/Editor.cs:93
+msgid "Artist Name"
+msgstr "Artistnavn"
+
+#: ../plugins/SmartPlaylists/Editor.cs:95
+msgid "Song Name"
+msgstr "Tittel"
+
+#: ../plugins/SmartPlaylists/Editor.cs:97
+msgid "Album Title"
+msgstr "Albumtittel"
+
+#: ../plugins/SmartPlaylists/Editor.cs:99
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:47
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:710
+msgid "Genre"
+msgstr "Sjanger"
+
+#: ../plugins/SmartPlaylists/Editor.cs:101
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:718
+msgid "Year"
+msgstr "År"
+
+#: ../plugins/SmartPlaylists/Editor.cs:118
+msgid "Create Smart Playlist from Search"
+msgstr "Opprett smart spilleliste basert på søk"
+
+#: ../plugins/SmartPlaylists/Editor.cs:188
 msgid "This name is already in use"
 msgstr "Dette navnet er allerede i bruk"
 
-#: ../plugins/SmartPlaylists/Plugin.cs:25
+#: ../plugins/SmartPlaylists/Plugin.cs:34
 msgid "Smart Playlists"
 msgstr "Smarte spillelister"
 
-#: ../plugins/SmartPlaylists/Plugin.cs:31
-msgid "Allows for playlists based on a set of parameters"
-msgstr "Tillater spillelister basert på gitte kriterier"
+#: ../plugins/SmartPlaylists/Plugin.cs:40
+msgid "Create playlists that automatically add and remove songs based on customizable queries."
+msgstr "Lag spillelister som automatisk legger til og fjerner spor basert på egendefinerte spørringer."
 
-#: ../plugins/SmartPlaylists/Plugin.cs:88
+#: ../plugins/SmartPlaylists/Plugin.cs:131
 msgid "New Smart Playlist..."
 msgstr "Ny smart spilleliste..."
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:142
+#: ../plugins/SmartPlaylists/Plugin.cs:137
+msgid "New Smart Playlist from Search..."
+msgstr "Ny smart spilleliste basert på søk..."
+
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:151
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:164
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:174
 msgid "is"
 msgstr "er"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:147
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:156
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:169
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:179
 msgid "is not"
 msgstr "er ikke"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:152
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:184
 msgid "is less than"
 msgstr "er mindre enn"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:157
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:189
 msgid "is greater than"
 msgstr "er større enn"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:162
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:194
 msgid "more than"
 msgstr "mer enn"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:167
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:199
 msgid "less than"
 msgstr "mindre enn"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:172
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:204
 msgid "is at least"
 msgstr "er minst"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:177
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:209
 msgid "contains"
 msgstr "inneholder"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:182
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:214
 msgid "does not contain"
 msgstr "inneholder ikke"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:187
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:219
 msgid "starts with"
 msgstr "starter med"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:192
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:224
 msgid "ends with"
 msgstr "slutter med"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:197
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:229
 msgid "is before"
 msgstr "er før"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:202
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:234
 msgid "is after"
 msgstr "er etter"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:207
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:239
 msgid "is between"
 msgstr "er mellom"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:212
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:244
 msgid "between"
 msgstr "mellom"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:282
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:321
 msgid "to"
 msgstr "til"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:633
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:694
 msgid "_Match"
 msgstr "_Bruk"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:640
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:701
 msgid "all"
 msgstr "alle"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:641
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:702
 msgid "any"
 msgstr "hvilket som helst"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:646
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:707
 msgid "of the following:"
 msgstr "av følgende kriterier:"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:665
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:726
 msgid "_Limit to"
 msgstr "_Begrens til"
 
-#: ../plugins/SmartPlaylists/QueryBuilder.cs:682
+#: ../plugins/SmartPlaylists/QueryBuilder.cs:743
 msgid "selected by"
 msgstr "valgt etter"
 
@@ -550,19 +610,14 @@ msgid "Random"
 msgstr "Tilfeldig"
 
 #: ../plugins/SmartPlaylists/QueryBuilderModel.cs:45
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:392
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:709
 msgid "Album"
 msgstr "Album"
 
 #: ../plugins/SmartPlaylists/QueryBuilderModel.cs:46
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:390
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:707
 msgid "Artist"
 msgstr "Artist"
-
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:47
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:393
-msgid "Genre"
-msgstr "Sjanger"
 
 #: ../plugins/SmartPlaylists/QueryBuilderModel.cs:49
 msgid "Highest Rating"
@@ -608,60 +663,103 @@ msgstr "minutter"
 msgid "hours"
 msgstr "timer"
 
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:218
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:64
+msgid "MB"
+msgstr "MB"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:324
+msgid "Seconds"
+msgstr "Sekunder"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:325
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:459
 msgid "Minutes"
 msgstr "Minutter"
 
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:219
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:326
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:460
 msgid "Hours"
 msgstr "Timer"
 
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:220
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:461
 msgid "Days"
 msgstr "Dager"
 
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:221
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:462
 msgid "Weeks"
 msgstr "Uker"
 
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:222
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:463
 msgid "Months"
 msgstr "Måneder"
 
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:223
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:464
 msgid "Years"
 msgstr "År"
 
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:336
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:361
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:576
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:601
 msgid "ago"
 msgstr "siden"
 
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:394
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:711
 msgid "Date Added"
 msgstr "Dato lagt til"
 
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:395
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:712
 msgid "Last Played"
 msgstr "Sist spilt"
 
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:396
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:713
 msgid "Duration"
 msgstr "Varighet"
 
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:397
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:714
 msgid "Play Count"
 msgstr "Antall avspillinger"
 
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:398
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:715
+msgid "Playlist"
+msgstr "Spilleliste"
+
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:716
 msgid "Rating"
 msgstr "Poengsum"
 
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:399
+#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:717
 msgid "Path"
 msgstr "Plassering"
 
-#: ../plugins/SmartPlaylists/QueryBuilderModel.cs:400
-msgid "Year"
-msgstr "År"
+#: ../plugins/SmartPlaylists/SmartPlaylist.cs:70
+msgid "Delete Smart Playlist"
+msgstr "Slett smart spilleliste"
+
+#: ../plugins/SmartPlaylists/SmartPlaylist.cs:74
+msgid "Smart Playlist"
+msgstr "Smart spilleliste"
+
+#: ../plugins/SmartPlaylists/smart-playlist.glade.h:1
+msgid "Playlist _Name: "
+msgstr "_Navn:"
+
+#~ msgid "Banshee Music Player"
+#~ msgstr "Banshee musikkavspiller"
+#~ msgid "Repeat None"
+#~ msgstr "Gjenta ingen"
+#~ msgid "Repeat Single"
+#~ msgstr "Gjenta enkeltspor"
+#~ msgid "Repeat All"
+#~ msgstr "Gjenta alle"
+#~ msgid "Shuffle"
+#~ msgstr "Tilfeldig"
+#~ msgid "Continuous"
+#~ msgstr "Sammenhengende"
+#~ msgid "\"Let the feast of 1,000 hams begin!\""
+#~ msgstr "\"La pølsefesten begynne!\""
+#~ msgid "Downloading Files ({0} of {1} completed)"
+#~ msgstr "Laster ned filer ({0} av {1} ferdig)"
+#~ msgid "Currently transfering {0} files at {1} kB/s"
+#~ msgstr "Overfører {0} filer ved {1} kB/s"
+#~ msgid "Allows for playlists based on a set of parameters"
+#~ msgstr "Tillater spillelister basert på gitte kriterier"
 

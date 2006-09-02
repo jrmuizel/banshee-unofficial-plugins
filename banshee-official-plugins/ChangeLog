@@ -1,3 +1,7 @@
+2006-09-02  Aaron Bockover  <abock@gnome.org>
+
+	* plugins/Podcast/PodcastInfo.cs: Fix build with latest Banshee CVS
+
 2006-08-07  Aaron Bockover  <abock@gnome.org>
 
 	* banshee-official-plugins.mds:

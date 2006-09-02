@@ -124,7 +124,7 @@ namespace Banshee.Plugins.Podcast
                     {
                         track = (TrackInfo)
                                 Globals.Library.TracksFnKeyed[
-                                    Library.MakeFilenameKey (new SafeUri (local_path))
+                                    Banshee.Base.Library.MakeFilenameKey (new SafeUri (local_path))
                                 ];
                     }
                     catch {}

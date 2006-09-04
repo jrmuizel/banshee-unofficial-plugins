@@ -1,3 +1,9 @@
+2006-09-04  Ruben Vermeersch <ruben@Lambda1.be>
+
+	* plugins/Podcast/DownloadCore/Dispatcher.cs: Only run the dispatcher
+	thread when needed. This woke up banshee every 32ms, even when doing
+	nothing (causing way too much cpu usage).
+
 2006-09-02  Aaron Bockover  <abock@gnome.org>
 
 	* plugins/Podcast/PodcastInfo.cs: Fix build with latest Banshee CVS

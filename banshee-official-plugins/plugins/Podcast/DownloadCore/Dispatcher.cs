@@ -43,6 +43,7 @@ namespace Banshee.Plugins.Podcast.Download
         private readonly object init_sync = new object ();
 
         private Thread dispatchThread;
+        private object dispatchThreadMonitor = new object ();
 
         private TransferStatusManager tsm;
         private DownloadQueue download_queue;
@@ -66,7 +67,11 @@ namespace Banshee.Plugins.Podcast.Download
                 { return enabled; } }
             set
                 { lock (enabled_sync)
-                { enabled = value; } }
+                { enabled = value; 
+                  Monitor.Enter(dispatchThreadMonitor);
+                  Monitor.Pulse(dispatchThreadMonitor);
+                  Monitor.Exit(dispatchThreadMonitor);
+                } }
         }
 
         public object SyncRoot { get
@@ -141,7 +146,7 @@ namespace Banshee.Plugins.Podcast.Download
             if (max < 0)
             {
                 throw new ArgumentOutOfRangeException(Catalog.GetString
-			  ("Maximum number of concurrent downloads cannot be less than 0."));
+                        ("Maximum number of concurrent downloads cannot be less than 0."));
             }
 
             int delta = 0;
@@ -217,6 +222,10 @@ namespace Banshee.Plugins.Podcast.Download
                     {
                         StartDownloadTask (dif);
                     }
+                } else {
+                    Monitor.Enter(dispatchThreadMonitor);    
+                    Monitor.Wait(dispatchThreadMonitor);
+                    Monitor.Exit(dispatchThreadMonitor);
                 }
 
                 Thread.Sleep(32);

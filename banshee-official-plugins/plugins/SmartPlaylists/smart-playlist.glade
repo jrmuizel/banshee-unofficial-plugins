@@ -2,7 +2,7 @@
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
 <!-- Generated with glade3
 	Version: 3.0.0
-	Date: Mon Sep  4 21:44:24 2006
+	Date: Mon Sep  4 23:23:16 2006
 	User: gabe
 	Host: ubuntu
 -->
@@ -64,81 +64,98 @@
             <property name="use_underline">True</property>
             <property name="spacing">8</property>
             <child>
-              <widget class="GtkHBox" id="adv_box">
+              <widget class="GtkAlignment" id="alignment1">
                 <property name="visible">True</property>
+                <property name="left_padding">22</property>
                 <child>
-                  <widget class="GtkScrolledWindow" id="scrolledwindow1">
-                    <property name="visible">True</property>
-                    <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                    <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                    <property name="shadow_type">GTK_SHADOW_IN</property>
-                    <child>
-                      <widget class="GtkTreeView" id="adv_tree_view">
-                        <property name="visible">True</property>
-                        <property name="headers_visible">False</property>
-                      </widget>
-                    </child>
-                  </widget>
-                </child>
-                <child>
-                  <widget class="GtkVButtonBox" id="vbuttonbox1">
+                  <widget class="GtkVBox" id="vbox1">
                     <property name="visible">True</property>
                     <property name="spacing">8</property>
-                    <property name="layout_style">GTK_BUTTONBOX_START</property>
                     <child>
-                      <widget class="GtkButton" id="adv_use_button">
+                      <widget class="GtkHBox" id="adv_box">
                         <property name="visible">True</property>
                         <child>
-                          <widget class="GtkHBox" id="hbox2">
+                          <widget class="GtkScrolledWindow" id="scrolledwindow1">
                             <property name="visible">True</property>
+                            <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                            <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                            <property name="shadow_type">GTK_SHADOW_IN</property>
                             <child>
-                              <widget class="GtkImage" id="image1">
+                              <widget class="GtkTreeView" id="adv_tree_view">
+                                <property name="height_request">130</property>
                                 <property name="visible">True</property>
-                                <property name="stock">gtk-apply</property>
+                                <property name="headers_visible">False</property>
+                                <property name="enable_search">False</property>
                               </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                              </packing>
+                            </child>
+                          </widget>
+                        </child>
+                        <child>
+                          <widget class="GtkVButtonBox" id="vbuttonbox1">
+                            <property name="visible">True</property>
+                            <property name="spacing">8</property>
+                            <property name="layout_style">GTK_BUTTONBOX_START</property>
+                            <child>
+                              <widget class="GtkButton" id="adv_use_button">
+                                <property name="visible">True</property>
+                                <child>
+                                  <widget class="GtkHBox" id="hbox2">
+                                    <property name="visible">True</property>
+                                    <child>
+                                      <widget class="GtkImage" id="image1">
+                                        <property name="visible">True</property>
+                                        <property name="stock">gtk-apply</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="GtkLabel" id="label2">
+                                        <property name="visible">True</property>
+                                        <property name="label" translatable="yes">Use as Template</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                </child>
+                              </widget>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="label2">
+                              <widget class="GtkButton" id="adv_add_button">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">Use as Template</property>
+                                <property name="label" translatable="yes">gtk-add</property>
+                                <property name="use_stock">True</property>
                               </widget>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
                           </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="padding">8</property>
+                            <property name="position">1</property>
+                          </packing>
                         </child>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkButton" id="adv_add_button">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">gtk-add</property>
-                        <property name="use_stock">True</property>
                       </widget>
                       <packing>
                         <property name="position">1</property>
                       </packing>
                     </child>
                   </widget>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="padding">8</property>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
               </widget>
             </child>
             <child>
               <widget class="GtkLabel" id="advanced_label">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Advanced Options</property>
+                <property name="label" translatable="yes">Predefined Smart Playlists</property>
                 <property name="use_underline">True</property>
               </widget>
               <packing>

@@ -68,7 +68,7 @@ namespace Banshee.Plugins.SmartPlaylists
 
             list_model.AppendValues (
                 Catalog.GetString ("Neglected Favorites"),
-                " (Rating > 4) AND ((strftime(\"%s\", current_timestamp) - LastPlayedStamp + 3600) > 2592000) ",
+                " (Rating > 3) AND ((strftime(\"%s\", current_timestamp) - LastPlayedStamp + 3600) > 2592000) ",
                 null, "0", 0);
 
             // TODO this one is broken, not supported by the condition GUI

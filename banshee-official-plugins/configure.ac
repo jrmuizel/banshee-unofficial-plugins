@@ -138,20 +138,6 @@ else
 	AM_CONDITIONAL(ENABLE_RECOMMENDATION, false)
 fi
 
-AC_ARG_ENABLE(smart-playlists, AC_HELP_STRING(--disable-smart-playlists, [Do not build smart playlists plugin]), enable_smart_playlists=no, enable_smart_playlists=yes)
-
-if test "x$enable_smart_playlists" = "xyes"; then 
-	if test "x$banshee_0_10" = "xno"; then	
-		ENABLED_PLUGINS="$ENABLED_PLUGINS SmartPlaylists"
-	else
-		AC_MSG_ERROR([The Smart Playlists plugin requires Banshee 0.11.0-cvs or better. Please pass --disable-smart-playlists to configure.])
-	fi
-	
-	AM_CONDITIONAL(ENABLE_SMART_PLAYLISTS, test "x$enable_smart_playlists" = "xyes")
-else
-	AM_CONDITIONAL(ENABLE_SMART_PLAYLISTS, false)
-fi
-
 AC_ARG_ENABLE(podcast, AC_HELP_STRING(--disable-podcast, [Do not build podcast plugin]), enable_podcast=no, enable_podcast=yes)
 
 if test "x$enable_podcast" = "xyes"; then 
@@ -192,8 +178,6 @@ plugins/Radio/Makefile
 plugins/Radio/AssemblyInfo.cs
 plugins/Recommendation/Makefile
 plugins/Recommendation/AssemblyInfo.cs
-plugins/SmartPlaylists/Makefile
-plugins/SmartPlaylists/AssemblyInfo.cs
 ])
 
 echo "  

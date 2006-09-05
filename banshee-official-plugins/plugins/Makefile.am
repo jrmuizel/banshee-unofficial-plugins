@@ -12,12 +12,6 @@ if ENABLE_RECOMMENDATION
 SUBDIRS += Recommendation
 endif
 
-if ENABLE_SMART_PLAYLISTS
-if !BANSHEE_0_10
-SUBDIRS += SmartPlaylists
-endif
-endif
-
 if ENABLE_PODCAST
 if !BANSHEE_0_10
 SUBDIRS += Podcast

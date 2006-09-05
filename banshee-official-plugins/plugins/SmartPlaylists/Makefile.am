@@ -1,13 +1,13 @@
 CUSTOM_MCS_FLAGS = $(MCS_FLAGS) -resource:smart-playlist.glade,smart-playlist.glade -resource:source-smart-playlist.png,source-smart-playlist.png -resource:icon-blank.png,icon-blank.png -resource:icon-rated.png,icon-rated.png
 ASSEMBLY = SmartPlaylists.dll
 SOURCES = \
-	$(srcdir)/Plugin.cs \
+	$(srcdir)/AssemblyInfo.cs \
 	$(srcdir)/Editor.cs \
-	$(srcdir)/Rating.cs \
-	$(srcdir)/SmartPlaylist.cs \
+	$(srcdir)/Plugin.cs \
 	$(srcdir)/QueryBuilder.cs \
 	$(srcdir)/QueryBuilderModel.cs \
-	$(srcdir)/AssemblyInfo.cs \
+	$(srcdir)/Rating.cs \
+	$(srcdir)/SmartPlaylist.cs \
 	$(top_srcdir)/plugins/Common.cs
 
 SYSTEM_REFERENCES = \

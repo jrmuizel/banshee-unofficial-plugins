@@ -1,3 +1,14 @@
+2006-09-04  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/smart-playlist.glade: Add Advanced expander to
+	the smart playlist edit dialog.
+
+	* plugins/SmartPlaylists/Makefile.am: Move things around.
+
+	* plugins/SmartPlaylists/Editor.cs: Add options to the advanced expander's
+	treeview of predefined smart playlists, and handle the logic for using
+	them as a template or creating them.
+
 2006-09-04  Ruben Vermeersch <ruben@Lambda1.be>
 
 	* plugins/Podcast/DownloadCore/Dispatcher.cs: Only run the dispatcher

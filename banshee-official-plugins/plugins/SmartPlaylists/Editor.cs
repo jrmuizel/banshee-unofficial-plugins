@@ -24,7 +24,11 @@ namespace Banshee.Plugins.SmartPlaylists
         [Widget] private Gtk.Entry name_entry;
         [Widget] private Gtk.VBox builder_box;
         [Widget] private Gtk.Button ok_button;
-        [Widget] private Gtk.Label already_in_use_label;
+        [Widget] private Gtk.Expander advanced_expander;
+        [Widget] private Gtk.HBox adv_box;
+        [Widget] private Gtk.TreeView adv_tree_view;
+        [Widget] private Gtk.Button adv_use_button;
+        [Widget] private Gtk.Button adv_add_button;
 
         public Editor (SmartPlaylist playlist) : this ()
         {
@@ -58,6 +62,51 @@ namespace Banshee.Plugins.SmartPlaylists
 			builder_box.PackStart(builder, true, true, 0);
 
             name_entry.Changed += HandleNameChanged;
+
+            // Model is Name, Condition, OrderBy, LimitNumber, LimitCriterion
+            ListStore list_model = new ListStore (typeof(string), typeof(string), typeof(string), typeof(string), typeof(int));
+
+            list_model.AppendValues (
+                Catalog.GetString ("Neglected Favorites"),
+                " (Rating > 4) AND ((strftime(\"%s\", current_timestamp) - LastPlayedStamp + 3600) > 2592000) ",
+                null, "0", 0);
+
+            // TODO this one is broken, not supported by the condition GUI
+            /*list_model.AppendValues (
+                Catalog.GetString ("Unrated"),
+                " (Rating = NULL) ",
+                null, "0", 0);*/
+
+            list_model.AppendValues (
+                Catalog.GetString ("700 MB of Favorites"),
+                " (Rating > 3) ",
+                "NumberOfPlays DESC",
+                "700",
+                3);
+
+            list_model.AppendValues (
+                Catalog.GetString ("80 minutes of Favorites"),
+                " (Rating > 3) ",
+                "NumberOfPlays DESC",
+                "80",
+                1);
+
+            list_model.AppendValues (
+                Catalog.GetString ("Unheard"),
+                " (NumberOfPlays = 0) ",
+                null,
+                "0",
+                0);
+
+            adv_tree_view.Selection.Mode = SelectionMode.Multiple;
+            adv_tree_view.Model = list_model;
+            adv_tree_view.AppendColumn ("title", new CellRendererText (), "text", 0);
+            adv_tree_view.Selection.Changed += HandleAdvSelectionChanged;
+
+            UpdateAdvButtons (0);
+
+            adv_add_button.Clicked += HandleAdvAdd;
+            adv_use_button.Clicked += HandleAdvUse;
 
             Update();
         }
@@ -167,6 +216,57 @@ namespace Banshee.Plugins.SmartPlaylists
             dialog.Destroy();
         }
 
+        private void HandleAdvSelectionChanged (object sender, EventArgs args)
+        {
+            TreeSelection selection = sender as TreeSelection;
+            UpdateAdvButtons (selection.CountSelectedRows());
+        }
+
+        private void UpdateAdvButtons (int num)
+        {
+            adv_use_button.Sensitive = (num == 1);
+            adv_add_button.Sensitive = (num > 0);
+        }
+
+        private void HandleAdvAdd (object sender, EventArgs args)
+        {
+            TreePath [] paths = adv_tree_view.Selection.GetSelectedRows ();
+
+            foreach (TreePath path in paths) {
+                TreeIter iter;
+                if (adv_tree_view.Model.GetIter (out iter, path)) {
+                    string name            = adv_tree_view.Model.GetValue (iter, 0) as string;
+                    string condition       = adv_tree_view.Model.GetValue (iter, 1) as string;
+                    string orderBy         = adv_tree_view.Model.GetValue (iter, 2) as string;
+                    string limitNumber     = adv_tree_view.Model.GetValue (iter, 3) as string;
+                    int limitCriterion  = (int) adv_tree_view.Model.GetValue (iter, 4);
+
+                    SmartPlaylist pl = new SmartPlaylist (name, condition, orderBy, limitNumber, limitCriterion);
+                    LibrarySource.Instance.AddChildSource (pl);
+                    Plugin.Instance.StartTimer (pl);
+                }
+            }
+
+            dialog.Destroy();
+        }
+
+        private void HandleAdvUse (object sender, EventArgs args)
+        {
+            TreePath [] paths = adv_tree_view.Selection.GetSelectedRows ();
+
+            if (paths != null && paths.Length != 1)
+                return;
+
+            TreeIter iter;
+            if (adv_tree_view.Model.GetIter (out iter, paths[0])) {
+                Name            = adv_tree_view.Model.GetValue (iter, 0) as string;
+                Condition       = adv_tree_view.Model.GetValue (iter, 1) as string;
+                OrderBy         = adv_tree_view.Model.GetValue (iter, 2) as string;
+                LimitNumber     = adv_tree_view.Model.GetValue (iter, 3) as string;
+                LimitCriterion  = (int) adv_tree_view.Model.GetValue (iter, 4);
+            }
+        }
+
         private void HandleNameChanged(object sender, EventArgs args)
         {
             Update ();
@@ -176,7 +276,7 @@ namespace Banshee.Plugins.SmartPlaylists
         {
 			if (name_entry.Text == "") {
 				ok_button.Sensitive = false;
-				already_in_use_label.Markup = "";
+				//already_in_use_label.Markup = "";
 			} else {
                 object res = Globals.Library.Db.QuerySingle(String.Format(
                     "SELECT PlaylistID FROM Playlists WHERE lower(Name) = lower('{0}')",
@@ -185,10 +285,10 @@ namespace Banshee.Plugins.SmartPlaylists
 
                 if (res != null && (playlist == null || String.Compare (playlist.Name, name_entry.Text, true) != 0)) {
                     ok_button.Sensitive = false;
-                    already_in_use_label.Markup = "<small>" + Catalog.GetString ("This name is already in use") + "</small>";
+                    //already_in_use_label.Markup = "<small>" + Catalog.GetString ("This name is already in use") + "</small>";
                 } else {
                     ok_button.Sensitive = true;
-                    already_in_use_label.Markup = "";
+                    //already_in_use_label.Markup = "";
                 }
             }
         }
@@ -196,6 +296,10 @@ namespace Banshee.Plugins.SmartPlaylists
 		private string Name {
             get {
                 return name_entry.Text;
+            }
+
+            set {
+                name_entry.Text = value;
             }
         }
 

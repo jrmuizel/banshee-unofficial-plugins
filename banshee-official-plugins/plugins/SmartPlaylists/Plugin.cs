@@ -173,7 +173,7 @@ namespace Banshee.Plugins.SmartPlaylists
 
         /*public override Widget GetConfigurationWidget ()
         {
-            return new Label ("Smart Playlist Configuration..");
+            return new ConfigPage (this);
         }*/
 
         private void HandleLibraryReloaded (object sender, EventArgs args)

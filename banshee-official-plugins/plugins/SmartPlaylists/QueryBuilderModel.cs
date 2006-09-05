@@ -493,9 +493,7 @@ namespace Banshee
 
                 int i = 1;
                 for (i = 1; i < date_multipliers.Length; i++) {
-                    Console.WriteLine ("{2}, {3} :: comparing {0} < {1}", val, date_multipliers[i], i, date_multipliers.Length);
                     if (val < date_multipliers[i]) {
-                        Console.WriteLine ("true! :: comparing {0} < {1}", val, date_multipliers[i], i, date_multipliers.Length);
                         comboBox1.Active = i - 1;
                         break;
                     }
@@ -504,7 +502,6 @@ namespace Banshee
                 if (i == date_multipliers.Length) {
                     comboBox1.Active = i;
                 }
-                Console.WriteLine ("comboBox.Active = {0}", comboBox1.Active);
 
                 spinButton1.Value = (double) (val / date_multipliers[comboBox1.Active]);
             }

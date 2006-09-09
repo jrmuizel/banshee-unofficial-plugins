@@ -47,10 +47,6 @@ namespace Banshee.Plugins.Podcast.UI
 
         private PodcastFeedModel model;
 
-        private Pixbuf active_downloads;
-        private Pixbuf queued_downloads;
-        private Pixbuf activity_spinner;
-
         private TreeViewColumn feed_title_column;
         private TreeViewColumn feed_activity_column;
 
@@ -69,10 +65,6 @@ namespace Banshee.Plugins.Podcast.UI
 
             feed_title_column = new TreeViewColumn();
             feed_activity_column = new TreeViewColumn();
-
-            activity_spinner = PodcastPixbufs.Refresh;
-            active_downloads = PodcastPixbufs.DownloadActivity;
-            queued_downloads = PodcastPixbufs.DownloadActivityInsensitive;
 
             feed_activity_column.Expand = false;
             feed_activity_column.Resizable = false;
@@ -220,7 +212,6 @@ namespace Banshee.Plugins.Podcast.UI
                 }
                 else
                 {
-
                     renderer.Style = Pango.Style.Normal;
 
                     if (feed.IsUpdating || feed.NewPodcasts > 0)
@@ -241,25 +232,22 @@ namespace Banshee.Plugins.Podcast.UI
             PodcastFeedInfo feed = model.IterPodcastFeedInfo(iter);
             CellRendererPixbuf renderer = cell as CellRendererPixbuf;
 
-            if (feed == PodcastFeedInfo.All ||
-                    (!feed.IsUpdating &&
-                     feed.ActiveDownloads == 0 &&
-                     feed.QueuedDownloads == 0))
+            renderer.Pixbuf = null;
+            renderer.StockId = null;           		
+            renderer.Sensitive = true;
+            
+            if (feed.IsUpdating)
             {
-
-                renderer.Pixbuf = null;
-            }
-            else if (feed.IsUpdating)
-            {
-                renderer.Pixbuf = activity_spinner;
+                renderer.StockId = Stock.Refresh;
             }
             else if (feed.ActiveDownloads > 0)
             {
-                renderer.Pixbuf = active_downloads;
+                renderer.StockId = Stock.GoForward;
             }
             else if (feed.QueuedDownloads > 0)
             {
-                renderer.Pixbuf = queued_downloads;
+                renderer.Sensitive = false;            
+                renderer.StockId = Stock.GoForward;
             }
         }
 

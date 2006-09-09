@@ -63,12 +63,6 @@ namespace Banshee.Plugins.Podcast.UI
         private TreeViewColumn feed_title_column;
         private TreeViewColumn pubdate_column;
 
-        private Pixbuf failed_pixbuf = PodcastPixbufs.FailedActivity;
-        private Pixbuf downloading_pixbuf = PodcastPixbufs.DownloadActivity;
-        private Pixbuf queued_pixbuf = PodcastPixbufs.DownloadActivityInsensitive;
-        private Pixbuf playing_pixbuf = PodcastPixbufs.PlayingActivity;
-        private Pixbuf canceled_pixbuf = PodcastPixbufs.CancelActivity;
-
         private PodcastFeedInfo selected_feed = PodcastFeedInfo.All;
 
         public PodcastPlaylistView (PodcastPlaylistModel model)
@@ -360,60 +354,49 @@ namespace Banshee.Plugins.Podcast.UI
             PodcastInfo pi = tree_model.GetValue (iter, 0) as PodcastInfo;
             CellRendererPixbuf renderer = cell as CellRendererPixbuf;
 
+            renderer.Pixbuf = null;
+            renderer.StockId = null;           		
+            renderer.Sensitive = true;
+
             if (IsStreaming (pi))
             {
-                renderer.Pixbuf = playing_pixbuf;
-            }
-            else if (pi.Track != null)
-            {
+                renderer.StockId = Stock.MediaPlay;
+            } else if (pi.Track != null) {
                 if (pi.Track == PlayerEngineCore.CurrentTrack)
                 {
-                    renderer.Pixbuf = playing_pixbuf;
-                }
-                else
-                {
-                    renderer.Pixbuf = null;
+                    renderer.StockId = Stock.MediaPlay;
                 }
             }
             else if (pi.DownloadInfo != null)
-            {
+            {           		
                 switch (pi.DownloadInfo.State)
                 {
                     case DownloadState.Failed:
-                        renderer.Pixbuf = failed_pixbuf;
+                        renderer.StockId = Stock.DialogError;
                         break;
 
                     case DownloadState.Ready:
                     case DownloadState.Paused:
                     case DownloadState.Queued:
-                        renderer.Pixbuf = queued_pixbuf;
-                        break;
-
-                    case DownloadState.New:
-                    case DownloadState.Completed:
-                        renderer.Pixbuf = null;
+                        renderer.StockId = Stock.GoForward;
+                        renderer.Sensitive = false;
                         break;
 
                     case DownloadState.Canceled:
                     case DownloadState.CancelRequested:
-                        renderer.Pixbuf = canceled_pixbuf;
+                        renderer.StockId = Stock.Cancel;
                         break;
 
                     case DownloadState.Running:
-                        renderer.Pixbuf = downloading_pixbuf;
+                        renderer.StockId = Stock.GoForward;
                         break;
                     default:
-                        renderer.Pixbuf = null;
                         break;
                 }
             }
             else if (pi.DownloadFailed)
             {
-                renderer.Pixbuf = failed_pixbuf;
-            }
-            else
-            {
-                renderer.Pixbuf = null;
+                renderer.StockId = Stock.DialogError;
             }
         }
 

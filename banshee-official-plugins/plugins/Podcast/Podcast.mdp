@@ -50,16 +50,10 @@
     <File name="./UI/PodcastSubscribeDialog.cs" subtype="Code" buildaction="Compile" />
     <File name="./UI/SyncPreferenceComboBox.cs" subtype="Code" buildaction="Compile" />
     <File name="./data/PodcastMenu.xml" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="./data/images/dialog-error.png" subtype="Code" buildaction="EmbedAsResource" />
     <File name="./data/images/document-save-as-16.png" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="./data/images/edit-delete.png" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="./data/images/go-down.png" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="./data/images/go-next.png" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="./data/images/go-next-grey.png" subtype="Code" buildaction="EmbedAsResource" />
     <File name="./data/images/podcast-icon-16.png" subtype="Code" buildaction="EmbedAsResource" />
     <File name="./data/images/podcast-icon-22.png" subtype="Code" buildaction="EmbedAsResource" />
     <File name="./data/images/podcast-icon-48.png" subtype="Code" buildaction="EmbedAsResource" />
-    <File name="./data/images/view-refresh.png" subtype="Code" buildaction="EmbedAsResource" />
     <File name="./FeedParsers/RFC822DateTime.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>

@@ -1,3 +1,21 @@
+2006-09-08  Mike Urbanski <michael.c.urbanski@gmail.com> 
+	
+	* plugins/Podcast/DownloadCore/DownloadCore.cs:
+	* plugins/Podcast/PodcastPlugin.cs:
+	* plugins/Podcast/UI/PodcastFeedView.cs:
+	* plugins/Podcast/UI/PodcastPixbufs.cs:
+	* plugins/Podcast/UI/PodcastSource.cs:
+	* plugins/Podcast/UI/PodcastPlaylistView.cs:  Stock icons are
+	now used.  (BGO #346037)
+
+	* plugins/Podcast/data/images/go-next.png:
+	* plugins/Podcast/data/images/edit-delete.png:
+	* plugins/Podcast/data/images/go-next-grey.png:
+	* plugins/Podcast/data/images/dialog-error.png:
+	* plugins/Podcast/data/images/view-refresh.png:  Deleted
+	
+	* plugins/Podcast/Podcast.mdp:  Removed (above) images from project.
+	
 2006-09-05  Aaron Bockover  <abock@gnome.org>
 
 	* configure.ac:

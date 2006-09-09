@@ -219,8 +219,6 @@ namespace Banshee.Plugins.Podcast.UI
             }
 
             update_button = new ActionButton (Globals.ActionManager ["PodcastUpdateFeedsAction"]);
-            update_button.Pixbuf = PodcastPixbufs.Refresh;
-
             viewWidget = feed_playlist_pane;
 
             viewWidget.ShowAll ();
@@ -596,18 +594,18 @@ namespace Banshee.Plugins.Podcast.UI
 
                 default_new_menu_item = new ImageMenuItem (
                                             Catalog.GetString ("Subscribe to New Feed"));
-                default_new_menu_item.Image = new Gtk.Image ("gtk-new", IconSize.Menu);
+                default_new_menu_item.Image = new Gtk.Image (Gtk.Stock.New, IconSize.Menu);
                 default_new_menu_item.Activated += OnFeedMenuNewActivated;
 
                 default_update_all_menu_item =
                     new ImageMenuItem (Catalog.GetString("Update All Feeds"));
-                default_update_all_menu_item.Image = new Gtk.Image (PodcastPixbufs.Refresh);
+                default_update_all_menu_item.Image = new Gtk.Image (Gtk.Stock.Refresh, IconSize.Menu);
                 default_update_all_menu_item.Activated += OnUpdateAllActivated;
 
                 default_podcastalley_link_menu_item =
                     new ImageMenuItem (Catalog.GetString ("Visit Podcast Alley"));
                 default_podcastalley_link_menu_item.Image =
-                    new Gtk.Image ("gtk-jump-to", IconSize.Menu);
+                    new Gtk.Image (Gtk.Stock.JumpTo, IconSize.Menu);
                 default_podcastalley_link_menu_item.Activated += OnVistPodcastAlleyActivated;
 
                 default_popup_menu.Append (default_update_all_menu_item);
@@ -644,23 +642,23 @@ namespace Banshee.Plugins.Podcast.UI
                 feed_subscription_menu_item.Toggled += OnFeedMenuSubscribeToggled;
 
                 feed_update_menu_item = new ImageMenuItem (Catalog.GetString ("Update Feed"));
-                feed_update_menu_item.Image = new Gtk.Image (PodcastPixbufs.Refresh);
+                feed_update_menu_item.Image = new Gtk.Image (Gtk.Stock.Refresh, IconSize.Menu);
                 feed_update_menu_item.Activated += OnFeedMenuUpdateCurrentActivated;
 
                 feed_remove_menu_item = new ImageMenuItem (Catalog.GetString ("Delete Feed"));
-                feed_remove_menu_item.Image = new Gtk.Image ("gtk-delete", IconSize.Menu);
+                feed_remove_menu_item.Image = new Gtk.Image (Gtk.Stock.Delete, IconSize.Menu);
                 feed_remove_menu_item.Activated += OnFeedMenuRemoveActivated;
 
                 feed_new_menu_item = new ImageMenuItem (Catalog.GetString ("Subscribe to New Feed"));
-                feed_new_menu_item.Image = new Gtk.Image ("gtk-new", IconSize.Menu);
+                feed_new_menu_item.Image = new Gtk.Image (Gtk.Stock.New, IconSize.Menu);
                 feed_new_menu_item.Activated += OnFeedMenuNewActivated;
 
                 feed_visit_link_menu_item = new ImageMenuItem (Catalog.GetString ("Homepage"));
-                feed_visit_link_menu_item.Image = new Gtk.Image ("gtk-jump-to", IconSize.Menu);
+                feed_visit_link_menu_item.Image = new Gtk.Image (Gtk.Stock.JumpTo, IconSize.Menu);
                 feed_visit_link_menu_item.Activated += OnFeedMenuVisitLinkActivated;
 
                 feed_properties_menu_item = new ImageMenuItem (Catalog.GetString ("Properties"));
-                feed_properties_menu_item.Image = new Gtk.Image ("gtk-properties", IconSize.Menu);
+                feed_properties_menu_item.Image = new Gtk.Image (Gtk.Stock.Properties, IconSize.Menu);
                 feed_properties_menu_item.Activated += OnFeedMenuPropertiesActivated;
 
                 feed_view_popup_menu.Append (feed_subscription_menu_item);
@@ -719,17 +717,17 @@ namespace Banshee.Plugins.Podcast.UI
                 playlist_view_popup_menu = new Menu ();
 
                 cancel_menu_item = new ImageMenuItem (Catalog.GetString ("Cancel"));
-                cancel_menu_item.Image = new Gtk.Image (PodcastPixbufs.CancelActivity);
+                cancel_menu_item.Image = new Gtk.Image (Gtk.Stock.Cancel, IconSize.Menu);
                 cancel_menu_item.Activated += OnCancelPodcastsActivated;
 
                 download_menu_item = new ImageMenuItem (Catalog.GetString ("Download"));
-                download_menu_item.Image = new Gtk.Image (PodcastPixbufs.DownloadMenuIcon);
+                download_menu_item.Image = new Gtk.Image (Gtk.Stock.GoDown, IconSize.Menu);
                 download_menu_item.Activated += OnDownloadPodcastsActivated;
 
                 download_cancel_separator = new SeparatorMenuItem ();
 
                 playlist_remove_item  = new ImageMenuItem (Catalog.GetString ("Remove Podcast(s)"));
-                playlist_remove_item.Image = new Gtk.Image ("gtk-remove", IconSize.Menu);
+                playlist_remove_item.Image = new Gtk.Image (Gtk.Stock.Remove, IconSize.Menu);
                 playlist_remove_item.Activated += OnRemovePodcasts;
 
                 select_all_menu_item = new MenuItem (Catalog.GetString ("Select All"));
@@ -739,11 +737,11 @@ namespace Banshee.Plugins.Podcast.UI
                 unselect_all_menu_item.Activated += OnSelectNoneActivated;
 
                 playlist_visit_link_menu_item = new ImageMenuItem (Catalog.GetString ("Link"));
-                playlist_visit_link_menu_item.Image = new Gtk.Image ("gtk-jump-to", IconSize.Menu);
+                playlist_visit_link_menu_item.Image = new Gtk.Image (Gtk.Stock.JumpTo, IconSize.Menu);
                 playlist_visit_link_menu_item.Activated += OnPlaylistMenuVisitLinkActivated;
 
                 podcast_properties_menu_item = new ImageMenuItem (Catalog.GetString ("Properties"));
-                podcast_properties_menu_item.Image = new Gtk.Image ("gtk-properties", IconSize.Menu);
+                podcast_properties_menu_item.Image = new Gtk.Image (Gtk.Stock.Properties, IconSize.Menu);
                 podcast_properties_menu_item.Activated += OnPodcastMenuPropertiesActivated;
 
                 playlist_view_popup_menu.Append (playlist_visit_link_menu_item);

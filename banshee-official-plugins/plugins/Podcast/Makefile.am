@@ -21,7 +21,7 @@ podcast_resources = \
 	data/images/document-save-as-16.png \
 	data/images/podcast-icon-16.png \
 	data/images/podcast-icon-22.png \
-	data/images/podcast-icon-48.png \
+	data/images/podcast-icon-48.png
 
 podcast_resources_build = $(foreach res,$(podcast_resources), $(addprefix -resource:,$(top_builddir)/plugins/Podcast/$(res)),$(notdir $(res)))
 

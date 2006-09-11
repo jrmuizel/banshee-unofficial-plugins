@@ -1,5 +1,14 @@
 2006-09-11  Aaron Bockover  <abock@gnome.org>
 
+	* Abakos/Main.cs: Merge all program arguments into an expression 
+	string; acts like 'expr' now
+
+	* COPYING:
+	* README: 
+	* AUTHORS: Added
+
+2006-09-11  Aaron Bockover  <abock@gnome.org>
+
 	* Abakos/Abakos.Compiler/Operators.cs: Do not allow operations on 
 	VoidSymbol
 

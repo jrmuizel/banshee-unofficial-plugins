@@ -23,7 +23,7 @@ namespace Abakos.Compiler
 
     public static class FunctionTable
     {
-        private struct FunctionCache
+        internal struct FunctionCache
         {
             public string Name;
             public bool RawSymbols;
@@ -37,6 +37,10 @@ namespace Abakos.Compiler
         static FunctionTable()
         {
             assemblies.Add(Assembly.GetExecutingAssembly());
+        }
+        
+        public static IEnumerable<FunctionCache> Functions {
+            get { return cached_functions.Values; }
         }
          
         public static void AddAssembly(Assembly assembly)
@@ -182,10 +186,27 @@ namespace Abakos.Compiler
             return sum;
         }
         
-        [Function("get_PI")]
+        [Function("PI")]
         public static double PI()
         {
             return Math.PI;
+        }
+        
+        [Function("E")]
+        public static double E()
+        {
+            return Math.E;
+        }
+        
+        [Function("functions")]
+        public static Symbol RuntimeAvailable()
+        {
+            foreach(FunctionTable.FunctionCache function in FunctionTable.Functions) {
+                Console.WriteLine("{0} ({1})", function.Name, 
+                    function.ArgumentCount == -1 ? "variable" : function.ArgumentCount.ToString());
+            }
+            
+            return new VoidSymbol();
         }
     }
 }

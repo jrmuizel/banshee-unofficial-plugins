@@ -23,8 +23,13 @@ namespace Abakos
             }
             Console.WriteLine("");
             
-            Console.WriteLine("Result Stack:");
+            Console.WriteLine("Executing...\n");
+            
             Stack<Symbol> stack = expression.Evaluate();
+            
+            Console.WriteLine("");
+            Console.WriteLine("Result Stack:");
+            
             while(stack.Count > 0) {
                 Console.WriteLine("  {0}", stack.Pop());
             }

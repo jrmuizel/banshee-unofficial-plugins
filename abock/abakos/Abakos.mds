@@ -1,0 +1,17 @@
+<Combine name="Abakos" fileversion="2.0" MakePkgConfig="False" MakeLibPC="True">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="Abakos" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="Abakos" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <DeployTargets />
+  <StartMode startupentry="Abakos" single="True">
+    <Execute type="None" entry="Abakos" />
+  </StartMode>
+  <Entries>
+    <Entry filename="./Abakos/Abakos.mdp" />
+  </Entries>
+</Combine>

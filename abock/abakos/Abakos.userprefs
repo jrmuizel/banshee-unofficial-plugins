@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<UserCombinePreferences filename="/home/aaron/Projects/Abakos/Abakos.mds">
+  <Files>
+    <File filename="./Abakos/Abakos.Compiler/Symbol.cs" />
+    <File filename="../../Desktop/fb/FunctionEvaluator/Function.cs" />
+    <File filename="./Abakos/Abakos.Compiler/Functions.cs" />
+    <File filename="./Abakos/Main.cs" />
+    <File filename="./Abakos/Abakos.Compiler/Expression.cs" />
+  </Files>
+  <Views>
+    <ViewMemento Id="MonoDevelop.Ide.Gui.Pads.ProjectPad">
+      <TreeView>
+        <Node expanded="True">
+          <Node name="Abakos" expanded="True">
+            <Node name="References" expanded="True" />
+            <Node name="Abakos.Compiler" expanded="True">
+              <Node name="Expression.cs" expanded="False" selected="True" />
+            </Node>
+          </Node>
+        </Node>
+      </TreeView>
+    </ViewMemento>
+    <ViewMemento Id="MonoDevelop.Ide.Gui.Pads.ClassPad">
+      <TreeView>
+        <Node expanded="True" />
+      </TreeView>
+    </ViewMemento>
+    <ViewMemento Id="MonoDevelop.NUnit.TestPad">
+      <TreeView>
+        <Node expanded="False" />
+      </TreeView>
+    </ViewMemento>
+    <ViewMemento Id="MonoQuery.DatabasePad">
+      <TreeView>
+        <Node expanded="False" />
+      </TreeView>
+    </ViewMemento>
+  </Views>
+  <Properties>
+    <Properties>
+      <Property key="ActiveConfiguration" value="Debug" />
+      <Property key="ActiveWindow" value="/home/aaron/Projects/Abakos/Abakos/Abakos.Compiler/Expression.cs" />
+    </Properties>
+  </Properties>
+</UserCombinePreferences>

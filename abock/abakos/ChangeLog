@@ -1,5 +1,10 @@
 2006-09-11  Aaron Bockover  <abock@gnome.org>
 
+	* Abakos/Abakos.Compiler/Operators.cs: Do not allow operations on 
+	VoidSymbol
+
+2006-09-11  Aaron Bockover  <abock@gnome.org>
+
 	* Abakos/Abakos.Compiler/Functions.cs: Added functions, and E methods;
 	functions prints a list of available functions
 

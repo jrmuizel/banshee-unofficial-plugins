@@ -19,6 +19,10 @@ namespace Abakos.Compiler
         
         public virtual Symbol Evaluate(Symbol a, Symbol b)
         {
+            if(a is VoidSymbol || b is VoidSymbol) {
+                throw new InvalidOperandException(a, b);
+            }
+        
             try {
                 return Evaluate((ValueSymbol)a, (ValueSymbol)b);
             } catch {

@@ -93,11 +93,7 @@ namespace Banshee.Plugins.MiniMode
             
             // Cover
             cover_art_thumbnail = new CoverArtThumbnail(90);
-            Gdk.Pixbuf default_pixbuf = Banshee.Base.IconThemeUtils.LoadIcon("audio-x-generic", 128);
-            if(default_pixbuf == null) {
-                default_pixbuf = new Gdk.Pixbuf(System.Reflection.Assembly.GetEntryAssembly(), 
-                    "banshee-logo.png");   
-            }
+            Gdk.Pixbuf default_pixbuf = Banshee.Base.Branding.DefaultCoverArt;
             cover_art_thumbnail.NoArtworkPixbuf = default_pixbuf;
             CoverBox.PackStart(cover_art_thumbnail, false, false, 0);
 

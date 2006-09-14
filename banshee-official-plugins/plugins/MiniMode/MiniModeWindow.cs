@@ -20,6 +20,8 @@ namespace Banshee.Plugins.MiniMode
         [Widget] private Gtk.Box PlaybackBox;
         [Widget] private Gtk.Box LowerButtonsBox;
         
+        [Widget] private Gtk.Button fullmode_button;
+        
         [Widget] private Gtk.Label TitleLabel;
         [Widget] private Gtk.Label AlbumLabel;
         [Widget] private Gtk.Label ArtistLabel;
@@ -29,7 +31,8 @@ namespace Banshee.Plugins.MiniMode
         private SourceComboBox source_combo_box;
         private SeekSlider seek_slider;
         private StreamPositionLabel stream_position_label;
-
+        private Tooltips toolTips;
+		
         private Glade.XML glade;
 
         private bool setup = false;
@@ -137,11 +140,27 @@ namespace Banshee.Plugins.MiniMode
             LowerButtonsBox.PackEnd(shuffle_toggle_button, false, false, 0);
             LowerButtonsBox.ShowAll();
             
+            // Tooltips
+            toolTips = new Tooltips();
+
+            SetTip(previous_button, Catalog.GetString("Play previous song"));
+            SetTip(playpause_button, Catalog.GetString("Play/pause current song"));
+            SetTip(next_button, Catalog.GetString("Play next song"));
+            SetTip(fullmode_button, Catalog.GetString("Switch back to full mode"));
+            SetTip(volume_button, Catalog.GetString("Adjust volume"));
+            SetTip(repeat_toggle_button, Catalog.GetString("Change repeat playback mode"));
+            SetTip(shuffle_toggle_button, Catalog.GetString("Toggle shuffle playback mode"));
+
             // Hook up everything
             PlayerEngineCore.EventChanged += OnPlayerEngineEventChanged;
             PlayerEngineCore.StateChanged += OnPlayerEngineStateChanged;
             
             SetHeightLimit();
+        }
+
+        private void SetTip(Widget widget, string tip)
+        {
+	        toolTips.SetTip(widget, tip, tip);
         }
 
         private void SetHeightLimit()

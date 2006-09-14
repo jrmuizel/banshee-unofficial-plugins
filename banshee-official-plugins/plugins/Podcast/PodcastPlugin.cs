@@ -74,13 +74,12 @@ namespace Banshee.Plugins.Podcast
             RegisterConfigurationKey (PodcastGConfKeys.PodcastTitleColumn);
             RegisterConfigurationKey (PodcastGConfKeys.PodcastFeedColumn);
             RegisterConfigurationKey (PodcastGConfKeys.PodcastDateColumn);
-
-            PodcastCore.Initialize (this);
         }
 
-        protected override void InterfaceInitialize()
+        protected override void InterfaceInitialize ()
         {
-            InstallInterfaceActions();
+            InstallInterfaceActions ();
+            PodcastCore.Initialize (this);
         }
 
         protected override void PluginDispose ()

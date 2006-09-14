@@ -19,7 +19,7 @@ $(ASSEMBLY): $(SOURCES) radioactions.xml radio.glade
 	$(MCS) $(MCS_FLAGS) -out:$(ASSEMBLY) -nowarn:0169 -unsafe -target:library $(GTKSHARP_LIBS) $(BANSHEE_LIBS) -resource:$(srcdir)/radio.glade,radio.glade -resource:$(srcdir)/radioactions.xml,radioactions.xml -resource:$(srcdir)/stations.xml,stations.xml $(SOURCES)
 
 EXTRA_DIST = $(SOURCES) $(srcdir)/radioactions.xml $(srcdir)/stations.xml $(srcdir)/radio.glade $(srcdir)/AssemblyInfo.cs.in
-CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb *.gladep *.bak
+CLEANFILES = *.dll *.mdb *.gladep *.bak
 DISTCLEANFILES = Makefile.in 
 
 fix-totempl:

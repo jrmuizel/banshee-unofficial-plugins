@@ -1,5 +1,24 @@
 2006-09-13  Aaron Bockover  <abock@gnome.org>
 
+	* plugins/MiniMode/Makefile.am:
+	* plugins/Recommendation/Makefile.am:
+	* plugins/Makefile.am:
+	* plugins/Podcast/Makefile.am:
+	* plugins/Radio/Makefile.am:
+	* po/POTFILES.in:
+	* configure.ac: Fixed any build issues, distcheck works; only 0.11.x
+	is now supported; install directly to given prefix without really
+	caring exactly where Banshee is to be nice to packagers; do not support
+	user-mode plugin installation - pointless; lots of release-prep cleaning;
+	disabled the iRadio plugin for now - it's not going to be fixed before
+	the 0.11.0 release :-/
+
+	* HACKING:
+	* AUTHORS:
+	* README: Updated
+
+2006-09-13  Aaron Bockover  <abock@gnome.org>
+
 	* plugins/MiniMode/MiniModeWindow.cs: Added tool tips (Michael Monreal,
 	BGO #355844)
 

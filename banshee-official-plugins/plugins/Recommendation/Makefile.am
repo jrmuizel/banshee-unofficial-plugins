@@ -18,6 +18,6 @@ $(ASSEMBLY): $(SOURCES)
 	$(MCS) $(MCS_FLAGS) -out:$(ASSEMBLY) -target:library -resource:$(srcdir)/$(MENU_RESOURCE),$(MENU_RESOURCE) -resource:$(srcdir)/$(NO_RESULTS_RESOURCE),$(NO_RESULTS_RESOURCE) $(BANSHEE_LIBS) $(SOURCES) -r:System.Web
 
 EXTRA_DIST = $(SOURCES) $(MENU_RESOURCE) $(NO_RESULTS_RESOURCE) $(srcdir)/AssemblyInfo.cs.in
-CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb 
+CLEANFILES = *.dll *.mdb
 DISTCLEANFILES = *.pidb
 MAINTAINERCLEANFILES = Makefile.in

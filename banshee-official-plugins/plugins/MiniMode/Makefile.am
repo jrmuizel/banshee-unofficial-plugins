@@ -1,4 +1,4 @@
-CUSTOM_MCS_FLAGS = $(MCS_FLAGS) -resource:minimode.glade,minimode.glade
+CUSTOM_MCS_FLAGS = $(MCS_FLAGS) -resource:$(srcdir)/minimode.glade,minimode.glade
 ASSEMBLY = MiniMode.dll
 SOURCES = \
 	$(srcdir)/MiniModePlugin.cs \
@@ -17,7 +17,7 @@ $(ASSEMBLY): $(SOURCES)
 	$(MCS) $(CUSTOM_MCS_FLAGS) -out:$(ASSEMBLY) -target:library $(BANSHEE_LIBS) $(GTKSHARP_LIBS) $(SOURCES)
 
 EXTRA_DIST = $(SOURCES) minimode.glade $(srcdir)/AssemblyInfo.cs.in
-CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb 
+CLEANFILES = *.dll *.mdb
 MAINTAINERCLEANFILES = Makefile.in *.pidb
 DISTCLEANFILES = minimode.gladep* minimode.glade.bak
 

@@ -1,7 +1,8 @@
 AC_INIT(README)
 AC_CANONICAL_SYSTEM
 
-AM_INIT_AUTOMAKE(banshee-alarm, 0.1)
+VERSION=0.1
+AM_INIT_AUTOMAKE(banshee-alarm, $VERSION)
 
 AM_MAINTAINER_MODE
 
@@ -81,6 +82,7 @@ AC_OUTPUT([
 	Makefile
 	data/Makefile
 	src/Makefile
+	src/AssemblyInfo.cs
 ])
 
 echo "

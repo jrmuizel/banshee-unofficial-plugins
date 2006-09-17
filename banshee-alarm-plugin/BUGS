@@ -5,8 +5,6 @@ Bugs can always be reported on the Banshee Bugzilla at http://bugzilla.gnome.org
 Known bugs:
 	* UI niceness.  We know.
 	* --enable-user-plugin does not work right since we're installing a gconf schema for alarm keys.  anyone know a workaround?
-	* Sleep & Alarm dialogs:
-		* Window width does not allow title to fit (on my box - trick)
     * Sleep dialog:
 		* when opening after it was set before, does not read values from old variable properly.
 			* Should read the difference between set time and dialog open time, and subtract that from the old sleep timer value.

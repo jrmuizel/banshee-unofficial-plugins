@@ -1,3 +1,14 @@
+2006-09-17  Patrick van Staveren  <trick@vanstaveren.us>
+
+        * BUGS, TODO, README, alarm.mds: updated
+        * configure.ac: added AssemblyInfo, made VERSION variable
+        * src/ConfigurationWidget.cs: revised layout of config page a
+        lot.  Removed Sleep Timer config section as it is empty.
+        * src/AssemblyInfo.cs.in: added assembly information attributes
+        * src/Makefile.am: added AssemblyInfo, removed passthru
+        MCS_FLAGS variable
+	* src/Alarm.cs: removed tex variable as it was unused
+
 2006-05-27  Bertrand Lorentz  <bertrand.lorentz@free.fr>
     * configure.ac: Detect Banshee API version and choose compiler accordingly (copied from banshee-official-plugins).
     * configure.ac, Makefile.am, data/Makefile.am, src/Makefile.am:  Autotools fixes so that "make distcheck" works.

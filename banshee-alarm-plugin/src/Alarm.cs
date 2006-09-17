@@ -35,7 +35,7 @@ namespace Banshee.Plugins.Alarm
                     }
                 }
             }
-            catch (ThreadAbortException tex)
+            catch (ThreadAbortException)
             {
                 LogCore.Instance.PushDebug("Alarm Plugin: Alarm main loop aborted", "");
             }

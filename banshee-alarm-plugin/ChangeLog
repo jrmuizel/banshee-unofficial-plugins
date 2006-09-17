@@ -8,6 +8,7 @@
         * src/Makefile.am: added AssemblyInfo, removed passthru
         MCS_FLAGS variable
 	* src/Alarm.cs: removed tex variable as it was unused
+	* configure.ac: changed name to be proper banshee-alarm-plugin
 
 2006-05-27  Bertrand Lorentz  <bertrand.lorentz@free.fr>
     * configure.ac: Detect Banshee API version and choose compiler accordingly (copied from banshee-official-plugins).

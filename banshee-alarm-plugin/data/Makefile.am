@@ -10,3 +10,5 @@ install-data-local:
 		GCONF_CONFIG_SOURCE="" $(GCONFTOOL) --makefile-install-rule $(srcdir)/$(schema_DATA); \
 	fi
 endif
+
+MAINTAINERCLEANFILES = Makefile.in

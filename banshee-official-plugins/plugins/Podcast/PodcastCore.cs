@@ -725,13 +725,9 @@ namespace Banshee.Plugins.Podcast
                 {
                 	PodcastErrorsSource.Instance.AddError (
               			local_uri.ToString (),
-                		Catalog.GetString ("Unable to add to library"),                				
+                		Catalog.GetString ("Unable to add file to library"),                				
                 		e
            			);
-                	
-                    //Console.WriteLine (
-                    //    Catalog.GetString("Unable to add: {0} to library.  {1}"), local_uri, e.Message
-                    //);
                 }
 
                 pi.IsDownloaded = true;

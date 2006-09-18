@@ -55,6 +55,7 @@ namespace Banshee.Plugins.Podcast.Download
             CheckState ();
 
             PrepRequest ();
+            
             Connect ();
 
             CheckState ();
@@ -211,7 +212,12 @@ namespace Banshee.Plugins.Podcast.Download
 
                 CheckState ();
                 
-                response = request.GetResponse () as HttpWebResponse;
+                try {
+                	response = request.GetResponse () as HttpWebResponse;
+                } catch {
+                    Stop (DownloadState.Failed);
+                    throw new TaskStoppedException (Catalog.GetString("HTTP error"));                	
+                }
                 
                 CheckState ();
                 

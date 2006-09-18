@@ -197,8 +197,7 @@ namespace Banshee.Plugins.Podcast.UI
 
             }
             catch {
-                Globals.Configuration.Set (key, 100)
-                ;
+                Globals.Configuration.Set (key, 100);
                 tmp_column.FixedWidth = 100;
             }
 
@@ -444,6 +443,11 @@ namespace Banshee.Plugins.Podcast.UI
                         break;
                 }
 
+            }
+            else if (pi.IsDownloaded == true)
+            {
+                toggle.Active = true;
+                toggle.Sensitive = false;                
             }
             else
             {

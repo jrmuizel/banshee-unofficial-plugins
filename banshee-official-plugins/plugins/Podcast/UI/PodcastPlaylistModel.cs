@@ -140,7 +140,7 @@ namespace Banshee.Plugins.Podcast.UI
             {
                 Play (pi.Track);
             }
-            else if (pi.Url != null)
+            else if (pi.Url != null && !pi.IsDownloaded)
             {
                 Play (pi.Url);
             }

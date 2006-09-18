@@ -391,13 +391,11 @@ namespace Banshee.Plugins.Podcast
 
                 DoUpdate ();
 
-            }
-            catch {
-            } finally
-            {
+            } catch {
+            } finally {
                 IsUpdating = false;
                 FeedUpdateFinished ();
-                }
+            }
         }
 
         private void DoUpdate ()

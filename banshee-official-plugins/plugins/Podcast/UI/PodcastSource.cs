@@ -253,8 +253,7 @@ namespace Banshee.Plugins.Podcast.UI
         }
 
         public override bool SearchEnabled {
-            get
-            { return false; }
+            get { return false; }
         }
 
         public override IEnumerable<TrackInfo> Tracks {
@@ -265,18 +264,15 @@ namespace Banshee.Plugins.Podcast.UI
         }
 
         public override int Count {
-            get
-            { return PodcastCore.Library.TrackCount ;}
+            get { return PodcastCore.Library.TrackCount ;}
         }
 
         public override Gdk.Pixbuf Icon {
-            get
-            { return icon; }
+            get { return icon; }
         }
 
         public override Widget ViewWidget {
-            get
-            { return viewWidget; }
+            get { return viewWidget; }
         }
 
         private void OnLibraryTrackAdded (object sender, TrackEventArgs args)

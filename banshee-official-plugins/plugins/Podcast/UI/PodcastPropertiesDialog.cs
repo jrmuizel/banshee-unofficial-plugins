@@ -67,11 +67,7 @@ namespace Banshee.Plugins.Podcast.UI
             table.ColumnSpacing = 12;
 
             ArrayList labels = new ArrayList ();
-            /*
-                        Label author_label = new Label ();
-                        author_label.Markup = "<b>"+Catalog.GetString ("Author:")+"</b>";            
-                        labels.Add (author_label);         
-            */
+
             Label feed_label = new Label ();
             feed_label.Markup = "<b>"+Catalog.GetString ("Feed:")+"</b>";
             labels.Add (feed_label);
@@ -105,14 +101,6 @@ namespace Banshee.Plugins.Podcast.UI
                                         Catalog.GetString ("No description available") :
                                         pi.Description;
 
-            /*   string author_string = (pi.Author == String.Empty ||
-                pi.Author == null) ? 
-                 Catalog.GetString ("No author") : 
-                 pi.Author;                          
-                           
-                        Label author_text = new Label (author_string);
-                        labels.Add (author_text);                                                                            
-            */
             if (!description_string.StartsWith ("\""))
             {
                 description_string =  "\""+description_string;
@@ -124,26 +112,11 @@ namespace Banshee.Plugins.Podcast.UI
             }
 
             Label description_text = new Label (description_string);
-            labels.Add (description_text);
             description_text.Wrap = true;
             description_text.Selectable = true;
 
-            Viewport description_viewport = new Viewport();
-            description_viewport.ShadowType = ShadowType.None;
+            labels.Add (description_text);
 
-            ScrolledWindow description_scroller = new ScrolledWindow ();
-            description_scroller.HscrollbarPolicy = PolicyType.Never;
-            description_scroller.VscrollbarPolicy = PolicyType.Automatic;
-
-            description_viewport.Add (description_text);
-            description_scroller.Add (description_viewport);
-
-            /*
-                        table.Attach (
-                         author_label, 0, 1, 0, 1,
-                             AttachOptions.Fill, AttachOptions.Fill, 0, 0
-                        );                 
-            */
             table.Attach (
                 feed_label, 0, 1, 0, 1,
                 AttachOptions.Fill, AttachOptions.Fill, 0, 0
@@ -163,12 +136,7 @@ namespace Banshee.Plugins.Podcast.UI
                 description_label, 0, 1, 5, 6,
                 AttachOptions.Fill, AttachOptions.Fill, 0, 0
             );
-            /*
-               table.Attach (
-                author_text, 1, 2, 0, 1,
-                            AttachOptions.Fill, AttachOptions.Fill, 0, 0
-                        );               
-            */
+
             table.Attach (
                 feed_title_text, 1, 2, 0, 1,
                 AttachOptions.Fill, AttachOptions.Fill, 0, 0
@@ -185,7 +153,7 @@ namespace Banshee.Plugins.Podcast.UI
                 AttachOptions.Fill, AttachOptions.Fill, 0, 0
             );
 
-            table.Attach (description_scroller, 1, 2, 5, 6,
+            table.Attach (description_text, 1, 2, 5, 6,
                           AttachOptions.Expand | AttachOptions.Fill,
                           AttachOptions.Expand | AttachOptions.Fill, 0, 0
                          );
@@ -197,7 +165,7 @@ namespace Banshee.Plugins.Podcast.UI
 
             content_box.PackStart (table, true, true, 0);
 
-            Button ok_button = new Button("gtk-ok");
+            Button ok_button = new Button (Stock.Ok);
             ok_button.CanDefault = true;
             ok_button.Show ();
 

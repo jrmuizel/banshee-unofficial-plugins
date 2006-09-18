@@ -165,8 +165,7 @@ namespace Banshee.Plugins.Podcast
                                                       ThreadAssist.Spawn (new ThreadStart (UpdateThread));
                                                   }
                                                   catch {
-                                                  EndUpdate ()
-                                                      ;
+                                                      EndUpdate ();
                                                       return;
                                                   }
                                               });

@@ -55,6 +55,8 @@
     <File name="./data/images/podcast-icon-22.png" subtype="Code" buildaction="EmbedAsResource" />
     <File name="./data/images/podcast-icon-48.png" subtype="Code" buildaction="EmbedAsResource" />
     <File name="./FeedParsers/RFC822DateTime.cs" subtype="Code" buildaction="Compile" />
+    <File name="./UI/PodcastErrorsSource.cs" subtype="Code" buildaction="Compile" />
+    <File name="./UI/ErrorsSource.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="Banshee.Base, Version=0.0.0.0, Culture=neutral" />

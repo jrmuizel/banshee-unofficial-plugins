@@ -1,6 +1,25 @@
+2006-09-17  Mike Urbanski <michael.c.urbanski@gmail.com> 
+
+	* plugins/Podcast/UI/ErrorsSource.cs:
+	* plugins/Podcast/UI/PodcastErrorsSource.cs: Added.
+	
+	* plugins/Podcast/HttpDownloadTask.cs: Added additional exception handling.
+
+	* plugins/Podcast/UI/PodcastPlaylistView.cs:
+	* plugins/Podcast/UI/PodcastPlaylistModel.cs: Successfully downloaded files 
+	that could not be added to the library can no longer be streamed.
+		
+	* plugins/Podcast/PodcastCore.cs: Now uses 'PodcastErrorSource' to report 
+	various errors.
+
+	* plugins/Podcast/PodcastFeedInfo.cs:
+	* plugins/Podcast/UI/PodcastSource.cs:		
+	* plugins/Podcast/PodcastFeedFetcher.cs:
+	* plugins/Podcast/UI/PodcastPropertiesDialog.cs: Minor cleanup. 
+
 2006-09-14  Mike Urbanski <michael.c.urbanski@gmail.com> 
 	
-	* plugins/Podcast/PodcastPlugin.cs:  Initiliaztion of the 'PodcastCore'
+	* plugins/Podcast/PodcastPlugin.cs: Initiliaztion of the 'PodcastCore'
 	now takes place in the 'InterfaceInitialize' method.
 
 2006-09-13  Aaron Bockover  <abock@gnome.org>
@@ -39,16 +58,16 @@
 	* plugins/Podcast/UI/PodcastFeedView.cs:
 	* plugins/Podcast/UI/PodcastPixbufs.cs:
 	* plugins/Podcast/UI/PodcastSource.cs:
-	* plugins/Podcast/UI/PodcastPlaylistView.cs:  Stock icons are
+	* plugins/Podcast/UI/PodcastPlaylistView.cs: Stock icons are
 	now used.  (BGO #346037)
 
 	* plugins/Podcast/data/images/go-next.png:
 	* plugins/Podcast/data/images/edit-delete.png:
 	* plugins/Podcast/data/images/go-next-grey.png:
 	* plugins/Podcast/data/images/dialog-error.png:
-	* plugins/Podcast/data/images/view-refresh.png:  Deleted
+	* plugins/Podcast/data/images/view-refresh.png: Deleted.
 	
-	* plugins/Podcast/Podcast.mdp:  Removed (above) images from project.
+	* plugins/Podcast/Podcast.mdp: Removed (above) images from project.
 	
 2006-09-05  Aaron Bockover  <abock@gnome.org>
 

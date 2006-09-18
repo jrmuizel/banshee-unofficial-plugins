@@ -87,8 +87,7 @@ namespace Banshee.Plugins.Podcast
         public PodcastFeedEventArgs (ICollection podcastFeeds)
                 : this (null, podcastFeeds) {}}
 
-public enum SyncPreference :
-    int {
+	public enum SyncPreference : int {
         All = 0,
         One = 1,
         None = 2
@@ -98,6 +97,7 @@ public enum SyncPreference :
     {
         private static PodcastSource source;
         private static Hashtable downloads;  // [DownloadInfo | PodcastInfo]
+		private static PodcastErrorsSource errorSource;
 
         private static bool initialized;
         private static bool initializing;
@@ -110,6 +110,13 @@ public enum SyncPreference :
         public static PodcastPlugin Plugin;
         public static PodcastLibrary Library;
         public static PodcastFeedFetcher FeedFetcher;
+
+        public static Source Source {
+            get
+            {
+                return source as PodcastSource;
+            }
+        }
 
         public static bool IsInitialized {
             get
@@ -444,8 +451,7 @@ public enum SyncPreference :
                         ButtonsType.Ok,
                         Catalog.GetString ("Invalid URL"),
                         Catalog.GetString ("Podcast feed URL is invalid.")
-                    )
-                    ;
+                    );
 
                     return;
                 }
@@ -636,6 +642,13 @@ public enum SyncPreference :
                 }
 
                 pi.DownloadFailed = (dif.State == DownloadState.Failed);
+                
+                if (pi.DownloadFailed) {
+           			PodcastErrorsSource.Instance.AddError (
+           				dif.RemoteUri.ToString (), Catalog.GetString ("Download Failed"), null
+           			);
+           		}
+                
                 pi.DownloadInfo = null;
                 pi.IsQueued = false;
                 downloads.Remove (dif);
@@ -710,10 +723,18 @@ public enum SyncPreference :
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine (
-                        Catalog.GetString("Unable to add: {0} to library.  {1}"), local_uri, e.Message
-                    );
+                	PodcastErrorsSource.Instance.AddError (
+              			local_uri.ToString (),
+                		Catalog.GetString ("Unable to add to library"),                				
+                		e
+           			);
+                	
+                    //Console.WriteLine (
+                    //    Catalog.GetString("Unable to add: {0} to library.  {1}"), local_uri, e.Message
+                    //);
                 }
+
+                pi.IsDownloaded = true;
 
                 if (ti != null)
                 {
@@ -722,14 +743,14 @@ public enum SyncPreference :
                 else
                 {
                     pi.DownloadFailed = true;
+                    PodcastDBManager.Commit (pi);
                     return;
                 }
 
                 pi.LocalPath = local_uri.ToString ();
-                pi.IsDownloaded = true;
                 PodcastDBManager.Commit (pi);
                 pi.Feed.UpdateCounts ();
-
+                
                 ThreadAssist.ProxyToMain (delegate {
                                               Library.AddTrack (ti, pi, true);
                                           });

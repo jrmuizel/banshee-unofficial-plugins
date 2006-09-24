@@ -1,5 +1,16 @@
 2006-09-24  Aaron Bockover  <aaron@abock.org>
 
+	0.3.0 Released
+
+	* configure.ac: Bump to 0.3.0, removed Mono support
+
+	* src/Makefile.am: Removed Mono support; added -Werror
+
+	* README:
+	* NEWS: Updated
+
+2006-09-24  Aaron Bockover  <aaron@abock.org>
+
 	* src/helix-dbus-server.cc: Changed the Message signal signature from
 	a poorly designed variable argument signature (i[sT..]) to a properly 
 	designed variant dictionary signature (ia{sv})

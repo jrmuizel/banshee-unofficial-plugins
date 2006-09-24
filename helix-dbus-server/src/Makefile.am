@@ -1,4 +1,14 @@
-INCLUDES = -Wall -D_FORTIFY_SOURCE=2 -ggdb3 --permissive -I$(top_srcdir)/src/helix/player/hxclientkit/pub -I$(top_srcdir)/src/helix/common/runtime/pub -D_UNIX $(GNOME_CFLAGS) -DDBUS_API_SUBJECT_TO_CHANGE
+INCLUDES = \
+	-Wall \
+	-Werror \
+	-D_FORTIFY_SOURCE=2 \
+	-ggdb3 \
+	--permissive \
+	-I$(top_srcdir)/src/helix/player/hxclientkit/pub \
+	-I$(top_srcdir)/src/helix/common/runtime/pub \
+	-D_UNIX \
+	$(GNOME_CFLAGS) \
+	-DDBUS_API_SUBJECT_TO_CHANGE
 
 helixdbusdir = $(bindir)
 helixdbus_PROGRAMS = helix-dbus-server.bin
@@ -28,26 +38,5 @@ helix_dbus_server_bin_LDFLAGS = -L$(top_srcdir)/src/helix/player/hxclientkit/dbg
 
 CLEANFILES = 
 MAINTAINERCLEANFILES = Makefile.in
-
-EXTRA_DIST = $(helix_dbus_server_SOURCES) $(helix_EXTRAS) $(srcdir)/HelixRemoteClient.cs $(srcdir)/HelixRemotePlayer.cs
-
-if HAVE_MONO
-
-ASSEMBLY = HelixDbusClient.exe
-CLIENT_SRC = $(srcdir)/HelixRemoteClient.cs $(srcdir)/HelixRemotePlayer.cs
-
-all: $(ASSEMBLY)
-
-$(ASSEMBLY): $(CLIENT_SRC)
-	$(MCS) -out:$@ $(DBUS_SHARP_LIBS) -pkg:gtk-sharp-2.0 $(CLIENT_SRC)
-
-CLEANFILES += $(ASSEMBLY)
-
-endif
-
-server-run:
-	HELIX_LIBS=/usr/lib/RealPlayer10/ ./helix-dbus-server
-
-client-run:
-	mono --debug HelixDbusClient.exe
+EXTRA_DIST = $(helix_dbus_server_SOURCES) $(helix_EXTRAS)
 

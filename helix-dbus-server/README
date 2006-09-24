@@ -9,5 +9,3 @@ helix-dbus-server exposes hxplayer and hxmessage over DBus, allowing
 full control of the Helix player and the propagation of hxmessages over
 the 'Message' signal
 
-Additionally, a C#/Mono client implementation is provided: Helix.RemotePlayer
-

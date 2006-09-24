@@ -3,7 +3,7 @@ AC_PREREQ(2.52)
 AC_INIT(README)
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_SRCDIR(src)
-AM_INIT_AUTOMAKE(helix-dbus-server, 0.2.3)
+AM_INIT_AUTOMAKE(helix-dbus-server, 0.3.0)
 
 AM_MAINTAINER_MODE
 AC_PROG_CC
@@ -30,23 +30,6 @@ PKG_CHECK_MODULES(GNOME,
 	dbus-glib-1)
 AC_SUBST(GNOME_CFLAGS)
 AC_SUBST(GNOME_LIBS)
-
-dnl Mono (for client sample)
-
-AC_PATH_PROG(MONO, mono, no)
-AC_PATH_PROG(MCS, mcs, no)
-AM_CONDITIONAL(HAVE_MONO, false)
-
-if test ! "x$MONO" = "xno"; then
-	if test ! "x$MCS" = "xno"; then
-		PKG_CHECK_MODULES(DBUS_SHARP, dbus-sharp >= 0.60)
-		AC_SUBST(DBUS_SHARP_LIBS)
-		AM_CONDITIONAL(HAVE_MONO, true)
-		AC_SUBST(MONO)
-		AC_SUBST(MCS)
-	fi
-fi
-
 
 dnl HELIX_LIBS stuff
 

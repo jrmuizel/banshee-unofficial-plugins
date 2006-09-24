@@ -191,9 +191,11 @@ helix_dbus_server_hxplayer_message_handler(HxPlayer *player, HxMessage *message)
 {
     HelixDbusServer *server = (HelixDbusServer *)hxplayer_get_user_info(player);
     DBusMessage *signal;
+    DBusMessageIter iter;
+    DBusMessageIter dict_iter;
     HxMessageType message_type;
     GList *message_segments;
-    int segment_index, segment_count;
+    int segment_index, segment_count = 142;
     
     if(message == NULL) {
         return;
@@ -205,7 +207,18 @@ helix_dbus_server_hxplayer_message_handler(HxPlayer *player, HxMessage *message)
     }
     
     signal = dbus_message_new_signal(HELIX_DBUS_PLAYER_PATH, HELIX_DBUS_INTERFACE, "Message");
-    dbus_message_append_args(signal, DBUS_TYPE_INT32, &message_type, DBUS_TYPE_INVALID);
+    if(signal == NULL) {
+        return;
+    }
+    
+    dbus_message_iter_init_append(signal, &iter);
+    dbus_message_iter_append_basic(&iter, DBUS_TYPE_INT32, &message_type);
+    dbus_message_iter_open_container(&iter, DBUS_TYPE_ARRAY, 
+        DBUS_DICT_ENTRY_BEGIN_CHAR_AS_STRING
+        DBUS_TYPE_STRING_AS_STRING
+        DBUS_TYPE_VARIANT_AS_STRING
+        DBUS_DICT_ENTRY_END_CHAR_AS_STRING,
+        &dict_iter);
     
     message_segments = hxmessage_get_segment_list(message);
     if(message_segments != NULL) {
@@ -214,6 +227,10 @@ helix_dbus_server_hxplayer_message_handler(HxPlayer *player, HxMessage *message)
             
             HxMessageSegment *message_segment;
             HxMessageSegmentType segment_type;
+            DBusMessageIter dict_item_iter;
+            DBusMessageIter dict_item_value_iter;
+            int dict_item_value_signature;
+            gchar dict_item_value_signature_as_string[3]; 
             const gchar *segment_name;
             gpointer segment_value;
             
@@ -230,12 +247,22 @@ helix_dbus_server_hxplayer_message_handler(HxPlayer *player, HxMessage *message)
                 continue;
             }
             
-            dbus_message_append_args(signal, 
-                DBUS_TYPE_STRING, &segment_name,
-                hxmessage_segment_type_to_dbus_type(segment_type), &segment_value, 
-                DBUS_TYPE_INVALID);
+            dbus_message_iter_open_container(&dict_iter, DBUS_TYPE_DICT_ENTRY, NULL, &dict_item_iter);
+            dbus_message_iter_append_basic(&dict_item_iter, DBUS_TYPE_STRING, &segment_name);
+            
+            dict_item_value_signature = hxmessage_segment_type_to_dbus_type(segment_type);
+            dict_item_value_signature_as_string[0] = dict_item_value_signature;
+            dict_item_value_signature_as_string[1] = 0;
+            
+            dbus_message_iter_open_container(&dict_item_iter, DBUS_TYPE_VARIANT, 
+                dict_item_value_signature_as_string, &dict_item_value_iter);
+            dbus_message_iter_append_basic(&dict_item_value_iter, dict_item_value_signature, &segment_value);
+            dbus_message_iter_close_container(&dict_item_iter, &dict_item_value_iter);
+            dbus_message_iter_close_container(&dict_iter, &dict_item_iter);
         }
     }
+    
+    dbus_message_iter_close_container(&iter, &dict_iter);
     
     hxmessage_free(message);
     

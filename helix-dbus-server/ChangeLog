@@ -1,3 +1,9 @@
+2006-09-24  Aaron Bockover  <aaron@abock.org>
+
+	* src/helix-dbus-server.cc: Changed the Message signal signature from
+	a poorly designed variable argument signature (i[sT..]) to a properly 
+	designed variant dictionary signature (ia{sv})
+	
 2006-06-20  Aaron Bockover  <aaron@abock.org>
 
 	* configure.ac: Bump to 0.2.3

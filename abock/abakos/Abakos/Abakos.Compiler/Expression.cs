@@ -89,7 +89,6 @@ namespace Abakos.Compiler
             Queue<Symbol> queue = new Queue<Symbol>();
             foreach(Symbol symbol in symbol_list) {
                 queue.Enqueue(symbol);
-                Console.WriteLine(symbol);
             }
             
             return queue;

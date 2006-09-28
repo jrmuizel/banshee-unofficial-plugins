@@ -23,7 +23,8 @@ namespace Abakos.Compiler
             new SymbolResolve(typeof(GroupSymbol)),
             new SymbolResolve(typeof(CommaSymbol)),
             new SymbolResolve(typeof(VoidSymbol)),
-            new SymbolResolve(typeof(FunctionSymbol))
+            new SymbolResolve(typeof(FunctionSymbol)),
+            new SymbolResolve(typeof(VariableSymbol))
         };
     
         private string name;
@@ -42,7 +43,7 @@ namespace Abakos.Compiler
             return name;
         }
 
-        public static Symbol FromString(string token)
+        public static Symbol FromString(string token, string nextToken)
         {
             for(int i = 0; i < symbol_resolution_table.Length; i++) {
                 SymbolResolve sr = symbol_resolution_table[i];
@@ -54,6 +55,16 @@ namespace Abakos.Compiler
                     }
                     
                     symbol_resolution_table[i].Method = sr.Method;
+                }
+                
+                if(nextToken != null) {
+                    Symbol next_symbol = FromString(nextToken, null); 
+                    if(sr.Type == typeof(FunctionSymbol)) {
+                        if((next_symbol is GroupSymbol && (next_symbol as GroupSymbol).Direction == 
+                            GroupSymbol.GroupDirection.Right) || !(next_symbol is GroupSymbol)) {
+                            continue;
+                        }
+                    }
                 }
                 
                 try {

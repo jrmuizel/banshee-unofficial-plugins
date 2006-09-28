@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Abakos.Compiler
 {
@@ -24,6 +25,20 @@ namespace Abakos.Compiler
     {
         public VariableSymbol(string name) : base(name)
         {
+        }
+        
+        public Symbol Resolve(IDictionary<string, double> table)
+        {
+            if(!table.ContainsKey(Name)) {
+                throw new UnknownVariableException(Name);
+            }
+            
+            return new NumberSymbol(table[Name]);
+        }
+        
+        public new static VariableSymbol FromString(string token)
+        {
+            return new VariableSymbol(token);
         }
     }
     

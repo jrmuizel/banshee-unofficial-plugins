@@ -1,3 +1,12 @@
+2006-09-28  Aaron Bockover  <abock@gnome.org>
+
+	* Abakos/Abakos.Compiler/Expression.cs:
+	* Abakos/Abakos.Compiler/Values.cs:
+	* Abakos/Abakos.Compiler/Symbol.cs: Added variable support
+
+	* Abakos/Abakos.mdp
+	* Abakos/Abakos.Compiler/UnknownVariableException.cs: Added
+
 2006-09-11  Aaron Bockover  <abock@gnome.org>
 
 	* Abakos/Main.cs: Merge all program arguments into an expression 

@@ -10,6 +10,7 @@ namespace Abakos.Compiler
         private string raw_expression;
         private Queue<Symbol> infix_queue;
         private Queue<Symbol> postfix_queue;
+        private Dictionary<string, double> variable_table = new Dictionary<string, double>();
         
         private static Regex tokenizer_regex = null;
         
@@ -18,6 +19,11 @@ namespace Abakos.Compiler
             raw_expression = expression;
             infix_queue = ToInfixQueue(expression);
             postfix_queue = ToPostfixQueue(infix_queue);
+        }
+        
+        public void DefineVariable(string variable, double value)
+        {
+            variable_table.Add(variable, value);
         }
         
         public Queue<Symbol> InfixQueue {
@@ -58,11 +64,17 @@ namespace Abakos.Compiler
             
             for(int i = 0; i < tokens.Length; i++) {
                 string token = tokens[i].Trim();
+                string next_token = null;
+                
                 if(token == String.Empty) {
                     continue;
                 }
                 
-                Symbol symbol = Symbol.FromString(token);
+                if(i < tokens.Length - 1) {
+                    next_token = tokens[i + 1].Trim();
+                }
+                
+                Symbol symbol = Symbol.FromString(token, next_token);
                 symbol_list.Add(symbol);
                 
                 // I'm too tired to fix this at the stack/execution level right now;
@@ -77,6 +89,7 @@ namespace Abakos.Compiler
             Queue<Symbol> queue = new Queue<Symbol>();
             foreach(Symbol symbol in symbol_list) {
                 queue.Enqueue(symbol);
+                Console.WriteLine(symbol);
             }
             
             return queue;
@@ -130,15 +143,17 @@ namespace Abakos.Compiler
         
         public Stack<Symbol> Evaluate()
         {
-            return EvaluatePostfix(postfix_queue);
+            return EvaluatePostfix(postfix_queue, variable_table);
         }
         
-        public static Stack<Symbol> EvaluatePostfix(Queue<Symbol> postfix)
+        public static Stack<Symbol> EvaluatePostfix(Queue<Symbol> postfix, IDictionary<string, double> variableTable)
         {
             Stack<Symbol> stack = new Stack<Symbol>();
             
             foreach(Symbol current_symbol in postfix) {
-                if(current_symbol is ValueSymbol || current_symbol is CommaSymbol) {
+                if(current_symbol is VariableSymbol) {
+                    stack.Push((current_symbol as VariableSymbol).Resolve(variableTable));
+                } else if(current_symbol is ValueSymbol || current_symbol is CommaSymbol) {
                     stack.Push(current_symbol);
                 } else if(current_symbol is OperatorSymbol) {
                     Symbol a = stack.Pop();
@@ -166,7 +181,7 @@ namespace Abakos.Compiler
                     }
                     
                     stack.Push(FunctionTable.Execute(current_symbol as FunctionSymbol, argument_stack));
-                }
+                } 
             }
             
             return stack;

@@ -3,7 +3,8 @@
 	* plugins/Podcast/UI/PodcastSource.cs: Implemented 'ActionPath' 
 	property.
 	
-	
+	* plugins/Podcast/PodcastPlugin.cs: Associated 'Stock.JumpTo'
+	with 'PodcastVisitPodcastAlleyAction'.
 
 	* plugins/Podcast/DownloadCore/DownloadTask.cs: 'SetFilePathFromUri' 
 	method is now virtual.

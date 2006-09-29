@@ -7,8 +7,8 @@
 					<menuitem name="PodcastSubscribe" action="PodcastSubscribeAction" />
 					<separator />
 					<menuitem name="PodcastVisitPodcastAlley" action="PodcastVisitPodcastAlleyAction" />
-	                	</menu>
-            		</placeholder> 
-        	</menu>
+	           	</menu>
+        	</placeholder> 
+        </menu>
 	</menubar>
 </ui>

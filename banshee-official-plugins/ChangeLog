@@ -1,5 +1,10 @@
 2006-09-29  Mike Urbanski <michael.c.urbanski@gmail.com> 
 
+	* plugins/Podcast/UI/PodcastSource.cs: Implemented 'ActionPath' 
+	property.
+	
+	
+
 	* plugins/Podcast/DownloadCore/DownloadTask.cs: 'SetFilePathFromUri' 
 	method is now virtual.
 	

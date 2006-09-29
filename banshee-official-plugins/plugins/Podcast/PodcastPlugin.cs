@@ -120,8 +120,8 @@ namespace Banshee.Plugins.Podcast
                                               Catalog.GetString ("Subscribe to New Podcast Feed"),
                                               OnPodcastSubscribeHandler),
 
-                             new ActionEntry ("PodcastVisitPodcastAlleyAction", null,
-                                              Catalog.GetString ("Visit Podcast Alley"), "<control>P",
+                             new ActionEntry ("PodcastVisitPodcastAlleyAction", Stock.JumpTo,
+                                              Catalog.GetString ("Find New Podcasts"), "<control>P",
                                               Catalog.GetString ("Find New Podcasts at PodcastAlley.com"),
                                               OnVisitPodcastAlleyHandler),
                          });

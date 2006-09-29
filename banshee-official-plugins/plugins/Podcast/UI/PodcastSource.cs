@@ -76,6 +76,30 @@ namespace Banshee.Plugins.Podcast.UI
             }
         }
 
+        private Gtk.ActionGroup action_group = null;
+        private const string PodcastPopupMenuPath = "/PodcastMenuPopup";
+        
+        public override string ActionPath {
+            get {
+                if(action_group != null) {
+                    return PodcastPopupMenuPath;
+                }
+                
+                Globals.ActionManager.UI.AddUiFromString(@"
+                    <ui>
+                        <popup name='PodcastMenuPopup' action='PodcastAction'>
+                                <menuitem name='PodcastUpdateFeeds' action='PodcastUpdateFeedsAction' />
+                                <menuitem name='PodcastSubscribe' action='PodcastSubscribeAction' />
+                                <separator />
+                                <menuitem name='PodcastVisitPodcastAlley' action='PodcastVisitPodcastAlleyAction' />
+                        </popup>
+                    </ui>                    
+                ");
+                
+                return PodcastPopupMenuPath;
+            }
+        }
+
         public PodcastSource() : base(Catalog.GetString ("Podcasts"), 2)
         {
             icon = PodcastPixbufs.PodcastIcon22;
@@ -152,7 +176,6 @@ namespace Banshee.Plugins.Podcast.UI
                 );
             }
             catch {
-
             }
         }
 

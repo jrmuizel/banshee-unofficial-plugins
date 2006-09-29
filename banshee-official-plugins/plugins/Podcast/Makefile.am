@@ -31,7 +31,7 @@ plugin_SCRIPTS = $(ASSEMBLY) $(ASSEMBLY).mdb
 all: $(ASSEMBLY)
 
 $(ASSEMBLY): $(SOURCES)
-	$(MCS) $(MCS_FLAGS) -out:$(ASSEMBLY) -target:library -nowarn:0169 -r:System.Data -r:System.Xml -r:Mono.Posix $(podcast_resources_build) $(BANSHEE_LIBS) $(GTKSHARP_LIBS) $(SOURCES)
+	$(MCS) $(MCS_FLAGS) -out:$(ASSEMBLY) -target:library -nowarn:0169 -r:System.Data -r:System.Web -r:System.Xml -r:Mono.Posix $(podcast_resources_build) $(BANSHEE_LIBS) $(GTKSHARP_LIBS) $(SOURCES)
 
 EXTRA_DIST = $(SOURCES) $(podcast_resources)
 CLEANFILES = *.dll *.mdb

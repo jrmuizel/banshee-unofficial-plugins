@@ -28,6 +28,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Web;
 using System.Threading;
 
 using Banshee.Plugins.Podcast;
@@ -49,6 +50,15 @@ namespace Banshee.Plugins.Podcast.Download
             }
             catch {}
         }
+        
+        protected override void SetFilePathFromUri (Uri uri)
+        {
+            if (uri != null)
+            {
+                string[] segments = uri.Segments;
+		        FilePath = System.Web.HttpUtility.UrlDecode (segments [segments.Length-1]);
+            }
+        }        
 
         private void ImplDownload ()
         {
@@ -61,6 +71,7 @@ namespace Banshee.Plugins.Podcast.Download
             CheckState ();
 
             SetFilePathFromUri (response.ResponseUri);
+            
             webContentLength = response.ContentLength;
             remote_last_updated = response.LastModified;
 

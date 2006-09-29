@@ -1,3 +1,13 @@
+2006-09-29  Mike Urbanski <michael.c.urbanski@gmail.com> 
+
+	* plugins/Podcast/DownloadCore/DownloadTask.cs: 'SetFilePathFromUri' 
+	method is now virtual.
+	
+	* plugins/Podcast/DownloadCore/HttpDownloadTask.cs: Filenames are now 
+	url decoded. (BGO #357376)
+
+	* plugins/Podcast/Makefile.am: Added 'System.Web' reference.
+
 2006-09-19  Aaron Bockover  <abock@gnome.org>
 
 	0.11.0 Release

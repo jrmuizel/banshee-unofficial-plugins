@@ -141,7 +141,7 @@ namespace Banshee.Plugins.Podcast.Download
                 }
             }
         }
-
+        
         protected static string TempFileDir {
             get 
             {
@@ -419,9 +419,7 @@ namespace Banshee.Plugins.Podcast.Download
         protected abstract void CleanUp ();
         protected abstract void Download ();
 
-        // Prevents re-direct insanity, should only be used
-        // when the response URI does not match the request URI.
-        protected void SetFilePathFromUri (Uri uri)
+        protected virtual void SetFilePathFromUri (Uri uri)
         {
             if (uri != null)
             {

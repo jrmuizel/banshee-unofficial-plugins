@@ -1,3 +1,7 @@
+2006-10-02  Ivan N. Zlatev  <contact i-nZ.net>
+
+	* configure.ac: Don't place the binary in a Xine subdirectory.
+
 2006-07-28  Ivan N. Zlatev  <contact i-nZ.net>
 
 	* src/XinePlayerEngine.cs: Updated SetEqualizerGain to normalize the frequency.

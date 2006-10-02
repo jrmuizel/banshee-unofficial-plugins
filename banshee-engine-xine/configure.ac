@@ -21,7 +21,7 @@ PKG_CHECK_MODULES(LIBXINE, libxine)
 AC_SUBST(BANSHEE_LIBS)
 
 PLUGINS_DIR="`$PKG_CONFIG --variable=systemplugindir banshee`"
-BANSHEE_ENGINE_DIR="`echo $PLUGINS_DIR | sed -e 's/Banshee.Plugins//'`Banshee.MediaEngine/Xine"
+BANSHEE_ENGINE_DIR="`echo $PLUGINS_DIR | sed -e 's/Banshee.Plugins//'`Banshee.MediaEngine"
 
 AC_SUBST(BANSHEE_ENGINE_DIR)
 

@@ -566,9 +566,9 @@ xing_mp3_encoder_chain(GstPad *pad, GstBuffer *buf)
     XingMp3Encoder *encoder;
     GstFlowReturn ret = GST_FLOW_OK;
   
-    g_return_if_fail(pad != NULL);
-    g_return_if_fail(GST_IS_PAD(pad));
-    g_return_if_fail(buf != NULL);
+    g_return_val_if_fail(pad != NULL, GST_FLOW_ERROR);
+    g_return_val_if_fail(GST_IS_PAD(pad), GST_FLOW_ERROR);
+    g_return_val_if_fail(buf != NULL, GST_FLOW_ERROR);
 
     encoder = XING_MP3_ENCODER(gst_pad_get_parent(pad));
 

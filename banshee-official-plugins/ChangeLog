@@ -1,8 +1,10 @@
 2006-10-13  Aaron Bockover  <abock@gnome.org>
 
-	0.11.1 Release
+	0.11.1 Released
 
 	* NEWS: Updated
+
+	* configure.ac: Bump to 0.11.1
 
 2006-09-29  Mike Urbanski <michael.c.urbanski@gmail.com> 
 

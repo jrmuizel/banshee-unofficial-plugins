@@ -1,3 +1,9 @@
+2006-10-18  Mike Urbanski <michael.c.urbanski@gmail.com> 
+
+	* plugins/Podcast/StringUtils.cs:  
+	* plugins/Podcast/UI/PodcastSubscribeDialog.cs:  Addressed licensing 
+	issues. 
+		
 2006-10-13  Aaron Bockover  <abock@gnome.org>
 
 	0.11.1 Released

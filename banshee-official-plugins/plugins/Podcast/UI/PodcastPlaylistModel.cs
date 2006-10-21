@@ -139,9 +139,11 @@ namespace Banshee.Plugins.Podcast.UI
             if (pi.Track != null)
             {
                 Play (pi.Track);
-            }
-            else if (pi.Url != null && !pi.IsDownloaded)
-            {
+            } else if (pi.IsDownloaded && 
+                pi.LocalPath != null && 
+                pi.LocalPath != String.Empty) { 
+                Banshee.Web.Browser.Open (pi.LocalPath);
+            } else if (pi.Url != null && !pi.IsDownloaded) {
                 Play (pi.Url);
             }
         }

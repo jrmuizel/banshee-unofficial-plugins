@@ -1,131 +1,37 @@
-/*
- * Copyright (C) 2004, 2005 Jorn Baayen <jbaayen@gnome.org>
+/*/***************************************************************************  
+ *  StringUtils.cs
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
+ *  Written by Mike Urbanski <michael.c.urbanski@gmail.com>
+ ****************************************************************************/
+
+/*  THIS FILE IS LICENSED UNDER THE MIT LICENSE AS OUTLINED IMMEDIATELY BELOW:
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
+ *  Permission is hereby granted, free of charge, to any person obtaining a
+ *  copy of this software and associated documentation files (the "Software"),  
+ *  to deal in the Software without restriction, including without limitation  
+ *  the rights to use, copy, modify, merge, publish, distribute, sublicense,  
+ *  and/or sell copies of the Software, and to permit persons to whom the  
+ *  Software is furnished to do so, subject to the following conditions:
  *
- * You should have received a copy of the GNU General Public
- * License along with this program; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ *  The above copyright notice and this permission notice shall be included in 
+ *  all copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+ *  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+ *  DEALINGS IN THE SOFTWARE.
  */
 
 using System;
-using System.Collections;
 using System.Text.RegularExpressions;
 
-public sealed class StringUtils
+public static class StringUtils
 {
-    // Strings
-    private static readonly string string_unknown =
-     	Banshee.Plugins.Catalog.GetString ("Unknown");
-
-    private static readonly string string_many =
-        Banshee.Plugins.Catalog.GetString ("{0} and others");
-
-    private static readonly string string_several =
-        Banshee.Plugins.Catalog.GetString ("{0} and {1}");
-
-    // Methods
-    // Methods :: Public
-    // Methods :: Public :: SecondsToString
-    public static string SecondsToString (long time)
-    {
-        long h, m, s;
-
-        h = (time / 3600);
-        m = ((time % 3600) / 60);
-        s = ((time % 3600) % 60);
-
-        if (h > 0)
-            return String.Format ("{0}:{1}:{2}", h, m.ToString ("d2"),
-                                  s.ToString ("d2"));
-
-        return String.Format ("{0}:{1}", m, s.ToString ("d2"));
-    }
-
-    // Methods :: Public :: JoinHumanReadable
-    // TODO: Make I18N (don't hardcode English commas)
-    public static string JoinHumanReadable (string [] strings)
-    {
-        return JoinHumanReadable (strings, -1);
-    }
-
-    public static string JoinHumanReadable (string [] strings, int max)
-    {
-        if (strings.Length == 0)
-            return string_unknown;
-
-        if (strings.Length == 1)
-            return strings [0];
-
-        if (strings.Length > max && max > 1)
-            return String.Format (string_many,
-                                  String.Join (", ", strings, 0, max));
-
-        return String.Format (string_several,
-                              String.Join (", ", strings, 0, strings.Length - 1),
-                              strings [strings.Length - 1]);
-    }
-
-    // Methods :: Public :: PrefixToSuffix
-    public static string PrefixToSuffix (string str, string prefix)
-    {
-        return String.Format ("{0} {1}", str.Remove (0, prefix.Length + 1), prefix);
-    }
-
-    // Methods :: Public :: SearchKey
-    // TODO: Rename this to a verb.
-    public static string SearchKey (string key)
-    {
-        string lower = key.ToLower ();
-
-        bool different = false;
-        string stripped = "";
-
-        foreach (char c in lower)
-        {
-            if (Char.IsLetterOrDigit (c) || Char.IsWhiteSpace (c) ||
-                    Char.IsSurrogate (c))
-            {
-                stripped += c;
-                continue;
-            }
-
-            different = true;
-        }
-
-        // Both, so that "R.E.M." will yield only "R.E.M.", but "rem"
-        // both "remix and "R.E.M.".
-        if (different)
-            return String.Format ("{0} {1}", stripped, lower);
-
-        return stripped;
-    }
-
-    // Methods :: Public :: EscapeForPango
-    public static string EscapeForPango (string s)
-    {
-        if (s==null)
-            return "NULL";
-        s = s.Replace ("&", "&amp;");
-        s = s.Replace ("<", "&lt;");
-
-        return s;
-    }
-
-    public static string StripHTML (string s)
-    {
-        if (s == null)
-            return "";
-        Regex r = new Regex ("<[^>]+>");
-        return r.Replace (s, "");
-    }
+	public static string StripHTML (string str)
+	{
+	    return Regex.Replace (str, "<(.|\n)+?>", String.Empty);
+	}
 }

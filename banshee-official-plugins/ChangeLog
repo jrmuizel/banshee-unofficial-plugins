@@ -1,3 +1,17 @@
+2006-10-21  Mike Urbanski <michael.c.urbanski@gmail.com>
+
+    * plugins/Podcast/Makefile.am:
+    * plugins/Podcast/Podcast.mdp:
+    * plugins/Podcast/UI/PodcastPixbufs.cs:
+    * plugins/Podcast/UI/PodcastPlaylistView.cs:
+    * plugins/Podcast/data/images/banshee-new.png: Podcasts that have been 
+    download and have a play count of zero are now flagged.     
+        	
+    * plugins/Podcast/DownloadCore/DownloadCore.cs:	
+	* plugins/Podcast/DownloadCore/DownloadTask.cs:
+	* plugins/Podcast/DownloadCore/HttpDownloadTask.cs: Additional tolerance
+	for HTTP responses lacking a "Content-Length" header.
+
 2006-10-18  Mike Urbanski <michael.c.urbanski@gmail.com> 
 
 	* plugins/Podcast/StringUtils.cs:  

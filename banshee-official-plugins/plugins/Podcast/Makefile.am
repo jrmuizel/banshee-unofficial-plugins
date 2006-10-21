@@ -18,6 +18,7 @@ SOURCES = \
 
 podcast_resources = \
 	data/PodcastMenu.xml \
+	data/images/banshee-new.png \
 	data/images/document-save-as-16.png \
 	data/images/podcast-icon-16.png \
 	data/images/podcast-icon-22.png \

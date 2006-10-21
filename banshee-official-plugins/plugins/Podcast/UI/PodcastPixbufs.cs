@@ -35,33 +35,21 @@ namespace Banshee.Plugins.Podcast.UI
     // These should all be registered with the StockManager.
 
     public static class PodcastPixbufs
-    {    
+    {
         private static Pixbuf podcast_icon_16;
         private static Pixbuf podcast_icon_22;
         private static Pixbuf podcast_icon_48;
-     
-        private static Pixbuf new_podcast_icon;        
-        
         private static Pixbuf download_column_icon;
         private static Pixbuf activity_column_icon;
 
         static PodcastPixbufs ()
         {
-            new_podcast_icon = Gdk.Pixbuf.LoadFromResource ("banshee-new-alt2.png");            
-        
             podcast_icon_16 = Gdk.Pixbuf.LoadFromResource ("podcast-icon-16.png");
             podcast_icon_22 = Gdk.Pixbuf.LoadFromResource ("podcast-icon-22.png");
             podcast_icon_48 = Gdk.Pixbuf.LoadFromResource ("podcast-icon-48.png");
             
             activity_column_icon = IconThemeUtils.LoadIcon ("blue-speaker", 16);
             download_column_icon = Gdk.Pixbuf.LoadFromResource("document-save-as-16.png");
-        }
-
-        public static Pixbuf NewPodcastIcon {
-            get
-            {
-                return new_podcast_icon;
-            }
         }
 
         public static Pixbuf ActivityColumnIcon {

@@ -361,9 +361,7 @@ namespace Banshee.Plugins.Podcast.UI
             {
                 renderer.StockId = Stock.MediaPlay;
             } else if (pi.Track != null) {
-                if (pi.Track.PlayCount == 0) {
-                    renderer.Pixbuf = PodcastPixbufs.NewPodcastIcon;
-                } else if (pi.Track == PlayerEngineCore.CurrentTrack)
+                if (pi.Track == PlayerEngineCore.CurrentTrack)
                 {
                     renderer.StockId = Stock.MediaPlay;
                 }

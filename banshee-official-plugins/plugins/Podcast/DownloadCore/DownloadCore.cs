@@ -611,7 +611,13 @@ public enum DownloadState :
         {
             string message;
             string disp_progress;
-            double progress = (double) args.Progress / 100;
+            double progress;
+            
+            if (args.Progress != -1) {
+                progress = (double) args.Progress / 100;
+            } else {
+                progress = 0.0;
+            }
 
             // TODO  This could be shortened up
             if (args.FailedDownloads == 0)

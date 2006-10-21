@@ -189,7 +189,9 @@ namespace Banshee.Plugins.Podcast.Download
                 }
                 else
                 {
-                    return (((bytesRead * 100) / totalLength));
+                    int progress = Convert.ToInt32 ((bytesRead* 100)/totalLength); 
+     
+                    return (progress > (-1)) ? progress : 0;
                 }
             }
         }
@@ -387,7 +389,7 @@ namespace Banshee.Plugins.Podcast.Download
             {
                 dif.State = DownloadState.Failed;
             }
-            else if (bytesRead == totalLength)
+            else if (bytesRead == totalLength || totalLength == -1)
             {
                 dif.State = DownloadState.Completed;
             }

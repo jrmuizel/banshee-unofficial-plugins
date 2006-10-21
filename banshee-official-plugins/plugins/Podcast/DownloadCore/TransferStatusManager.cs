@@ -113,8 +113,17 @@ namespace Banshee.Plugins.Podcast.Download
         }
 
         public int Progress {
-            get
-            { return progress; }
+            get {
+                int ret = 0; 
+
+                if (progress <= -1 || progress >= 100) {
+                    ret = -1;
+                } else {
+                    ret = progress;
+                }
+                
+                return ret;
+            }
         }
 
         public TransferStatusManager ()

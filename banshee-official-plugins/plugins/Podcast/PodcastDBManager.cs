@@ -31,6 +31,7 @@ using System.Text;
 using System.Collections;
 
 using Banshee.Base;
+using Banshee.Database;
 
 namespace Banshee.Plugins.Podcast
 {
@@ -113,10 +114,10 @@ namespace Banshee.Plugins.Podcast
             ArrayList podcasts = new ArrayList ();
 
             IDataReader podcast_reader = Globals.Library.Db.Query (
-                                             String.Format (
+                                             new DbCommand(
                                                  @"SELECT * FROM Podcasts
-                                                 WHERE PodcastFeedID = {0}",
-                                                 feed.ID
+                                                 WHERE PodcastFeedID = :feed_id",
+                                                 "feed_id", feed.ID
                                              )
                                          );
 
@@ -163,31 +164,36 @@ namespace Banshee.Plugins.Podcast
 
             if (feed.ID != 0)
             {
-                ret = Globals.Library.Db.Execute( String.Format(
+                ret = Globals.Library.Db.Execute(new DbCommand(
                                                       @"UPDATE PodcastFeeds
-                                                      SET Title='{0}', FeedUrl='{1}', Link='{2}',
-                                                      Description='{3}', Image='{4}', LastUpdated='{5}',
-                                                      Subscribed={6}, SyncPreference={7} WHERE PodcastFeedID={8}",
-
-                                                      Sql.Statement.EscapeQuotes(feed.Title),
-                                                      feed.Url.ToString (), feed.Link,
-                                                      Sql.Statement.EscapeQuotes(feed.Description),
-                                                      Sql.Statement.EscapeQuotes(feed.Image), feed.LastUpdated.ToString (),
-                                                      Convert.ToInt32(feed.IsSubscribed), (int)feed.SyncPreference,
-                                                      feed.ID
+                                                      SET Title=:title, FeedUrl=:feed_url, Link=:link,
+                                                      Description=:description, Image=:image, LastUpdated=:last_updated,
+                                                      Subscribed=:subscribed, SyncPreference=:sync_preference WHERE PodcastFeedID=:feed_id",
+                                                      "title", feed.Title,
+                                                      "feed_url", feed.Url.ToString(),
+                                                      "link", feed.Link,
+                                                      "description", feed.Description,
+                                                      "image", feed.Image,
+                                                      "last_updated", feed.LastUpdated.ToString(),
+                                                      "subscribed", Convert.ToInt32(feed.IsSubscribed),
+                                                      "sync_preference", (int)feed.SyncPreference,
+                                                      "feed_id", feed.ID
                                                   ));
             }
             else
             {
-                ret = Globals.Library.Db.Execute( String.Format(
+                ret = Globals.Library.Db.Execute(new DbCommand(
                                                       @"INSERT INTO PodcastFeeds
-                                                      VALUES (NULL, '{0}', '{1}', '{2}',
-                                                      '{3}', '{4}', '{5}', {6}, {7})",
-                                                      Sql.Statement.EscapeQuotes(feed.Title),
-                                                      feed.Url.ToString (), feed.Link,
-                                                      Sql.Statement.EscapeQuotes(feed.Description),
-                                                      Sql.Statement.EscapeQuotes(feed.Image), feed.LastUpdated.ToString (),
-                                                      Convert.ToInt32(feed.IsSubscribed), (int)feed.SyncPreference
+                                                      VALUES (NULL, :title, :feed_url, :link,
+                                                      :description, :image, :last_updated, :subscribed, :sync_preference)",
+                                                      "title", feed.Title,
+                                                      "feed_url", feed.Url.ToString(),
+                                                      "link", feed.Link,
+                                                      "description", feed.Description,
+                                                      "image", feed.Image,
+                                                      "last_updated", feed.LastUpdated.ToString(),
+                                                      "subscribed", Convert.ToInt32(feed.IsSubscribed),
+                                                      "sync_preference", (int)feed.SyncPreference
                                                   ));
             }
 
@@ -201,36 +207,46 @@ namespace Banshee.Plugins.Podcast
             if (pi.ID != 0)
             {
 
-                ret = Globals.Library.Db.Execute(String.Format(
+                ret = Globals.Library.Db.Execute(new DbCommand(
                                                      @"UPDATE Podcasts
-                                                     SET PodcastFeedID={0}, Title='{1}', Link='{2}', PubDate='{3}',
-                                                     Description='{4}', Author='{5}', LocalPath='{6}', Url='{7}',
-                                                     MimeType='{8}', Length={9}, Downloaded={10}, Active={11}
-                                                     WHERE PodcastID={12}",
-                                                     pi.Feed.ID, Sql.Statement.EscapeQuotes(pi.Title),
-                                                     pi.Link, pi.PubDate.ToString (),
-                                                     Sql.Statement.EscapeQuotes(pi.Description),
-                                                     Sql.Statement.EscapeQuotes(pi.Author),
-                                                     Sql.Statement.EscapeQuotes(pi.LocalPath),
-                                                     pi.Url.ToString (), Sql.Statement.EscapeQuotes(pi.MimeType), pi.Length,
-                                                     Convert.ToInt32(pi.IsDownloaded), Convert.ToInt32(pi.IsActive),pi.ID
+                                                     SET PodcastFeedID=:feed_id, Title=:title, Link=:link, PubDate=:pubdate,
+                                                     Description=:description, Author=:author, LocalPath=:local_path, Url=:url,
+                                                     MimeType=:mimetype, Length=:length, Downloaded=:downloaded, Active=:active
+                                                     WHERE PodcastID=:podcast_id",
+                                                     "feed_id", pi.Feed.ID, 
+                                                     "title", pi.Title,
+                                                     "link", pi.Link, 
+                                                     "pubdate", pi.PubDate.ToString (),
+                                                     "description", pi.Description,
+                                                     "author", pi.Author,
+                                                     "local_path", pi.LocalPath,
+                                                     "url", pi.Url.ToString (), 
+                                                     "mimetype", pi.MimeType, 
+                                                     "length", pi.Length,
+                                                     "downloaded", Convert.ToInt32(pi.IsDownloaded),  
+                                                     "active", Convert.ToInt32(pi.IsActive),
+                                                     "podcast_id", pi.ID
                                                  ));
             }
             else
             {
-                ret = Globals.Library.Db.Execute(String.Format(
+                ret = Globals.Library.Db.Execute(new DbCommand(
                                                      @"INSERT INTO Podcasts
-                                                     VALUES (NULL, {0}, '{1}', '{2}',
-                                                     '{3}', '{4}', '{5}', '{6}', '{7}',
-                                                     '{8}', {9}, {10}, {11})",
-                                                     pi.Feed.ID, Sql.Statement.EscapeQuotes(pi.Title),
-                                                     pi.Link, pi.PubDate.ToString (),
-                                                     Sql.Statement.EscapeQuotes(pi.Description),
-                                                     Sql.Statement.EscapeQuotes(pi.Author),
-                                                     Sql.Statement.EscapeQuotes(pi.LocalPath),
-                                                     pi.Url.ToString (),
-                                                     Sql.Statement.EscapeQuotes(pi.MimeType), pi.Length,
-                                                     Convert.ToInt32(pi.IsDownloaded), Convert.ToInt32(pi.IsActive)
+                                                     VALUES (NULL, :feed_id, :title, :link,
+                                                     :pubdate, :description, :author, :local_path, :url,
+                                                     :mimetype, :length, :downloaded, :active)",
+                                                     "feed_id", pi.Feed.ID, 
+                                                     "title", pi.Title,
+                                                     "link", pi.Link, 
+                                                     "pubdate", pi.PubDate.ToString (),
+                                                     "description", pi.Description,
+                                                     "author", pi.Author,
+                                                     "local_path", pi.LocalPath,
+                                                     "url", pi.Url.ToString (), 
+                                                     "mimetype", pi.MimeType, 
+                                                     "length", pi.Length,
+                                                     "downloaded", Convert.ToInt32(pi.IsDownloaded),  
+                                                     "active", Convert.ToInt32(pi.IsActive)
                                                  ));
             }
 
@@ -244,16 +260,16 @@ namespace Banshee.Plugins.Podcast
                 throw new ArgumentNullException ("pfi");
             }
 
-            Globals.Library.Db.Execute(String.Format(
+            Globals.Library.Db.Execute(new DbCommand(
                                            @"DELETE FROM PodcastFeeds
-                                           WHERE PodcastFeedID = '{0}'",
-                                           pfi.ID
+                                           WHERE PodcastFeedID = :id",
+                                           "id", pfi.ID
                                        ));
 
-            Globals.Library.Db.Execute(String.Format(
+            Globals.Library.Db.Execute(new DbCommand(
                                            @"DELETE FROM Podcasts
-                                           WHERE PodcastFeedID = '{0}'",
-                                           pfi.ID
+                                           WHERE PodcastFeedID = :id",
+                                           "id", pfi.ID
                                        ));
         }
 
@@ -267,10 +283,10 @@ namespace Banshee.Plugins.Podcast
                 throw new ArgumentNullException ("pi");
             }
 
-            string query = String.Format(
-                               @"{0} PodcastID = '{1}'",
-                               base_podcast_remove_query,
-                               pi.ID
+            DbCommand query = new DbCommand(
+                               String.Format(@"{0} PodcastID = :id",
+                               base_podcast_remove_query),
+                               "id", pi.ID
                            );
 
             Globals.Library.Db.Execute(query);
@@ -291,10 +307,10 @@ namespace Banshee.Plugins.Podcast
                 throw new ArgumentNullException ("pi");
             }
 
-            string query = String.Format(
-                               @"{0} PodcastID = '{1}'",
-                               base_podcast_deactivate_query,
-                               pi.ID
+            DbCommand query = new DbCommand(
+                               String.Format(@"{0} PodcastID = :id",
+                               base_podcast_deactivate_query),
+                               "id", pi.ID
                            );
 
             Globals.Library.Db.Execute(query);

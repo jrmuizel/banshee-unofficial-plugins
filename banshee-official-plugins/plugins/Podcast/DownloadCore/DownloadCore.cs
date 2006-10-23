@@ -485,18 +485,19 @@ public enum DownloadState :
 
         private static void CreateUserEvent ()
         {
-            ThreadAssist.ProxyToMain ( delegate {
-                                           if(userEvent == null)
-                                           {
-                                               userEvent = new ActiveUserEvent(Catalog.GetString("Download"));
+            ThreadAssist.ProxyToMain(CreateUserEventProxy);
+        }
 
-                                               userEvent.Icon = IconThemeUtils.LoadIcon (Stock.Network, 22);
-                                               userEvent.Header = Catalog.GetString ("Downloading Files");
-                                               userEvent.Message = Catalog.GetString ("Initializing downloads");
-                                               userEvent.CancelRequested += OnUserEventCancelRequestedHandler;
-                                               cancel_requested = false;
-                                           }
-                                       });
+        private static void CreateUserEventProxy(object o, EventArgs args)
+        {
+            if(userEvent == null) {
+                userEvent = new ActiveUserEvent(Catalog.GetString("Download"));
+                userEvent.Icon = IconThemeUtils.LoadIcon (Stock.Network, 22);
+                userEvent.Header = Catalog.GetString ("Downloading Files");
+                userEvent.Message = Catalog.GetString ("Initializing downloads");
+                userEvent.CancelRequested += OnUserEventCancelRequestedHandler;
+                cancel_requested = false;
+            }
         }
 
 
@@ -521,19 +522,21 @@ public enum DownloadState :
 
         private static void OnUserEventCancelRequestedHandler (object sender, EventArgs args)
         {
-            ThreadAssist.ProxyToMain ( delegate {
-                                           if(userEvent != null)
-                                       {
-                                               userEvent.CancelRequested -= OnUserEventCancelRequestedHandler;
-                                               cancel_requested = true;
-                                               userEvent.CanCancel = false;
-                                               userEvent.Progress = 0.0;
-                                               userEvent.Header = Catalog.GetString ("Canceling Downloads");
-                                               userEvent.Message = Catalog.GetString ("Waiting for downloads to terminate");
+            ThreadAssist.ProxyToMain(OnUserEventCancelRequestedHandlerProxy);
+        }
 
-                                               ThreadAssist.Spawn(new ThreadStart(CancelAll));
-                                           }
-                                       });
+        private static void OnUserEventCancelRequestedHandlerProxy(object o, EventArgs args)
+        {
+            if(userEvent != null) {
+                userEvent.CancelRequested -= OnUserEventCancelRequestedHandler;
+                cancel_requested = true;
+                userEvent.CanCancel = false;
+                userEvent.Progress = 0.0;
+                userEvent.Header = Catalog.GetString ("Canceling Downloads");
+                userEvent.Message = Catalog.GetString ("Waiting for downloads to terminate");
+
+                ThreadAssist.Spawn(new ThreadStart(CancelAll));
+            }
         }
 
         private static void OnDownloadTaskFinishedHandler (object sender,

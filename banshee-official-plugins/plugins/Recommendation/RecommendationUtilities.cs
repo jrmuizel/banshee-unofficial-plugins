@@ -33,6 +33,8 @@ using System.IO;
 using System.Net;
 using System.Web;
 
+using Banshee.Database;
+
 namespace Banshee.Plugins.Recommendation
 {
     internal static class Utilities
@@ -97,16 +99,16 @@ namespace Banshee.Plugins.Recommendation
 
         internal static int GetTrackId(string artist, string title)
         {
-            string query = String.Format(@"
+            DbCommand command = new DbCommand(@"
                 SELECT TrackId 
                     FROM Tracks 
-                    WHERE Artist LIKE '{0}' 
-                        AND Title LIKE '{1}' 
+                    WHERE Artist LIKE :artist 
+                        AND Title LIKE :title 
                     LIMIT 1",
-                Sql.Escape.EscapeQuotes(artist),
-                Sql.Escape.EscapeQuotes(title));
+                "artist", artist,
+                "title", title);
 
-            object result = Banshee.Base.Globals.Library.Db.QuerySingle(query);
+            object result = Banshee.Base.Globals.Library.Db.QuerySingle(command);
             return result == null ? -1 : (int)result;
         }
     }

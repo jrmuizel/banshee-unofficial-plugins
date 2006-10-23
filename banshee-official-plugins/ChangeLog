@@ -1,5 +1,13 @@
 2006-10-23  Aaron Bockover  <abock@gnome.org>
 
+	Banshee Official Plugins 0.11.2 Released
+
+	* configure.ac: Bump to 0.11.2
+
+	* NEWS: Updated
+
+2006-10-23  Aaron Bockover  <abock@gnome.org>
+
 	* plugins/Recommendation/RecommendationUtilities.cs: 
 	* plugins/Podcast/PodcastDBManager.cs: Use the new DbCommand support
 

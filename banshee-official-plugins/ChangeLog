@@ -1,3 +1,19 @@
+2006-10-26  Mike Urbanski <michael.c.urbanski@gmail.com>
+
+	* plugins/Podcast/PodcastCore.cs: Added rudimentary 
+	certificate support.  (BGO #349504)
+
+	* plugins/Podcast/PodcastDBManager.cs: Corrected DbCommand 
+	support.
+	
+	* plugins/Podcast/Podcast.mdp:
+	* plugins/Podcast/Makefile.am: Added PodcastCertificatePolicy.cs
+	to project.  (Thanks go to Nathan Palmer)
+     
+	* plugins/Podcast/DownloadCore/DownloadCore.cs:
+	* plugins/Podcast/DownloadTask.cs: Better support for 
+	feeds containing multiple enclosures w\ the same filename.
+
 2006-10-23  Aaron Bockover  <abock@gnome.org>
 
 	Banshee Official Plugins 0.11.2 Released

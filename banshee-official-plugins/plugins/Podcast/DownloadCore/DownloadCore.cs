@@ -38,8 +38,7 @@ using Banshee.Plugins;
 
 namespace Banshee.Plugins.Podcast.Download
 {
-public enum DownloadState :
-    int
+    public enum DownloadState : int
     {
         Canceled = 0,
         CancelRequested = 1,

@@ -3,6 +3,7 @@ SOURCES = \
 	$(top_srcdir)/plugins/Common.cs \
 	$(srcdir)/AssemblyInfo.cs \
 	$(srcdir)/FeedUtils.cs \
+	$(srcdir)/PodcastCertificatePolicy.cs \
 	$(srcdir)/PodcastCore.cs \
 	$(srcdir)/PodcastDBManager.cs \
 	$(srcdir)/PodcastFeedFetcher.cs \

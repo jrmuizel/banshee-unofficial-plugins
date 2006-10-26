@@ -33,8 +33,7 @@ using System.Xml;
 namespace Banshee.Plugins.Podcast
 {
     public static class FeedUtil
-    {
-
+    {        
         // -- Adapted from Monopod
         public static bool KnownType (string type)
         {

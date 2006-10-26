@@ -552,10 +552,10 @@ namespace Banshee.Plugins.Podcast.UI
             }
         }
 
-    // Everything below here is overly sepcific and will be replaced when a general
-    // playlist standard is decided upon.
+        // Everything below here is overly sepcific and will be replaced when a general
+        // playlist standard is decided upon.
 
-    public void GetPodcastModelPathAtPos (int x, int y, out TreePath path)
+        public void GetPodcastModelPathAtPos (int x, int y, out TreePath path)
         {
             GetPathAtPos (x, y, out path);
 

@@ -26,6 +26,7 @@
  */
 
 using System;
+using System.Net;
 using System.Threading;
 using System.Collections;
 
@@ -151,8 +152,6 @@ namespace Banshee.Plugins.Podcast
 
                 DownloadCore.RegistrationFailed += OnRegistrationFailedHandler;
 
-                PlayerEngineCore.StateChanged += OnPlayerEngineStateChanged;
-
                 downloads = new Hashtable ();
 
                 Library = new PodcastLibrary ();
@@ -162,6 +161,8 @@ namespace Banshee.Plugins.Podcast
 
                 PodcastDBManager.InitPodcastDatabase ();
 
+                ServicePointManager.CertificatePolicy = new PodcastCertificatePolicy ();
+                
                 if(Globals.Library.IsLoaded)
                 {
                     LoadFromDatabase ();
@@ -170,8 +171,7 @@ namespace Banshee.Plugins.Podcast
                 {
                     Globals.Library.Reloaded += OnLibraryReloaded;
                 }
-            }
-            catch {
+            } finally {
                 lock (init_sync)
                 {
                     initializing = false;
@@ -186,6 +186,8 @@ namespace Banshee.Plugins.Podcast
                 if (initialized && !disposing && !disposed)
                 {
                     disposing = true;
+                } else {
+                    return;
                 }
             }
 
@@ -205,19 +207,16 @@ namespace Banshee.Plugins.Podcast
 
                 DownloadCore.RegistrationFailed -= OnRegistrationFailedHandler;
 
-                PlayerEngineCore.StateChanged -= OnPlayerEngineStateChanged;
-
                 DownloadCore.Dispose ();
                 Library.Dispose ();
-
-                SourceManager.RemoveSource (source);
-                source.Dispose ();
+                
+                DestroySource ();
             }
             finally
             {
                 lock (init_sync)
                 {
-                    initializing = false;
+                    disposing = false;
                 }
             }
 
@@ -456,9 +455,9 @@ namespace Banshee.Plugins.Podcast
                     return;
                 }
             }
-    }
+        }
 
-    internal static void SubscribeToPodcastFeed (string uri, SyncPreference sync)
+        internal static void SubscribeToPodcastFeed (string uri, SyncPreference sync)
         {
             PodcastFeedInfo feed = new PodcastFeedInfo (uri, sync);
 
@@ -497,7 +496,7 @@ namespace Banshee.Plugins.Podcast
 
                     foreach (PodcastInfo pi in feed.Podcasts)
                     {
-                        if (/*pi.IsDownloaded ||*/ pi.IsActive)
+                        if (pi.IsActive)
                         {
                             podcast_list.Add (pi);
                         }
@@ -505,11 +504,8 @@ namespace Banshee.Plugins.Podcast
                 }
 
                 Library.AddPodcasts (podcast_list, false);
-
-                source = new PodcastSource ();
-                SourceManager.AddSource (source);
-
-                source.Load ();
+                
+                InitSource ();
 
                 stop = DateTime.Now;
                 span = stop-start;
@@ -520,8 +516,9 @@ namespace Banshee.Plugins.Podcast
                 }
 
                 Console.WriteLine (Catalog.GetString("Loading Podcast Feeds:  {0} ms"), span.Milliseconds);
-            }
-            finally
+            } catch {
+                Console.WriteLine (Catalog.GetString("Unable to load Podcast DB"));
+            } finally
             {
                 lock (init_sync)
                 {
@@ -529,6 +526,28 @@ namespace Banshee.Plugins.Podcast
                 }
             }
         }
+
+        private static void InitSource ()
+        {
+            if (source == null) {
+                PlayerEngineCore.StateChanged += OnPlayerEngineStateChanged;
+            
+                source = new PodcastSource ();
+                SourceManager.AddSource (source);
+
+                source.Load ();
+            }
+        }
+        
+        private static void DestroySource ()
+        {
+            if (source != null) {
+                PlayerEngineCore.StateChanged -= OnPlayerEngineStateChanged;
+
+                SourceManager.RemoveSource (source);
+                source.Dispose ();            
+            }
+        }        
 
         private static void OnLibraryReloaded (object sender, EventArgs args)
         {

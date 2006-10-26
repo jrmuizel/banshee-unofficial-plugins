@@ -27,7 +27,9 @@
 
 using System;
 using System.IO;
+using System.Text;
 using System.Threading;
+using System.Security.Cryptography;
 
 using Banshee.Base;
 using Banshee.Plugins.Podcast;
@@ -131,12 +133,22 @@ namespace Banshee.Plugins.Podcast.Download
                     filePath = dif.DirectoryPath + value;
                     dif.LocalPath = filePath;
                     
+                    MD5 hasher = MD5.Create ();
+                    byte[] hash = hasher.ComputeHash (
+                        Encoding.UTF8.GetBytes (dif.UniqueKey)
+                    );
+                    
+                    string hashString = String.Format (
+                        "-{0}", 
+                        BitConverter.ToString (hash).Replace ("-", String.Empty)
+                    );
+			                                    
                     tempFilePath = TempFileDir +
                         Path.DirectorySeparatorChar +
                         dif.RemoteUri.Host +
                         Path.DirectorySeparatorChar +
-			            value + Util.Defines.TMP_EXT;
-
+			            value + hashString
+			            + Util.Defines.TMP_EXT;
                     CreateTempDirectory ();
                 }
             }
@@ -189,7 +201,7 @@ namespace Banshee.Plugins.Podcast.Download
                 }
                 else
                 {
-                    int progress = Convert.ToInt32 ((bytesRead* 100)/totalLength); 
+                    int progress = Convert.ToInt32 ((bytesRead*100)/totalLength); 
      
                     return (progress > (-1)) ? progress : 0;
                 }
@@ -249,9 +261,10 @@ namespace Banshee.Plugins.Podcast.Download
             downloadThread.Start ();
         }
 
-        // TODO let users decide what action to take
-        protected virtual void HandleExistingFile ()
-        {
+    // TODO let users decide what action to take
+    protected virtual void HandleExistingFile ()
+    {
+        lock (file_path_sync) {
             if (File.Exists (FilePath))
             {
                 long length = Util.FileLength (FilePath);
@@ -266,39 +279,51 @@ namespace Banshee.Plugins.Podcast.Download
                 }
                 else
                 {
-                    try
-                    {
-                        DeleteExistingFile ();
+                    int index = filePath.LastIndexOf (".");
+                    string guid = String.Format (
+                        "-{0}", Guid.NewGuid ().ToString ()
+                    );
+                    
+                    if (index != -1) {
+                        filePath = filePath.Insert (index, guid);     
+                    } else {
+                        filePath += guid;
                     }
-                    catch {}
+
+                    dif.LocalPath = filePath;
+
+                    //DeleteExistingFile ();
                 }
+            }
         }
     }
 
     protected virtual void HandleExistingTempFile ()
         {
-            if (File.Exists (TempFilePath))
-            {
-                long length = Util.FileLength (TempFilePath);
-
-                if (length > totalLength ||
-                        remote_last_updated.ToLocalTime () > File.GetLastWriteTime (TempFilePath))
+            lock (file_path_sync) {        
+                if (File.Exists (TempFilePath))
                 {
-                    try
+                    long length = Util.FileLength (TempFilePath);
+
+                    if (length > totalLength ||
+                            remote_last_updated.ToLocalTime () > File.GetLastWriteTime (TempFilePath))
                     {
-                        DeleteTempFile ();
-                    } catch {}
+                        try
+                        {
+                            DeleteTempFile ();
+                        } catch {}
 
-                    return;
-                }
+                        return;
+                    }
 
-                bytesRead = length;
-                OnProgressChanged (length);
+                    bytesRead = length;
+                    OnProgressChanged (length);
 
-                if (length == totalLength)
-                {
-                    Stop (DownloadState.Completed);
-                    throw new TaskStoppedException (Catalog.GetString("File complete"));
+                    if (length == totalLength)
+                    {
+                        Stop (DownloadState.Completed);
+                        throw new TaskStoppedException (Catalog.GetString("File complete"));
+                    }
                 }
             }
         }
@@ -353,14 +378,20 @@ namespace Banshee.Plugins.Podcast.Download
 
         protected virtual void DeleteTempFile ()
         {
-            File.Delete (TempFilePath);
-            DeleteTempDirectory ();
+            try 
+            {
+                File.Delete (TempFilePath);
+                DeleteTempDirectory ();
+            } catch {}
         }        
 
         protected virtual void DeleteExistingFile ()
         {
-            File.Delete (FilePath);
-            DeleteDirectory ();
+            try 
+            {        
+                File.Delete (FilePath);
+                DeleteDirectory ();
+            } catch {}
         }
         
         protected virtual void CheckLength ()
@@ -465,6 +496,7 @@ namespace Banshee.Plugins.Podcast.Download
                     if (File.Exists (TempFilePath))
                     {
                         CreateDirectory ();
+                        HandleExistingFile ();
                         File.Move (TempFilePath, FilePath);
                         DeleteTempDirectory ();
                     }

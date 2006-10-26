@@ -155,6 +155,11 @@ namespace Banshee.Plugins.Podcast.UI
             {
                 return url_entry.Text;
             }
+            
+            set 
+            {
+                url_entry.Text = value;
+            }
         }
 
         public SyncPreference SyncPreference

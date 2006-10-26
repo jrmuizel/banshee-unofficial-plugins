@@ -91,15 +91,16 @@ namespace Banshee.Plugins.Podcast
 
             while(feed_reader.Read())
             {
-
-                PodcastFeedInfo feed = new PodcastFeedInfo (
-                                           feed_reader.GetInt32 (0), feed_reader.GetString (1),
-                                           feed_reader.GetString (2), feed_reader.GetString (3),
-                                           feed_reader.GetString (4), feed_reader.GetString (5),
-                                           feed_reader.GetDateTime(6), feed_reader.GetBoolean(7),
-                                           (SyncPreference)feed_reader.GetInt32(8)
-                                       );
-
+                PodcastFeedInfo feed = null;
+                
+                feed = new PodcastFeedInfo (
+                    feed_reader.GetInt32 (0), feed_reader.GetString (1),
+                    feed_reader.GetString (2), GetStringSafe (feed_reader, 3),
+                    GetStringSafe (feed_reader, 4), GetStringSafe (feed_reader, 5),
+                    feed_reader.GetDateTime (6), feed_reader.GetBoolean (7),
+                    (SyncPreference)feed_reader.GetInt32(8)
+                );
+                
                 podcastFeeds.Add (feed);
                 feed.Add (LoadPodcasts (feed));
             }
@@ -122,17 +123,17 @@ namespace Banshee.Plugins.Podcast
                                          );
 
             while (podcast_reader.Read())
-            {
-                podcasts.Add(
-                    new PodcastInfo (
-                        feed, podcast_reader.GetInt32 (0), podcast_reader.GetString (2),
-                        podcast_reader.GetString (3), podcast_reader.GetDateTime (4),
-                        podcast_reader.GetString (5), podcast_reader.GetString (6),
-                        podcast_reader.GetString (7), podcast_reader.GetString (8),
-                        podcast_reader.GetString (9), podcast_reader.GetInt64 (10),
-                        podcast_reader.GetBoolean (11), podcast_reader.GetBoolean (12)
-                    )
-                );
+            {   
+               podcasts.Add(
+                   new PodcastInfo (
+                       feed, podcast_reader.GetInt32 (0), GetStringSafe (podcast_reader, 2),
+                       GetStringSafe (podcast_reader, 3), podcast_reader.GetDateTime (4),
+                       GetStringSafe (podcast_reader, 5), GetStringSafe (podcast_reader, 6),
+                       GetStringSafe (podcast_reader, 7), podcast_reader.GetString (8),
+                       podcast_reader.GetString (9), podcast_reader.GetInt64 (10),
+                       podcast_reader.GetBoolean (11), podcast_reader.GetBoolean (12)
+                   )
+               );
             }
 
             podcast_reader.Close ();
@@ -351,6 +352,12 @@ namespace Banshee.Plugins.Podcast
             }
 
             Globals.Library.Db.Execute(query_builder.ToString ());
+        }
+        
+        private static string GetStringSafe (IDataReader reader, int index)
+        {
+            return reader.IsDBNull (index) ? 
+                String.Empty : reader.GetString (index);
         }
     }
 }

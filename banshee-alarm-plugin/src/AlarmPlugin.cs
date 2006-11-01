@@ -6,6 +6,16 @@ using Gtk;
 using Banshee.Base;
 using Banshee.MediaEngine;
 
+public static class PluginModuleEntry
+{
+    public static Type [] GetTypes()
+    {
+        return new Type [] {
+            typeof(Banshee.Plugins.Alarm.AlarmPlugin)
+        };
+    }
+}
+
 namespace Banshee.Plugins.Alarm
 {
     public class AlarmPlugin : Banshee.Plugins.Plugin

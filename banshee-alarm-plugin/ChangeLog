@@ -1,3 +1,7 @@
+2006-11-01  Bertrand Lorentz  <bertrand.lorentz@free.fr>
+    * Renamed Plugin.cs to AlarmPlugin.cs to be consistent with the class name and other plugins
+    * src/AlarmPlugin.cs: Added PluginModuleEntry. See http://abock.org/2006/10/30/cracking-down-on-heap-abuse-part-1/ for an explanation.
+
 2006-09-17  Patrick van Staveren  <trick@vanstaveren.us>
 
         * BUGS, TODO, README, alarm.mds: updated

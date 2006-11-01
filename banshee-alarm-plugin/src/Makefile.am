@@ -1,6 +1,6 @@
 ASSEMBLY = Alarm.dll
 SOURCES = \
-	$(srcdir)/Plugin.cs \
+	$(srcdir)/AlarmPlugin.cs \
 	$(srcdir)/VolumeFade.cs \
 	$(srcdir)/Alarm.cs \
 	$(srcdir)/AlarmConfigDialog.cs \

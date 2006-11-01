@@ -24,7 +24,7 @@
     <File name="./autogen.sh" subtype="Code" buildaction="Nothing" />
     <File name="./configure.ac" subtype="Code" buildaction="Nothing" />
     <File name="./src/Alarm.cs" subtype="Code" buildaction="Compile" />
-    <File name="./src/Plugin.cs" subtype="Code" buildaction="Compile" />
+    <File name="./src/AlarmPlugin.cs" subtype="Code" buildaction="Compile" />
     <File name="./src/Makefile.am" subtype="Code" buildaction="Nothing" />
     <File name="./BUGS" subtype="Code" buildaction="Nothing" />
     <File name="./TODO" subtype="Code" buildaction="Nothing" />

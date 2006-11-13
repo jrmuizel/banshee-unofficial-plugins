@@ -32,14 +32,15 @@ namespace Banshee.Plugins.MiniMode
         private SeekSlider seek_slider;
         private StreamPositionLabel stream_position_label;
         private Tooltips toolTips;
+
+        private Gtk.Window default_main_window;
 		
         private Glade.XML glade;
 
-        private bool setup = false;
-        private bool mini_mode = false;
-
         public MiniMode() : base(Branding.ApplicationLongName)
         {
+            default_main_window = InterfaceElements.MainWindow;
+
             glade = new Glade.XML(null, "minimode.glade", "MiniModeWindow", null);
             glade.Autoconnect(this);
             
@@ -177,19 +178,11 @@ namespace Banshee.Plugins.MiniMode
 
         public new void Show()
         {
-            mini_mode = true;
-            if(Visible) {
-                return;
-            }
-            
-            if(!setup) {
-                InterfaceElements.MainWindow.Shown += TrayIconWorkaround;
-                setup = true;
-            }
-            
             source_combo_box.UpdateActiveSource();
             UpdateMetaDisplay();
-            InterfaceElements.MainWindow.Hide();
+
+            default_main_window.Hide();
+            InterfaceElements.MainWindow = this;
             
             base.Show();
             
@@ -198,13 +191,9 @@ namespace Banshee.Plugins.MiniMode
 
         public new void Hide()
         {
-            mini_mode = false;
-            if(!Visible) {
-                return;
-            }
-            
             base.Hide();
-            InterfaceElements.MainWindow.Show();
+            default_main_window.Show();
+            InterfaceElements.MainWindow = default_main_window;
         }
         
         public void Hide(object o, EventArgs a)
@@ -212,18 +201,6 @@ namespace Banshee.Plugins.MiniMode
             Hide();
         }
 
-        private void TrayIconWorkaround(object o, EventArgs a)
-        {
-            // TODO: Do some clean work instead of this crap
-            if (mini_mode) {
-                // If we're shown, then this is a hide event from the tray
-                // If we're not, then this is a show event from the tray
-                Visible = !Visible;
-                // In all cases, hide the main window
-                InterfaceElements.MainWindow.Hide();
-            }
-        }
-        
         // ---- Player Event Handlers ----
         
         private void OnPlayerEngineStateChanged(object o, Banshee.MediaEngine.PlayerEngineStateArgs args)

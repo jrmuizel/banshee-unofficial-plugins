@@ -49,8 +49,10 @@ namespace Banshee.Plugins.MiniMode
             viewMenu = (Globals.ActionManager.GetWidget("/MainMenu/ViewMenu") as MenuItem).Submenu as Menu;
             menuItem = new MenuItem(Catalog.GetString("Mini mode"));
             menuItem.Activated += delegate {
-                if (mini_mode == null)
+                if (mini_mode == null) {
                     mini_mode =  new MiniMode();
+                }
+
                 mini_mode.Show();
             };
             viewMenu.Insert(menuItem, 2);

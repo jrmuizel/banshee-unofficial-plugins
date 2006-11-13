@@ -1,3 +1,10 @@
+2006-11-12  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/MiniMode/MiniModePlugin.cs:
+	* plugins/MiniMode/MiniModeWindow.cs: Take advantage of the new mutability
+	of InterfaceElements.MainWindow to set ourself as the main window,
+	removing the need for the tray workaround.
+
 2006-10-26  Mike Urbanski <michael.c.urbanski@gmail.com>
 
 	* plugins/Podcast/PodcastCore.cs: Added rudimentary 

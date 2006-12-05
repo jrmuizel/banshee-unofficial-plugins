@@ -1,3 +1,8 @@
+2006-12-05  Aaron Bockover  <abock@gnome.org>
+
+	* plugins/MiniMode/minimode.glade: Use gtk-leave-fullscreen (view-restore)
+	for the 'Full Mode' icon (Michael Monreal, BGO #348983)
+
 2006-11-12  Gabriel Burt  <gabriel.burt@gmail.com>
 
 	* plugins/MiniMode/MiniModePlugin.cs:

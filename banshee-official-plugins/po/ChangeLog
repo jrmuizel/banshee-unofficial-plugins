@@ -1,3 +1,8 @@
+2006-10-08  Ilkka Tuohela  <hile@iki.fi>
+
+	* fi.po: Added Finnish translation.
+	* LINGUAS: Added Finnish translation sorted the list
+
 2006-09-02  Aaron Bockover  <abock@gnome.org>
 
 	* nb.po: Updated from Øivind Hoel

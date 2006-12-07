@@ -1,4 +1,4 @@
-/* -*- Mode:csharp; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* vi:set ts=4 et sts=4 sw=4: */
 /***************************************************************************
  *  Xine.cs
  *
@@ -76,16 +76,16 @@ namespace Xine
             Dispose ();
         }
 
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private  static extern IntPtr xine_new ();
 
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern void xine_init (IntPtr engineHandle);
 
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern void xine_exit (IntPtr engineHandle);
         
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern void xine_config_load (IntPtr engineHandle, string configFile);
         
     }
@@ -389,52 +389,52 @@ namespace Xine
         private const int XINE_PARAM_EQ_8000HZ = 26;
         private const int XINE_PARAM_EQ_16000HZ = 27;
         
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern IntPtr xine_open_audio_driver (IntPtr engine, string driverId, IntPtr data);
 
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern void xine_close_audio_driver (IntPtr engine, IntPtr audioPort);
         
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern IntPtr xine_stream_new (IntPtr engine, IntPtr audioPort, IntPtr videoPort);
 
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern int xine_open (IntPtr stream, string mrl);
 
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern void xine_close (IntPtr stream);
 
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern int xine_play (IntPtr stream, int startPosition, int startTime);
 
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern void xine_set_param (IntPtr stream, int param, int value);
         
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern int xine_get_param (IntPtr stream, int param);
 
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern uint xine_get_stream_info (IntPtr stream, int info);
         
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern int xine_get_pos_length (IntPtr stream, ref int pos_stream, ref int pos_time, ref int length);
 
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern void xine_dispose (IntPtr stream);
 
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern IntPtr xine_event_new_queue (IntPtr stream);
 
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern void xine_event_dispose_queue (IntPtr eventQueue);
 
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern IntPtr xine_event_get (IntPtr eventQueue);
 
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern void xine_event_free (IntPtr eventArgs);
 
-        [DllImport ("libxine")]
+        [DllImport ("libxine.so.1")]
         private static extern void xine_stop (IntPtr stream);
     }
 }

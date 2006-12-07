@@ -1,3 +1,7 @@
+2006-12-07  Ivan N. Zlatev  <contact i-nZ.net>
+
+	* src/Xine.cs: libxine to libxine.so.1. Thanks to Melacca for reporting.
+
 2006-10-02  Ivan N. Zlatev  <contact i-nZ.net>
 
 	* configure.ac: Don't place the binary in a Xine subdirectory.

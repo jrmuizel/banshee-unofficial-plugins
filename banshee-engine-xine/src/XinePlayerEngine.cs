@@ -1,4 +1,4 @@
-/* -*- Mode:csharp; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+/* vi:set ts=4 et sts=4 sw=4: */
 /***************************************************************************
  *  XinePlayerEngine.cs
  *
@@ -225,5 +225,16 @@ namespace Banshee.MediaEngine.Xine
         {
             Dispose ();
         }
+
+        public static class PluginModuleEntry
+        {
+            public static Type [] GetTypes()
+            {
+                return new Type [] {
+                    typeof(Banshee.MediaEngine.Xine.XinePlayerEngine)
+                };
+            }
+        }
+
     }
 }

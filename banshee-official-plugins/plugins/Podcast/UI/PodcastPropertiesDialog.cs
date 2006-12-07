@@ -57,6 +57,7 @@ namespace Banshee.Plugins.Podcast.UI
         {
             BorderWidth = 6;
             VBox.Spacing = 12;
+            HasSeparator = false;
 
             HBox content_box = new HBox();
             content_box.BorderWidth = 6;
@@ -165,11 +166,11 @@ namespace Banshee.Plugins.Podcast.UI
 
             content_box.PackStart (table, true, true, 0);
 
-            Button ok_button = new Button (Stock.Ok);
+            Button ok_button = new Button (Stock.Close);
             ok_button.CanDefault = true;
             ok_button.Show ();
 
-            AddActionWidget (ok_button, ResponseType.Ok);
+            AddActionWidget (ok_button, ResponseType.Close);
 
             DefaultResponse = ResponseType.Ok;
             ActionArea.Layout = ButtonBoxStyle.End;

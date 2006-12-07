@@ -32,6 +32,16 @@ using Gtk;
 using Banshee.Base;
 using Banshee.Plugins.Podcast.UI;
 
+public static class PluginModuleEntry
+{
+    public static Type [] GetTypes()
+    {
+        return new Type [] {
+            typeof(Banshee.Plugins.Podcast.PodcastPlugin)
+        };
+    }
+}
+
 namespace Banshee.Plugins.Podcast
 {
     public class PodcastPlugin : Banshee.Plugins.Plugin

@@ -35,6 +35,16 @@ using Banshee.Base;
 using Banshee.Sources;
 using Banshee.MediaEngine;
 
+public static class PluginModuleEntry
+{
+    public static Type [] GetTypes()
+    {
+        return new Type [] {
+            typeof(Banshee.Plugins.Recommendation.RecommendationPlugin)
+        };
+    }
+}
+
 namespace Banshee.Plugins.Recommendation
 {
     public class RecommendationPlugin : Banshee.Plugins.Plugin

@@ -594,7 +594,9 @@ namespace Banshee.Plugins.Podcast
         private static void OnPlayerEngineStateChanged (object sender,
                 PlayerEngineStateArgs args)
         {
-            source.Update ();
+            if(source != null) {
+                source.Update ();
+            }
         }
 
         private static void OnDownloadTaskStartedHandler (object sender,

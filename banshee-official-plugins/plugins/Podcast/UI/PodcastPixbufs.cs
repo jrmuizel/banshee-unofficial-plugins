@@ -53,7 +53,7 @@ namespace Banshee.Plugins.Podcast.UI
             podcast_icon_22 = Gdk.Pixbuf.LoadFromResource ("podcast-icon-22.png");
             podcast_icon_48 = Gdk.Pixbuf.LoadFromResource ("podcast-icon-48.png");
             
-            activity_column_icon = IconThemeUtils.LoadIcon ("blue-speaker", 16);
+            activity_column_icon = IconThemeUtils.LoadIcon (16, "audio-volume-high", "blue-speaker");
             download_column_icon = Gdk.Pixbuf.LoadFromResource("document-save-as-16.png");
         }
 

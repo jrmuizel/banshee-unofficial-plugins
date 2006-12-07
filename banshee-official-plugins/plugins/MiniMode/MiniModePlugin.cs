@@ -3,7 +3,17 @@ using Gtk;
 
 using Banshee.Base;
 using Banshee.Sources;
- 
+
+public static class PluginModuleEntry
+{
+    public static Type [] GetTypes()
+    {
+        return new Type [] {
+            typeof(Banshee.Plugins.MiniMode.MiniModePlugin)
+        };
+    }
+}
+
 namespace Banshee.Plugins.MiniMode
 {
     public class MiniModePlugin : Banshee.Plugins.Plugin

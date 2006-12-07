@@ -55,6 +55,7 @@ namespace Banshee.Plugins.Podcast.UI
         {
             BorderWidth = 6;
             VBox.Spacing = 12;
+            HasSeparator = false;
 
             HBox box = new HBox();
             box.BorderWidth = 6;
@@ -122,6 +123,7 @@ namespace Banshee.Plugins.Podcast.UI
             descrition_text.Selectable = true;
 
             Viewport description_viewport = new Viewport();
+            description_viewport.SetSizeRequest(-1, 150);
             description_viewport.ShadowType = ShadowType.None;
 
             ScrolledWindow description_scroller = new ScrolledWindow ();

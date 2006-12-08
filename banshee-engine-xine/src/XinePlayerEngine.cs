@@ -197,7 +197,11 @@ namespace Banshee.MediaEngine.Xine
             get { return source_capabilities; }
         }
                 
-        private static string [] decoder_capabilities = { "mp3", "ogg", "wma", "asf", "flac" };
+        private static string [] decoder_capabilities = { 
+            "mp3", "ogg", "wma", "asf", "flac", "rm", 
+            "ac3", "snd", "au", "ram", "ra", "wav", 
+            "mpv", "mp2", "mpv2", "mp4", "aif", "aiff" };
+
         public override IEnumerable ExplicitDecoderCapabilities {
             get { return decoder_capabilities; }
         }

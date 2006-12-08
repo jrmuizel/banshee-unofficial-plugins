@@ -134,56 +134,48 @@ namespace Banshee.Plugins.Podcast
                 {
                     return;
                 }
-
+                
+                disposed = false;
                 initializing = true;
             }
 
-            try
-            {
-                DownloadCore.Initialize ();
-                DownloadCore.MaxDownloads = 2;
+            DownloadCore.Initialize ();
+            DownloadCore.MaxDownloads = 2;
 
-                DownloadCore.DownloadCompleted += OnDownloadCompletedHandler;
-                DownloadCore.DownloadTaskStarted += OnDownloadTaskStartedHandler;
-                DownloadCore.DownloadTaskStopped += OnDownloadTaskStoppedHandler;
+            DownloadCore.DownloadCompleted += OnDownloadCompletedHandler;
+            DownloadCore.DownloadTaskStarted += OnDownloadTaskStartedHandler;
+            DownloadCore.DownloadTaskStopped += OnDownloadTaskStoppedHandler;
 
-                DownloadCore.DownloadDropped += OnDownloadDroppedHandler;
-                DownloadCore.DownloadRegistered += OnDownloadRegisteredHandler;
+            DownloadCore.DownloadDropped += OnDownloadDroppedHandler;
+            DownloadCore.DownloadRegistered += OnDownloadRegisteredHandler;
+            DownloadCore.RegistrationFailed += OnRegistrationFailedHandler;
 
-                DownloadCore.RegistrationFailed += OnRegistrationFailedHandler;
+            downloads = new Hashtable ();
 
-                downloads = new Hashtable ();
+            Library = new PodcastLibrary ();
+            FeedFetcher = new PodcastFeedFetcher ();
 
-                Library = new PodcastLibrary ();
-                FeedFetcher = new PodcastFeedFetcher ();
+            Plugin = plugin;
 
-                Plugin = plugin;
+            PodcastDBManager.InitPodcastDatabase ();
 
-                PodcastDBManager.InitPodcastDatabase ();
-
-                ServicePointManager.CertificatePolicy = new PodcastCertificatePolicy ();
+            ServicePointManager.CertificatePolicy = new PodcastCertificatePolicy ();
                 
-                if(Globals.Library.IsLoaded)
-                {
-                    LoadFromDatabase ();
-                }
-                else
-                {
-                    Globals.Library.Reloaded += OnLibraryReloaded;
-                }
-            } finally {
-                lock (init_sync)
-                {
-                    initializing = false;
-                }
+            if(Globals.Library.IsLoaded)
+            {
+                LoadFromDatabase ();
+            }
+            else
+            {
+                Globals.Library.Reloaded += OnLibraryReloaded;
+            } 
         }
-    }
 
-    internal static void Dispose ()
+        internal static void Dispose ()
         {
             lock (init_sync)
             {
-                if (initialized && !disposing && !disposed)
+                if (initialized && !disposing && !disposed && !initializing)
                 {
                     disposing = true;
                 } else {
@@ -545,7 +537,9 @@ namespace Banshee.Plugins.Podcast
                 PlayerEngineCore.StateChanged -= OnPlayerEngineStateChanged;
 
                 SourceManager.RemoveSource (source);
-                source.Dispose ();            
+                source.Dispose ();
+                
+                source = null;
             }
         }        
 

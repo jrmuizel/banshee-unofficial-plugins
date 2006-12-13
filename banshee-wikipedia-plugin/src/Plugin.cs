@@ -7,6 +7,16 @@ using Banshee.Base;
 using Banshee.Sources;
 using Banshee.MediaEngine;
 
+public static class PluginModuleEntry
+{
+    public static Type [] GetTypes()
+    {
+        return new Type [] {
+            typeof(Banshee.Plugins.Wikipedia.WikipediaPlugin)
+        };
+    }
+}
+
 namespace Banshee.Plugins.Wikipedia
 {
 	public class WikipediaPlugin : Banshee.Plugins.Plugin

@@ -1,3 +1,9 @@
+2006-12-13  Mickael Renault  <mickael.renault@gmail.com>
+
+	* src/Plugin.cs: adhere to the new plugin requirement for
+	a GetType method.  Fixes warning during the initialization
+	of the plugin.
+
 2006-07-18  Patrick van Staveren  <trick@vanstaveren.us>
 
 	* configure.ac:

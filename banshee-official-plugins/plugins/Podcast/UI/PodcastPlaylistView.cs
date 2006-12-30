@@ -215,7 +215,9 @@ namespace Banshee.Plugins.Podcast.UI
                 TreeViewColumn tmpCol = columns[i] as TreeViewColumn;
                 SchemaEntry<int> tmpSchema = (SchemaEntry<int>) schemas[i];
                 
-                tmpSchema.Set (tmpCol.Width);
+                if (tmpCol.Width != 0) {
+                    tmpSchema.Set (tmpCol.Width);
+                }
             }
         }
 

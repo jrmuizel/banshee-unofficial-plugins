@@ -8,7 +8,7 @@ SOURCES = \
 	$(srcdir)/PodcastDBManager.cs \
 	$(srcdir)/PodcastFeedFetcher.cs \
 	$(srcdir)/PodcastFeedInfo.cs \
-	$(srcdir)/PodcastGConfKeys.cs \
+	$(srcdir)/GConfSchemas.cs \
 	$(srcdir)/PodcastInfo.cs \
 	$(srcdir)/PodcastLibrary.cs \
 	$(srcdir)/PodcastPlugin.cs \

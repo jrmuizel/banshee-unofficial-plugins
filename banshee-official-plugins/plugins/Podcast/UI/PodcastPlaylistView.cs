@@ -201,8 +201,6 @@ namespace Banshee.Plugins.Podcast.UI
             tmp_column.Title = title;
             tmp_column.SortColumnId = sortColumn;
 
-            string key = String.Empty;
-
             tmp_column.FixedWidth = schema.Get ();
 
             schemas.Add (schema);

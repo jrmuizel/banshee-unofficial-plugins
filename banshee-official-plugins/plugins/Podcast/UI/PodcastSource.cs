@@ -170,8 +170,7 @@ namespace Banshee.Plugins.Podcast.UI
         {
             try
             {
-                Globals.Configuration.Set (
-                    PodcastCore.Plugin.ConfigurationKeys [PodcastGConfKeys.PlaylistSeparatorPosition],
+                GConfSchemas.PlaylistSeparatorPositionSchema.Set (
                     (int) feed_playlist_pane.Position
                 );
             }
@@ -223,22 +222,14 @@ namespace Banshee.Plugins.Podcast.UI
 
             try
             {
-                feed_playlist_pane.Position = (int) Globals.Configuration.Get (
-                                                  PodcastCore.Plugin.ConfigurationKeys [
-                                                      PodcastGConfKeys.PlaylistSeparatorPosition
-                                                  ]
-                                              );
+                feed_playlist_pane.Position = 
+                    GConfSchemas.PlaylistSeparatorPositionSchema.Get ();                        
             }
             catch {
                 feed_playlist_pane.Position = 300;
-
-                Globals.Configuration.Set (
-                    PodcastCore.Plugin.ConfigurationKeys [
-                        PodcastGConfKeys.PlaylistSeparatorPosition
-                    ],
+                GConfSchemas.PlaylistSeparatorPositionSchema.Set (
                     feed_playlist_pane.Position
-                )
-                ;
+                );
             }
 
             update_button = new ActionButton (Globals.ActionManager ["PodcastUpdateFeedsAction"]);

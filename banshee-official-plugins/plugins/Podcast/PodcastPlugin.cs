@@ -76,7 +76,7 @@ namespace Banshee.Plugins.Podcast
 
         protected override void PluginInitialize ()
         {
-            // TODO Register GConf keys.
+/*         
             RegisterConfigurationKey (PodcastGConfKeys.Columns);
             RegisterConfigurationKey (PodcastGConfKeys.PodcastLibrary);
             RegisterConfigurationKey (PodcastGConfKeys.PlaylistSeparatorPosition);
@@ -84,6 +84,7 @@ namespace Banshee.Plugins.Podcast
             RegisterConfigurationKey (PodcastGConfKeys.PodcastTitleColumn);
             RegisterConfigurationKey (PodcastGConfKeys.PodcastFeedColumn);
             RegisterConfigurationKey (PodcastGConfKeys.PodcastDateColumn);
+*/            
         }
 
         protected override void InterfaceInitialize ()

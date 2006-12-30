@@ -25,14 +25,16 @@
  *  DEALINGS IN THE SOFTWARE.
  */
 
-using System;
-using System.Collections;
-
 using Gtk;
 using Gdk;
 using Pango;
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
 using Banshee.Base;
+using Banshee.Configuration;
 
 using Banshee.Plugins.Podcast;
 using Banshee.Plugins.Podcast.Download;
@@ -43,8 +45,8 @@ namespace Banshee.Plugins.Podcast.UI
     // Playlist code.
     internal class PodcastPlaylistView : TreeView, IDisposable
     {
-    private enum Column :
-        int {
+        private enum Column : int 
+        {
             Activity = 0,
             Download = 1,
             PodcastTitle = 2,
@@ -55,7 +57,8 @@ namespace Banshee.Plugins.Podcast.UI
         private TreeModelSort sort;
         private TreeModelFilter filter;
 
-        private ArrayList columns = null;
+        private ArrayList columns;
+        private ArrayList schemas;
 
         private TreeViewColumn activity_column;
         private TreeViewColumn download_column;
@@ -72,6 +75,9 @@ namespace Banshee.Plugins.Podcast.UI
                 throw new NullReferenceException ("model");
             }
 
+            columns = new ArrayList (3);
+            schemas = new ArrayList (3);
+            
             RulesHint = true;
             Selection.Mode = SelectionMode.Multiple;
 
@@ -83,17 +89,31 @@ namespace Banshee.Plugins.Podcast.UI
 
             Model = sort;
 
-            podcast_title_column = NewColumn (Catalog.GetString ("Title"), (int) Column.PodcastTitle);
-            feed_title_column = NewColumn (Catalog.GetString ("Feed"), (int) Column.FeedTitle);
-            pubdate_column = NewColumn (Catalog.GetString ("Date"), (int) Column.PubDate);
+            podcast_title_column = NewColumn (
+                Catalog.GetString ("Title"), 
+                (int) Column.PodcastTitle,
+                GConfSchemas.PodcastTitleColumnSchema
+            );
+            
+            feed_title_column = NewColumn (
+                Catalog.GetString ("Feed"), 
+                (int) Column.FeedTitle,
+                GConfSchemas.PodcastFeedColumnSchema
+            );
+            
+            pubdate_column = NewColumn (
+                Catalog.GetString ("Date"), 
+                (int) Column.PubDate,
+                GConfSchemas.PodcastDateColumnSchema
+            );
 
             /********************************************/
 
             download_column = new TreeViewColumn();
 
             Gtk.Image download_image = new Gtk.Image(
-                                           PodcastPixbufs.DownloadColumnIcon
-                                       );
+                PodcastPixbufs.DownloadColumnIcon
+            );
 
             download_image.Show();
 
@@ -117,8 +137,8 @@ namespace Banshee.Plugins.Podcast.UI
             activity_column = new TreeViewColumn();
 
             Gtk.Image activity_image = new Gtk.Image(
-                                           PodcastPixbufs.ActivityColumnIcon
-                                       );
+                PodcastPixbufs.ActivityColumnIcon
+            );
 
             activity_image.Show();
 
@@ -167,7 +187,9 @@ namespace Banshee.Plugins.Podcast.UI
             InsertColumn (pubdate_column, (int)Column.PubDate);
         }
 
-        private TreeViewColumn NewColumn (string title, int sortColumn)
+        private TreeViewColumn NewColumn (string title, 
+                                          int sortColumn, 
+                                          SchemaEntry<int> schema)
         {
             TreeViewColumn tmp_column = new TreeViewColumn ();
 
@@ -181,47 +203,21 @@ namespace Banshee.Plugins.Podcast.UI
 
             string key = String.Empty;
 
-            try
-            {
-                key = PodcastCore.Plugin.ConfigurationKeys [PodcastGConfKeys.Columns + title];
-                int width = (int) Globals.Configuration.Get (key);
+            tmp_column.FixedWidth = schema.Get ();
 
-                if (width <= 0)
-                {
-                    tmp_column.FixedWidth = 100;
-                }
-                else
-                {
-                    tmp_column.FixedWidth = width;
-                }
-
-            }
-            catch {
-                Globals.Configuration.Set (key, 100);
-                tmp_column.FixedWidth = 100;
-            }
-
-            if (columns == null)
-                {
-                    columns = new ArrayList ();
-                }
-
+            schemas.Add (schema);
             columns.Add (tmp_column);
-
+            
             return tmp_column;
         }
 
         public void Shutdown ()
         {
-            if (columns != null)
-            {
-                foreach (TreeViewColumn tvc in columns)
-                {
-                    Globals.Configuration.Set (
-                        PodcastCore.Plugin.ConfigurationKeys [PodcastGConfKeys.Columns + tvc.Title],
-                        tvc.Width
-                    );
-                }
+            for (int i = 0; i < columns.Count; ++i) {
+                TreeViewColumn tmpCol = columns[i] as TreeViewColumn;
+                SchemaEntry<int> tmpSchema = (SchemaEntry<int>) schemas[i];
+                
+                tmpSchema.Set (tmpCol.Width);
             }
         }
 
@@ -282,8 +278,7 @@ namespace Banshee.Plugins.Podcast.UI
             ti = pi.Track;
             bool is_streaming = false;
 
-            if (PlayerEngineCore.CurrentTrack != null)
-            {
+            if (PlayerEngineCore.CurrentTrack != null) {
 
                 is_streaming = IsStreaming (pi);
 
@@ -292,12 +287,9 @@ namespace Banshee.Plugins.Podcast.UI
                                   : (int) Pango.Weight.Normal;
             }
 
-            if(ti != null || is_streaming)
-            {
+            if(ti != null || is_streaming) {
                 renderer.Sensitive = true;
-            }
-            else
-            {
+            } else {
                 renderer.Sensitive = false;
             }
         }

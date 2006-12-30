@@ -30,6 +30,7 @@ using System.IO;
 
 using Gtk;
 using Banshee.Base;
+using Banshee.Configuration.Schema;
 
 using Banshee.Plugins.Podcast.Download;
 
@@ -207,13 +208,13 @@ namespace Banshee.Plugins.Podcast
 
     public string LocalDirectoryPath {
 
-        // --TODO This ugly fix it, put this stuff in a paths directory or something.
+        // --TODO This ugly, fix it, put this stuff in a paths directory or something.
         //   Also, make sure you add a config option
         get
         {
             if (url != null && feed != null)
                 {
-                    return ((string) Globals.Configuration.Get (GConfKeys.LibraryLocation) +
+                    return ((string) LibrarySchema.Location.Get () +
                             Path.DirectorySeparatorChar + "Podcasts" +
                             Path.DirectorySeparatorChar + SanitizeName (feed.Title) +
                             Path.DirectorySeparatorChar);

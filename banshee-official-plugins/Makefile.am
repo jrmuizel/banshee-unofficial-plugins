@@ -1,4 +1,4 @@
-SUBDIRS = plugins po
+SUBDIRS = build plugins po
 
 EXTRA_DIST =            \
 	intltool-extract.in \

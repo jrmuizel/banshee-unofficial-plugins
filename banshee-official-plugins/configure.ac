@@ -3,7 +3,7 @@ AC_INIT(README)
 AC_CANONICAL_SYSTEM
 AC_PREREQ(2.13)
 
-VERSION=0.11.3
+VERSION=0.11.4
 ASM_VERSION="$VERSION.*"
 
 AM_INIT_AUTOMAKE(banshee-official-plugins, $VERSION)
@@ -53,7 +53,10 @@ if test ! -x "$MCS"; then
 	AC_MSG_ERROR([No $CS 2.0 (gmcs) compiler found])
 fi
 
-MCS_FLAGS="-debug"
+MCS_FLAGS="-debug -nowarn:0278"
+
+AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
+AM_GCONF_SOURCE_2
 
 dnl gtk-sharp, other CLR deps
 GTKSHARP_REQUIRED=2.8
@@ -66,7 +69,7 @@ PKG_CHECK_MODULES(GTKSHARP,
 AC_SUBST(GTKSHARP_LIBS)
 
 dnl Banshee deps
-PKG_CHECK_MODULES(BANSHEE, banshee >= 0.11.0)
+PKG_CHECK_MODULES(BANSHEE, banshee >= 0.11.4)
 AC_SUBST(BANSHEE_LIBS)
 
 AC_SUBST(MCS_FLAGS)
@@ -95,11 +98,11 @@ if test "x$enable_minimode" = "xyes"; then
 	ENABLED_PLUGINS="$ENABLED_PLUGINS MiniMode"
 fi
 
-#AC_ARG_ENABLE(radio, AC_HELP_STRING(--disable-radio, [Do not build radio plugin]), enable_radio=no, enable_radio=yes)
-#AM_CONDITIONAL(ENABLE_RADIO, test "x$enable_radio" = "xyes")
-#if test "x$enable_radio" = "xyes"; then 
-#	ENABLED_PLUGINS="$ENABLED_PLUGINS Radio"
-#fi
+AC_ARG_ENABLE(radio, AC_HELP_STRING(--disable-radio, [Do not build radio plugin]), enable_radio=no, enable_radio=yes)
+AM_CONDITIONAL(ENABLE_RADIO, test "x$enable_radio" = "xyes")
+if test "x$enable_radio" = "xyes"; then 
+	ENABLED_PLUGINS="$ENABLED_PLUGINS Radio"
+fi
 
 AC_ARG_ENABLE(recommendation, AC_HELP_STRING(--disable-recommendation, [Do not build recommendation plugin]), enable_recommendation=no, enable_recommendation=yes)
 AM_CONDITIONAL(ENABLE_RECOMMENDATION, test "x$enable_recommendation" = "xyes")
@@ -128,19 +131,18 @@ dnl generated files
 AC_OUTPUT([
 Makefile
 po/Makefile.in
+build/Makefile
 plugins/Makefile
 plugins/Common.cs
 plugins/MiniMode/Makefile
 plugins/MiniMode/AssemblyInfo.cs
 plugins/Podcast/Makefile
 plugins/Podcast/AssemblyInfo.cs
+plugins/Radio/Makefile
+plugins/Radio/AssemblyInfo.cs
 plugins/Recommendation/Makefile
 plugins/Recommendation/AssemblyInfo.cs
 ])
-
-#plugins/Radio/Makefile
-#plugins/Radio/AssemblyInfo.cs
-
 
 echo "  
     Banshee Plugins Directory: ${expanded_pluginsdir}

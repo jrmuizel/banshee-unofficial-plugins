@@ -33,6 +33,8 @@ using System.IO;
 using System.Xml;
 using System.Collections;
 
+using Mono.Gettext;
+
 using Gtk;
 
 using Banshee.Base;

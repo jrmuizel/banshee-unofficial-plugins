@@ -214,10 +214,10 @@ namespace Banshee.Plugins.Podcast
         {
             if (url != null && feed != null)
                 {
-                    return ((string) LibrarySchema.Location.Get () +
+                    return LibrarySchema.Location.Get () +
                             Path.DirectorySeparatorChar + "Podcasts" +
                             Path.DirectorySeparatorChar + SanitizeName (feed.Title) +
-                            Path.DirectorySeparatorChar);
+                            Path.DirectorySeparatorChar;
                 }
                 else
                 {

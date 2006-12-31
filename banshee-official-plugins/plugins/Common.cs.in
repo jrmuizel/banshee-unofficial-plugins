@@ -4,32 +4,5 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyVersion("@VERSION@")]
 [assembly: AssemblyCopyright("Copyright (C) Novell, Inc.")]
 [assembly: AssemblyCompany("Novell, Inc")]
-
-#if !BANSHEE_0_10
 [assembly: Mono.Gettext.AssemblyCatalog("@GETTEXT_PACKAGE@", "@prefix@/share/locale/")]
-#endif
-
-namespace Banshee.Plugins
-{
-    public static class Catalog
-    {
-        public static string GetString(string msgid) 
-        {
-            #if BANSHEE_0_10
-            return Mono.Unix.Catalog.GetString(msgid);
-            #else
-            return Mono.Gettext.Catalog.GetString(msgid);
-            #endif
-        }
-
-        public static string GetPluralString(string msgid, string msgidPlural, int n)
-        {
-            #if BANSHEE_0_10
-            return Mono.Unix.Catalog.GetPluralString(msgid, msgidPlural, n);
-            #else
-            return Mono.Gettext.Catalog.GetPluralString(msgid, msgidPlural, n);
-            #endif
-        }
-    }
-}
 

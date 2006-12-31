@@ -29,6 +29,8 @@ using System;
 using System.Xml;
 using System.Collections;
 
+using Mono.Gettext;
+
 namespace Banshee.Plugins.Podcast
 {
     public class RssPodcastFeedParser : PodcastFeedParser

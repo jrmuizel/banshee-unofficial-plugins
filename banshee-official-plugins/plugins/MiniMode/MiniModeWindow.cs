@@ -2,11 +2,15 @@ using System;
 using Gtk;
 using Glade;
 
+using Mono.Gettext;
+
 using Banshee.Base;
 using Banshee.Gui;
 using Banshee.MediaEngine;
 using Banshee.Widgets;
 using Banshee.Plugins;
+using Banshee.Configuration;
+using Banshee.Configuration.Schema;
 
 namespace Banshee.Plugins.MiniMode
 { 
@@ -92,7 +96,7 @@ namespace Banshee.Plugins.MiniMode
             volume_button.Show();
             volume_button.VolumeChanged += delegate(int volume) {
                 PlayerEngineCore.Volume = (ushort)volume;
-                Globals.Configuration.Set(GConfKeys.Volume, volume);
+                PlayerEngineCore.VolumeSchema.Set(volume);
             };
             
             // Cover
@@ -115,7 +119,7 @@ namespace Banshee.Plugins.MiniMode
             shuffle_toggle_button.Relief = ReliefStyle.None;
             shuffle_toggle_button.ShowLabel = false;
             try {
-				shuffle_toggle_button.ActiveStateIndex = (bool)Globals.Configuration.Get(GConfKeys.PlaylistShuffle) ? 1 : 0;
+				shuffle_toggle_button.ActiveStateIndex = PlayerWindowSchema.PlaybackShuffle.Get() ? 1 : 0;
 			} catch {
 				shuffle_toggle_button.ActiveStateIndex = 0;
 			}
@@ -131,7 +135,7 @@ namespace Banshee.Plugins.MiniMode
             repeat_toggle_button.Relief = ReliefStyle.None;
             repeat_toggle_button.ShowLabel = false;
             try {
-				repeat_toggle_button.ActiveStateIndex = (int)Globals.Configuration.Get(GConfKeys.PlaylistRepeat);
+				repeat_toggle_button.ActiveStateIndex = (int)PlayerWindowSchema.PlaybackRepeat.Get();
 			} catch {
 				repeat_toggle_button.ActiveStateIndex = 0;
 			}

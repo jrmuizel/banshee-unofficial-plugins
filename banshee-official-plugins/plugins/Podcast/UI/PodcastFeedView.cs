@@ -28,6 +28,8 @@
 using System;
 using System.Collections;
 
+using Mono.Gettext;
+
 using Gtk;
 using Gdk;
 using Pango;

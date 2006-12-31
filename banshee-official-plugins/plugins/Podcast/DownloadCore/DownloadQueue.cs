@@ -28,6 +28,8 @@
 using System;
 using System.Collections;
 
+using Mono.Gettext;
+
 // remove
 using System.Threading;
 

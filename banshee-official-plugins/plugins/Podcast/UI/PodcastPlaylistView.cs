@@ -29,6 +29,8 @@ using Gtk;
 using Gdk;
 using Pango;
 
+using Mono.Gettext;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;

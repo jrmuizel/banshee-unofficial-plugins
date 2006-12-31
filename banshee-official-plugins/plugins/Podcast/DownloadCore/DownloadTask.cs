@@ -31,6 +31,8 @@ using System.Text;
 using System.Threading;
 using System.Security.Cryptography;
 
+using Mono.Gettext;
+
 using Banshee.Base;
 using Banshee.Plugins.Podcast;
 

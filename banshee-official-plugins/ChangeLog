@@ -1,3 +1,30 @@
+2006-12-31  Aaron Bockover  <abock@gnome.org>
+
+	* banshee-official-plugins.mds: Added Radio project
+
+	* plugins/MiniMode/MiniMode.mdp:
+	* plugins/Podcast/Podcast.mdp
+	* plugins/Radio/Radio.mdp: Fixed MonoDevelop build
+
+	* plugins/Common.cs.in: Removed compatability Catalog wrapper; hard
+	requirement on Banshee 0.11.x, which provides Mono.Gettext for domain-based
+	gettext support
+	
+	* plugins/Recommendation/*.cs: 
+	* plugins/Podcast/*.cs: 
+	* plugins/MiniMode/MiniModePlugin.cs: Added 'using Mono.Gettext'
+
+	* plugins/MiniMode/MiniModeWindow.cs: Use new Banshee.Configuration API
+
+	* plugins/Radio/*: Added new Internet Radio plugin
+
+	* plugins/Podcast/Makefile.am: Generate gconf schemas
+
+	* build/*: Build rules for generating gconf schemas from assemblies
+
+	* configure.ac: Output build/Makefile, added Radio plugin, added
+	GConf support; require Banshee 0.11.4+
+
 2006-12-29  Mike Urbanski <michael.c.urbanski@gmail.com> 
 	
 	* ChangeLog:

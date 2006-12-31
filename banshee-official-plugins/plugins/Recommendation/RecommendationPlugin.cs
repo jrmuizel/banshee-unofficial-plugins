@@ -31,6 +31,8 @@
 using System;
 using Gtk;
 
+using Mono.Unix;
+
 using Banshee.Base;
 using Banshee.Sources;
 using Banshee.MediaEngine;

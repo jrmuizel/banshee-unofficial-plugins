@@ -28,6 +28,8 @@
 using System;
 using Gtk;
 
+using Mono.Gettext;
+
 using Banshee.Plugins.Podcast;
 
 namespace Banshee.Plugins.Podcast.UI

@@ -29,6 +29,8 @@ using System;
 
 using Gtk;
 
+using Mono.Gettext;
+
 using Banshee.Base;
 using Banshee.Plugins.Podcast;
 

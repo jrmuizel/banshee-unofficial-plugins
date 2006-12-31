@@ -27,6 +27,8 @@
 
 using System;
 
+using Mono.Gettext;
+
 using Gtk;
 using Pango;
 
@@ -70,23 +72,23 @@ namespace Banshee.Plugins.Podcast.UI
             table.ColumnSpacing = 12;
 
             Label description_label = new Label ();
-            description_label.Markup = "<b>"+Catalog.GetString ("Description:")+"</b>";
+            description_label.Markup = String.Format("<b>{0}</b>", GLib.Markup.EscapeText(Catalog.GetString ("Description:")));
             description_label.SetAlignment (0f, 0f);
             description_label.Justify = Justification.Left;
 
             Label last_updated_label = new Label ();
-            last_updated_label.Markup = "<b>"+Catalog.GetString ("Last Updated:")+"</b>";
+            last_updated_label.Markup = String.Format("<b>{0}</b>", GLib.Markup.EscapeText(Catalog.GetString ("Last Updated:")));
             last_updated_label.SetAlignment (0f, 0f);
             last_updated_label.Justify = Justification.Left;
 
             Label feed_url_label = new Label ();
-            feed_url_label.Markup = "<b>"+Catalog.GetString ("URL:")+"</b>";
+            feed_url_label.Markup = String.Format("<b>{0}</b>", GLib.Markup.EscapeText(Catalog.GetString ("URL:")));
             feed_url_label.SetAlignment (0f, 0f);
             feed_url_label.Justify = Justification.Left;
 
             Label new_episode_option_label = new Label ();
-            new_episode_option_label.Markup = "<b>"+Catalog.GetString (
-                                                  "When feed is updated:")+"</b>";
+            new_episode_option_label.Markup = String.Format("<b>{0}</b>", GLib.Markup.EscapeText(Catalog.GetString (
+                                                  "When feed is updated:")));
             new_episode_option_label.SetAlignment (0f, 0.5f);
             new_episode_option_label.Justify = Justification.Left;
 

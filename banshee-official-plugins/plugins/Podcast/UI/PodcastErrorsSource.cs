@@ -26,6 +26,8 @@
  *  DEALINGS IN THE SOFTWARE.
  */
  
+using Mono.Gettext;
+ 
 using Banshee.Base;
 using Banshee.Sources;
 

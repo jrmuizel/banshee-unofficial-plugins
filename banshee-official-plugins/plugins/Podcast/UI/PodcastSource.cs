@@ -36,6 +36,8 @@ using Gdk;
 using GLib;
 using Gnome;
 
+using Mono.Gettext;
+
 using Banshee.Base;
 using Banshee.Sources;
 using Banshee.Widgets;

@@ -4,11 +4,9 @@ if ENABLE_MINIMODE
 SUBDIRS += MiniMode
 endif
 
-# disabled for 0.11.0 release, there's a major 
-# crasher bug here 
-#if ENABLE_RADIO
-#SUBDIRS += Radio
-#endif
+if ENABLE_RADIO
+SUBDIRS += Radio
+endif
 
 if ENABLE_RECOMMENDATION
 SUBDIRS += Recommendation

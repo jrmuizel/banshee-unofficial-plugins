@@ -28,6 +28,8 @@
 using System;
 using System.Collections;
 
+using Mono.Gettext;
+
 using Gtk;
 using Pango;
 
@@ -70,19 +72,19 @@ namespace Banshee.Plugins.Podcast.UI
             ArrayList labels = new ArrayList ();
 
             Label feed_label = new Label ();
-            feed_label.Markup = "<b>"+Catalog.GetString ("Feed:")+"</b>";
+            feed_label.Markup = String.Format("<b>{0}</b>", GLib.Markup.EscapeText(Catalog.GetString ("Feed:")));
             labels.Add (feed_label);
 
             Label pubdate_label = new Label ();
-            pubdate_label.Markup = "<b>"+Catalog.GetString ("Date:")+"</b>";
+            pubdate_label.Markup = String.Format("<b>{0}</b>", GLib.Markup.EscapeText(Catalog.GetString ("Date:")));
             labels.Add (pubdate_label);
 
             Label url_label = new Label ();
-            url_label.Markup = "<b>"+Catalog.GetString ("URL:")+"</b>";
+            url_label.Markup = String.Format("<b>{0}</b>", GLib.Markup.EscapeText(Catalog.GetString ("URL:")));
             labels.Add (url_label);
 
             Label description_label = new Label ();
-            description_label.Markup = "<b>"+Catalog.GetString ("Description:")+"</b>";
+            description_label.Markup = String.Format("<b>{0}</b>", GLib.Markup.EscapeText(Catalog.GetString ("Description:")));
             labels.Add (description_label);
 
             Label feed_title_text = new Label (pi.Feed.Title);

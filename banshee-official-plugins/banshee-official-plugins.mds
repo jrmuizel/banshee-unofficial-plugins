@@ -4,22 +4,26 @@
       <Entry build="True" name="Recommendation" configuration="Debug" />
       <Entry build="True" name="MiniMode" configuration="Debug" />
       <Entry build="True" name="Podcast" configuration="Debug" />
+      <Entry build="True" name="Radio" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
       <Entry build="True" name="Recommendation" configuration="Debug" />
       <Entry build="True" name="MiniMode" configuration="Debug" />
       <Entry build="True" name="Podcast" configuration="Debug" />
+      <Entry build="True" name="Radio" configuration="Release" />
     </Configuration>
   </Configurations>
   <DeployTargets />
-  <StartMode startupentry="Podcast" single="True">
+  <StartMode startupentry="Radio" single="True">
     <Execute type="None" entry="Recommendation" />
     <Execute type="None" entry="MiniMode" />
     <Execute type="None" entry="Podcast" />
+    <Execute type="None" entry="Radio" />
   </StartMode>
   <Entries>
     <Entry filename="./plugins/Recommendation/Recommendation.mdp" />
     <Entry filename="./plugins/MiniMode/MiniMode.mdp" />
     <Entry filename="./plugins/Podcast/Podcast.mdp" />
+    <Entry filename="./plugins/Radio/Radio.mdp" />
   </Entries>
 </Combine>

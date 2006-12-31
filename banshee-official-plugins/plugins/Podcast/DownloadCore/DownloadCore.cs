@@ -30,6 +30,8 @@ using System.Timers;
 using System.Threading;
 using System.Collections;
 
+using Mono.Gettext;
+
 using Gtk;
 
 using Banshee.Base;

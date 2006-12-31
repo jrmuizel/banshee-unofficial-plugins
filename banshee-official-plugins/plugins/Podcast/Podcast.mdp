@@ -20,7 +20,6 @@
     <File name="./PodcastDBManager.cs" subtype="Code" buildaction="Compile" />
     <File name="./PodcastFeedFetcher.cs" subtype="Code" buildaction="Compile" />
     <File name="./PodcastFeedInfo.cs" subtype="Code" buildaction="Compile" />
-    <File name="./GConfSchemas.cs" subtype="Code" buildaction="Compile" />
     <File name="./PodcastInfo.cs" subtype="Code" buildaction="Compile" />
     <File name="./PodcastLibrary.cs" subtype="Code" buildaction="Compile" />
     <File name="./PodcastPlugin.cs" subtype="Code" buildaction="Compile" />
@@ -58,6 +57,7 @@
     <File name="./UI/PodcastErrorsSource.cs" subtype="Code" buildaction="Compile" />
     <File name="./UI/ErrorsSource.cs" subtype="Code" buildaction="Compile" />
     <File name="./PodcastCertificatePolicy.cs" subtype="Code" buildaction="Compile" />
+    <File name="./GConfSchemas.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="Banshee.Base, Version=0.0.0.0, Culture=neutral" />

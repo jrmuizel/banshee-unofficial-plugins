@@ -30,6 +30,8 @@ using System.IO;
 using System.Threading;
 using System.Collections;
 
+using Mono.Gettext;
+
 using Banshee.Plugins.Podcast;
 
 namespace Banshee.Plugins.Podcast.Download

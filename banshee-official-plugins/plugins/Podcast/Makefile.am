@@ -1,4 +1,5 @@
 ASSEMBLY = Podcast.dll
+ASSEMBLY_GCONF_SCHEMA = banshee-plugin-podcast.schemas.in
 SOURCES = \
 	$(top_srcdir)/plugins/Common.cs \
 	$(srcdir)/AssemblyInfo.cs \
@@ -35,8 +36,10 @@ all: $(ASSEMBLY)
 $(ASSEMBLY): $(SOURCES)
 	$(MCS) $(MCS_FLAGS) -out:$(ASSEMBLY) -target:library -nowarn:0169 -r:System.Data -r:System.Web -r:System.Xml -r:Mono.Posix $(podcast_resources_build) $(BANSHEE_LIBS) $(GTKSHARP_LIBS) $(SOURCES)
 
-EXTRA_DIST = $(SOURCES) $(podcast_resources)
+include $(top_srcdir)/build/gconf-schema-rules
+
+EXTRA_DIST = $(SOURCES) $(podcast_resources) $(ASSEMBLY_GCONF_SCHEMA)
 CLEANFILES = *.dll *.mdb
-DISTCLEANFILES = *.pidb
+DISTCLEANFILES = *.pidb $(schema_DATA)
 MAINTAINERCLEANFILES = Makefile.in 
 

@@ -63,6 +63,12 @@ namespace Banshee.Plugins.Radio
                 return;
             }
             
+            Title = track.Title;
+            Artist = track.Creator;
+            Album = null;
+            Duration = TimeSpan.Zero;
+            CoverArtFileName = null;
+            
             lock(((ICollection)stream_uris).SyncRoot) {
                 if(stream_uris.Count > 0) {
                     Uri = stream_uris[stream_index];

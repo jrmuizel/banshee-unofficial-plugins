@@ -79,6 +79,7 @@ namespace Banshee.Plugins.Recommendation
         private RecommendationPane recommendation_pane;
         private ActionGroup actions;
         private uint ui_manager_id;
+        private string current_artist;
         
         protected override void PluginInitialize()
         {    
@@ -160,7 +161,7 @@ namespace Banshee.Plugins.Recommendation
             get {
                 return (PlayerEngineCore.CurrentTrack != null &&
                     PlayerEngineCore.CurrentTrack.Artist != null && 
-                    PlayerEngineCore.CurrentTrack.Artist != "");
+                    PlayerEngineCore.CurrentTrack.Artist != String.Empty);
             }
         }
 
@@ -173,6 +174,12 @@ namespace Banshee.Plugins.Recommendation
             }
             
             switch(args.Event) {
+                case PlayerEngineEvent.TrackInfoUpdated:
+                    if(ValidTrack && current_artist != PlayerEngineCore.CurrentTrack.Artist) {
+                        ShowRecommendations(PlayerEngineCore.CurrentTrack.Artist);
+                    }
+                    break;
+                    
                 case PlayerEngineEvent.StartOfStream:
                     if(ValidTrack) {
                         ShowRecommendations(PlayerEngineCore.CurrentTrack.Artist);
@@ -226,6 +233,8 @@ namespace Banshee.Plugins.Recommendation
                 if(PaneVisible && recommendation_pane.CurrentArtist == artist) {
                     return;
                 }
+                
+                current_artist = artist;
                 
                 // If we manually switch track we don't get an EndOfStream event and 
                 // must clear the recommendation pane here.

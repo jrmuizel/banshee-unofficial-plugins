@@ -1,5 +1,17 @@
 2006-12-31  Aaron Bockover  <abock@gnome.org>
 
+	* plugins/Radio/StationModel.cs: Added GetStation
+
+	* plugins/Radio/RadioTrackInfo.cs: Clear the master track from any previous
+	subtrack data when re-playing
+
+	* plugins/Radio/StationView.cs: Load/Restore expansion settings on stations
+
+	* plugins/Recommendation/RecommendationPlugin.cs: Support updating on
+	track change events
+
+2006-12-31  Aaron Bockover  <abock@gnome.org>
+
 	* banshee-official-plugins.mds: Added Radio project
 
 	* plugins/MiniMode/MiniMode.mdp:

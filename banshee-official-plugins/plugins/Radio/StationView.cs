@@ -36,6 +36,7 @@ using Mono.Unix;
 using Banshee.Base;
 using Banshee.Sources;
 using Banshee.Playlists.Formats.Xspf;
+using Banshee.Configuration;
  
 namespace Banshee.Plugins.Radio
 {
@@ -78,8 +79,64 @@ namespace Banshee.Plugins.Radio
             comment_column.Sizing = TreeViewColumnSizing.Autosize;
             
             model.Reloaded += delegate {
-                ExpandAll();
+                ExpandStations();
             };
+        }
+        
+        public void ExpandStations()
+        {
+            for(int i = 0, n = model.IterNChildren(); i < n; i++) {
+                TreeIter iter;
+                if(model.IterNthChild(out iter, i)) {
+                    if(LoadExpansion(iter)) {
+                        TreePath path = model.GetPath(iter);
+                        if(path != null) {
+                            ExpandRow(path, true);
+                        }
+                    }
+                }
+            }
+        }
+        
+        private string GetStationKeyName(string station)
+        {
+            if(station == null) {
+                return null;
+            }
+            
+            return System.Text.RegularExpressions.Regex.Replace(station, @"[^A-Za-z0-9]*", "").ToLower();
+        }
+        
+        private void SaveExpansion(TreeIter iter, bool value)
+        {
+            string key = GetStationKeyName(model.GetStation(iter));
+            if(key != null) {
+                ConfigurationClient.Set<bool>("plugins.radio.stations", 
+                    String.Format("{0}_expanded", key), value);
+            }
+        }
+        
+        private bool LoadExpansion(TreeIter iter)
+        {
+            string key = GetStationKeyName(model.GetStation(iter));
+            if(key != null) {
+                return ConfigurationClient.Get<bool>("plugins.radio.stations", 
+                    String.Format("{0}_expanded", key), true);
+            }
+            
+            return true;
+        }
+             
+        protected override void OnRowExpanded(Gtk.TreeIter iter, Gtk.TreePath path)
+        {
+            base.OnRowExpanded(iter, path);
+            SaveExpansion(iter, true);
+        }
+
+        protected override void OnRowCollapsed(Gtk.TreeIter iter, Gtk.TreePath path)
+        {
+            base.OnRowExpanded(iter, path);
+            SaveExpansion(iter, false); 
         }
         
         protected override bool OnButtonPressEvent(Gdk.EventButton evnt)

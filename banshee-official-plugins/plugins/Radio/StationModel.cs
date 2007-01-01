@@ -78,6 +78,15 @@ namespace Banshee.Plugins.Radio
             }
         }
         
+        public string GetStation(TreeIter iter)
+        {
+            if(IterHasChild(iter)) {
+                return GetValue(iter, 0) as string;
+            }
+            
+            return null;
+        }
+        
         public Track GetTrack(TreeIter iter)
         {
             return GetValue(iter, 2) as Track;

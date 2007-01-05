@@ -60,14 +60,6 @@ namespace Banshee.Plugins.Alarm
         {
             LogCore.Instance.PushDebug("Initializing Alarm Plugin", "");
 
-            RegisterConfigurationKey("AlarmEnabled");
-            RegisterConfigurationKey("AlarmHour");
-            RegisterConfigurationKey("AlarmMinute");
-            RegisterConfigurationKey("AlarmCommand");
-            RegisterConfigurationKey("FadeStartVolume");
-            RegisterConfigurationKey("FadeEndVolume");
-            RegisterConfigurationKey("FadeDuration");
-
             AlarmPlugin.thePlugin = this;
             ThreadStart alarmThreadStart = new ThreadStart(AlarmPlugin.DoWait);
             alarmThread = new Thread(alarmThreadStart);
@@ -165,14 +157,14 @@ namespace Banshee.Plugins.Alarm
         {
             get {
                 try {
-                    return bool.Parse(Globals.Configuration.Get(ConfigurationKeys["AlarmEnabled"]).ToString());
+                    return GConfSchemas.IsEnabled.Get();
                 } catch {
                     return false;
                 }
             }
 
             set {
-                Globals.Configuration.Set(ConfigurationKeys["AlarmEnabled"], value);
+                GConfSchemas.IsEnabled.Set(value);
             }
         }
 
@@ -180,14 +172,14 @@ namespace Banshee.Plugins.Alarm
         {
             get {
                 try {
-                    return ushort.Parse(Globals.Configuration.Get(ConfigurationKeys["AlarmHour"]).ToString());
+                    return (ushort)GConfSchemas.AlarmHour.Get();
                 } catch {
                     return 0;
                 }
             }
 
             set {
-                Globals.Configuration.Set(ConfigurationKeys["AlarmHour"], (int)value);
+                GConfSchemas.AlarmHour.Set(value);
             }
         }
 
@@ -195,14 +187,14 @@ namespace Banshee.Plugins.Alarm
         {
             get {
                 try {
-                    return ushort.Parse(Globals.Configuration.Get(ConfigurationKeys["AlarmMinute"]).ToString());
+                    return (ushort)GConfSchemas.AlarmMinute.Get();
                 } catch {
                     return 0;
                 }
             }
 
             set {
-                Globals.Configuration.Set(ConfigurationKeys["AlarmMinute"], (int)value);
+                GConfSchemas.AlarmMinute.Set(value);
             }
         }
 
@@ -210,14 +202,14 @@ namespace Banshee.Plugins.Alarm
         {
             get {
                 try {
-                    return Globals.Configuration.Get(ConfigurationKeys["AlarmCommand"]).ToString();
+                    return GConfSchemas.AlarmCommand.Get();
                 } catch {
                     return null;
                 }
             }
 
             set {
-                Globals.Configuration.Set(ConfigurationKeys["AlarmCommand"], value);
+                GConfSchemas.AlarmCommand.Set(value);
             }
         }
 
@@ -225,14 +217,14 @@ namespace Banshee.Plugins.Alarm
         {
             get {
                 try {
-                    return ushort.Parse(Globals.Configuration.Get(ConfigurationKeys["FadeStartVolume"]).ToString());
+                    return (ushort)GConfSchemas.FadeStartVolume.Get();
                 } catch {
                     return 0;
                 }
             }
 
             set {
-                Globals.Configuration.Set(ConfigurationKeys["FadeStartVolume"], (int)value);
+                GConfSchemas.FadeStartVolume.Set(value);
             }
         }
 
@@ -240,14 +232,14 @@ namespace Banshee.Plugins.Alarm
         {
             get {
                 try {
-                    return ushort.Parse(Globals.Configuration.Get(ConfigurationKeys["FadeEndVolume"]).ToString());
+                    return (ushort)GConfSchemas.FadeEndVolume.Get();
                 } catch {
                     return 100;
             }
         }
 
             set {
-                Globals.Configuration.Set(ConfigurationKeys["FadeEndVolume"], (int)value);
+                GConfSchemas.FadeEndVolume.Set(value);
             }
         }
 
@@ -255,14 +247,14 @@ namespace Banshee.Plugins.Alarm
         {
             get {
                 try {
-                    return ushort.Parse(Globals.Configuration.Get(ConfigurationKeys["FadeDuration"]).ToString());
+                    return (ushort)GConfSchemas.FadeDuration.Get();
                 } catch {
                     return 0;
                 }
             }
 
             set {
-                Globals.Configuration.Set(ConfigurationKeys["FadeDuration"], (int)value);
+                GConfSchemas.FadeDuration.Set(value);
             }
         }
         #endregion

@@ -1,3 +1,16 @@
+2007-01-05  Bertrand Lorentz  <bertrand.lorentz@free.fr>
+    * src/GConfSchemas.cs:
+    * src/AlarmPlugin.cs: Updated to take advantage of the new configuration system.
+    
+    * build/*: Build rules for generating gconf schemas from assemblies
+
+    * src/Makefile.am: Generate gconf schemas
+    
+    * configure.ac:
+    * Makefile.am:
+    * autogen.sh:
+    * po/*: Getting ready to be I18N'ed
+
 2006-11-01  Bertrand Lorentz  <bertrand.lorentz@free.fr>
     * Renamed Plugin.cs to AlarmPlugin.cs to be consistent with the class name and other plugins
     * src/AlarmPlugin.cs: Added PluginModuleEntry. See http://abock.org/2006/10/30/cracking-down-on-heap-abuse-part-1/ for an explanation.

@@ -1,6 +1,22 @@
 SUBDIRS =   \
-    data    \
+    build   \
+    po      \
     src
+
+EXTRA_DIST =            \
+	intltool-extract.in \
+	intltool-merge.in   \
+	intltool-update.in
+
+CLEANFILES = \
+	intltool-extract    \
+	intltool-update     \
+	intltool-merge
+
+DISTCLEANFILES =        \
+	*.bak         \
+	*~            \
+	*.pidb
 
 MAINTAINERCLEANFILES = \
 	compile \
@@ -15,4 +31,7 @@ MAINTAINERCLEANFILES = \
 	configure \
 	config.sub \
 	config.guess \
+	intltool-extract.in \
+	intltool-merge.in   \
+	intltool-update.in  \
 	mkinstalldirs

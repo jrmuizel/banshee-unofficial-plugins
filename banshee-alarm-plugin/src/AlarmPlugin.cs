@@ -20,6 +20,9 @@ namespace Banshee.Plugins.Alarm
 {
     public class AlarmPlugin : Banshee.Plugins.Plugin
     {
+        private ActionGroup actions;
+        private uint ui_manager_id;
+        
         protected override string ConfigurationName { get { return "Alarm"; } }
         public override string DisplayName { get { return "Alarm & Sleep Timer"; } }
 
@@ -50,10 +53,6 @@ namespace Banshee.Plugins.Alarm
         public SpinButton sleepMin  = new SpinButton(0,59,1);
         public Window alarmDialog;
         public int timervalue;
-        private Menu editMenu;
-        private MenuItem menuItemSleep;
-        private MenuItem menuItemAlarm;
-        private SeparatorMenuItem menuItemSeparator;
         uint sleep_timer_id;
 
         protected override void PluginInitialize()
@@ -68,29 +67,29 @@ namespace Banshee.Plugins.Alarm
 
         protected override void InterfaceInitialize()
         {
-            editMenu = (Globals.ActionManager.GetWidget("/MainMenu/EditMenu") as MenuItem).Submenu as Menu;
-
-            menuItemSeparator = new SeparatorMenuItem();
-            editMenu.Insert(menuItemSeparator, 10);
-            menuItemSeparator.Show();
-
-            menuItemSleep = new MenuItem(Catalog.GetString("Sleep Timer..."));
-            menuItemSleep.Activated += new EventHandler(DoSleepTimerConfigDialog);
-            editMenu.Insert(menuItemSleep, 11);
-            menuItemSleep.Show();
+            actions = new ActionGroup("Alarm");
             
-            menuItemAlarm = new MenuItem(Catalog.GetString("Alarm..."));
-            menuItemAlarm.Activated += new EventHandler(DoAlarmConfigDialog);
-            editMenu.Insert(menuItemAlarm, 12);
-            menuItemAlarm.Show();        
+            actions.Add(new ActionEntry [] {
+                new ActionEntry("SetSleepTimerAction", null,
+                    Catalog.GetString("Sleep Timer..."), null,
+                    Catalog.GetString("Set the sleep timer value"), OnSetSleepTimer),
+                
+                new ActionEntry("SetAlarmAction", null,
+                    Catalog.GetString("Alarm..."), null,
+                    Catalog.GetString("Set the alarm time"), OnSetAlarm)
+            });
+            
+            Globals.ActionManager.UI.InsertActionGroup(actions, 3);
+            ui_manager_id = Globals.ActionManager.UI.AddUiFromResource("AlarmMenu.xml");
         }
 
         protected override void PluginDispose()
         {
-            editMenu.Remove(menuItemSleep);
-            editMenu.Remove(menuItemAlarm);
-            editMenu.Remove(menuItemSeparator);
             LogCore.Instance.PushDebug("Disposing Alarm Plugin", "");
+            Globals.ActionManager.UI.RemoveUi(ui_manager_id);
+            Globals.ActionManager.UI.RemoveActionGroup(actions);
+            actions = null;
+            
             if(sleep_timer_id > 0){
                 GLib.Source.Remove(sleep_timer_id);
                 LogCore.Instance.PushDebug("Disabling old sleep timer", "");
@@ -110,12 +109,12 @@ namespace Banshee.Plugins.Alarm
             theAlarm.MainLoop();
         }
 
-        protected void DoAlarmConfigDialog(object o, EventArgs a)
+        protected void OnSetAlarm(object o, EventArgs a)
         {
             new AlarmConfigDialog(this);
         }
 
-        protected void DoSleepTimerConfigDialog(object o, EventArgs a)
+        protected void OnSetSleepTimer(object o, EventArgs a)
         {
             if(sleep_timer_id > 0){
                 GLib.Source.Remove(sleep_timer_id);

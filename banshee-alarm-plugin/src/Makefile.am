@@ -1,6 +1,8 @@
 ASSEMBLY = Alarm.dll
 ASSEMBLY_GCONF_SCHEMA = banshee-plugin-alarm.schemas.in
 
+MENU_RESOURCE = AlarmMenu.xml
+
 SOURCES = \
 	$(srcdir)/AlarmPlugin.cs \
 	$(srcdir)/VolumeFade.cs \
@@ -16,12 +18,16 @@ plugin_SCRIPTS = $(ASSEMBLY) $(ASSEMBLY).mdb
 
 all: $(ASSEMBLY)
 
-$(ASSEMBLY): $(SOURCES)
-	$(MCS) $(MCS_FLAGS) -out:$(ASSEMBLY) -target:library $(BANSHEE_LIBS) $(SOURCES)
+$(ASSEMBLY): $(SOURCES) $(MENU_RESOURCE)
+	$(MCS) $(MCS_FLAGS) -out:$(ASSEMBLY) -target:library $(BANSHEE_LIBS) -resource:$(srcdir)/$(MENU_RESOURCE),$(MENU_RESOURCE) $(SOURCES)
 
 include $(top_srcdir)/build/gconf-schema-rules
 
-EXTRA_DIST = $(SOURCES) $(ASSEMBLY_GCONF_SCHEMA)
+EXTRA_DIST = \
+    $(SOURCES) \
+    $(ASSEMBLY_GCONF_SCHEMA) \
+    $(MENU_RESOURCE)
 
 CLEANFILES = $(ASSEMBLY) $(ASSEMBLY).mdb
-DISTCLEANFILES = Makefile.in $(schema_DATA)
+DISTCLEANFILES = *.mdb $(schema_DATA)
+MAINTAINERCLEANFILES = Makefile.in

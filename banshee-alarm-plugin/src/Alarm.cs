@@ -23,7 +23,7 @@ namespace Banshee.Plugins.Alarm
             {
                 while(true)
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(10000);
                     DateTime now = DateTime.Now;
 
                     if (now.Hour == plugin.AlarmHour && now.Minute == plugin.AlarmMinute && plugin.AlarmEnabled)

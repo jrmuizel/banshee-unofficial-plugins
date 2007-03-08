@@ -1,3 +1,10 @@
+2006-05-03  Aaron Bockover  <aaron@abock.org>
+
+	* src/helix-dbus-server.cc: Call dbus_message_unref on the reply message
+	to fix memory leak (BNC #170031); fixed gcc 4.1 pointer cast warning
+
+	* src/hxplayer.cc: Removed left over debug printf
+
 2006-04-20  Aaron Bockover  <aaron@abock.org>
 
 	* configure.ac: Bump to 0.2.2

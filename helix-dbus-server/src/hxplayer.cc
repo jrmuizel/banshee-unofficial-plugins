@@ -123,8 +123,6 @@ OnBuffering(void * user_data, UInt32 bufferingReason, UInt16 bufferPercent)
         hxmessage_segment_new_uint32("Percent", (UInt32)bufferPercent),
         NULL
     ));
-    
-    printf("Buffering: %d %d\n", bufferingReason, bufferPercent);
 }
 
 static void

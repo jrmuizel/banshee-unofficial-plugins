@@ -144,6 +144,7 @@ helix_dbus_server_path_message(DBusConnection *connection, DBusMessage *message,
         reply = dbus_message_new_method_return(message);
         dbus_connection_send(connection, reply, 0);
         dbus_connection_flush(connection);
+        dbus_message_unref(reply);
         
         server->shutdown_cb(server);
         
@@ -168,6 +169,7 @@ helix_dbus_server_path_message(DBusConnection *connection, DBusMessage *message,
     
     dbus_connection_send(connection, reply, 0);
     dbus_connection_flush(connection);
+    dbus_message_unref(reply);
     
     return DBUS_HANDLER_RESULT_HANDLED;
 }
@@ -384,13 +386,13 @@ helix_dbus_server_handle_get_group_title(HelixDbusServer *server, DBusMessage *m
 {
     guint group_index = 0;
     gchar buffer[256];
-    guint buffer_used_length = 0;
+    UInt32 buffer_used_length = 0;
     
     *return_value = NULL;
     
     if(dbus_message_get_args(message, NULL, DBUS_TYPE_UINT32, &group_index, DBUS_TYPE_INVALID)) {
         if(ClientPlayerGetGroupTitle(PLAYER_TOKEN(server->player), (gushort)group_index, 
-            buffer, sizeof(buffer), (UInt32 *)&buffer_used_length)) {
+            buffer, sizeof(buffer), &buffer_used_length)) {
             *return_value = g_strdup(buffer);
         }
     }

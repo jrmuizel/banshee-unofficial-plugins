@@ -1,0 +1,85 @@
+BUILDING HXFFTRANS
+------------------
+
+To check out and build the necessary Helix sources for DTDriver in order
+to create the build environment for hxfftrans, build with the following
+profile for Ribosome:
+
+$ build
+
+	BIF branch: hxclient_1_5_0_cayenne
+	Target:     datatype_tools_dtdriver
+	Profile:    helix-client-all-defines
+
+Run "Build" (3)
+
+The complete build will probably fail in places. This is fine. Also, for
+some reason this process may hang and take around 45 minutes to complete. 
+If it appears frozen, just let it be. Come back in an hour.
+
+If using gcc4+, apply the patch:
+
+$ patch -p0 < patches/helix-gcc4.diff
+$ make (build still may fail on datatype/rm/video/payload/depacker),
+        but it's okay)
+
+Now focus on building dtdriver:
+
+$ patch -p0 < patches/dtdriver.diff
+$ cd datatype/tools/dtdriver
+$ umake
+$ make
+
+Now return to the root helix directory and check out hxfftrans:
+
+$ svn co svn://svn.banshee-project.org/trunk/hxfftrans
+
+And build hxfftrans for gstreamer-dtdriver:
+
+$ cd hxfftrans
+$ umake
+$ make
+
+Finally, remove the common/import/stlport module which will cause 
+conflicts with autogen/aclocal:
+
+$ rm -rf common/import/stlport/
+
+Once dbg/libhxfftrans.a is built, return to the gstreamer-dtdriver
+root and autogen/make like normal. However, one more build process is
+necessary.
+
+$(top_srcdir)/src/helix/hxfftrans/dbg/libhxfftrans.a will be linked into
+the GStreamer plugin.
+
+
+BUILDING PROXYFSYS
+------------------
+
+From $(top_srcdir)/src or another directory outside of 
+$(top_srcdir)/src/helix:
+
+$ mkdir proxyfsys
+$ cd proxyfsys
+$ build
+
+	BIF branch: helix (HEAD)
+	Target:     filesystem_local
+	Profile:    helix-client-all-defines
+
+$ patch -p0 < patches/helix-gcc4.diff
+
+	Skip audio/fixptutil/pub/math64.h
+
+$ make clean
+$ patch -p0 < patches/proxyfsys.diff
+$ umake
+$ cd filesystem/local
+$ umake
+$ ../..
+$ make
+
+Now install the proxyfsys.so Helix/RealPlayer plugin:
+
+$ sudo cp filesystem/local/dbg/proxyfsys.so /usr/lib/RealPlayer10/plugins
+

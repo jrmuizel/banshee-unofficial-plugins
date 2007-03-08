@@ -1,0 +1,24 @@
+2006-07-18  Patrick van Staveren  <trick@vanstaveren.us>
+
+	* configure.ac: detect mcs or gmcs compiled Banshee
+
+2006-04-15  Aaron Bockover  <aaron@abock.org>
+
+	Patch from Lukas Lipka (BGO #338584)
+
+	* src/BeagleImportSource.cs: Add HitType=File part to query
+	
+	* src/BeagleUtil.cs: use SafeUri
+
+2006-03-05  Aaron Bockover  <aaron@abock.org>
+
+	Initial import of Beagle Plugin
+
+	* src/BeagleImportSource.cs: An IImportSource implementation that
+	uses Beagle to populate the library
+
+	* src/BeaglePlugin.cs: Beagle plugin implementation that registers
+	BeagleImportSource
+
+	* src/BeagleUtil.cs: Misc. Beagle+Banshee utilities
+

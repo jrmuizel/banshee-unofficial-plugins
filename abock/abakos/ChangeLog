@@ -1,0 +1,38 @@
+2006-09-28  Aaron Bockover  <abock@gnome.org>
+
+	* Abakos/Abakos.Compiler/Expression.cs:
+	* Abakos/Abakos.Compiler/Values.cs:
+	* Abakos/Abakos.Compiler/Symbol.cs: Added variable support
+
+	* Abakos/Abakos.mdp
+	* Abakos/Abakos.Compiler/UnknownVariableException.cs: Added
+
+2006-09-11  Aaron Bockover  <abock@gnome.org>
+
+	* Abakos/Main.cs: Merge all program arguments into an expression 
+	string; acts like 'expr' now
+
+	* COPYING:
+	* README: 
+	* AUTHORS: Added
+
+2006-09-11  Aaron Bockover  <abock@gnome.org>
+
+	* Abakos/Abakos.Compiler/Operators.cs: Do not allow operations on 
+	VoidSymbol
+
+2006-09-11  Aaron Bockover  <abock@gnome.org>
+
+	* Abakos/Abakos.Compiler/Functions.cs: Added functions, and E methods;
+	functions prints a list of available functions
+
+	* Abakos/Main.cs: Nicer output
+
+2006-09-11  Aaron Bockover  <abock@gnome.org>
+
+	* Abakos: Just a fun little expression parser/evaluator I've started
+	writing this weekend after looking with much nostalgia over an old
+	version of something similar I implemented in C many years ago; this
+	is nothing fantastic, just fun... there's no real use for it and it's
+	nothing new
+

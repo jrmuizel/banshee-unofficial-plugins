@@ -1,0 +1,440 @@
+# translation of banshee-official-plugins
+# Finnish messages for banshee.
+# Copyright (C) 2006 Ilkka Tuohela.
+# Suomennos: http://gnome-fi.sourceforge.net/
+#
+# Ilkka Tuohela <hile@iki.fi>, 2006.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: banshee-official-plugins\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-10-08 09:35+0300\n"
+"PO-Revision-Date: 2006-10-08 09:36+0300\n"
+"Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
+"Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../plugins/MiniMode/MiniModePlugin.cs:26
+msgid ""
+"Mini Mode allows controlling Banshee through a small window with only "
+"playback controls and track information."
+msgstr ""
+"Pienoistila mahdollistaa bansheen ohjauksen pienestä ikkunasta, jossa on "
+"ainoastaan toiston ohjaimet ja kappaletiedot."
+
+#: ../plugins/MiniMode/MiniModePlugin.cs:50
+msgid "Mini mode"
+msgstr "Pienoisikkuna"
+
+#: ../plugins/MiniMode/MiniModeWindow.cs:146
+msgid "Play previous song"
+msgstr "Soita edellinen kappale"
+
+#: ../plugins/MiniMode/MiniModeWindow.cs:147
+msgid "Play/pause current song"
+msgstr "Soita tai keskeytä tämänhetkinen kappale"
+
+#: ../plugins/MiniMode/MiniModeWindow.cs:148
+msgid "Play next song"
+msgstr "Soita seuraava kappale"
+
+#: ../plugins/MiniMode/MiniModeWindow.cs:149
+msgid "Switch back to full mode"
+msgstr "Vaihda takaisin normaaliin ikkunaan"
+
+#: ../plugins/MiniMode/MiniModeWindow.cs:150
+msgid "Adjust volume"
+msgstr "Säädä äänenvoimakkuutta"
+
+#: ../plugins/MiniMode/MiniModeWindow.cs:151
+msgid "Change repeat playback mode"
+msgstr "Vaihda kertaussoittotilan tyyppiä"
+
+#: ../plugins/MiniMode/MiniModeWindow.cs:152
+msgid "Toggle shuffle playback mode"
+msgstr "Vaihda sekoitustilan tyyppiä"
+
+#: ../plugins/Podcast/PodcastCore.cs:439
+msgid "Uri Scheme Not Supported"
+msgstr "URI-skeema ei ole tuettu"
+
+#: ../plugins/Podcast/PodcastCore.cs:440
+msgid "Podcast feed URI scheme is not supported."
+msgstr "Podcast-virran URI-skeema ei ole tuettu."
+
+#: ../plugins/Podcast/PodcastCore.cs:452
+msgid "Invalid URL"
+msgstr "Virheellinen URL"
+
+#: ../plugins/Podcast/PodcastCore.cs:453
+msgid "Podcast feed URL is invalid."
+msgstr "Podcast-virran URL on virheellinen."
+
+#: ../plugins/Podcast/PodcastCore.cs:522
+#, csharp-format
+msgid "Loading Podcast Feeds:  {0} ms"
+msgstr "Ladataan Podcast-virtoja: {0} ms"
+
+#: ../plugins/Podcast/PodcastCore.cs:648
+msgid "Download Failed"
+msgstr "Nouto epäonnistui"
+
+#: ../plugins/Podcast/PodcastCore.cs:728
+msgid "Unable to add file to library"
+msgstr "Tiedostoa ei voi lisätä kirjastoon"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:108
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:192
+msgid "Uri scheme not supported."
+msgstr "URI-skeema ei ole tuettu."
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:224
+#, csharp-format
+msgid "Updating \"{0}\""
+msgstr "Päivitetään \"{0}\""
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:261
+msgid "Podcast Feed Update"
+msgstr "Podcast-virran päivitys"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:265
+msgid "Updating"
+msgstr "Päivitetään"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:266
+msgid "Preparing to update feeds"
+msgstr "Valmistellaan virtojen päivitystä"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:316
+#, csharp-format
+msgid "Updating podcast feed {0} of {1}"
+msgstr "Päivitetään podcast-virtaa {0}/{1}"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:337
+msgid "Canceling updates"
+msgstr "Perutaan päivitykset"
+
+#: ../plugins/Podcast/PodcastFeedFetcher.cs:338
+msgid "Waiting for update to terminate"
+msgstr "Odotetaan päivityksen päättymistä"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:43
+#: ../plugins/Podcast/PodcastPlugin.cs:110
+msgid "Podcast"
+msgstr "Podcast"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:45
+msgid "Podcasting"
+msgstr "Podcastaus"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:52
+msgid "Next generation radio content, where you want it, when you want it."
+msgstr "Uudentyyppinen radiolähetys, missä ja milloin haluat."
+
+# Don't show this stupid message at all in translation
+#: ../plugins/Podcast/PodcastPlugin.cs:53
+msgid "\"Hey, guess what you're accessories to.\""
+msgstr " "
+
+#: ../plugins/Podcast/PodcastPlugin.cs:111
+msgid "Manage the Podcast plugin"
+msgstr "Hallitse Podcast-liitännäistä"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:114
+msgid "Update Feeds"
+msgstr "Päivitä virrat"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:115
+msgid "Update Subscribed Podcast Feeds"
+msgstr "Päivitä tilatut Podcast-virrat"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:119
+#: ../plugins/Podcast/UI/PodcastSource.cs:615
+#: ../plugins/Podcast/UI/PodcastSource.cs:671
+msgid "Subscribe to New Feed"
+msgstr "Tilaa uusi virta"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:120
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:68
+msgid "Subscribe to New Podcast Feed"
+msgstr "Tilaa uusi Podcast-virta"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:124
+msgid "Find New Podcasts"
+msgstr "Etsi uusia Podcasteja"
+
+#: ../plugins/Podcast/PodcastPlugin.cs:125
+msgid "Find New Podcasts at PodcastAlley.com"
+msgstr "Etsi uusia Podcasteja PodcastAlley.com -sivustolta"
+
+#: ../plugins/Podcast/StringUtils.cs:28
+msgid "Unknown"
+msgstr "Tuntematon"
+
+#: ../plugins/Podcast/StringUtils.cs:31
+#, csharp-format
+msgid "{0} and others"
+msgstr "{0} ja muita"
+
+#: ../plugins/Podcast/StringUtils.cs:34
+#, csharp-format
+msgid "{0} and {1}"
+msgstr "{0} ja {1}"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:175
+msgid "DownloadCore is shutting down."
+msgstr "Noutomoottoria sammutetaan."
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:179
+msgid "dif not in 'New' state."
+msgstr "Nouto ei ole tilassa \"New\"."
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:201
+msgid "Download already queued."
+msgstr "Nouto on jo laitettu jonoon."
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:286
+msgid "uri is empty"
+msgstr "uri on tyhjä"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:290
+msgid "path is empty"
+msgstr "polku on tyhjä"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:491
+#: ../plugins/Podcast/UI/PodcastSource.cs:742
+msgid "Download"
+msgstr "Nouda"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:494
+msgid "Downloading Files"
+msgstr "Noudetaan tiedostoja"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:495
+msgid "Initializing downloads"
+msgstr "Alustetaan noutoja"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:531
+msgid "Canceling Downloads"
+msgstr "Perutaan noutoja"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:532
+msgid "Waiting for downloads to terminate"
+msgstr "Odotetaan, että noudot päättyvät"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:620
+#, csharp-format
+msgid "Downloading File"
+msgid_plural "Downloading Files ({0} of {1} completed)"
+msgstr[0] "Noudetaan tiedostoa"
+msgstr[1] "Noudetaan tiedostoja ({0}/{1} noudettu)"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:629
+#, csharp-format
+msgid ""
+"Downloading Files ({0} of {1} completed)\n"
+"{2} failed"
+msgstr ""
+"Noudetaan tiedostoja ({0}/{1} noudettu)\n"
+"{2} epäonnistui"
+
+#: ../plugins/Podcast/DownloadCore/DownloadCore.cs:635
+#, csharp-format
+msgid "Currently transfering 1 file at {0} kB/s"
+msgid_plural "Currently transfering {1} files at {0} kB/s"
+msgstr[0] "Siirretään tiedostoa nopeudella {0} kt/s"
+msgstr[1] "Siirretään {1} tiedostoa nopeudella {0} kt/s"
+
+#: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:72
+#: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:84
+msgid "Description:"
+msgstr "Kuvaus:"
+
+#: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:77
+msgid "Last Updated:"
+msgstr "Viimeksi päivitetty:"
+
+#: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:82
+#: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:80
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:103
+msgid "URL:"
+msgstr "URL:"
+
+#: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:88
+msgid "When feed is updated:"
+msgstr "Virran päivitysaika:"
+
+#: ../plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:105
+#: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:101
+msgid "No description available"
+msgstr "Kuvausta ei ole saatavilla"
+
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:76
+msgid "Feeds"
+msgstr "Virrat"
+
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:142
+msgid "All"
+msgstr "Kaikki"
+
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:177
+#, csharp-format
+msgid "{0} Feed"
+msgid_plural "{0} Feeds"
+msgstr[0] "{0} virta"
+msgstr[1] "{0} virtaa"
+
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:194
+msgid "Episode"
+msgid_plural "Episodes"
+msgstr[0] "jakso"
+msgstr[1] "jaksoa"
+
+#: ../plugins/Podcast/UI/PodcastFeedView.cs:199
+msgid "New"
+msgstr "Uusi"
+
+#: ../plugins/Podcast/UI/PodcastPlaylistView.cs:86
+msgid "Title"
+msgstr "Otsikko"
+
+#: ../plugins/Podcast/UI/PodcastPlaylistView.cs:87
+msgid "Feed"
+msgstr "Virta"
+
+#: ../plugins/Podcast/UI/PodcastPlaylistView.cs:88
+msgid "Date"
+msgstr "Päivämääärä"
+
+#: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:72
+msgid "Feed:"
+msgstr "Virta:"
+
+#: ../plugins/Podcast/UI/PodcastPropertiesDialog.cs:76
+msgid "Date:"
+msgstr "Päivämäärä:"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:103
+msgid "Podcasts"
+msgstr "Podcastit"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:620
+msgid "Update All Feeds"
+msgstr "Päivitä kaikki virrat"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:625
+msgid "Visit Podcast Alley"
+msgstr "Käy PodcastAlley-sivustolla"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:660
+msgid "Subscribed"
+msgstr "Tilattu"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:663
+msgid "Update Feed"
+msgstr "Päivitä virta"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:667
+msgid "Delete Feed"
+msgstr "Poista virta"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:675
+msgid "Homepage"
+msgstr "Kotisivu"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:679
+#: ../plugins/Podcast/UI/PodcastSource.cs:762
+msgid "Properties"
+msgstr "Ominaisuudet"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:738
+msgid "Cancel"
+msgstr "Peru"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:748
+msgid "Remove Podcast(s)"
+msgstr "Poista Podcastit"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:752
+msgid "Select All"
+msgstr "Valitse kaikki"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:755
+msgid "Select None"
+msgstr "Älä valitse mitään"
+
+#: ../plugins/Podcast/UI/PodcastSource.cs:758
+msgid "Link"
+msgstr "Linkki"
+
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:36
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:122
+msgid "Subscribe"
+msgstr "Tilaa"
+
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:73
+msgid "Please enter the URL of the podcast you wish to subscribe to"
+msgstr "Anna URL Podcastiin, jonka haluat tilata"
+
+#: ../plugins/Podcast/UI/PodcastSubscribeDialog.cs:85
+msgid "When new episodes are available:  "
+msgstr "Kun uusia jaksoja on saatavilla:  "
+
+#: ../plugins/Podcast/UI/SyncPreferenceComboBox.cs:38
+msgid "Download all episodes"
+msgstr "Nouda kaikki jaksot"
+
+#: ../plugins/Podcast/UI/SyncPreferenceComboBox.cs:39
+msgid "Download the most recent episode"
+msgstr "Nouda viimeisin jakso"
+
+#: ../plugins/Podcast/UI/SyncPreferenceComboBox.cs:40
+msgid "Let me decide which episodes to download"
+msgstr "Valitse itse, mitkä jaksot noudetaan"
+
+#: ../plugins/Recommendation/RecommendationPane.cs:107
+msgid "Recommended Artists"
+msgstr "Suositellut esittäjät"
+
+#: ../plugins/Recommendation/RecommendationPane.cs:135
+msgid "No similar artists found"
+msgstr "Samankaltaisia esittäjiä ei löytynyt"
+
+#: ../plugins/Recommendation/RecommendationPane.cs:207
+#, csharp-format
+msgid "Top Tracks by {0}"
+msgstr "Esittäjän {0} suosituimmat kappaleet"
+
+#: ../plugins/Recommendation/RecommendationPane.cs:209
+#, csharp-format
+msgid "Top Albums by {0}"
+msgstr "Esittäjän {0} suosituimmat levyt"
+
+#. translators: 25% similarity
+#: ../plugins/Recommendation/RecommendationPane.cs:325
+#, csharp-format
+msgid "{0}% similarity"
+msgstr "{0}% samanlaisuus"
+
+#: ../plugins/Recommendation/RecommendationPlugin.cs:43
+msgid "Music Recommendations"
+msgstr "Musiikkisuositukset"
+
+#: ../plugins/Recommendation/RecommendationPlugin.cs:48
+msgid ""
+"Automatically recommends music that you might like, based on the currently "
+"playing song. It finds artists and popular songs that others with similar "
+"musical tastes enjoy."
+msgstr ""
+"Suosittelee musiikkia, josta voisit pitää. Suositukset perustuvat soivaan "
+"kappaleeseewn. Ohjelma etsii esittäjiä ja kappaleita, joista samanlaisesta "
+"musiikista pitävät nauttivat."
+
+#: ../plugins/Recommendation/RecommendationPlugin.cs:118
+#: ../plugins/Recommendation/RecommendationPlugin.cs:119
+msgid "Show Recommendations"
+msgstr "Näytä suositukset"

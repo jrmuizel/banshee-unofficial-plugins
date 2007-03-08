@@ -1,0 +1,104 @@
+2006-05-01  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* banshee-core.patch: empty now that patch is in CVS HEAD.
+
+2006-05-01  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* src/Makefile.am: install the dll.config and dll..mdb files as well.
+
+	* src/SmartPlaylists.dll.config: new file.
+
+2006-05-01  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* TODO: remove translatable strings bug, add bug for triggering periodic
+	rechecks of playlists dependent on relative times, enhancement task for
+	having the presence in another playlist be a condition.
+
+	* src/smart-playlist.glade: remove height/width requests which makes the
+	window resize nicely when more conditions are added, but makes the window
+	pop up not centered.
+
+	* src/QueryBuilder.cs: Change "sorted by" back to "selected by", put 25 as
+	the default (though unused) value for the number of songs limit.
+
+	* src/QueryBuilderModel.cs: New IsAtLeast operation for future use with
+	ratings widgets.  Add hours as an options for relative date/time
+	conditions.  Add spacing = 5 to the hbox's used for date conditions. Add
+	duration as a condition field (though needs a better UI, as it currently
+	just has an entry where you can type the duration(s) in seconds to match
+	against).
+
+	* src/SmartPlaylist.cs: Make some logic a little more clear.
+
+2006-05-01  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* TODO: remove relative date enhancement, it's working.
+
+	* src/QueryBuilder.cs: Change "selected by" to "sorted by" in the UI.
+
+	* src/QueryBuilderModel.cs: Change the DateMatch matcher to use relative
+	dates instead of absolute dates, enabling smart playlists like "Songs I've
+	listened to in the last 7 days", etc.
+
+	* src/SmartPlaylistEditor.cs:
+	* src/SmartPlaylist.cs:
+	* src/SmartPlaylistPlugin.cs: Comment out console debugging statements.
+
+2006-04-03  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* TODO: add some things, update some things.
+
+	* src/QueryBuilder.cs: add unimplemented SetActiveString method to
+	ComboUtil. Add more hashtables that allow for translating ComboBox
+	options. Make most properties settable so the dialog can be reconstructed
+	from a saved query.
+
+	* src/QueryBuilderModel.cs: Translate everything, embedded the SQL
+	generating capability into the QueryFilterOperation class to avoid
+	repetition and avoid switches (use hash lookup to find the class then call
+	a method on it). Don't give Minutes/Hours as options for the Limit as
+	support for play time limiting is not implemented.
+
+	* src/SmartPlaylistEditor.cs:
+	* src/SmartPlaylist.cs:
+	* src/SmartPlaylistPlugin.cs: Store the OrderBy and LimitNumber separately,
+	making it easier to pass the values back when reconstructing the dialog.
+
+2006-04-02  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* src/QueryBuilderModel.cs: GT and LT swapped in IntegerMatcher.
+
+2006-04-01  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* TODO: New file listing things that are still incomplete.
+
+	* src/smart-playlist.glade: Set the width/height so the dialog actually
+	shows up centered on the parent. Move the already_in_use_label to below
+	the query builder widgets.  Left-align the name_entry.
+
+	* src/QueryBuilder.cs: Make the orderComboBox insensitive when the
+	limitCheckBox isn't selected, as specifying an order only makes sense if
+	you are limiting the playlist.
+
+	* src/QueryBuilderModel.cs: Make string matches case insensitive, fix bug
+	with what filter operations were displayed for integer matches.
+
+	* src/SmartPlaylistEditor.cs: Return null instead of "" when no condition
+	and/or limit_and_order was specified.
+
+	* src/SmartPlaylists.cs: When checking a track, if the playlist has a
+	limit/order to it, take that into account.
+
+2006-03-31  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* src/SmartPlaylist.cs: Prepend the Condition with WHERE and AND where
+	appropriate.
+
+	* src/SmartPlaylistEditor.cs: Fix bug in destroying the dialog widgets
+	before getting information out of them in a thread.
+
+	* src/QueryBuilderModel.cs: Add some more fields.
+
+2006-03-31  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	Initial import. Requires patch to core, still many bugs.

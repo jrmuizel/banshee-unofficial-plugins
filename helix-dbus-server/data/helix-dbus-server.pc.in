@@ -1,0 +1,8 @@
+prefix=@prefix@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+
+Name: helix-dbus-server
+Description: Helix/hxclientkit API exposed over DBus
+Version: @VERSION@
+

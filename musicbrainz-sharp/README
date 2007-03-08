@@ -1,0 +1,5 @@
+musicbrainz-sharp provides C# bindings for use with Mono applications.
+It also provides a set of simple and complex classes designed to 
+simplify and abstract the most common tasks when using MusicBrainz.
+
+

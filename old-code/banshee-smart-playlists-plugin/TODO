@@ -1,0 +1,30 @@
+BUGS:
+- Re-populate the Smart Playlist dialog widgets when editing (work started)
+
+- Fix minor UI glitch with "already in use" label making things resize
+
+- Fix UI bug where adding more match rows doesn't expand the dialog window
+
+- Only display the 'Edit Smart Playlist' context-menu item for Smart Playlists
+
+- Don't show smart playlists in songs' context menu (Add to Playlist) 
+
+- Ignore songs dnd'd onto smart playlists
+
+- Remove "Remove Song" option from songs' context menu for smart playlists
+
+- Trigger periodic recheck of smart playlists that depend on relative dates (every 15 minutes?)
+
+ENHANCEMENTS:
+- Add pretty-stars widget for entering matches based on rating
+
+- Ability to use presence in another playlist as a condition. (Just non-smart playlists to prevent recursion?)
+
+- Add nice minute/second entry boxes for duration conditions.
+
+- Ability to limit the size of a playlist by play time (perhaps by taking the average song duration
+  and calculating the approximate number of songs required to fill the time slot requested).  Wouldn't work well
+  if also ordered or required the songs to be of non-average duration.  Can do the brute force way, checking the
+  sum of the duration frequently..would be much slower than the current way of maintaining the track membership of
+  a smart playlist.
+

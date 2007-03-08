@@ -1,0 +1,43 @@
+2006-04-14  Sebastian Dröge  <slomo@ubuntu.com>
+
+	* src/MusicBrainz/Client.cs (GetID): Check for null/handle any exception
+	
+2006-03-20  Sebastian Dröge  <slomo@ubuntu.com>
+
+	* src/MusicBrainz/Client.cs: Reverted a small part of Michael
+	Hutchinson's proxy patch in GetIDFromUrl() to fix a bug in parsing
+	of Urls which resulted in returning of a invalid result type.
+
+2006-03-15  Aaron Bockover  <aaron@abock.org>
+
+	* src/Makefile.am: Moved Makefile.in to MAINTAINERCLEANFILES
+
+2006-03-15  Aaron Bockover  <aaron@abock.org>
+
+	* src/Client.cs: Added proxy server support (Michael Hutchinson)
+
+2005-12-24  Aaron Bockover  <aaron@aaronbock.net>
+
+	* sync-tree.sh: Added shell script to keep projects using this source
+	updated with the latest code
+
+2005-12-24  Aaron Bockover  <aaron@aaronbock.net>
+
+	* configure.ac: Output docs/Makefile
+
+	* Makefile.am: Added docs to SUBDIRS
+	
+	* src/Makefile.am: Moved all documentation rules to ../docs/Makefile.am
+	
+	* src/en/*: Moved to ../docs/en/*
+
+	* src/musicbrainz-sharp-docs.source: Moved to ../docs
+
+2005-12-24  Aaron Bockover  <aaron@aaronbock.net>
+
+	* musicbrainz-sharp: Created a standalone project from
+	the MusicBrainz C# bindings in Banshee; imported into
+	abock.org Subversion, which is now the central development
+	point for the bindings and utility wrapper classes
+
+

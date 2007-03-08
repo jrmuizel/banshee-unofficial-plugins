@@ -1,0 +1,810 @@
+2006-12-31  Aaron Bockover  <abock@gnome.org>
+
+	* plugins/Radio/StationModel.cs: Added GetStation
+
+	* plugins/Radio/RadioTrackInfo.cs: Clear the master track from any previous
+	subtrack data when re-playing
+
+	* plugins/Radio/StationView.cs: Load/Restore expansion settings on stations
+
+	* plugins/Recommendation/RecommendationPlugin.cs: Support updating on
+	track change events
+
+2006-12-31  Aaron Bockover  <abock@gnome.org>
+
+	* banshee-official-plugins.mds: Added Radio project
+
+	* plugins/MiniMode/MiniMode.mdp:
+	* plugins/Podcast/Podcast.mdp
+	* plugins/Radio/Radio.mdp: Fixed MonoDevelop build
+
+	* plugins/Common.cs.in: Removed compatability Catalog wrapper; hard
+	requirement on Banshee 0.11.x, which provides Mono.Gettext for domain-based
+	gettext support
+	
+	* plugins/Recommendation/*.cs: 
+	* plugins/Podcast/*.cs: 
+	* plugins/MiniMode/MiniModePlugin.cs: Added 'using Mono.Gettext'
+
+	* plugins/MiniMode/MiniModeWindow.cs: Use new Banshee.Configuration API
+
+	* plugins/Radio/*: Added new Internet Radio plugin
+
+	* plugins/Podcast/Makefile.am: Generate gconf schemas
+
+	* build/*: Build rules for generating gconf schemas from assemblies
+
+	* configure.ac: Output build/Makefile, added Radio plugin, added
+	GConf support; require Banshee 0.11.4+
+
+2006-12-29  Mike Urbanski <michael.c.urbanski@gmail.com> 
+	
+	* ChangeLog:
+	* plugins/Podcast/Podcast.mdp:
+	* plugins/Podcast/Makefile.am:
+	* plugins/Podcast/PodcastInfo.cs:
+	* plugins/Podcast/GConfSchemas.cs: (Added)	
+	* plugins/Podcast/PodcastPlugin.cs:
+	* plugins/Podcast/PodcastGConfKeys.cs: (Removed)
+	* plugins/Podcast/UI/PodcastSource.cs:
+	* plugins/Podcast/UI/PodcastPlaylistView.cs: Updated to take advantage of 
+	new configuration system.
+	
+2006-12-09  Aaron Bockover  <abock@gnome.org>
+
+	0.11.3 Released
+
+	* configure.ac: Bump to 0.11.3
+
+	* NEWS: Updated with release notes
+
+2006-12-07  Aaron Bockover  <abock@gnome.org>
+
+	* banshee-official-plugins.mds: Updated
+
+	* plugins/MiniMode/MiniModePlugin.cs:
+	* plugins/Recommendation/RecommendationPlugin.cs:
+	* plugins/Podcast/PodcastPlugin.cs: Added PluginModuleEntry code
+
+	* plugins/Podcast/PodcastCore.cs: Protect against a nullref
+
+	* plugins/Podcast/UI/PodcastPixbufs.cs: Pull the 'speaker' icon from
+	the theme before using the ugly blue resource
+
+	* plugins/Podcast/UI/PodcastFeedPropertiesDialog.cs:
+	* plugins/Podcast/UI/PodcastPropertiesDialog.cs: Minor UI fixes
+
+2006-12-05  Aaron Bockover  <abock@gnome.org>
+
+	* plugins/MiniMode/minimode.glade: Use gtk-leave-fullscreen (view-restore)
+	for the 'Full Mode' icon (Michael Monreal, BGO #348983)
+
+2006-11-12  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/MiniMode/MiniModePlugin.cs:
+	* plugins/MiniMode/MiniModeWindow.cs: Take advantage of the new mutability
+	of InterfaceElements.MainWindow to set ourself as the main window,
+	removing the need for the tray workaround.
+
+2006-10-26  Mike Urbanski <michael.c.urbanski@gmail.com>
+
+	* plugins/Podcast/PodcastCore.cs: Added rudimentary 
+	certificate support.  (BGO #349504)
+
+	* plugins/Podcast/PodcastDBManager.cs: Corrected DbCommand 
+	support.
+	
+	* plugins/Podcast/Podcast.mdp:
+	* plugins/Podcast/Makefile.am: Added PodcastCertificatePolicy.cs
+	to project.  (Thanks go to Nathan Palmer)
+     
+	* plugins/Podcast/DownloadCore/DownloadCore.cs:
+	* plugins/Podcast/DownloadTask.cs: Better support for 
+	feeds containing multiple enclosures w\ the same filename.
+
+2006-10-23  Aaron Bockover  <abock@gnome.org>
+
+	Banshee Official Plugins 0.11.2 Released
+
+	* configure.ac: Bump to 0.11.2
+
+	* NEWS: Updated
+
+2006-10-23  Aaron Bockover  <abock@gnome.org>
+
+	* plugins/Recommendation/RecommendationUtilities.cs: 
+	* plugins/Podcast/PodcastDBManager.cs: Use the new DbCommand support
+
+	* plugins/Podcast/DownloadCore/DownloadCore.cs: Work around bug in 
+	mcs 1.1.18
+
+2006-10-21  Mike Urbanski <michael.c.urbanski@gmail.com>
+
+	* plugins/Podcast/Makefile.am:
+	* plugins/Podcast/Podcast.mdp:
+	* plugins/Podcast/UI/PodcastPixbufs.cs:
+	* plugins/Podcast/UI/PodcastPlaylistView.cs:
+	* plugins/Podcast/data/images/banshee-new.png: Podcasts that have been 
+	download and have a play count of zero are now flagged.     
+        	
+	* plugins/Podcast/DownloadCore/DownloadCore.cs:	
+	* plugins/Podcast/DownloadCore/DownloadTask.cs:
+	* plugins/Podcast/DownloadCore/HttpDownloadTask.cs: Additional tolerance
+	for HTTP responses lacking a "Content-Length" header.
+
+2006-10-18  Mike Urbanski <michael.c.urbanski@gmail.com> 
+
+	* plugins/Podcast/StringUtils.cs:  
+	* plugins/Podcast/UI/PodcastSubscribeDialog.cs:  Addressed licensing 
+	issues. 
+		
+2006-10-13  Aaron Bockover  <abock@gnome.org>
+
+	0.11.1 Released
+
+	* NEWS: Updated
+
+	* configure.ac: Bump to 0.11.1
+
+2006-09-29  Mike Urbanski <michael.c.urbanski@gmail.com> 
+
+	* plugins/Podcast/UI/PodcastSource.cs: Implemented 'ActionPath' 
+	property.
+	
+	* plugins/Podcast/PodcastPlugin.cs: Associated 'Stock.JumpTo'
+	with 'PodcastVisitPodcastAlleyAction'.
+
+	* plugins/Podcast/DownloadCore/DownloadTask.cs: 'SetFilePathFromUri' 
+	method is now virtual.
+	
+	* plugins/Podcast/DownloadCore/HttpDownloadTask.cs: Filenames are now 
+	url decoded. (BGO #357376)
+
+	* plugins/Podcast/Makefile.am: Added 'System.Web' reference.
+
+2006-09-19  Aaron Bockover  <abock@gnome.org>
+
+	0.11.0 Release
+
+	* NEWS: Updated
+
+2006-09-17  Mike Urbanski <michael.c.urbanski@gmail.com> 
+
+	* plugins/Podcast/UI/ErrorsSource.cs:
+	* plugins/Podcast/UI/PodcastErrorsSource.cs: Added.
+	
+	* plugins/Podcast/HttpDownloadTask.cs: Added additional exception handling.
+
+	* plugins/Podcast/UI/PodcastPlaylistView.cs:
+	* plugins/Podcast/UI/PodcastPlaylistModel.cs: Successfully downloaded files 
+	that could not be added to the library can no longer be streamed.
+		
+	* plugins/Podcast/PodcastCore.cs: Now uses 'PodcastErrorSource' to report 
+	various errors.
+
+	* plugins/Podcast/PodcastFeedInfo.cs:
+	* plugins/Podcast/UI/PodcastSource.cs:		
+	* plugins/Podcast/PodcastFeedFetcher.cs:
+	* plugins/Podcast/UI/PodcastPropertiesDialog.cs: Minor cleanup. 
+
+2006-09-14  Mike Urbanski <michael.c.urbanski@gmail.com> 
+	
+	* plugins/Podcast/PodcastPlugin.cs: Initiliaztion of the 'PodcastCore'
+	now takes place in the 'InterfaceInitialize' method.
+
+2006-09-13  Aaron Bockover  <abock@gnome.org>
+
+	* plugins/MiniMode/Makefile.am:
+	* plugins/Recommendation/Makefile.am:
+	* plugins/Makefile.am:
+	* plugins/Podcast/Makefile.am:
+	* plugins/Radio/Makefile.am:
+	* po/POTFILES.in:
+	* configure.ac: Fixed any build issues, distcheck works; only 0.11.x
+	is now supported; install directly to given prefix without really
+	caring exactly where Banshee is to be nice to packagers; do not support
+	user-mode plugin installation - pointless; lots of release-prep cleaning;
+	disabled the iRadio plugin for now - it's not going to be fixed before
+	the 0.11.0 release :-/
+
+	* HACKING:
+	* AUTHORS:
+	* README: Updated
+
+2006-09-13  Aaron Bockover  <abock@gnome.org>
+
+	* plugins/MiniMode/MiniModeWindow.cs: Added tool tips (Michael Monreal,
+	BGO #355844)
+
+2006-09-13  Ruben Vermeersch  <ruben@savanne.be>
+
+	* plugins/MiniMode/MiniModeWindow.cs: Get the default cover from
+	Banshee.Base.Branding.
+
+2006-09-08  Mike Urbanski <michael.c.urbanski@gmail.com> 
+	
+	* plugins/Podcast/DownloadCore/DownloadCore.cs:
+	* plugins/Podcast/PodcastPlugin.cs:
+	* plugins/Podcast/UI/PodcastFeedView.cs:
+	* plugins/Podcast/UI/PodcastPixbufs.cs:
+	* plugins/Podcast/UI/PodcastSource.cs:
+	* plugins/Podcast/UI/PodcastPlaylistView.cs: Stock icons are
+	now used.  (BGO #346037)
+
+	* plugins/Podcast/data/images/go-next.png:
+	* plugins/Podcast/data/images/edit-delete.png:
+	* plugins/Podcast/data/images/go-next-grey.png:
+	* plugins/Podcast/data/images/dialog-error.png:
+	* plugins/Podcast/data/images/view-refresh.png: Deleted.
+	
+	* plugins/Podcast/Podcast.mdp: Removed (above) images from project.
+	
+2006-09-05  Aaron Bockover  <abock@gnome.org>
+
+	* configure.ac:
+	* plugins/Makefile.am:
+	* plugins/SmartPlaylists: Moved the smart playlist plugin from 
+	banshee-official-plugins into Banshee core as a built-in component;
+	update your Banshee core checkout and remove any binary installation
+	of the old SmartPlaylist plugin from your install!
+
+2006-09-05  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/smart-playlist.glade: Change the label of the
+	expander to Predefined Smart Tags from Advanced Options.
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Fix small bug w/
+	reconstructing date condition fields.
+
+	* plugins/SmartPlaylists/Editor.cs: Small change to def of favorites.
+
+2006-09-04  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/smart-playlist.glade: Add Advanced expander to
+	the smart playlist edit dialog.
+
+	* plugins/SmartPlaylists/Makefile.am: Move things around.
+
+	* plugins/SmartPlaylists/Editor.cs: Add options to the advanced expander's
+	treeview of predefined smart playlists, and handle the logic for using
+	them as a template or creating them.
+
+2006-09-04  Ruben Vermeersch <ruben@Lambda1.be>
+
+	* plugins/Podcast/DownloadCore/Dispatcher.cs: Only run the dispatcher
+	thread when needed. This woke up banshee every 32ms, even when doing
+	nothing (causing way too much cpu usage).
+
+2006-09-02  Aaron Bockover  <abock@gnome.org>
+
+	* plugins/Podcast/PodcastInfo.cs: Fix build with latest Banshee CVS
+
+2006-08-07  Aaron Bockover  <abock@gnome.org>
+
+	* banshee-official-plugins.mds:
+	* plugins/MiniMode/MiniMode.mdp:
+	* plugins/Recommendation/Recommendation.mdp: 
+	* plugins/SmartPlaylists/SmartPlaylists.mdp:
+	* plugins/Podcast/Podcast.mdp: Updated MonoDevelop projects
+
+	* plugins/MiniMode/MiniModePlugin.cs: Updated plugin description
+
+	* plugins/MiniMode/MiniModeWindow.cs: Removed old toggle states, using
+	from Banshee.Gui now (BGO #350295); only allow window resizing 
+	horizontally; clean up and review
+
+	* plugins/MiniMode/minimode.glade: Renamed base vbox widget
+
+2006-08-01  Mike Urbanski <michael.c.urbanski@gmail.com>
+	
+	* plugins/Podcast/FeedParsers/RFC822DateTime.cs: Now makes a best 
+	effort to parse invalid RFC-822 date-times that are "close enough."  
+	E.g. accepts "July" when "Jul" is expected for the month identifier 
+	or "Monday" when "Mon" is expected for the day of week identifier.
+
+2006-07-31  Mike Urbanski <michael.c.urbanski@gmail.com> 
+	
+	* AUTHORS: Added self as author.
+
+	* plugins/Podcast/Podcast.mdp: Added 'RFC822DateTime.cs' to podcast 
+	project.
+
+	* plugins/Podcast/FeedParsers/RFC822DateTime.cs: Initial commit of 
+	RFC-822 date-time parser.  Yay!
+	
+	* plugins/Podcast/FeedParsers/RssPodcastFeedParser.cs: 'RFC822DateTime' 
+	is now used to parse RSS 2.0 date-time values.
+
+	* plugins/Podcast/PodcastLibrary.cs:
+	* plugins/Podcast/UI/PodcastSource.cs: 
+	Partially .Net 2.0-ified, both 'PodcastLibrary' and 'PodcastSource' now 
+	use generic collections where required.
+	
+	* plugins/Podcast/FeedUtils.cs: Relaxed supported file format
+	requirements to a negligent level.  Will update further.
+	
+	* plugins/Podcast/DownloadCore/DownloadCore.cs: Corrected minor string 
+	bugs introduced during translation.
+
+	* plugins/Podcast/DownloadCore/HttpDownloadTask.cs: Added invalid range 
+	request handling.
+
+	* plugins/Podcast/DownloadCore/DownloadTask.cs: Minor refactoring of file 
+	deletion code.
+
+2006-07-28  Aaron Bockover  <aaron@abock.org>
+
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Updated to use generics,
+	now that Banshee.Sources.Source uses generics in its public API
+
+2006-07-28  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/Plugin.cs: Remove logic for listening to
+	playlists - it is now in the SmartPlaylists themselves.
+
+	* plugins/SmartPlaylists/Editor.cs: When editing a SmartPlaylist, have it
+	check if it needs to monitor any static playlists.
+
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Listen only to those playlists
+	we actually are dependent on.  Fix bug with how the Condition was used in
+	SQL queries (it needed parens around it for compound conditions).
+
+2006-07-28  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/Plugin.cs: Add timers for testing speed of
+	operations (commented out).  Change playlist watching to work with
+	proposed patch to core.
+
+	* plugins/SmartPlaylists/Editor.cs:
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Add timers.
+
+	* plugins/SmartPlaylists/SmartPlaylists.mdp: Add Banshee and System.Data
+	refs.
+
+2006-07-27  Dominik Meister  <meister@greenmail.ch>
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Set more convenient default
+	values when searching in the year column (BGO #348987)
+
+2006-07-23  Dominik Meister  <meister@greenmail.ch>
+
+	* plugins/SmartPlaylists/QueryBuilder.cs:
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Add special equal/not-equal
+	operators for strings to support case-insensitive string matches (BGO
+	#348366).
+
+2006-07-20  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylist/Plugin.cs: Add Dominik Meister to Authors.
+
+2006-07-20  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* banshee-official-plugins.mds: Add SmartPlaylits project to MonoDevelop
+	solution.
+
+	* plugins/SmartPlaylists/SmartPlaylists.mdp: new project for
+	SmartPlaylists plugin.  Still needs references to Banshee libs.
+
+2006-07-20  Dominik Meister  <meister@greenmail.ch>
+
+	* plugins/SmartPlaylists/Plugin.cs: Add menu for creating smart playlist
+	from search (BGO #348054).
+
+	* plugins/SmartPlaylists/Editor.cs: Add SetQueryFromSearch method that
+	takes the search query the user has entered and converts it into a
+	condition statement that the existing smart playlist logic can use.
+
+2006-07-19  Patrick van Staveren  <trick@vanstaveren.us>
+
+	* plugins/Recommendation/RecommendationPane.cs:
+	double-escape comma, ampersand, and question mark like we
+	do with slashes
+
+2006-07-19  Aaron Bockover  <abock@gnome.org>
+
+	* banshee-official-plugins.mds: Added Podcast project
+
+	* plugins/Recommendation/Recommendation.mdp: Added new files
+
+	* plugins/Recommendation/RecommendationUtilities.cs: Moved utility
+	methods to a separate internal static class
+
+	* plugins/Recommendation/RecommendationPlugin.cs: Minor fixes and
+	clean up for QA/review
+
+	* plugins/Recommendation/RecommendationPane.cs: More clean up and 
+	refactoring; added 'no results' view for artists
+
+	* plugins/Recommendation/Makefile.am: 
+	* plugins/Podcast/Makefile.am: Updated build
+
+	* plugins/Podcast/Podcast.mdp: Added MonoDevelop project for Podcast
+
+2006-07-18  Aaron Bockover  <abock@gnome.org>
+
+	* configure.ac: Recommendations plugin now requires CVS/0.11.x
+
+2006-07-18  Aaron Bockover  <abock@gnome.org>
+
+	* banshee-official-plugins.mds:
+	* plugins/MiniMode/MiniMode.mdp:
+	* plugins/Recommendation/Recommendation.mdp: Added MonoDevelop solution 
+	and projects for MiniMode and Recommendation
+
+	* plugins/MiniMode/Makefile.am
+	* plugins/Recommendation/Makefile.am: Updated build
+
+	* plugins/Radio/RadioSource.cs:
+	* plugins/Recommendation/RecommendationPlugin.cs: tabs->spaces
+
+	* plugins/Recommendation/RecommendationPane.cs: Use the new TileView/Tile 
+	widgets in Banshee.Widgets to show similar artists; similar functionality 
+	to new application browser in SLED 10
+
+	* plugins/Recommendation/play.png: Removed
+
+	* plugins/SmartPlaylists/Plugin.cs: 
+	* plugins/Podcast/PodcastPlugin.cs:
+	* plugins/Radio/RadioPlugin.cs: Do all interface setup in
+	InterfaceInitialize
+	
+2006-07-11  Ruben Vermeersch  <ruben@Lambda1.be>
+
+	* plugins/Radio/RadioSource.cs: Remove needless test to see if the user
+	plugin dir exists.
+
+2006-07-08  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/QueryBuilder.cs: Use ArrayLists to sort the
+	field and order options.  Add properties so the first field drop down can
+	be focused when the dialog is first presented.
+
+	* plugins/SmartPlaylists/smart-playlist.glade: Make the default title
+	blank.
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Remove unused hashtable.
+
+	* plugins/SmartPlaylists/Editor.cs: Make the Editor focus on the first
+	field drop down instead of the name entry.
+
+2006-07-08  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/QueryBuilder.cs: Improve how we get the Filter
+	from the drop down list, and make it so differen't filters can have the
+	same name.
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Use the new way to get the
+	Filter.
+
+	* plugins/SmartPlaylists/Plugin.cs: Watch static playlists when there is
+	at least one smart playlist that is derived from one.  This should round
+	out the playlists feature, but unfortunately Banshee doesn't fire the
+	necessary TrackAdded/Removed events yet.  We are ready for when that is
+	fixed.
+
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Add PlaylistDerived property.
+
+2006-07-08  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/QueryBuilder.cs: Implement the LimitCriterion
+	property, fix some style issues.
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Add MB as limit option, fix
+	bug with ordering by Album, enable limiting by minutes, hours, and MB.
+
+	* plugins/SmartPlaylists/Plugin.cs: Add LimitCriterion column to
+	SmartPlaylists table, and add update code for existing users.
+
+	* plugins/SmartPlaylists/Editor.cs:
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Support the LimitCriterion
+
+2006-07-06  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/icon-blank.png
+	* plugins/SmartPlaylists/icon-rated.png: new icon files
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Add new QueryMatchRating
+	widgetry to display nice star icons instead of a number entry for rating
+	conditions.
+
+	* plugins/SmartPlaylists/Rating.cs: New file, generic star-rating widget
+	that can be manipulated with the mouse and keyboard.
+
+	* plugins/SmartPlaylists/Makefile.am: Added Rating.cs and new icons
+
+2006-07-06  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Give the user the
+	ability to select the duration time in seconds, minutes or hours (BGO
+	#346457, patch from Dominik Meister).
+
+2006-07-06  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/Plugin.cs: Attempt at a better description.
+
+	* plugins/SmartPlaylists/QueryBuilder.cs: Add InPlaylist and NotInPlaylist
+	operators and make regex condition matching more flexible.
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Add widgetry for making
+	adding membership in a playlist (or not) as a condition for a smart
+	playlist.  Need to listen for when songs are added/removed from playlists
+	to have smart playlists update continuously.
+
+2006-07-03  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/Plugin.cs: For some reason we can no longer add
+	things to the main menu on Initialization, so delay it until the UI is
+	initialized.
+
+2006-07-02  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/Podcast/PodcastCore.cs: Fixed typo (from P. van de Geer)
+
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Should be GenericName not
+	SourceType.
+
+2006-06-14  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Compensate for strange
+	date/time foo in Banshee to make time-dependent smart playlists actually
+	work.
+
+	* plugins/SmartPlaylists/Plugin.cs: Start a timer that automatically
+	refreshes time-dependent smart playlists every minute. (BGO #344719).
+	Make smart playlists children of the Music Library (BGO #344723).
+
+	* plugins/SmartPlaylists/Editor.cs: Check if the timer is needed after
+	creating/editing smart playlists.  Make playlists children of the Library.
+
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Subclass from ChildSource not
+	Source.  Add TimeDependent property.
+
+2006-06-13  Aaron Bockover  <aaron@abock.org>
+
+	* plugins/Radio/RadioSource.cs: Create user plugin directory if it 
+	does not exist (Todd Zullinger, BGO #344725)
+
+2006-06-02  Fredrik Hedberg  <fredrik@avafan.com>
+
+	* plugins/Recommendation/RecommendationPane.cs: Fix the url-hashing.
+
+2006-05-25  Lukas Lipka  <lukas@pmad.net>
+
+	* plugins/Recommendation/RecommendationPane.cs: Commit a patch from Koike
+	Kazuhiko, which checks if we are still playing the same artist as we requested,
+	prior to displaying the details pane.
+
+2006-05-24  Aaron Bockover  <aaron@abock.org>
+
+	* plugins/MiniMode/MiniModeWindow.cs: Catch any possible exception
+	that GConf may throw and set a sane default value
+
+2006-05-24  Lukas Lipka  <lukas@pmad.net>
+
+	* plugins/Recommendation/RecommendationPlugin.cs: Fix more glitches related
+	to source focus tracking. Move stuff around.
+
+	* plugins/Recommendation/RecommendationPane.cs: Fix nasty code indenting.
+
+2006-05-22  Aaron Bockover  <aaron@abock.org>
+
+	* plugins/*/*.cs: Do not use Mono.Unix; be sure that all calls to
+	Catalog.Get*String go through Banshee.Plugins; thanks to 
+	Горан Ракић <gox@devbase.net> for making the Podcast plugin translatable
+	and for providing ideas on plugin localization:
+	
+		http://goran.fimaks.net/moin.cgi/BansheeL10N
+
+	* plugins/*/Makefile.am: Compile Common.cs into all assemblies
+
+	* plugins/*/AssemblyInfo.cs.in: Moved global information to Common.cs.in
+
+	* plugins/Makefile.am: EXTRA_DIST Common.cs.in
+
+	* Makefile.am: Fixed ordering of SUBDIRS to the way I like it :)
+
+	* configure.ac: generate plugins/Common.cs
+
+	* plugins/Common.cs: Provide a wrapper class for now that works with
+	both branches of Banshee; if HEAD is available, use the new 
+	Mono.Gettext.Catalog API that supports gettext domains bound to 
+	assemblies in order to pull translations in from banshee-plugins 
+	otherwise use Mono.Unix.Catalog to pull translations from the global
+	default application gettext domain (banshee)
+	
+2006-05-22  Aaron Bockover  <aaron@abock.org>
+
+	* plugins/MiniMode/SourceModel.cs: Fixed model to be a Gtk.TreeStore 
+	instead of a Gtk.ListStore; works without using ActiveSourceIndex 
+	and if building against Banshee 0.11.x, supports child sources
+
+	* plugins/MiniMode/SourceComboBox.cs: Cleaned up, adding proper locking
+	where necessary, and work with new SourceModel
+
+	* plugins/MiniMode/MiniModeWindow.cs: reflect a minor API change 
+	in SourceComboBox
+
+	* plugins/MiniMode/Makefile.am: Added SourceModel.cs
+
+2006-05-22  Lukas Lipka  <lukas@pmad.net>
+
+	* plugins/Recommendation/RecommendationPlugin.cs: Fix the remaining
+	glitches when hiding the pane. Show the pane when we switch back to
+	the original source.
+
+2006-05-16  Patrick van Staveren  <trick@vanstaveren.us>
+
+	* Various `make dist` and `make install` fixes - add
+	resources and debug info where necessary.
+
+2006-05-14  Lukas Lipka  <lukas@pmad.net>
+
+	* plugins/Recommendation/RecommendationPlugin.cs: Hide the recommendation
+	pane when the active source changes.
+
+2006-05-11  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: If Banshee 0.11.x (plugin API v2) is detected, use gmcs
+	since 0.11.x is now built with gmcs and uses .NET 2.0 libraries; 0.10.x
+	compatible plugins will be built with mcs/.NET 1.0 if a 0.10.x Banshee
+	is detected
+
+2006-05-08  Aaron Bockover  <aaron@abock.org>
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: sqlite uses RANDOM instead
+	of RAND; fixes 'Selected by Random' option
+
+2006-05-08  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Remove override from Delete
+	method.
+
+2006-05-08  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/Podcast/UI/SyncPreferenceComboBox.cs.cs: Moved to
+	SyncPreferenceComboBox.cs, and minor string fix.
+
+2006-05-08  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/Plugin.cs: Listen for SourceManager and Library
+	events prior to loading the smart playlists so that we add them to our
+	internal list.  Remove smart playlists from the source list when the
+	plugin is disabled.
+
+	* plugins/SmartPlaylists/Editor.cs: Allow smart playlists to be renamed, again.
+
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Delay refreshing the current members unless the
+	Library is loaded.  Fix some event triggers so that the track view is
+	actually updated.
+
+2006-05-08  Mike Urbanski  <michael.c.urbanski@gmail.com>
+
+	* plugins/Podcast/DownloadCore/DownloadCore.cs: Fixed user event 
+	icon strangeness.
+	
+	* plugins/Podcast/DownloadCore/DownloadTask.cs: *.tmp files are no 
+	longer downloaded to the Library.
+
+	* plugins/Podcast/DownloadCore/HttpDownloadTask.cs: Ranges are no 
+	longer added to HTTP request headers unnecessarily. (BNC #341042)
+
+2006-05-06  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: 
+	* plugins/Makefile.am: Added Podcast plugin build foo
+
+	* plugins/Podcast/*: Added initial commit of Mike Urbanski's Podcast
+	plugin
+
+2006-05-04  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: Bump version to 0.11.0 to be on par with Banshee HEAD;
+	added necessary output files for AssemblyInfo.cs; define BANSHEE_0_10
+	if pluginapi < 2
+
+	* plugins/MiniMode/AssemblyInfo.cs.in:
+	* plugins/Recommendation/AssemblyInfo.cs.in:
+	* plugins/SmartPlaylists/AssemblyInfo.cs.in:
+	* plugins/Radio/AssemblyInfo.cs.in: Added assembly version metadata
+
+	* plugins/MiniMode/Makefile.am: 
+	* plugins/Recommendation/Makefile.am:
+	* plugins/SmartPlaylists/Makefile.am:
+	* plugins/Radio/Makefile.am: Do not define MCS_FLAGS; define 
+	CUSTOM_MCS_FLAGS if more are needed; compile AssemblyInfo.cs
+
+	* plugins/Makefile.am: Do not build SmartPlaylists plugin if building
+	against Banshee 0.10.x (first plugin API revision)
+
+	* plugins/Radio/RadioSource.cs: conditionally decide whether to use
+	System.Uri or Banshee.Base.SafeUri depending on Banshee version
+
+2006-05-04  Aaron Bockover  <aaron@abock.org>
+
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Do not try to override Delete;
+	fixes broken build, but may not be intended behavior
+
+2006-05-04  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/Recommendation/RecommendationPane.cs: Double-encode '/'
+	characters in the artist name b/c Last.fm requires it.
+
+2006-05-03  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/Recommendation/Makefile.am: Added reference to System.Web
+
+	* plugins/Recommendation/RecommendationPane.cs: Encode the artist before
+	using in URLs. (BGO #340511)
+
+	* plugins/MiniMode/MiniModeWindow.cs: Put shuffle/repeat buttons in same
+	state as the main UI has them.  Based on buggy patch from Lukas Lipka.
+	:) (BGO #338503)
+
+2006-05-03  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/SmartPlaylistPlugin.cs: Moved to Plugin.cs
+	* plugins/SmartPlaylists/SmartPlaylistEditor.cs: Moved to Editor.cs
+
+	* plugins/SmartPlaylists/QueryBuilder.cs: Start the query builder with the
+	matchCheckBox checked by default.  Add some widget shortcuts.
+
+	* plugins/SmartPlaylists/smart-playlist.glade: Add widget shortcut for
+	name entry, make editor window not resizable.
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Add Most/Least Recently
+	Played as a "selected by" option, make number spin entries width = 4 so
+	year and other number fit.  Add minutes as option for relative date
+	conditions.  Use Catalog.GetString for condition field names and add Path,
+	Year, and rename Number of Plays to Play Count.
+
+	* plugins/SmartPlaylists/Plugin.cs:
+	* plugins/SmartPlaylists/Editor.cs:
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Instead of wrapping a
+	PlaylistSource, subclass Banshee.Sources.Source, which allows for editing
+	via the "Source Properties" menu option, a custom icon, disallowing 
+	adding/removing tracks.  Also, use our own SmartPlaylistEntries table
+	instead of the PlaylistEntries table. Actually showing the tracks in a smart
+	playlist is currently broken/flakey.
+
+	* plugins/SmartPlaylists/Makefile.am: Update with renamed source files,
+	add icon to resources list.
+
+	* plugins/SmartPlaylists/source-smart-playlist.png: New file.
+
+2006-05-02  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* plugins/SmartPlaylists/QueryBuilder.cs: Move standard operators and
+	filters here from QueryBuilderModel.cs.  Modify QueryFilter (was
+	QueryFilterOperation) to work with multiple-widget inputs (like an entry
+	with a dropdown).  Make the input widgets not expand to fill, and pack the
+	+/- buttons at the end so they stay right-aligned.  Use Catalog.GetString
+	for all GUI strings.  And finally, added necessary logic to reconstruct
+	edit dialog from saved Smart Playlists.
+
+	* plugins/SmartPlaylists/QueryBuilderModel.cs: Changes to make QueryMatch
+	objects work with multiple-widget inputs.
+
+	* plugins/SmartPlaylists/SmartPlaylist.cs: Modify Insert statement so that
+	null values get inserted as nulls, not empty strings.
+
+2006-05-02  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: Added plugin Makefile outputs
+
+	* Makefile.am: Added plugins to SUBDIRS
+
+	* plugins/Makefile.am: Added with conditional SUBDIRS for plugins
+
+	* plugins/MiniMode/Makefile.am:
+	* plugins/Radio/Makefile.am:
+	* plugins/Recommendation/Makefile.am:
+	* plugins/SmartPlaylists/Makefile.am: Updated to work with new build
+	system (pluginsdir)
+
+	* plugins/MiniMode/MiniModeWindow.cs: Fixed to not rely on core Banshee
+	assembly, small code cleanup
+
+2006-05-02  Aaron Bockover  <aaron@abock.org>
+
+	* banshee-official-plugins: Initial import of skeleton build system
+

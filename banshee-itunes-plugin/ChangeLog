@@ -1,0 +1,3 @@
+2006-07-18  Patrick van Staveren  <trick@vanstaveren.us>
+
+	* configure.ac: detect mcs or gmcs compiled Banshee

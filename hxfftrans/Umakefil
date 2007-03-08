@@ -1,0 +1,109 @@
+#$Id: Umakefil,v 1.12.6.1 2005/04/16 00:07:20 milko Exp $
+
+UmakefileVersion(2,0)
+
+project.AddModuleIncludes(
+    "common/include",
+    "common/dbgtool/pub",
+    "common/runtime/pub",
+    "producersdk/include",
+    "common/log/logobserverfile/pub"
+)
+
+project.AddModuleLibraries(
+    "datatype/tools/dtdriver/common[dtdrcomlib]",
+    "datatype/tools/dtdriver/engine[dtdrengine]",
+    "datatype/tools/dtdriver/decoder/common[dtdrdeclib]",
+    "datatype/tools/dtdriver/decoder/audio[dtdrauddec]",
+    "datatype/tools/dtdriver/decoder/video[dtdrviddec]",
+    "datatype/tools/minicntx",
+    "client/common/container[contclntlib]",
+    "client/common/system[sysclntlib]",
+    "common/runtime[runtlib]",
+    "common/dbgtool[debuglib]", 
+    "common/util[utillib]", 
+    "common/container[contlib]",
+    "common/system[syslib]",
+    "common/fileio[fileiolib]"
+)
+
+project.AddSourceObjects(
+    os.path.join(project.src_root_path, "datatype", "tools", "dtdriver", "common", 
+        project.output_dir, "dtdrcomlib.a"),
+    os.path.join(project.src_root_path, "datatype", "tools", "dtdriver", "engine", 
+        project.output_dir, "dtdrengine.a"),
+    os.path.join(project.src_root_path, "datatype", "tools", "dtdriver", "decoder", "common", 
+        project.output_dir, "dtdrdeclib.a"),
+    os.path.join(project.src_root_path, "datatype", "tools", "dtdriver", "decoder", "audio", 
+        project.output_dir, "dtdrauddec.a"),
+    os.path.join(project.src_root_path, "datatype", "tools", "dtdriver", "decoder", "video", 
+        project.output_dir, "dtdrviddec.a"),
+    os.path.join(project.src_root_path, "datatype", "tools", "minicntx",
+        project.output_dir, "minicntx.a"),
+    os.path.join(project.src_root_path, "client", "common", "container", 
+        project.output_dir, "contclntlib.a"),
+    os.path.join(project.src_root_path, "client", "common", "system", 
+        project.output_dir, "sysclntlib.a"),
+    os.path.join(project.src_root_path, "common", "runtime", 
+        project.output_dir, "runtlib.a"),
+    os.path.join(project.src_root_path, "common", "dbgtool", 
+        project.output_dir, "debuglib.a"),
+    os.path.join(project.src_root_path, "common", "util", 
+        project.output_dir, "utillib.a"),
+    os.path.join(project.src_root_path, "common", "container", 
+        project.output_dir, "contlib.a"),
+    os.path.join(project.src_root_path, "common", "system", 
+        project.output_dir, "syslib.a"),
+    os.path.join(project.src_root_path, "common", "fileio", 
+        project.output_dir, "fileiolib.a")
+)
+
+if project.IsDefined("HELIX_FEATURE_DTDR_MIXER"):
+    project.AddModuleLibraries("client/audiosvc[audsvclib]")
+    project.AddSourceObjects(os.path.join(project.src_root_path, "client", "audiosvc",
+        project.output_dir, "audsvclib.a"))
+    if('HELIX_FEATURE_GAINTOOL' in project.defines):
+        project.AddModuleLibraries("audio/gaintool[audgainlib]")
+        project.AddSourceObjects(os.path.join(project.src_root_path, "audio", "gaintool",
+            project.output_dir, "audgainlib.a"))
+    if('HELIX_FEATURE_CROSSFADE' in project.defines):
+        project.AddModuleLibraries("audio/crossfade[audxfadelib]")
+        project.AddSourceObjects(os.path.join(project.src_root_path, "audio", "crossfade",
+            project.output_dir, "audxfadelib.a"))
+    if('HELIX_FEATURE_LIMITER' in project.defines):
+        project.AddModuleLibraries("audio/limiter[audlimiter]")
+        project.AddSourceObjects(os.path.join(project.src_root_path, "audio", "limiter",
+            project.output_dir, "audlimiter.a"))
+    if('HELIX_FEATURE_RESAMPLER' in project.defines):
+        if('HELIX_CONFIG_FIXEDPOINT' in project.defines):
+            project.AddModuleLibraries("audio/fixptresampler[fixptresampler]")
+            project.AddSourceObjects(os.path.join(project.src_root_path, "audio", "fixptresampler",
+                project.output_dir, "fixptresampler.a"))
+        else:
+            project.AddModuleLibraries("audio/resampler[audresamplib]")
+            project.AddSourceObjects(os.path.join(project.src_root_path, "audio", "resampler",
+                project.output_dir, "audresamplib.a"))
+
+#static_plugin_list = ["filesystem/local/smplfsys.so"]
+#project.AddModuleLibraries("common/fileio[fileiolib]")
+#CreateStaticPluginTable(static_plugin_list)
+
+project.AddModuleIncludes(
+    "hxfftrans/src",
+    "hxfftrans/pub"
+)
+
+project.AddModuleSources(
+    "hxfftrans/src/hxfftranscoder.cpp", 
+    "hxfftrans/src/bboutsource.cpp", 
+    "hxfftrans/src/bbinsource.cpp",
+    "hxfftrans/src/dlliids.cpp",
+    "hxfftrans/src/hxfftdriver.cpp"
+)
+
+project.AddDefines('HELIX_FEATURE_VIDREND_UNTIMED_DECODE')
+project.AddSystemLibraries("dl", "m", "pthread")
+
+LibraryTarget('libhxfftrans')
+DependTarget()
+

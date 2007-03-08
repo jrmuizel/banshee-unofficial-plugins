@@ -1,0 +1,8 @@
+2006-07-18  Patrick van Staveren  <trick@vanstaveren.us>
+
+	* configure.ac: detect mcs or gmcs compiled Banshee
+
+2006-04-01  Aaron Bockover  <aaron@abock.org>
+
+	* banshee-scope-plugin: First pass/import at the scope plugin
+

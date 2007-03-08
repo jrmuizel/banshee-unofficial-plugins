@@ -1,0 +1,29 @@
+2006-12-07  Ivan N. Zlatev  <contact i-nZ.net>
+
+	* src/XinePlayerEngine.cs: Add a pile of supported file formats.
+
+2006-12-07  Ivan N. Zlatev  <contact i-nZ.net>
+
+	* src/Xine.cs: libxine to libxine.so.1. Thanks to Melacca for reporting.
+
+2006-10-02  Ivan N. Zlatev  <contact i-nZ.net>
+
+	* configure.ac: Don't place the binary in a Xine subdirectory.
+
+2006-07-28  Ivan N. Zlatev  <contact i-nZ.net>
+
+	* src/XinePlayerEngine.cs: Updated SetEqualizerGain to normalize the frequency.
+	
+2006-07-22  Ivan N. Zlatev  <contact i-nZ.net>
+
+	* src/XinePlayerEngine.cs: Untabify.
+	* src/Xine.cs: Untabify.
+
+2006-07-22  Ivan N. Zlatev  <contact i-nZ.net>
+
+	* src/XinePlayerEngine.cs: Fix SetEqualizerGain behaviour.
+	
+2006-07-18  Ivan N. Zlatev  <contact i-nZ.net>
+
+	* src/Xine.cs: Implemented equalizer support.
+	* src/XinePlayerEngine.cs: Implemented IEqualizer.

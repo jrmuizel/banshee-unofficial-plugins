@@ -1,0 +1,8 @@
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
+[assembly: AssemblyVersion("@VERSION@")]
+[assembly: AssemblyCopyright("Copyright (C) Novell, Inc.")]
+[assembly: AssemblyCompany("Novell, Inc")]
+[assembly: Mono.Gettext.AssemblyCatalog("@GETTEXT_PACKAGE@", "@prefix@/share/locale/")]
+

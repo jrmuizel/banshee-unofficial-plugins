@@ -1,0 +1,11 @@
+* change the name of the plugin to something like Context information
+* handle links
+	* inside wikipedia maybe using wikipediacommonquery
+	* outside ->opening in browser 
+	* or just opening all links in browser
+* auto detect disambig pages somehow?
+* search within all the categories for music groups so we're 99% sure we'll get the right one, and not a disambig or a random article
+	* use one of the external wikipedia indexing engines?  is there one for music?
+* make resizeable, and save size to gconf
+
+there's always more to do :)

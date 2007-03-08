@@ -1,0 +1,34 @@
+<Project name="Abakos" fileversion="2.0" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <Output directory="./" assembly="Abakos" />
+      <Build debugmode="True" target="Exe" />
+      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Csc" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <Output directory="./" assembly="Abakos" />
+      <Build debugmode="False" target="Exe" />
+      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Csc" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <DeployTargets />
+  <Contents>
+    <File name="./Abakos.Compiler" subtype="Directory" buildaction="Compile" />
+    <File name="./Abakos.Compiler/InvalidTokenException.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Abakos.Compiler/Symbol.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Main.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Abakos.Compiler/Expression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Abakos.Compiler/InvalidOperandException.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Abakos.Compiler/InvalidFunctionException.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Abakos.Compiler/Operators.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Abakos.Compiler/Functions.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Abakos.Compiler/Values.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Abakos.Compiler/Operations.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Abakos.Compiler/UnkownVariableException.cs" subtype="Code" buildaction="Compile" />
+  </Contents>
+  <References>
+    <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  </References>
+</Project>

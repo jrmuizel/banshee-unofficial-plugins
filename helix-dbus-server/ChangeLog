@@ -1,0 +1,123 @@
+2006-09-24  Aaron Bockover  <aaron@abock.org>
+
+	0.3.0 Released
+
+	* configure.ac: Bump to 0.3.0, removed Mono support
+
+	* src/Makefile.am: Removed Mono support; added -Werror
+
+	* README:
+	* NEWS: Updated
+
+2006-09-24  Aaron Bockover  <aaron@abock.org>
+
+	* src/helix-dbus-server.cc: Changed the Message signal signature from
+	a poorly designed variable argument signature (i[sT..]) to a properly 
+	designed variant dictionary signature (ia{sv})
+	
+2006-06-20  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: Bump to 0.2.3
+
+	* src/hxplayer.cc: Check title from Helix for negative characters,
+	which will cause DBus to end up exiting 01; it seems as if hxclientkit
+	cannot handle accented characters (BNC #185276)
+
+2006-05-03  Aaron Bockover  <aaron@abock.org>
+
+	* src/helix-dbus-server.cc: Call dbus_message_unref on the reply message
+	to fix memory leak (BNC #170031); fixed gcc 4.1 pointer cast warning
+
+	* src/hxplayer.cc: Removed left over debug printf
+
+2006-04-20  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: Bump to 0.2.2
+
+	* src/hxplayer.cc: Added placeholder preference callbacks and
+	call ClientEngineSetCallbacks with structure containing these
+	function pointers to get around the preferences crasher in 
+	httpfsys.so (https://bugs.helixcommunity.org/show_bug.cgi?id=4856)
+
+	* src/helix-dbus-server.cc: Fixed a potential crash if a string
+	message segment value was NULL (exposed by fixing HTTP); added
+	a GetIsLive remote method to tell if the stream is seekable (calls
+	ClientPlayerIsLive)
+
+2006-04-10  Aaron Bockover  <aaron@abock.org>
+
+	* src/helix-dbus-server.in: Set MIXER=/dev/nullmixer to force helix to
+	use software volume instead of adjusting hardware mixer settings
+
+2006-04-04  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: Bump to 0.2.1
+
+	* src/helix-dbus-server-main.cc: Free the server on shutdown
+
+	* src/helix-dbus-server.cc: If a Ping() is called by the client at least
+	once and then not called within a 10 second time frame thereafter, the
+	server will shut down
+
+2006-03-13  Aaron Bockover  <aaron@abock.org>
+
+	Initial release of helix-dbus-server (0.2)
+
+	* configure.ac: Changed to helix-dbus-server
+
+2006-03-13  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: Added data/helix-dbus-server.pc
+
+	* src/HelixRemotePlayer.cs: Added Shutdown method support and 
+	process activation
+
+	* src/helix-dbus-server.cc: Added Shutdown method support and callback
+	to alert of server shutdown
+
+	* src/helix-dbus-server.h: Updated constructor signature
+
+	* src/helix-dbus-server-main.cc: Quit the main loop when the server
+	sends shutdown notification
+
+	* data/Makefile.am: Added helix-dbus-server.pc.in
+
+	* data/helix-dbus-server.pc.in: pkg-config file to expose installation
+	and version
+
+	* Makefile.am: Added aclocal.m4 to MAINTAINERCLEANFILES
+
+2006-03-12  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: Added check for HELIX_LIBS setup
+
+	* src/hxplayer.h:
+	* src/hxplayer.cc: Removed some simple ClientPlayer* wrappers; the
+	server calls ClientPlayer* directly
+
+	* src/helix-dbus-server.cc: Finished method implementations for 
+	ClientPlayer* wrapping
+
+	* src/helix-dbus-server-main.cc: Completed entry point to the server
+
+	* src/HelixRemotePlayer.cs: Fully implemented remote object 
+
+	* src/HelixRemoteClient.cs: Added a simple client to the new remote object
+
+2006-03-12  Aaron Bockover  <aaron@abock.org>
+
+	* src/Makefile.am: Link against the libhxclient.a in the helix build
+	
+	* src/helix/README: Added configuration options to the text 
+
+	* .ChangeLog.swp:
+	* src/libhxclient.a: Removed, shouldn't have been in import
+	
+2006-03-12  Aaron Bockover  <aaron@abock.org>
+
+	* helix-dbus-player: First import; includes working hxplayer and 
+	hxmessage which bind hxclientkit and a full DBus server implementation
+	on top of hxplayer/hxmessage; a working C#/Mono DBus client is also
+	implemented
+
+

@@ -1,0 +1,15 @@
+* Spawn time-consuming operations (such as Search) and proxy back the result
+  to the view in the main-loop.
+  
+* Handle login/logout in a better fashion. Should be a way of logging out
+  and switching accounts etc.
+  
+* Enable purchase of multiple songs at one time. And albums.
+
+* Transcode the purchased songs to MP3, OGG etc and add them directly to 
+  the library.
+  
+* Display cover art and album information when selecting a song in the
+  search view.
+  
+* Allow previewing of songs (with Jon's VLC only i guess).

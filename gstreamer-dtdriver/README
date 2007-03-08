@@ -1,0 +1,8 @@
+gstreamer-dtdriver is a decoder plugin for the GStreamer [1] multimedia
+framework that decodes AAC and MP3 using the DTDriver engine from the
+Helix [2] multimedia framework. It allows using codec plugins from Helix
+and RealPlayer to decode audio in GStreamer.
+
+[1] http://gstreamer.freedesktop.org
+[2] http://helixcommunity.org
+

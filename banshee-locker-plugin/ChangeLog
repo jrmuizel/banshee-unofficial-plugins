@@ -1,0 +1,22 @@
+2006-07-26  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: Cleaned up a little
+
+	* src/MP3tunes.cs: Use SafeUri or Uri depending on what banshee plugin
+	is being built against (BGO #345564, Nathan Palmer)
+
+2006-07-02  Aaron Bockover  <aaron@abock.org>
+
+	* configure.ac: Work with 0.11.x and 0.10.x Banshee (BGO #345563, 
+	Nathan Palmer)
+
+2006-03-21  Aaron Bockover  <aaron@abock.org>
+
+	* src/MP3tunes.cs: Implemented a LockerCertificatePolicy to explicitly
+	accept the mp3tunes.com SSL certificate as X509 certificate support 
+	is currently broken in Mono
+
+2006-03-20  Aaron Bockover  <aaron@abock.org>
+
+	* banshee-locker-plugin: Initial import
+

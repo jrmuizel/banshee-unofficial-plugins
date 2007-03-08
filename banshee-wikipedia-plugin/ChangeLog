@@ -1,0 +1,47 @@
+2006-12-13  Mickael Renault  <mickael.renault@gmail.com>
+
+	* src/Plugin.cs: adhere to the new plugin requirement for
+	a GetType method.  Fixes warning during the initialization
+	of the plugin.
+
+2006-07-18  Patrick van Staveren  <trick@vanstaveren.us>
+
+	* configure.ac:
+	* src/Makefile.am: Automatically detect gecko-sharp-2.0 0.11
+	and complain if not found.  Thanks to Pierre Cros for reporting!
+
+2006-06-24  Patrick van Staveren <trick@vanstaveren.us>
+	* Updated TODO file from David
+	* COPYING: LGPL (2.1)
+
+2006-05-28  David Schneider <david.schneider@picle.org>
+	* Some Refactoring, to meet the more general concept of context information plugin
+	* added Lyrics fetching based on www.autolyrics.com
+	* few ui changes, using -moz-border-radius
+	
+2006-06-23  Patrick van Staveren <trick@vanstaveren.us>
+	* configure.ac: detect mcs or gmcs compiled Banshee
+
+2006-05-25  David Schneider <david.schneider@picle.org>
+	* Little Bugfix, because plugin wasn't getting the song change if the artist didn't change
+	* Reorganized Plugin Structure
+	* Added artist and genre Lookup using google's "i'm feeling lucky" and specific keywords
+	* Added buttons for request and some images on the interface
+	* Created one class per requset (artist, genre,album,etc) to provide specific information as query url 
+	* Added Regex and a Xpath based parser for Wikipedia pages ( xpath one seems buggy?)
+	* Added Request specific decorator for displaying results based on the current gtk-theme colors
+	
+2006-04-30  Patrick van Staveren  <trick@vanstaveren.us>
+	* Google search mode - uses the "i'm feeling lucky" feature of Google to direct to the closes match using Google, adding the keyword "band".  I know, this isn't the best way, but it is much much more accurate than just searching for the artist keyword.
+	* Experimenting with stuff like a status bar and progress bar for loading.
+		* Progress bar is way too buggy and causes segfaults - commented out :)
+	* Opens to about:blank, not google on init.  Faster.
+	* Made default size a bit bigger.  Maybe this should be a percentage someday.  Someone patch this for me!
+	* Bunch of attempts to create a HPaned between the track listing and this, but I can't find a widget.  Big chunk of commented code for now.
+	* Added Wikipedia.dll.config, a DLL mapper copied from gecko-sharp.  Should fix issues with not finding gtkmozembed.so on some platforms. (Send bug reports!)
+	* Debug info is copied in, so you can easily trace
+
+2006-04-28  Patrick van Staveren  <trick@vanstaveren.us>
+	* initial hack
+	* most of code borrowed from Fredrik Hedberg - Thanks Fredrik!  just do a `diff RecommendationPlugin.cs Plugin.cs` and you'll see how little I did over there...
+	* and of course, thanks to Aaron Bockover for the banshee-sample-plugin framework, as it rocks :)

@@ -1,0 +1,31 @@
+2006-12-31  Aaron Bockover  <abock@gnome.org>
+
+	* POTFILES.in: Updated
+
+2006-10-08  Ilkka Tuohela  <hile@iki.fi>
+
+	* fi.po: Added Finnish translation.
+	* LINGUAS: Added Finnish translation sorted the list
+
+2006-09-02  Aaron Bockover  <abock@gnome.org>
+
+	* nb.po: Updated from Øivind Hoel
+
+2006-07-02  Gabriel Burt  <gabriel.burt@gmail.com>
+
+	* POTFILES.in: added SmartPlaylists/SmartPlaylist.cs
+
+	* nl.po: Dutch translation from P. van de Geer <pip@molyvos.net>
+
+	* LINGUAS: added nl
+
+2006-05-22  Aaron Bockover  <aaron@abock.org>
+
+	* POTFILES.in: initial set up from Øivind Hoel
+
+	* nb.po: Norwegian Bokmal translation from Øivind Hoel
+
+	* sr.po: Serbian translation from Горан Ракић 
+
+	* LINGUAS: added nb sr
+
